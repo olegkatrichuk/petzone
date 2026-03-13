@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="src/PetZone.API/PetZone.API.csproj" />
+  <Project Path="src/PetZone.Domain/PetZone.Domain.csproj" />
+  <Project Path="src/PetZone.Infrastructure/PetZone.Infrastructure.csproj" />
+  <Project Path="src\PetZone.Application\PetZone.Application.csproj" />
+</Solution>
