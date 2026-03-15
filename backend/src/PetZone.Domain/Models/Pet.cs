@@ -1,4 +1,5 @@
-
+using System;
+using System.Collections.Generic;
 using CSharpFunctionalExtensions;
 
 namespace PetZone.Domain.Models
@@ -13,10 +14,21 @@ namespace PetZone.Domain.Models
 
     // --- VALUE OBJECTS ---
 
-    public abstract class Address(string city, string street) : ValueObject
+    public class Address : ValueObject
     {
-        private string City { get; } = city;
-        private string Street { get; } = street;
+        private string City { get; }
+        private string Street { get; }
+
+        public Address(string city, string street)
+        {
+            if (string.IsNullOrWhiteSpace(city)) throw new ArgumentException("Город обязателен.");
+            if (string.IsNullOrWhiteSpace(street)) throw new ArgumentException("Улица обязательна.");
+            
+            City = city;
+            Street = street;
+        }
+
+        private Address() { } // Для EF Core
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
@@ -25,59 +37,73 @@ namespace PetZone.Domain.Models
         }
     }
 
-    public abstract class Weight : ValueObject
+    public class Weight : ValueObject
     {
         private double Value { get; }
 
-        protected Weight(double value)
+        public Weight(double value)
         {
             if (value <= 0) throw new ArgumentException("Вес должен быть больше 0.");
             Value = value;
         }
 
+        private Weight() { } // Для EF Core
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Value;
         }
     }
 
-    public abstract class Height : ValueObject
+    public class Height : ValueObject
     {
         private double Value { get; }
 
-        protected Height(double value)
+        public Height(double value)
         {
             if (value <= 0) throw new ArgumentException("Рост должен быть больше 0.");
             Value = value;
         }
 
+        private Height() { } // Для EF Core
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Value;
         }
     }
 
-    public abstract class PhoneNumber : ValueObject
+    public class PhoneNumber : ValueObject
     {
         private string Value { get; }
 
-        protected PhoneNumber(string value)
+        public PhoneNumber(string value)
         {
-            // Здесь должна быть логика валидации формата номера телефона (Regex и т.д.)
             if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException("Номер не может быть пустым.");
             Value = value;
         }
 
+        private PhoneNumber() { } // Для EF Core
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Value;
         }
     }
 
-    public abstract class HealthInfo(string generalDescription, string dietOrAllergies = "") : ValueObject
+    public class HealthInfo : ValueObject
     {
-        private string GeneralDescription { get; } = generalDescription;
-        private string DietOrAllergies { get; } = dietOrAllergies;
+        private string GeneralDescription { get; }
+        private string DietOrAllergies { get; }
+
+        public HealthInfo(string generalDescription, string dietOrAllergies = "")
+        {
+            if (string.IsNullOrWhiteSpace(generalDescription)) throw new ArgumentException("Описание здоровья обязательно.");
+            GeneralDescription = generalDescription;
+            DietOrAllergies = dietOrAllergies;
+        }
+
+        private HealthInfo() { } // Для EF Core
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
@@ -86,17 +112,21 @@ namespace PetZone.Domain.Models
         }
     }
 
-    public abstract class Requisite : ValueObject
+    public class Requisite : ValueObject
     {
         private string Name { get; }
         private string Description { get; }
 
-        protected Requisite(string name, string description)
+        public Requisite(string name, string description)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Название реквизита обязательно.");
+            if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Описание реквизита обязательно.");
+            
             Name = name;
             Description = description;
         }
+
+        private Requisite() { } // Для EF Core
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
@@ -105,55 +135,89 @@ namespace PetZone.Domain.Models
         }
     }
 
+    public class SpeciesBreed : ValueObject
+    {
+        private Guid SpeciesId { get; }
+        private Guid BreedId { get; }
+
+        public SpeciesBreed(Guid speciesId, Guid breedId)
+        {
+            if (speciesId == Guid.Empty) throw new ArgumentException("SpeciesId не может быть пустым.");
+            if (breedId == Guid.Empty) throw new ArgumentException("BreedId не может быть пустым.");
+
+            SpeciesId = speciesId;
+            BreedId = breedId;
+        }
+
+        private SpeciesBreed() { } // Для EF Core
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return SpeciesId;
+            yield return BreedId;
+        }
+    }
+
     // --- БОГАТАЯ СУЩНОСТЬ (Entity) ---
 
-    public abstract class Pet(
-        Guid id,
-        string nickname,
-        string generalDescription,
-        string color,
-        HealthInfo health,
-        Address location,
-        Weight weight,
-        Height height,
-        PhoneNumber ownerPhone,
-        bool isCastrated,
-        DateTime dateOfBirth,
-        bool isVaccinated,
-        HelpStatus status,
-        string microchipNumber,
-        Guid? volunteerId,
-        string adoptionConditions,
-        SpeciesBreed speciesBreedInfo)
-        : Entity<Guid>(id)
+    public class Pet : Entity<Guid>
     {
-        // Приватные сеттеры, чтобы избежать изменения состояния извне
-        public string Nickname { get; private set; } = nickname;
-        public SpeciesBreed SpeciesBreedInfo { get; private set; } = speciesBreedInfo;
-        public string GeneralDescription { get; private set; } = generalDescription;
-        public string Color { get; private set; } = color;
-        public HealthInfo Health { get; private set; } = health;
-        public Address Location { get; private set; } = location;
-        public Weight Weight { get; private set; } = weight;
-        public Height Height { get; private set; } = height;
-        public PhoneNumber OwnerPhone { get; private set; } = ownerPhone;
-        public bool IsCastrated { get; private set; } = isCastrated;
-        public DateTime DateOfBirth { get; private set; } = dateOfBirth;
-        public bool IsVaccinated { get; private set; } = isVaccinated;
-        public HelpStatus Status { get; private set; } = status;
-        public DateTime CreatedAt { get; private set; } = DateTime.UtcNow; // Инициализируем датой создания
+        // Приватные сеттеры
+        public string Nickname { get; private set; }
+        public SpeciesBreed SpeciesBreedInfo { get; private set; }
+        public string GeneralDescription { get; private set; }
+        public string Color { get; private set; }
+        public HealthInfo Health { get; private set; }
+        public Address Location { get; private set; }
+        public Weight Weight { get; private set; }
+        public Height Height { get; private set; }
+        public PhoneNumber OwnerPhone { get; private set; }
+        public bool IsCastrated { get; private set; }
+        public DateTime DateOfBirth { get; private set; }
+        public bool IsVaccinated { get; private set; }
+        public HelpStatus Status { get; private set; }
+        public DateTime CreatedAt { get; private set; }
 
-        // Мои 2 дополнительных свойства
-        public string? AdoptionConditions { get; private set; } = adoptionConditions;
-        public string? MicrochipNumber { get; private set; } = microchipNumber;
-        public Guid? VolunteerId { get; private set; } = volunteerId;
+        public string? AdoptionConditions { get; private set; }
+        public string? MicrochipNumber { get; private set; }
+        public Guid? VolunteerId { get; private set; }
 
-        // Инкапсулированная коллекция для реквизитов
+        // Инкапсулированная коллекция
         private readonly List<Requisite> _requisites = new();
         public IReadOnlyList<Requisite> Requisites => _requisites.AsReadOnly();
 
+        // 1. ОСНОВНОЙ КОНСТРУКТОР (публичный, для использования в коде)
+        public Pet(
+            Guid id, string nickname, string generalDescription, string color,
+            HealthInfo health, Address location, Weight weight, Height height,
+            PhoneNumber ownerPhone, bool isCastrated, DateTime dateOfBirth,
+            bool isVaccinated, HelpStatus status, string? microchipNumber,
+            Guid? volunteerId, string? adoptionConditions, SpeciesBreed speciesBreedInfo)
+            : base(id)
+        {
+            Nickname = nickname;
+            GeneralDescription = generalDescription;
+            Color = color;
+            Health = health;
+            Location = location;
+            Weight = weight;
+            Height = height;
+            OwnerPhone = ownerPhone;
+            IsCastrated = isCastrated;
+            DateOfBirth = dateOfBirth;
+            IsVaccinated = isVaccinated;
+            Status = status;
+            MicrochipNumber = microchipNumber;
+            VolunteerId = volunteerId;
+            AdoptionConditions = adoptionConditions;
+            SpeciesBreedInfo = speciesBreedInfo;
+            CreatedAt = DateTime.UtcNow;
+        }
+
+        // 2. ПУСТОЙ КОНСТРУКТОР ДЛЯ EF CORE (решает ошибку маппинга!)
+        private Pet() { }
+
         // --- ПОВЕДЕНИЕ (Domain Methods) ---
-        // Именно эти методы делают модель "богатой" (Rich)
 
         public void UpdateHealth(HealthInfo newHealthInfo, Weight newWeight)
         {
@@ -175,7 +239,6 @@ namespace PetZone.Domain.Models
         {
             if (requisite == null) throw new ArgumentNullException(nameof(requisite));
             
-            // Защита инвариантов: можно добавить проверку, нет ли уже такого реквизита
             if (!_requisites.Contains(requisite))
             {
                 _requisites.Add(requisite);
@@ -187,26 +250,5 @@ namespace PetZone.Domain.Models
             IsVaccinated = vaccinated;
             IsCastrated = castrated;
         }
-    }
-}
-// Value Object для связи питомца со справочником видов и пород
-public abstract class SpeciesBreed : ValueObject
-{
-    private Guid SpeciesId { get; }
-    private Guid BreedId { get; }
-
-    public SpeciesBreed(Guid speciesId, Guid breedId)
-    {
-        if (speciesId == Guid.Empty) throw new ArgumentException("SpeciesId не может быть пустым.");
-        if (breedId == Guid.Empty) throw new ArgumentException("BreedId не может быть пустым.");
-
-        SpeciesId = speciesId;
-        BreedId = breedId;
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return SpeciesId;
-        yield return BreedId;
     }
 }
