@@ -1,16 +1,19 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using CSharpFunctionalExtensions;
 
 namespace PetZone.Domain.Models
 {
-    // --- НОВЫЕ VALUE OBJECTS ---
+    // --- VALUE OBJECTS ---
 
-    public abstract class FullName : ValueObject
+    public class FullName : ValueObject
     {
         private string FirstName { get; }
         private string LastName { get; }
         private string Patronymic { get; }
 
-        protected FullName(string firstName, string lastName, string patronymic = "")
+        public FullName(string firstName, string lastName, string patronymic = "")
         {
             if (string.IsNullOrWhiteSpace(firstName)) throw new ArgumentException("Имя обязательно.");
             if (string.IsNullOrWhiteSpace(lastName)) throw new ArgumentException("Фамилия обязательна.");
@@ -20,6 +23,8 @@ namespace PetZone.Domain.Models
             Patronymic = patronymic;
         }
 
+        private FullName() { } // Для EF Core
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return FirstName;
@@ -28,11 +33,11 @@ namespace PetZone.Domain.Models
         }
     }
 
-    public abstract class Email : ValueObject
+    public class Email : ValueObject
     {
         private string Value { get; }
 
-        protected Email(string value)
+        public Email(string value)
         {
             if (string.IsNullOrWhiteSpace(value) || !value.Contains("@")) 
                 throw new ArgumentException("Некорректный формат Email.");
@@ -40,21 +45,25 @@ namespace PetZone.Domain.Models
             Value = value;
         }
 
+        private Email() { } // Для EF Core
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Value;
         }
     }
 
-    public abstract class Experience : ValueObject
+    public class Experience : ValueObject
     {
         private int Years { get; }
 
-        protected Experience(int years)
+        public Experience(int years)
         {
             if (years < 0) throw new ArgumentException("Опыт не может быть отрицательным.");
             Years = years;
         }
+
+        private Experience() { } // Для EF Core
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
@@ -62,12 +71,12 @@ namespace PetZone.Domain.Models
         }
     }
 
-    public abstract class SocialNetwork : ValueObject
+    public class SocialNetwork : ValueObject
     {
         private string Name { get; }
         private string Link { get; }
 
-        protected SocialNetwork(string name, string link)
+        public SocialNetwork(string name, string link)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Название соц. сети обязательно.");
             if (string.IsNullOrWhiteSpace(link)) throw new ArgumentException("Ссылка обязательна.");
@@ -75,6 +84,8 @@ namespace PetZone.Domain.Models
             Name = name;
             Link = link;
         }
+
+        private SocialNetwork() { } // Для EF Core
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
@@ -85,20 +96,14 @@ namespace PetZone.Domain.Models
 
     // --- БОГАТАЯ СУЩНОСТЬ VOLUNTEER ---
 
-    public class Volunteer(
-        Guid id,
-        FullName name,
-        Email email,
-        string generalDescription,
-        Experience experience,
-        PhoneNumber phone)
-        : Entity<Guid>(id)
+    // Убрали первичный конструктор
+    public class Volunteer : Entity<Guid>
     {
-        public FullName Name { get; private set; } = name;
-        public Email Email { get; private set; } = email;
-        public string GeneralDescription { get; private set; } = generalDescription;
-        public Experience Experience { get; private set; } = experience;
-        public PhoneNumber Phone { get; private set; } = phone;
+        public FullName Name { get; private set; }
+        public Email Email { get; private set; }
+        public string GeneralDescription { get; private set; }
+        public Experience Experience { get; private set; }
+        public PhoneNumber Phone { get; private set; } // Берется из общих VO (где у вас Pet.cs)
 
         // Инкапсулированные коллекции
         private readonly List<SocialNetwork> _socialNetworks = new();
@@ -110,21 +115,34 @@ namespace PetZone.Domain.Models
         private readonly List<Pet> _pets = new();
         public IReadOnlyList<Pet> Pets => _pets.AsReadOnly();
 
+        // 1. ОСНОВНОЙ КОНСТРУКТОР
+        public Volunteer(
+            Guid id, FullName name, Email email, string generalDescription, 
+            Experience experience, PhoneNumber phone) 
+            : base(id)
+        {
+            Name = name;
+            Email = email;
+            GeneralDescription = generalDescription;
+            Experience = experience;
+            Phone = phone;
+        }
+
+        // 2. ПУСТОЙ ПРИВАТНЫЙ КОНСТРУКТОР ДЛЯ EF CORE
+        private Volunteer() { }
+
         // --- МЕТОДЫ ПОВЕДЕНИЯ (Domain Methods) ---
 
-        // 1. Метод: Количество животных, нашедших дом
         public int CountPetsFoundHome()
         {
             return _pets.Count(p => p.Status == HelpStatus.FoundHome);
         }
 
-        // 2. Метод: Количество животных, ищущих дом
         public int CountPetsLookingForHome()
         {
             return _pets.Count(p => p.Status == HelpStatus.LookingForHome);
         }
 
-        // 3. Метод: Количество животных на лечении (нуждаются в помощи)
         public int CountPetsInTreatment()
         {
             return _pets.Count(p => p.Status == HelpStatus.NeedsHelp);
