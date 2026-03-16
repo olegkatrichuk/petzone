@@ -2,8 +2,11 @@
   <Folder Name="/Solution Items/">
     <File Path="compose.yaml" />
   </Folder>
-  <Project Path="src/PetZone.API/PetZone.API.csproj" />
-  <Project Path="src/PetZone.Domain/PetZone.Domain.csproj" />
-  <Project Path="src/PetZone.Infrastructure/PetZone.Infrastructure.csproj" />
-  <Project Path="src\PetZone.Application\PetZone.Application.csproj" />
+  <Folder Name="/src/">
+    <Project Path="src/PetZone.API/PetZone.API.csproj" />
+    <Project Path="src/PetZone.Contracts/PetZone.Contracts.csproj" />
+    <Project Path="src/PetZone.Domain/PetZone.Domain.csproj" />
+    <Project Path="src/PetZone.Infrastructure/PetZone.Infrastructure.csproj" />
+    <Project Path="src\PetZone.Application\PetZone.Application.csproj" />
+  </Folder>
 </Solution>

@@ -1,6 +1,14 @@
-@PetZone.API_HostAddress = http://localhost:5183
+POST http://localhost:5183/volunteers
+Content-Type: application/json
 
-GET {{PetZone.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
+{
+  "firstName": "Иван",
+  "lastName": "Иванов",
+  "patronymic": "Иванович",
+  "email": "ivan@example.com",
+  "generalDescription": "Готов помогать",
+  "experienceYears": 3,
+  "phone": "88005553535",
+  "socialNetworks": [],
+  "requisites": []
+}
