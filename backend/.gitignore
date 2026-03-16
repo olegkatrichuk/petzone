@@ -483,3 +483,5 @@ $RECYCLE.BIN/
 .DS_Store
 .idea/
 compose.yaml
+.env
+.env

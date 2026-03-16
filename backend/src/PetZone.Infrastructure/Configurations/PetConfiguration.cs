@@ -1,4 +1,3 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetZone.Domain.Models;
@@ -23,46 +22,45 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.Status).IsRequired();
         builder.Property(p => p.CreatedAt).IsRequired();
         
-        // Эти свойства могут быть null, судя по знаку вопроса в типе (string?, Guid?)
         builder.Property(p => p.AdoptionConditions).IsRequired(false);
         builder.Property(p => p.MicrochipNumber).IsRequired(false);
         
-        // Внешний ключ для связи с Volunteer (связь уже настроена со стороны волонтера, но здесь мы тоже мапим колонку)
         builder.Property(p => p.VolunteerId).IsRequired(false);
 
-        // --- ОДИНОЧНЫЕ VALUE OBJECTS (с приватными свойствами) ---
+        // --- ОДИНОЧНЫЕ VALUE OBJECTS (Переводим на ComplexProperty!) ---
         
-        builder.OwnsOne(p => p.SpeciesBreedInfo, sb =>
+        builder.ComplexProperty(p => p.SpeciesBreedInfo, sb =>
         {
-            sb.Property(typeof(Guid), "SpeciesId").HasColumnName("species_id").IsRequired();
-            sb.Property(typeof(Guid), "BreedId").HasColumnName("breed_id").IsRequired();
+            // Теперь строго типизировано!
+            sb.Property(p => p.SpeciesId).HasColumnName("species_id").IsRequired();
+            sb.Property(p => p.BreedId).HasColumnName("breed_id").IsRequired();
         });
 
-        builder.OwnsOne(p => p.Health, h =>
+        builder.ComplexProperty(p => p.Health, h =>
         {
-            h.Property(typeof(string), "GeneralDescription").HasColumnName("health_general_description").IsRequired();
-            h.Property(typeof(string), "DietOrAllergies").HasColumnName("health_diet_or_allergies").IsRequired(false);
+            h.Property(p => p.GeneralDescription).HasColumnName("health_general_description").IsRequired();
+            h.Property(p => p.DietOrAllergies).HasColumnName("health_diet_or_allergies").IsRequired(false);
         });
 
-        builder.OwnsOne(p => p.Location, l =>
+        builder.ComplexProperty(p => p.Location, l =>
         {
-            l.Property(typeof(string), "City").HasColumnName("city").IsRequired();
-            l.Property(typeof(string), "Street").HasColumnName("street").IsRequired();
+            l.Property(p => p.City).HasColumnName("city").IsRequired();
+            l.Property(p => p.Street).HasColumnName("street").IsRequired();
         });
 
-        builder.OwnsOne(p => p.Weight, w =>
+        builder.ComplexProperty(p => p.Weight, w =>
         {
-            w.Property(typeof(double), "Value").HasColumnName("weight").IsRequired();
+            w.Property(p => p.Value).HasColumnName("weight").IsRequired();
         });
 
-        builder.OwnsOne(p => p.Height, h =>
+        builder.ComplexProperty(p => p.Height, h =>
         {
-            h.Property(typeof(double), "Value").HasColumnName("height").IsRequired();
+            h.Property(p => p.Value).HasColumnName("height").IsRequired();
         });
 
-        builder.OwnsOne(p => p.OwnerPhone, ph =>
+        builder.ComplexProperty(p => p.OwnerPhone, ph =>
         {
-            ph.Property(typeof(string), "Value").HasColumnName("owner_phone").IsRequired();
+            ph.Property(p => p.Value).HasColumnName("owner_phone").IsRequired();
         });
 
         // --- КОЛЛЕКЦИИ VALUE OBJECTS (JSON СТОЛБЦЫ) ---
@@ -70,8 +68,9 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.OwnsMany(p => p.Requisites, r =>
         {
             r.ToJson(); // Сохраняем в JSON колонку
-            r.Property(typeof(string), "Name").IsRequired();
-            r.Property(typeof(string), "Description").IsRequired();
+            // Убираем typeof() и здесь тоже
+            r.Property(p => p.Name).IsRequired();
+            r.Property(p => p.Description).IsRequired();
         });
 
         // --- НАСТРОЙКА ДОСТУПА К ПРИВАТНЫМ КОЛЛЕКЦИЯМ ---

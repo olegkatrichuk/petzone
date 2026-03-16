@@ -1,29 +1,40 @@
-using PetZone.Application.Repositories;
-using PetZone.Application.Volunteers.Commands;
+using CSharpFunctionalExtensions;
 using PetZone.Domain.Models;
+using PetZone.Domain.Shared;
+using PetZone.UseCases.Commands;
+using PetZone.UseCases.Repositories;
 
-namespace PetZone.Application.Volunteers;
+namespace PetZone.UseCases.Volunteers;
 
-public class CreateVolunteerService
+public class CreateVolunteerService(IVolunteerRepository repository)
 {
-    private readonly IVolunteerRepository _repository;
-
-    public CreateVolunteerService(IVolunteerRepository repository)
-    {
-        _repository = repository;
-    }
-
-    public async Task<Guid> Handle(CreateVolunteerCommand command, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid, Error>> Handle(CreateVolunteerCommand command, CancellationToken cancellationToken = default)
     {
         var req = command.Request;
+        
+        // 1. Пытаемся создать Email через наш новый безопасный метод
+        var emailResult = Email.Create(req.Email);
+        if (emailResult.IsFailure) return emailResult.Error;
+        var email = emailResult.Value;
+        
+        // Пытаемся создать FullName через наш новый безопасный метод
+        var fullNameResult = FullName.Create(req.FirstName, req.LastName, req.Patronymic);
+        if (fullNameResult.IsFailure) return fullNameResult.Error;
+        var fullName = fullNameResult.Value;
+        
+        
+        // 3. Проверяем Опыт
+        var experienceResult = Experience.Create(req.ExperienceYears);
+        if (experienceResult.IsFailure) return experienceResult.Error;
+        var experience = experienceResult.Value;
+        
+        
+        // Пытаемся создать телефон
+        var phoneResult = PhoneNumber.Create(req.Phone);
+        if (phoneResult.IsFailure) return phoneResult.Error;
+        var phone = phoneResult.Value;
 
-        // 1. Создаем Value Objects
-        var fullName = new FullName(req.FirstName, req.LastName, req.Patronymic);
-        var email = new Email(req.Email);
-        var experience = new Experience(req.ExperienceYears);
-        var phone = new PhoneNumber(req.Phone);
-
-        // 2. Создаем Агрегат
+        // 2. Создаем Агрегат, передавая туда наш безопасный email
         var volunteer = new Volunteer(
             Guid.NewGuid(),
             fullName,
@@ -32,19 +43,38 @@ public class CreateVolunteerService
             experience,
             phone
         );
-
-        // 3. Добавляем коллекции
+        
+        // Добавляем социальные сети (с валидацией каждой)
         foreach (var sn in req.SocialNetworks)
         {
-            volunteer.AddSocialNetwork(new SocialNetwork(sn.Name, sn.Link));
+            var snResult = SocialNetwork.Create(sn.Name, sn.Link);
+        
+            // Если хотя бы одна соцсеть невалидна — прерываем создание волонтера
+            if (snResult.IsFailure)
+            {
+                return snResult.Error;
+            }
+
+            volunteer.AddSocialNetwork(snResult.Value);
         }
 
+        // Добавляем реквизиты (с валидацией)
         foreach (var r in req.Requisites)
         {
-            volunteer.AddRequisite(new Requisite(r.Name, r.Description));
+            var requisiteResult = Requisite.Create(r.Name, r.Description);
+        
+            if (requisiteResult.IsFailure)
+            {
+                return requisiteResult.Error;
+            }
+
+            volunteer.AddRequisite(requisiteResult.Value);
         }
 
         // 4. Сохраняем в базу
-        return await _repository.AddAsync(volunteer, cancellationToken);
+        await repository.AddAsync(volunteer, cancellationToken);
+
+        // ВОЗВРАЩАЕМ УСПЕХ:
+        return Result.Success<Guid, Error>(volunteer.Id);
     }
 }
