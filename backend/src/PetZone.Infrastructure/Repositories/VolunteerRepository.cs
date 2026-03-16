@@ -1,5 +1,5 @@
-using PetZone.Application.Repositories;
 using PetZone.Domain.Models;
+using PetZone.UseCases.Repositories;
 
 namespace PetZone.Infrastructure.Repositories;
 

@@ -14,53 +14,52 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.Property(v => v.GeneralDescription).IsRequired(false);
 
-        // --- ОДИНОЧНЫЕ VALUE OBJECTS (с приватными свойствами) ---
+        // --- ОДИНОЧНЫЕ VALUE OBJECTS (Используем новый ComplexProperty!) ---
         
-        builder.OwnsOne(v => v.Name, n => 
+        builder.ComplexProperty(v => v.Name, n => 
         {
-            // Обращаемся к приватным свойствам через их имена в виде строк
-            n.Property(typeof(string), "FirstName").IsRequired();
-            n.Property(typeof(string), "LastName").IsRequired();
-            n.Property(typeof(string), "Patronymic");
+            // Теперь всё строго типизировано, без строк!
+            n.Property(p => p.FirstName).HasColumnName("first_name").IsRequired();
+            n.Property(p => p.LastName).HasColumnName("last_name").IsRequired();
+            n.Property(p => p.Patronymic).HasColumnName("patronymic");
         });
 
-        builder.OwnsOne(v => v.Email, e => 
+        builder.ComplexProperty(v => v.Email, e => 
         {
-            e.Property(typeof(string), "Value").HasColumnName("email").IsRequired();
+            e.Property(p => p.Value).HasColumnName("email").IsRequired();
         });
 
-        builder.OwnsOne(v => v.Experience, e => 
+        builder.ComplexProperty(v => v.Experience, e => 
         {
-            e.Property(typeof(int), "Years").HasColumnName("experience_years").IsRequired();
+            e.Property(p => p.Years).HasColumnName("experience_years").IsRequired();
         });
 
-        builder.OwnsOne(v => v.Phone, p => 
+        builder.ComplexProperty(v => v.Phone, p => 
         {
-            // Предполагаю, что в PhoneNumber свойство Value тоже стало приватным
-            p.Property(typeof(string), "Value").HasColumnName("phone").IsRequired();
+            p.Property(p => p.Value).HasColumnName("phone").IsRequired();
         });
 
-        // --- КОЛЛЕКЦИИ VALUE OBJECTS (JSON СТОЛБЦЫ) ---
+        // --- КОЛЛЕКЦИИ VALUE OBJECTS (JSONB СТОЛБЦЫ) ---
         
         builder.OwnsMany(v => v.SocialNetworks, sn => 
         {
-            sn.ToJson();
-            sn.Property(typeof(string), "Name").IsRequired();
-            sn.Property(typeof(string), "Link").IsRequired();
+            sn.ToJson(); // Магия JSONB
+            // Здесь тоже избавляемся от строковых имен свойств
+            sn.Property(p => p.Name).IsRequired();
+            sn.Property(p => p.Link).IsRequired();
         });
 
         builder.OwnsMany(v => v.Requisites, r => 
         {
             r.ToJson();
-            // Предполагаю, что в Requisite свойства Name и Description
-            r.Property(typeof(string), "Name").IsRequired();
-            r.Property(typeof(string), "Description").IsRequired();
+            r.Property(p => p.Name).IsRequired();
+            r.Property(p => p.Description).IsRequired();
         });
 
         // --- СВЯЗЬ С ПИТОМЦАМИ ---
         builder.HasMany(v => v.Pets)
                .WithOne()
-               .HasForeignKey("VolunteerId") // EF Core сам создаст теневое поле VolunteerId в таблице Pets
+               .HasForeignKey("VolunteerId")
                .OnDelete(DeleteBehavior.Cascade);
 
         // --- УКАЗЫВАЕМ EF CORE ЧИТАТЬ ИЗ ПРИВАТНЫХ ПОЛЕЙ ---

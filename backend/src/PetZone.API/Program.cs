@@ -1,7 +1,7 @@
-using PetZone.Application.Repositories;
-using PetZone.Application.Volunteers;
+
 using PetZone.Infrastructure;
-using PetZone.Infrastructure.Repositories;
+using PetZone.UseCases;
+using PetZone.UseCases.Volunteers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,15 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(); 
 
-// 2. Регистрируем БД и Контроллеры
-builder.Services.AddScoped<ApplicationDbContext>();
+// 2. Регистрируем Контроллеры (API слой)
 builder.Services.AddControllers();
 
-// 3. Регистрируем репозиторий (интерфейс -> реализация)
-builder.Services.AddScoped<IVolunteerRepository, VolunteerRepository>();
+// 3. Подключаем внешние слои (вся магия регистрации БД и репозиториев теперь скрыта тут)
+builder.Services.AddInfrastructure();
 
-// 4. Регистрируем сам сервис бизнес-логики
-builder.Services.AddScoped<CreateVolunteerService>();
+// 4. Подключаем слой бизнес-логики
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
@@ -31,5 +30,4 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.MapControllers();
 
-// 6. САМОЕ ГЛАВНОЕ: Запускаем сервер, чтобы он не выключался!
 app.Run();
