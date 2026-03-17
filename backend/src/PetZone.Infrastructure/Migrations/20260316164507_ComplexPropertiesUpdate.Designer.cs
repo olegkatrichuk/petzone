@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PetZone.Infrastructure;
@@ -12,9 +13,11 @@ using PetZone.Infrastructure;
 namespace PetZone.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260316164507_ComplexPropertiesUpdate")]
+    partial class ComplexPropertiesUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,14 +34,12 @@ namespace PetZone.Infrastructure.Migrations
                         .HasColumnName("id");
 
                     b.Property<string>("AdoptionConditions")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)")
+                        .HasColumnType("text")
                         .HasColumnName("adoption_conditions");
 
                     b.Property<string>("Color")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("text")
                         .HasColumnName("color");
 
                     b.Property<DateTime>("CreatedAt")
@@ -51,8 +52,7 @@ namespace PetZone.Infrastructure.Migrations
 
                     b.Property<string>("GeneralDescription")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)")
+                        .HasColumnType("text")
                         .HasColumnName("general_description");
 
                     b.Property<bool>("IsCastrated")
@@ -64,14 +64,12 @@ namespace PetZone.Infrastructure.Migrations
                         .HasColumnName("is_vaccinated");
 
                     b.Property<string>("MicrochipNumber")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("text")
                         .HasColumnName("microchip_number");
 
                     b.Property<string>("Nickname")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("text")
                         .HasColumnName("nickname");
 
                     b.Property<int>("Status")
@@ -87,14 +85,12 @@ namespace PetZone.Infrastructure.Migrations
                             b1.IsRequired();
 
                             b1.Property<string>("DietOrAllergies")
-                                .HasMaxLength(1000)
-                                .HasColumnType("character varying(1000)")
+                                .HasColumnType("text")
                                 .HasColumnName("health_diet_or_allergies");
 
                             b1.Property<string>("GeneralDescription")
                                 .IsRequired()
-                                .HasMaxLength(2000)
-                                .HasColumnType("character varying(2000)")
+                                .HasColumnType("text")
                                 .HasColumnName("health_general_description");
                         });
 
@@ -113,14 +109,12 @@ namespace PetZone.Infrastructure.Migrations
 
                             b1.Property<string>("City")
                                 .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("character varying(50)")
+                                .HasColumnType("text")
                                 .HasColumnName("city");
 
                             b1.Property<string>("Street")
                                 .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
+                                .HasColumnType("text")
                                 .HasColumnName("street");
                         });
 
@@ -130,8 +124,7 @@ namespace PetZone.Infrastructure.Migrations
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasMaxLength(15)
-                                .HasColumnType("character varying(15)")
+                                .HasColumnType("text")
                                 .HasColumnName("owner_phone");
                         });
 
@@ -172,8 +165,7 @@ namespace PetZone.Infrastructure.Migrations
                         .HasColumnName("id");
 
                     b.Property<string>("GeneralDescription")
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)")
+                        .HasColumnType("text")
                         .HasColumnName("general_description");
 
                     b.ComplexProperty(typeof(Dictionary<string, object>), "Email", "PetZone.Domain.Models.Volunteer.Email#Email", b1 =>
@@ -182,8 +174,7 @@ namespace PetZone.Infrastructure.Migrations
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasMaxLength(255)
-                                .HasColumnType("character varying(255)")
+                                .HasColumnType("text")
                                 .HasColumnName("email");
                         });
 
@@ -202,20 +193,17 @@ namespace PetZone.Infrastructure.Migrations
 
                             b1.Property<string>("FirstName")
                                 .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("character varying(50)")
+                                .HasColumnType("text")
                                 .HasColumnName("first_name");
 
                             b1.Property<string>("LastName")
                                 .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("character varying(50)")
+                                .HasColumnType("text")
                                 .HasColumnName("last_name");
 
                             b1.Property<string>("Patronymic")
                                 .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("character varying(50)")
+                                .HasColumnType("text")
                                 .HasColumnName("patronymic");
                         });
 
@@ -225,8 +213,7 @@ namespace PetZone.Infrastructure.Migrations
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasMaxLength(15)
-                                .HasColumnType("character varying(15)")
+                                .HasColumnType("text")
                                 .HasColumnName("phone");
                         });
 
@@ -244,8 +231,7 @@ namespace PetZone.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("text")
                         .HasColumnName("name");
 
                     b.Property<Guid?>("SpeciesId")
@@ -268,8 +254,7 @@ namespace PetZone.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("text")
                         .HasColumnName("name");
 
                     b.HasKey("Id");
@@ -292,12 +277,10 @@ namespace PetZone.Infrastructure.Migrations
                                 .ValueGeneratedOnAdd();
 
                             b1.Property<string>("Description")
-                                .IsRequired()
-                                .HasMaxLength(500);
+                                .IsRequired();
 
                             b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(100);
+                                .IsRequired();
 
                             b1.HasKey("PetId", "__synthesizedOrdinal");
 
@@ -324,12 +307,10 @@ namespace PetZone.Infrastructure.Migrations
                                 .ValueGeneratedOnAdd();
 
                             b1.Property<string>("Link")
-                                .IsRequired()
-                                .HasMaxLength(2000);
+                                .IsRequired();
 
                             b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(50);
+                                .IsRequired();
 
                             b1.HasKey("VolunteerId", "__synthesizedOrdinal");
 
@@ -351,12 +332,10 @@ namespace PetZone.Infrastructure.Migrations
                                 .ValueGeneratedOnAdd();
 
                             b1.Property<string>("Description")
-                                .IsRequired()
-                                .HasMaxLength(500);
+                                .IsRequired();
 
                             b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(100);
+                                .IsRequired();
 
                             b1.HasKey("VolunteerId", "__synthesizedOrdinal");
 

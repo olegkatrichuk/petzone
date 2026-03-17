@@ -6,9 +6,12 @@ namespace PetZone.Domain.Models;
 
 public class Experience : ValueObject
 {
-    public int Years { get; } // Свойство должно быть публичным для сохранения в БД
+    // 1. ДОБАВЛЯЕМ ПУБЛИЧНЫЕ КОНСТАНТЫ ДЛЯ ЛИМИТОВ
+    public const int MIN_YEARS = 0;
+    public const int MAX_YEARS = 100; // Разумный предел, чтобы отсечь опечатки
 
-    // 1. Приватный конструктор
+    public int Years { get; }
+
     private Experience(int years)
     {
         Years = years;
@@ -16,12 +19,18 @@ public class Experience : ValueObject
 
     private Experience() { } // Для EF Core
 
-    // 2. Фабрика с валидацией
     public static Result<Experience, Error> Create(int years)
     {
-        if (years < 0)
+        // 2. ИСПОЛЬЗУЕМ КОНСТАНТЫ В ВАЛИДАЦИИ
+        if (years < MIN_YEARS)
         {
-            return Error.Validation("experience.is_negative", "Опыт не может быть отрицательным.");
+            return Error.Validation("experience.too_small", $"Опыт не может быть меньше {MIN_YEARS} лет.");
+        }
+
+        // Защита от абсурдных данных
+        if (years > MAX_YEARS)
+        {
+            return Error.Validation("experience.too_large", $"Опыт не может превышать {MAX_YEARS} лет.");
         }
 
         return new Experience(years);
