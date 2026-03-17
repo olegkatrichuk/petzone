@@ -12,40 +12,57 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         
         builder.HasKey(p => p.Id);
 
-        // --- ОБЫЧНЫЕ СВОЙСТВА ---
-        builder.Property(p => p.Nickname).IsRequired();
-        builder.Property(p => p.GeneralDescription).IsRequired();
-        builder.Property(p => p.Color).IsRequired();
+        // --- ОБЫЧНЫЕ СВОЙСТВА (Используем константы из сущности Pet!) ---
+        builder.Property(p => p.Nickname).HasMaxLength(Pet.MAX_NICKNAME_LENGTH).IsRequired();
+        builder.Property(p => p.GeneralDescription).HasMaxLength(Pet.MAX_GENERAL_DESCRIPTION_LENGTH).IsRequired();
+        builder.Property(p => p.Color).HasMaxLength(Pet.MAX_COLOR_LENGTH).IsRequired();
+        
+        builder.Property(p => p.AdoptionConditions).HasMaxLength(Pet.MAX_ADOPTION_CONDITIONS_LENGTH).IsRequired(false);
+        builder.Property(p => p.MicrochipNumber).HasMaxLength(Pet.MAX_MICROCHIP_NUMBER_LENGTH).IsRequired(false);
+
+        // Свойства без констант (даты, булевы значения, связи)
         builder.Property(p => p.IsCastrated).IsRequired();
         builder.Property(p => p.DateOfBirth).IsRequired();
         builder.Property(p => p.IsVaccinated).IsRequired();
         builder.Property(p => p.Status).IsRequired();
         builder.Property(p => p.CreatedAt).IsRequired();
-        
-        builder.Property(p => p.AdoptionConditions).IsRequired(false);
-        builder.Property(p => p.MicrochipNumber).IsRequired(false);
-        
         builder.Property(p => p.VolunteerId).IsRequired(false);
 
-        // --- ОДИНОЧНЫЕ VALUE OBJECTS (Переводим на ComplexProperty!) ---
+        // --- ОДИНОЧНЫЕ VALUE OBJECTS ---
         
         builder.ComplexProperty(p => p.SpeciesBreedInfo, sb =>
         {
-            // Теперь строго типизировано!
+            // Guid'ы не нуждаются в ограничении длины
             sb.Property(p => p.SpeciesId).HasColumnName("species_id").IsRequired();
             sb.Property(p => p.BreedId).HasColumnName("breed_id").IsRequired();
         });
 
         builder.ComplexProperty(p => p.Health, h =>
         {
-            h.Property(p => p.GeneralDescription).HasColumnName("health_general_description").IsRequired();
-            h.Property(p => p.DietOrAllergies).HasColumnName("health_diet_or_allergies").IsRequired(false);
+            // Используем константы из HealthInfo
+            h.Property(p => p.GeneralDescription)
+             .HasColumnName("health_general_description")
+             .HasMaxLength(HealthInfo.MAX_GENERAL_DESCRIPTION_LENGTH)
+             .IsRequired();
+             
+            h.Property(p => p.DietOrAllergies)
+             .HasColumnName("health_diet_or_allergies")
+             .HasMaxLength(HealthInfo.MAX_DIET_OR_ALLERGIES_LENGTH)
+             .IsRequired(false);
         });
 
         builder.ComplexProperty(p => p.Location, l =>
         {
-            l.Property(p => p.City).HasColumnName("city").IsRequired();
-            l.Property(p => p.Street).HasColumnName("street").IsRequired();
+            // Используем константы из Address
+            l.Property(p => p.City)
+             .HasColumnName("city")
+             .HasMaxLength(Address.MAX_CITY_LENGTH)
+             .IsRequired();
+             
+            l.Property(p => p.Street)
+             .HasColumnName("street")
+             .HasMaxLength(Address.MAX_STREET_LENGTH)
+             .IsRequired();
         });
 
         builder.ComplexProperty(p => p.Weight, w =>
@@ -60,17 +77,21 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.ComplexProperty(p => p.OwnerPhone, ph =>
         {
-            ph.Property(p => p.Value).HasColumnName("owner_phone").IsRequired();
+            // Используем константу из PhoneNumber
+            ph.Property(p => p.Value)
+              .HasColumnName("owner_phone")
+              .HasMaxLength(PhoneNumber.MAX_LENGTH)
+              .IsRequired();
         });
 
         // --- КОЛЛЕКЦИИ VALUE OBJECTS (JSON СТОЛБЦЫ) ---
         
         builder.OwnsMany(p => p.Requisites, r =>
         {
-            r.ToJson(); // Сохраняем в JSON колонку
-            // Убираем typeof() и здесь тоже
-            r.Property(p => p.Name).IsRequired();
-            r.Property(p => p.Description).IsRequired();
+            r.ToJson(); 
+            // Используем константы из Requisite
+            r.Property(p => p.Name).HasMaxLength(Requisite.MAX_NAME_LENGTH).IsRequired();
+            r.Property(p => p.Description).HasMaxLength(Requisite.MAX_DESCRIPTION_LENGTH).IsRequired();
         });
 
         // --- НАСТРОЙКА ДОСТУПА К ПРИВАТНЫМ КОЛЛЕКЦИЯМ ---

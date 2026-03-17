@@ -12,6 +12,9 @@ public class BreedConfiguration : IEntityTypeConfiguration<Breed>
         
         builder.HasKey(b => b.Id);
         
-        builder.Property(b => b.Name).IsRequired();
+        // ПРИМЕНЯЕМ НАШУ КОНСТАНТУ!
+        builder.Property(b => b.Name)
+            .HasMaxLength(Breed.MAX_NAME_LENGTH)
+            .IsRequired();
     }
 }
