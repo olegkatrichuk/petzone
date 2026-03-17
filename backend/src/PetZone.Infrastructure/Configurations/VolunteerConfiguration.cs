@@ -12,21 +12,38 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         
         builder.HasKey(v => v.Id);
 
-        builder.Property(v => v.GeneralDescription).IsRequired(false);
+        // ИСПОЛЬЗУЕМ КОНСТАНТУ ИЗ СУЩНОСТИ VOLUNTEER
+        builder.Property(v => v.GeneralDescription)
+               .HasMaxLength(Volunteer.MAX_GENERAL_DESCRIPTION_LENGTH)
+               .IsRequired(false);
 
-        // --- ОДИНОЧНЫЕ VALUE OBJECTS (Используем новый ComplexProperty!) ---
+        // --- ОДИНОЧНЫЕ VALUE OBJECTS ---
         
         builder.ComplexProperty(v => v.Name, n => 
         {
-            // Теперь всё строго типизировано, без строк!
-            n.Property(p => p.FirstName).HasColumnName("first_name").IsRequired();
-            n.Property(p => p.LastName).HasColumnName("last_name").IsRequired();
-            n.Property(p => p.Patronymic).HasColumnName("patronymic");
+            // ИСПОЛЬЗУЕМ КОНСТАНТЫ ИЗ FULLNAME
+            n.Property(p => p.FirstName)
+             .HasColumnName("first_name")
+             .HasMaxLength(FullName.MAX_FIRST_NAME_LENGTH)
+             .IsRequired();
+             
+            n.Property(p => p.LastName)
+             .HasColumnName("last_name")
+             .HasMaxLength(FullName.MAX_LAST_NAME_LENGTH)
+             .IsRequired();
+             
+            n.Property(p => p.Patronymic)
+             .HasColumnName("patronymic")
+             .HasMaxLength(FullName.MAX_PATRONYMIC_LENGTH);
         });
 
         builder.ComplexProperty(v => v.Email, e => 
         {
-            e.Property(p => p.Value).HasColumnName("email").IsRequired();
+            // ИСПОЛЬЗУЕМ КОНСТАНТУ ИЗ EMAIL
+            e.Property(p => p.Value)
+             .HasColumnName("email")
+             .HasMaxLength(Email.MAX_LENGTH)
+             .IsRequired();
         });
 
         builder.ComplexProperty(v => v.Experience, e => 
@@ -36,24 +53,29 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.ComplexProperty(v => v.Phone, p => 
         {
-            p.Property(p => p.Value).HasColumnName("phone").IsRequired();
+            // ИСПОЛЬЗУЕМ КОНСТАНТУ ИЗ PHONENUMBER
+            p.Property(p => p.Value)
+             .HasColumnName("phone")
+             .HasMaxLength(PhoneNumber.MAX_LENGTH)
+             .IsRequired();
         });
 
         // --- КОЛЛЕКЦИИ VALUE OBJECTS (JSONB СТОЛБЦЫ) ---
         
         builder.OwnsMany(v => v.SocialNetworks, sn => 
         {
-            sn.ToJson(); // Магия JSONB
-            // Здесь тоже избавляемся от строковых имен свойств
-            sn.Property(p => p.Name).IsRequired();
-            sn.Property(p => p.Link).IsRequired();
+            sn.ToJson(); 
+            // ИСПОЛЬЗУЕМ КОНСТАНТЫ ИЗ SOCIALNETWORK
+            sn.Property(p => p.Name).HasMaxLength(SocialNetwork.MAX_NAME_LENGTH).IsRequired();
+            sn.Property(p => p.Link).HasMaxLength(SocialNetwork.MAX_LINK_LENGTH).IsRequired();
         });
 
         builder.OwnsMany(v => v.Requisites, r => 
         {
             r.ToJson();
-            r.Property(p => p.Name).IsRequired();
-            r.Property(p => p.Description).IsRequired();
+            // ИСПОЛЬЗУЕМ КОНСТАНТЫ ИЗ REQUISITE
+            r.Property(p => p.Name).HasMaxLength(Requisite.MAX_NAME_LENGTH).IsRequired();
+            r.Property(p => p.Description).HasMaxLength(Requisite.MAX_DESCRIPTION_LENGTH).IsRequired();
         });
 
         // --- СВЯЗЬ С ПИТОМЦАМИ ---

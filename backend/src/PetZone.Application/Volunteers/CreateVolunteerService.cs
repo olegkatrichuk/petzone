@@ -33,9 +33,9 @@ public class CreateVolunteerService(IVolunteerRepository repository)
         var phoneResult = PhoneNumber.Create(req.Phone);
         if (phoneResult.IsFailure) return phoneResult.Error;
         var phone = phoneResult.Value;
-
-        // 2. Создаем Агрегат, передавая туда наш безопасный email
-        var volunteer = new Volunteer(
+        
+        // 2. Создаем Агрегат через нашу новую безопасную фабрику
+        var volunteerResult = Volunteer.Create(
             Guid.NewGuid(),
             fullName,
             email,
@@ -43,6 +43,15 @@ public class CreateVolunteerService(IVolunteerRepository repository)
             experience,
             phone
         );
+
+// Проверяем, не нарушил ли волонтёр бизнес-правила (например, пустое или слишком длинное описание)
+        if (volunteerResult.IsFailure)
+        {
+            return volunteerResult.Error; // Возвращаем ошибку, если что-то пошло не так
+        }
+
+// Достаем нашего готового, на 100% валидного волонтёра
+        var volunteer = volunteerResult.Value;
         
         // Добавляем социальные сети (с валидацией каждой)
         foreach (var sn in req.SocialNetworks)
