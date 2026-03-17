@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using CSharpFunctionalExtensions;
+using PetZone.Domain.Shared;
 
 namespace PetZone.Domain.Models;
 
@@ -7,16 +10,30 @@ public class SpeciesBreed : ValueObject
     public Guid SpeciesId { get; }
     public Guid BreedId { get; }
 
-    public SpeciesBreed(Guid speciesId, Guid breedId)
+    // 1. ПРИВАТНЫЙ КОНСТРУКТОР (Никаких throw!)
+    private SpeciesBreed(Guid speciesId, Guid breedId)
     {
-        if (speciesId == Guid.Empty) throw new ArgumentException("SpeciesId не может быть пустым.");
-        if (breedId == Guid.Empty) throw new ArgumentException("BreedId не может быть пустым.");
-
         SpeciesId = speciesId;
         BreedId = breedId;
     }
 
     private SpeciesBreed() { } // Для EF Core
+
+    // 2. ФАБРИЧНЫЙ МЕТОД С РУЧНОЙ ВАЛИДАЦИЕЙ
+    public static Result<SpeciesBreed, Error> Create(Guid speciesId, Guid breedId)
+    {
+        if (speciesId == Guid.Empty)
+        {
+            return Error.Validation("speciesbreed.species_is_empty", "Укажите вид животного (SpeciesId не может быть пустым).");
+        }
+
+        if (breedId == Guid.Empty)
+        {
+            return Error.Validation("speciesbreed.breed_is_empty", "Укажите породу животного (BreedId не может быть пустым).");
+        }
+
+        return new SpeciesBreed(speciesId, breedId);
+    }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {

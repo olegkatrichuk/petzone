@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using CSharpFunctionalExtensions;
-using PetZone.Domain.Shared;
+using PetZone.Domain.Shared; // Ваш класс Error
 
 namespace PetZone.Domain.Models;
 
 public class PhoneNumber : ValueObject
 {
-    // Сделали public, чтобы EF Core мог сохранять номер в базу
+    // 1. ПУБЛИЧНАЯ КОНСТАНТА ДЛЯ ВАЛИДАЦИИ (Требование задания!)
+    public const int MAX_LENGTH = 15;
+
     public string Value { get; }
 
-    // 1. Прячем конструктор и убираем throw
     private PhoneNumber(string value)
     {
         Value = value;
@@ -17,12 +18,19 @@ public class PhoneNumber : ValueObject
 
     private PhoneNumber() { } // Для EF Core
 
-    // 2. Добавляем нашу фабрику Create
+    // Ваш идеальный Result с кастомным Error
     public static Result<PhoneNumber, Error> Create(string input)
     {
+        // Ручная валидация №1
         if (string.IsNullOrWhiteSpace(input))
         {
             return Error.Validation("phone.is_empty", "Номер телефона не может быть пустым.");
+        }
+
+        // Ручная валидация №2 (ИСПОЛЬЗУЕМ КОНСТАНТУ!)
+        if (input.Length > MAX_LENGTH)
+        {
+            return Error.Validation("phone.too_long", $"Номер телефона не должен превышать {MAX_LENGTH} символов.");
         }
 
         return new PhoneNumber(input);
