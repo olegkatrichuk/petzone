@@ -71,7 +71,9 @@ namespace PetZone.Domain.Models
             CreatedAt = DateTime.UtcNow;
         }
 
-        private Pet() { } // Для EF Core
+        private Pet()
+        {
+        } // Для EF Core
 
         // --- 3. ФАБРИЧНЫЙ МЕТОД С РУЧНОЙ ВАЛИДАЦИЕЙ ---
         public static Result<Pet, Error> Create(
@@ -85,13 +87,15 @@ namespace PetZone.Domain.Models
             if (string.IsNullOrWhiteSpace(nickname))
                 return Error.Validation("pet.nickname_is_empty", "Кличка питомца не может быть пустой.");
             if (nickname.Length > MAX_NICKNAME_LENGTH)
-                return Error.Validation("pet.nickname_too_long", $"Кличка не должна превышать {MAX_NICKNAME_LENGTH} символов.");
+                return Error.Validation("pet.nickname_too_long",
+                    $"Кличка не должна превышать {MAX_NICKNAME_LENGTH} символов.");
 
             // Валидация описания
             if (string.IsNullOrWhiteSpace(generalDescription))
                 return Error.Validation("pet.description_is_empty", "Описание питомца обязательно.");
             if (generalDescription.Length > MAX_GENERAL_DESCRIPTION_LENGTH)
-                return Error.Validation("pet.description_too_long", $"Описание не должно превышать {MAX_GENERAL_DESCRIPTION_LENGTH} символов.");
+                return Error.Validation("pet.description_too_long",
+                    $"Описание не должно превышать {MAX_GENERAL_DESCRIPTION_LENGTH} символов.");
 
             // Валидация цвета
             if (string.IsNullOrWhiteSpace(color))
@@ -101,16 +105,19 @@ namespace PetZone.Domain.Models
 
             // Опциональные поля (чип и условия)
             if (!string.IsNullOrWhiteSpace(microchipNumber) && microchipNumber.Length > MAX_MICROCHIP_NUMBER_LENGTH)
-                return Error.Validation("pet.microchip_too_long", $"Номер микрочипа не должен превышать {MAX_MICROCHIP_NUMBER_LENGTH} символов.");
+                return Error.Validation("pet.microchip_too_long",
+                    $"Номер микрочипа не должен превышать {MAX_MICROCHIP_NUMBER_LENGTH} символов.");
 
-            if (!string.IsNullOrWhiteSpace(adoptionConditions) && adoptionConditions.Length > MAX_ADOPTION_CONDITIONS_LENGTH)
-                return Error.Validation("pet.conditions_too_long", $"Условия пристройства не должны превышать {MAX_ADOPTION_CONDITIONS_LENGTH} символов.");
+            if (!string.IsNullOrWhiteSpace(adoptionConditions) &&
+                adoptionConditions.Length > MAX_ADOPTION_CONDITIONS_LENGTH)
+                return Error.Validation("pet.conditions_too_long",
+                    $"Условия пристройства не должны превышать {MAX_ADOPTION_CONDITIONS_LENGTH} символов.");
 
             // Если всё отлично, собираем сущность
             return new Pet(
                 id, nickname.Trim(), generalDescription.Trim(), color.Trim(),
-                health, location, weight, height, ownerPhone, isCastrated, 
-                dateOfBirth, isVaccinated, status, 
+                health, location, weight, height, ownerPhone, isCastrated,
+                dateOfBirth, isVaccinated, status,
                 microchipNumber?.Trim(), volunteerId, adoptionConditions?.Trim(), speciesBreedInfo
             );
         }
@@ -140,7 +147,7 @@ namespace PetZone.Domain.Models
             {
                 return Error.Validation("pet.requisite_is_null", "Реквизит не может быть пустым.");
             }
-            
+
             if (!_requisites.Contains(requisite))
             {
                 _requisites.Add(requisite);
