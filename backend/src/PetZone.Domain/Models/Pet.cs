@@ -39,6 +39,9 @@ namespace PetZone.Domain.Models
         public string? AdoptionConditions { get; private set; }
         public string? MicrochipNumber { get; private set; }
         public Guid? VolunteerId { get; private set; }
+        public int Position { get; private set; }
+        
+        internal void SetPosition(int position) => Position = position;
 
         private readonly List<Requisite> _requisites = new();
         public IReadOnlyList<Requisite> Requisites => _requisites.AsReadOnly();

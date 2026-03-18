@@ -7,6 +7,9 @@
     <Project Path="src/PetZone.Contracts/PetZone.Contracts.csproj" />
     <Project Path="src/PetZone.Domain/PetZone.Domain.csproj" />
     <Project Path="src/PetZone.Infrastructure/PetZone.Infrastructure.csproj" />
-    <Project Path="src\PetZone.Application\PetZone.Application.csproj" />
+    <Project Path="src\PetZone.UseCases\PetZone.UseCases.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PetZone.Domain.Tests/PetZone.Domain.Tests.csproj" />
   </Folder>
 </Solution>
