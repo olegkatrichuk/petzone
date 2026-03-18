@@ -25,4 +25,15 @@ public static class CustomValidators
             }
         });
     }
+
+    /// <summary>
+    /// Привязывает доменную ошибку к правилу FluentValidation для не-VO свойств.
+    /// Устанавливает ErrorCode и Message в соответствии с нашим типом Error.
+    /// </summary>
+    public static IRuleBuilderOptions<T, TProperty> WithError<T, TProperty>(
+        this IRuleBuilderOptions<T, TProperty> rule,
+        Error error)
+    {
+        return rule.WithErrorCode(error.Code).WithMessage(error.Description);
+    }
 }
