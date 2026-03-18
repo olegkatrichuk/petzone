@@ -1,26 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
+using PetZone.API.Envelope;
 using PetZone.Domain.Shared;
 
 namespace PetZone.API.Extensions;
 
 public static class ErrorExtensions
 {
-    // Ключевое слово this перед Error говорит, что мы расширяем именно этот класс
     public static ActionResult ToResponse(this Error error)
     {
-        var statusCode = error.Type switch
-        {
-            ErrorType.Validation => StatusCodes.Status400BadRequest,
-            ErrorType.NotFound => StatusCodes.Status404NotFound,
-            ErrorType.Conflict => StatusCodes.Status409Conflict,
-            ErrorType.Failure => StatusCodes.Status500InternalServerError,
-            _ => StatusCodes.Status500InternalServerError
-        };
+        var statusCode = GetStatusCode(error.Type);
+        var envelope = Envelope.Envelope.Error([ErrorInfo.FromError(error)]);
 
-        // ObjectResult позволяет вернуть сам объект ошибки и задать любой HTTP статус
-        return new ObjectResult(error)
-        {
-            StatusCode = statusCode
-        };
+        return new ObjectResult(envelope) { StatusCode = statusCode };
     }
+
+    public static ActionResult ToResponse(this IReadOnlyList<Error> errors)
+    {
+        // Статус определяем по типу первой ошибки
+        var statusCode = GetStatusCode(errors[0].Type);
+        var errorInfos = errors.Select(ErrorInfo.FromError);
+        var envelope = Envelope.Envelope.Error(errorInfos);
+
+        return new ObjectResult(envelope) { StatusCode = statusCode };
+    }
+
+    public static OkObjectResult ToOkResponse(this ControllerBase _, object? result) =>
+        new(Envelope.Envelope.Ok(result));
+
+    private static int GetStatusCode(ErrorType type) => type switch
+    {
+        ErrorType.Validation => StatusCodes.Status400BadRequest,
+        ErrorType.NotFound   => StatusCodes.Status404NotFound,
+        ErrorType.Conflict   => StatusCodes.Status409Conflict,
+        ErrorType.Failure    => StatusCodes.Status500InternalServerError,
+        _                    => StatusCodes.Status500InternalServerError
+    };
 }

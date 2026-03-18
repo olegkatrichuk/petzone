@@ -1,6 +1,7 @@
 
 using FluentValidation;
 using PetZone.Domain.Models;
+using PetZone.Domain.Shared;
 using PetZone.UseCases;
 using PetZone.UseCases.Commands;
 
@@ -27,29 +28,46 @@ public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerCommand
         RuleFor(c => c.Request.ExperienceYears)
             .MustBeValueObject(Experience.Create);
 
+        // Не-VO свойство — используем WithError, чтобы вернуть доменную ошибку
         RuleFor(c => c.Request.GeneralDescription)
-            .NotEmpty().WithMessage("Описание обязательно.")
+            .NotEmpty()
+            .WithError(Error.Validation("volunteer.description_is_empty", "Описание обязательно."))
             .MaximumLength(Volunteer.MaxGeneralDescriptionLength)
-            .WithMessage($"Описание не должно превышать {Volunteer.MaxGeneralDescriptionLength} символов.");
+            .WithError(Error.Validation(
+                "volunteer.description_too_long",
+                $"Описание не должно превышать {Volunteer.MaxGeneralDescriptionLength} символов."));
 
-        // Коллекции
+        // Коллекции — не-VO свойства, используем WithError
         RuleForEach(c => c.Request.SocialNetworks)
             .ChildRules(sn =>
             {
                 sn.RuleFor(x => x.Name)
                     .NotEmpty()
-                    .MaximumLength(SocialNetwork.MAX_NAME_LENGTH);
-            
+                    .WithError(Error.Validation("social_network.name_is_empty", "Название соцсети обязательно."))
+                    .MaximumLength(SocialNetwork.MAX_NAME_LENGTH)
+                    .WithError(Error.Validation(
+                        "social_network.name_too_long",
+                        $"Название соцсети не должно превышать {SocialNetwork.MAX_NAME_LENGTH} символов."));
+
                 sn.RuleFor(x => x.Link)
                     .NotEmpty()
-                    .MaximumLength(SocialNetwork.MAX_LINK_LENGTH);
+                    .WithError(Error.Validation("social_network.link_is_empty", "Ссылка соцсети обязательна."))
+                    .MaximumLength(SocialNetwork.MAX_LINK_LENGTH)
+                    .WithError(Error.Validation(
+                        "social_network.link_too_long",
+                        $"Ссылка соцсети не должна превышать {SocialNetwork.MAX_LINK_LENGTH} символов."));
             });
 
         RuleForEach(c => c.Request.Requisites)
             .ChildRules(r =>
             {
-                r.RuleFor(x => x.Name).NotEmpty();
-                r.RuleFor(x => x.Description).NotEmpty();
+                r.RuleFor(x => x.Name)
+                    .NotEmpty()
+                    .WithError(Error.Validation("requisite.name_is_empty", "Название реквизита обязательно."));
+
+                r.RuleFor(x => x.Description)
+                    .NotEmpty()
+                    .WithError(Error.Validation("requisite.description_is_empty", "Описание реквизита обязательно."));
             });
     }
 }

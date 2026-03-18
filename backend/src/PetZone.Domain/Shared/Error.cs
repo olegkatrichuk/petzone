@@ -8,7 +8,7 @@ public enum ErrorType
     Conflict    // Конфликт данных (например, уже существует)
 }
 
-public record Error(string Code, string Description, ErrorType Type)
+public record Error(string Code, string Description, ErrorType Type, string? InvalidField = null)
 {
     // Пустышка
     private static readonly Error None = new(string.Empty, string.Empty, ErrorType.Failure);
@@ -20,8 +20,8 @@ public record Error(string Code, string Description, ErrorType Type)
     public static Error NotFound(string code, string description) =>
         new(code, description, ErrorType.NotFound);
 
-    public static Error Validation(string code, string description) =>
-        new(code, description, ErrorType.Validation);
+    public static Error Validation(string code, string description, string? invalidField = null) =>
+        new(code, description, ErrorType.Validation, invalidField);
 
     public static Error Conflict(string code, string description) =>
         new(code, description, ErrorType.Conflict);
