@@ -29,8 +29,8 @@ public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerCommand
 
         RuleFor(c => c.Request.GeneralDescription)
             .NotEmpty().WithMessage("Описание обязательно.")
-            .MaximumLength(Volunteer.MAX_GENERAL_DESCRIPTION_LENGTH)
-            .WithMessage($"Описание не должно превышать {Volunteer.MAX_GENERAL_DESCRIPTION_LENGTH} символов.");
+            .MaximumLength(Volunteer.MaxGeneralDescriptionLength)
+            .WithMessage($"Описание не должно превышать {Volunteer.MaxGeneralDescriptionLength} символов.");
 
         // Коллекции
         RuleForEach(c => c.Request.SocialNetworks)

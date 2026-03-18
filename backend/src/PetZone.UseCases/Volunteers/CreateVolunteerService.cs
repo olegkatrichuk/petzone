@@ -1,4 +1,4 @@
-// PetZone.Application/Volunteers/CreateVolunteerService.cs
+// PetZone.UseCases/Volunteers/CreateVolunteerService.cs
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using PetZone.Domain.Models;
