@@ -14,7 +14,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         // ИСПОЛЬЗУЕМ КОНСТАНТУ ИЗ СУЩНОСТИ VOLUNTEER
         builder.Property(v => v.GeneralDescription)
-               .HasMaxLength(Volunteer.MAX_GENERAL_DESCRIPTION_LENGTH)
+               .HasMaxLength(Volunteer.MaxGeneralDescriptionLength)
                .IsRequired(false);
 
         // --- ОДИНОЧНЫЕ VALUE OBJECTS ---
