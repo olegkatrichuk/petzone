@@ -10,24 +10,26 @@ namespace PetZone.UseCases.Volunteers;
 
 public class CreateVolunteerService(
     IVolunteerRepository repository,
-    IValidator<CreateVolunteerCommand> validator)  // ← инжектируем validator
+    IValidator<CreateVolunteerCommand> validator)
 {
-    public async Task<Result<Guid, Error>> Handle(
-        CreateVolunteerCommand command, 
+    public async Task<Result<Guid, IReadOnlyList<Error>>> Handle(
+        CreateVolunteerCommand command,
         CancellationToken cancellationToken = default)
     {
-        // 1. Валидация ПЕРЕД бизнес-логикой
+        // 1. Валидация ПЕРЕД бизнес-логикой — возвращаем ВСЕ ошибки
         var validationResult = await validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
         {
-            var first = validationResult.Errors.First();
-            return Error.Validation(first.ErrorCode, first.ErrorMessage);
+            var errors = validationResult.Errors
+                .Select(f => Error.Validation(f.ErrorCode, f.ErrorMessage, f.PropertyName))
+                .ToList();
+
+            return errors;
         }
 
         var req = command.Request;
 
-        // 2. Создаём Value Objects — здесь уже НЕТ проверок IsFailure,
-        //    потому что validator уже гарантировал валидность данных
+        // 2. Создаём Value Objects — validator уже гарантировал валидность данных
         var email = Email.Create(req.Email).Value;
         var fullName = FullName.Create(req.FirstName, req.LastName, req.Patronymic).Value;
         var experience = Experience.Create(req.ExperienceYears).Value;
@@ -39,7 +41,7 @@ public class CreateVolunteerService(
             req.GeneralDescription, experience, phone);
 
         if (volunteerResult.IsFailure)
-            return volunteerResult.Error;
+            return new[] { volunteerResult.Error };
 
         var volunteer = volunteerResult.Value;
 
