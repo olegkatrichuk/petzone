@@ -18,11 +18,10 @@ public class VolunteersController(CreateVolunteerService createVolunteerService)
         var command = new CreateVolunteerCommand(request);
 
         var result = await createVolunteerService.Handle(command, cancellationToken);
-        
+
         if (result.IsFailure)
             return result.Error.ToResponse();
-        
-        
-        return Ok(result.Value);
+
+        return this.ToOkResponse(result.Value);
     }
 }
