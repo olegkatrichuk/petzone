@@ -1,0 +1,44 @@
+using CSharpFunctionalExtensions;
+using Microsoft.Extensions.Logging;
+using PetZone.Domain.Models;
+using PetZone.Domain.Shared;
+using PetZone.UseCases.Commands;
+using PetZone.UseCases.Repositories;
+
+namespace PetZone.UseCases.Volunteers;
+
+public class UpdateVolunteerRequisitesService(
+    IVolunteerRepository repository,
+    ILogger<UpdateVolunteerRequisitesService> logger)
+{
+    public async Task<Result<Guid, Error>> Handle(
+        UpdateVolunteerRequisitesCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        logger.LogInformation("Updating requisites for volunteer {VolunteerId}", command.VolunteerId);
+
+        var volunteer = await repository.GetByIdAsync(command.VolunteerId, cancellationToken);
+        if (volunteer is null)
+        {
+            logger.LogWarning("Volunteer {VolunteerId} not found", command.VolunteerId);
+            return Error.NotFound("volunteer.not_found", "Волонтёр не найден.");
+        }
+
+        var requisites = new List<Requisite>();
+        foreach (var r in command.Request.Requisites)
+        {
+            var result = Requisite.Create(r.Name, r.Description);
+            if (result.IsFailure)
+                return result.Error;
+
+            requisites.Add(result.Value);
+        }
+
+        volunteer.UpdateRequisites(requisites);
+        await repository.SaveAsync(volunteer, cancellationToken);
+
+        logger.LogInformation("Volunteer {VolunteerId} requisites updated", volunteer.Id);
+
+        return volunteer.Id;
+    }
+}
