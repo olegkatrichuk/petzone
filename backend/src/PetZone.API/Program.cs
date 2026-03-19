@@ -1,30 +1,42 @@
-
+using PetZone.API.Middleware;
 using PetZone.Infrastructure;
 using PetZone.UseCases;
-using PetZone.UseCases.Volunteers;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Настраиваем генерацию Swagger документации
+// 1. Serilog
+builder.Host.UseSerilog((context, config) =>
+{
+    config
+        .ReadFrom.Configuration(context.Configuration)
+        .WriteTo.Console()
+        .WriteTo.Seq(
+            context.Configuration["Seq:ServerUrl"] ?? "http://localhost:5341",
+            apiKey: context.Configuration["Seq:ApiKey"]);
+});
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(); 
-
-// 2. Регистрируем Контроллеры (API слой)
+builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-
-// 3. Подключаем внешние слои (вся магия регистрации БД и репозиториев теперь скрыта тут)
 builder.Services.AddInfrastructure();
-
-// 4. Подключаем слой бизнес-логики
 builder.Services.AddApplication();
 
 var app = builder.Build();
 
-// 5. Включаем визуальный интерфейс Swagger
+// 2. Exception Middleware — первым в pipeline
+app.UseMiddleware<ExceptionMiddleware>();
+
+// 3. Логирование HTTP запросов
+app.UseSerilogRequestLogging();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(); 
+    
+    //применить миграции
+    
 }
 
 app.UseHttpsRedirection();

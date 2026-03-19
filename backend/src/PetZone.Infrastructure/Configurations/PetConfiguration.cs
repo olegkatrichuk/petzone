@@ -27,6 +27,8 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.Status).IsRequired();
         builder.Property(p => p.CreatedAt).IsRequired();
         builder.Property(p => p.VolunteerId).IsRequired(false);
+        builder.Property(p => p.IsDeleted).IsRequired();
+        builder.Property(p => p.DeletedAt).IsRequired(false);
 
         // --- ОДИНОЧНЫЕ VALUE OBJECTS ---
         
