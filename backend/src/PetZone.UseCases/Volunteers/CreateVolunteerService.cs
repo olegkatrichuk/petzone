@@ -1,6 +1,7 @@
 // PetZone.UseCases/Volunteers/CreateVolunteerService.cs
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.Logging;
 using PetZone.Domain.Models;
 using PetZone.Domain.Shared;
 using PetZone.UseCases.Commands;
@@ -10,50 +11,50 @@ namespace PetZone.UseCases.Volunteers;
 
 public class CreateVolunteerService(
     IVolunteerRepository repository,
-    IValidator<CreateVolunteerCommand> validator)
+    IValidator<CreateVolunteerCommand> validator,
+    ILogger<CreateVolunteerService> logger)
 {
-    public async Task<Result<Guid, IReadOnlyList<Error>>> Handle(
+    public async Task<Result<Guid, Error>> Handle(
         CreateVolunteerCommand command,
         CancellationToken cancellationToken = default)
     {
-        // 1. Валидация ПЕРЕД бизнес-логикой — возвращаем ВСЕ ошибки
+        logger.LogInformation("Handling CreateVolunteerCommand");
+
         var validationResult = await validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
         {
-            var errors = validationResult.Errors
-                .Select(f => Error.Validation(f.ErrorCode, f.ErrorMessage, f.PropertyName))
-                .ToList();
+            var first = validationResult.Errors.First();
+            logger.LogWarning("Validation failed: {ErrorCode} - {ErrorMessage}",
+                first.ErrorCode, first.ErrorMessage);
 
-            return errors;
+            return Error.Validation(first.ErrorCode, first.ErrorMessage);
         }
 
         var req = command.Request;
 
-        // 2. Создаём Value Objects — validator уже гарантировал валидность данных
         var email = Email.Create(req.Email).Value;
         var fullName = FullName.Create(req.FirstName, req.LastName, req.Patronymic).Value;
         var experience = Experience.Create(req.ExperienceYears).Value;
         var phone = PhoneNumber.Create(req.Phone).Value;
 
-        // 3. Создаём агрегат
         var volunteerResult = Volunteer.Create(
             Guid.NewGuid(), fullName, email,
             req.GeneralDescription, experience, phone);
 
         if (volunteerResult.IsFailure)
-            return new[] { volunteerResult.Error };
+            return volunteerResult.Error;
 
         var volunteer = volunteerResult.Value;
 
-        // 4. Добавляем коллекции
         foreach (var sn in req.SocialNetworks)
             volunteer.AddSocialNetwork(SocialNetwork.Create(sn.Name, sn.Link).Value);
 
         foreach (var r in req.Requisites)
             volunteer.AddRequisite(Requisite.Create(r.Name, r.Description).Value);
 
-        // 5. Сохраняем
         await repository.AddAsync(volunteer, cancellationToken);
+
+        logger.LogInformation("Volunteer saved to database. Id: {VolunteerId}", volunteer.Id);
 
         return volunteer.Id;
     }

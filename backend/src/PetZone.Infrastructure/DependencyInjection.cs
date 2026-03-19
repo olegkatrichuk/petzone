@@ -1,4 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
+using PetZone.Infrastructure.BackgroundServices;
+using PetZone.Infrastructure.Options;
 using PetZone.Infrastructure.Repositories;
 using PetZone.UseCases.Repositories;
 
@@ -14,6 +16,13 @@ public static class DependencyInjection
 
         // Регистрируем все репозитории
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
+        
+        // Конфигурация soft delete
+        services.AddOptions<SoftDeleteOptions>()
+            .BindConfiguration(SoftDeleteOptions.SectionName);
+
+        // Background service для очистки удалённых сущностей
+        services.AddHostedService<SoftDeleteCleanupService>();
 
         // Если в будущем появятся другие сервисы инфраструктуры 
         // (например, работа с S3 для картинок), мы добавим их сюда.

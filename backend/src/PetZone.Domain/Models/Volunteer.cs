@@ -6,7 +6,7 @@ using PetZone.Domain.Shared;
 
 namespace PetZone.Domain.Models
 {
-    public class Volunteer : Entity<Guid>
+    public class Volunteer : Entity<Guid> , ISoftDeletable
     {
         public const int MaxGeneralDescriptionLength = 2000;
 
@@ -24,6 +24,29 @@ namespace PetZone.Domain.Models
 
         private readonly List<Pet> _pets = new();
         public IReadOnlyList<Pet> Pets => _pets.AsReadOnly();
+        
+        public bool IsDeleted { get; private set; }
+        public DateTime? DeletedAt { get; private set; }
+
+        public void Delete()
+        {
+            IsDeleted = true;
+            DeletedAt = DateTime.UtcNow;
+
+            // Все питомцы тоже помечаются как удалённые
+            foreach (var pet in _pets)
+                pet.Delete();
+        }
+
+        public void Restore()
+        {
+            IsDeleted = false;
+            DeletedAt = null;
+
+            foreach (var pet in _pets)
+                pet.Restore();
+        }
+        
 
         private Volunteer(
             Guid id, FullName name, Email email, string generalDescription,
@@ -72,7 +95,37 @@ namespace PetZone.Domain.Models
 
             return this;
         }
+        public Result<Volunteer, Error> UpdateMainInfo(
+            FullName name, Email email, string generalDescription,
+            Experience experience, PhoneNumber phone)
+        {
+            if (string.IsNullOrWhiteSpace(generalDescription))
+                return Error.Validation("volunteer.description_is_empty", "Описание обязательно.");
 
+            if (generalDescription.Length > MaxGeneralDescriptionLength)  // ← было MAX_GENERAL_DESCRIPTION_LENGTH
+                return Error.Validation("volunteer.description_too_long",
+                    $"Описание не должно превышать {MaxGeneralDescriptionLength} символов.");
+
+            Name = name;
+            Email = email;
+            GeneralDescription = generalDescription.Trim();
+            Experience = experience;
+            Phone = phone;
+
+            return this;
+        }
+
+        public void UpdateSocialNetworks(IEnumerable<SocialNetwork> socialNetworks)
+        {
+            _socialNetworks.Clear();
+            _socialNetworks.AddRange(socialNetworks);
+        }
+
+        public void UpdateRequisites(IEnumerable<Requisite> requisites)
+        {
+            _requisites.Clear();
+            _requisites.AddRange(requisites);
+        }
         public Result<Volunteer, Error> RemovePet(Pet pet)
         {
             if (!_pets.Contains(pet))
@@ -148,5 +201,6 @@ namespace PetZone.Domain.Models
             for (int i = 0; i < sorted.Count; i++)
                 sorted[i].SetPosition(i + 1);
         }
+        
     }
 }
