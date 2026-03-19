@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PetZone.Infrastructure;
@@ -12,9 +13,11 @@ using PetZone.Infrastructure;
 namespace PetZone.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260318104722_AddEnvelope")]
+    partial class AddEnvelope
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,10 +52,6 @@ namespace PetZone.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("date_of_birth");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_at");
-
                     b.Property<string>("GeneralDescription")
                         .IsRequired()
                         .HasMaxLength(2000)
@@ -62,10 +61,6 @@ namespace PetZone.Infrastructure.Migrations
                     b.Property<bool>("IsCastrated")
                         .HasColumnType("boolean")
                         .HasColumnName("is_castrated");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_deleted");
 
                     b.Property<bool>("IsVaccinated")
                         .HasColumnType("boolean")
@@ -183,18 +178,10 @@ namespace PetZone.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_at");
-
                     b.Property<string>("GeneralDescription")
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)")
                         .HasColumnName("general_description");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_deleted");
 
                     b.ComplexProperty(typeof(Dictionary<string, object>), "Email", "PetZone.Domain.Models.Volunteer.Email#Email", b1 =>
                         {

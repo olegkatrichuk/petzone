@@ -12,7 +12,7 @@ namespace PetZone.Domain.Models
         FoundHome
     }
 
-    public class Pet : Entity<Guid>
+    public class Pet : Entity<Guid> , ISoftDeletable
     {
         // --- 1. ПУБЛИЧНЫЕ КОНСТАНТЫ ДЛЯ ВАЛИДАЦИИ ---
         public const int MAX_NICKNAME_LENGTH = 100;
@@ -40,6 +40,20 @@ namespace PetZone.Domain.Models
         public string? MicrochipNumber { get; private set; }
         public Guid? VolunteerId { get; private set; }
         public int Position { get; private set; }
+        public bool IsDeleted { get; private set; }
+        public DateTime? DeletedAt { get; private set; }
+
+        public void Delete()
+        {
+            IsDeleted = true;
+            DeletedAt = DateTime.UtcNow;
+        }
+
+        public void Restore()
+        {
+            IsDeleted = false;
+            DeletedAt = null;
+        }
         
         internal void SetPosition(int position) => Position = position;
 
