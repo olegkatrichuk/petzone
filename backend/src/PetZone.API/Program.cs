@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.Features;
 using PetZone.API.Middleware;
 using PetZone.Infrastructure;
 using PetZone.UseCases;
@@ -21,6 +22,16 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure();
 builder.Services.AddApplication();
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 100 * 1024 * 1024; // 100MB
+});
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 100 * 1024 * 1024; // 100MB
+});
 
 var app = builder.Build();
 

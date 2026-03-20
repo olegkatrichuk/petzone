@@ -6,6 +6,7 @@ namespace PetZone.UseCases.Volunteers;
 
 public class UpdateVolunteerMainInfoValidator : AbstractValidator<UpdateVolunteerMainInfoCommand>
 {
+    [Obsolete("Obsolete")]
     public UpdateVolunteerMainInfoValidator()
     {
         RuleFor(c => c.Request.FirstName)
