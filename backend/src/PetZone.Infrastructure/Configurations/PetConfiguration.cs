@@ -95,6 +95,17 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             r.Property(p => p.Name).HasMaxLength(Requisite.MAX_NAME_LENGTH).IsRequired();
             r.Property(p => p.Description).HasMaxLength(Requisite.MAX_DESCRIPTION_LENGTH).IsRequired();
         });
+        
+        builder.OwnsMany(p => p.Photos, ph =>
+        {
+            ph.ToJson();
+            ph.Property(p => p.FilePath)
+                .HasMaxLength(PetPhoto.MAX_PATH_LENGTH)
+                .IsRequired();
+            ph.Property(p => p.IsMain).IsRequired();
+        });
+
+        builder.Navigation(p => p.Photos).UsePropertyAccessMode(PropertyAccessMode.Field);
 
         // --- НАСТРОЙКА ДОСТУПА К ПРИВАТНЫМ КОЛЛЕКЦИЯМ ---
         

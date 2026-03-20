@@ -103,4 +103,36 @@ public class MinioProvider(
             logger.LogInformation("Bucket {BucketName} created", bucketName);
         }
     }
+    
+    public async Task<Result<IReadOnlyList<IFilesProvider.FileInfo>, Error>> ListFiles(
+        string bucketName,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            await EnsureBucketExists(bucketName, ct);
+
+            var files = new List<IFilesProvider.FileInfo>();
+
+            var listArgs = new ListObjectsArgs()
+                .WithBucket(bucketName)
+                .WithRecursive(true);
+
+            await foreach (var item in minioClient.ListObjectsEnumAsync(listArgs, ct))
+            {
+                files.Add(new IFilesProvider.FileInfo(
+                    item.Key,
+                    item.LastModifiedDateTime?.ToUniversalTime() ?? DateTime.UtcNow));
+            }
+
+            logger.LogInformation("Listed {Count} files in bucket {BucketName}", files.Count, bucketName);
+
+            return files.AsReadOnly();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to list files in bucket {BucketName}", bucketName);
+            return Error.Failure("minio.list_failed", "Не удалось получить список файлов.");
+        }
+    }
 }
