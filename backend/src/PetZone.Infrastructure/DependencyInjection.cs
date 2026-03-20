@@ -16,6 +16,8 @@ public static class DependencyInjection
     {
         services.AddScoped<ApplicationDbContext>();
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
+        services.AddScoped<ISpeciesRepository, SpeciesRepository>();
+        services.AddHostedService<MinioCleanupService>();
 
         // Soft delete options
         services.AddOptions<SoftDeleteOptions>()

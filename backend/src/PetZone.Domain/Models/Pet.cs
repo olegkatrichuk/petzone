@@ -35,6 +35,9 @@ namespace PetZone.Domain.Models
         public bool IsVaccinated { get; private set; }
         public HelpStatus Status { get; private set; }
         public DateTime CreatedAt { get; private set; }
+        
+        private readonly List<PetPhoto> _photos = new();
+        public IReadOnlyList<PetPhoto> Photos => _photos.AsReadOnly();
 
         public string? AdoptionConditions { get; private set; }
         public string? MicrochipNumber { get; private set; }
@@ -53,6 +56,30 @@ namespace PetZone.Domain.Models
         {
             IsDeleted = false;
             DeletedAt = null;
+        }
+        public Result<Pet, Error> AddPhoto(PetPhoto photo)
+        {
+            if (_photos.Any(p => p.FilePath == photo.FilePath))
+                return Error.Validation("pet.photo_already_exists", "Фото уже добавлено.");
+
+            _photos.Add(photo);
+            return this;
+        }
+
+        public Result<Pet, Error> RemovePhoto(PetPhoto photo)
+        {
+            var existing = _photos.FirstOrDefault(p => p.FilePath == photo.FilePath);
+            if (existing == null)
+                return Error.Validation("pet.photo_not_found", "Фото не найдено.");
+
+            _photos.Remove(existing);
+            return this;
+        }
+
+        public void UpdatePhotos(IEnumerable<PetPhoto> photos)
+        {
+            _photos.Clear();
+            _photos.AddRange(photos);
         }
         
         internal void SetPosition(int position) => Position = position;

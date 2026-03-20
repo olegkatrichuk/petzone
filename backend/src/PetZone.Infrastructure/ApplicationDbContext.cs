@@ -19,13 +19,8 @@ public class ApplicationDbContext(IConfiguration configuration) : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseNpgsql(configuration.GetConnectionString(ConnectionStringName));
-        optionsBuilder.UseLoggerFactory(CreateLoggerFactory());
     }
     
-    private ILoggerFactory CreateLoggerFactory() => LoggerFactory.Create(builder =>
-    {
-        builder.AddConsole();
-    });
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
