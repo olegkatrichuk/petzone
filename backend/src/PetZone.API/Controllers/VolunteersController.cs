@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PetZone.API.Extensions;
+using PetZone.API.Extensions.Requests;
 using PetZone.Contracts.Volunteers;
-using PetZone.UseCases.Commands;
 using PetZone.UseCases.Volunteers;
 
 namespace PetZone.API.Controllers;
@@ -23,8 +23,7 @@ public class VolunteersController(
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Creating volunteer. Email: {Email}", request.Email);
-        var command = new CreateVolunteerCommand(request);
-        var result = await createVolunteerService.Handle(command, cancellationToken);
+        var result = await createVolunteerService.Handle(request.ToCommand(), cancellationToken);
         if (result.IsFailure)
         {
             logger.LogWarning("Failed to create volunteer. Error: {ErrorCode}", result.Error.Code);
@@ -41,8 +40,7 @@ public class VolunteersController(
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Updating main info for volunteer {VolunteerId}", id);
-        var command = new UpdateVolunteerMainInfoCommand(id, request);
-        var result = await updateMainInfoService.Handle(command, cancellationToken);
+        var result = await updateMainInfoService.Handle(request.ToCommand(id), cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         return this.ToOkResponse(result.Value);
@@ -55,8 +53,7 @@ public class VolunteersController(
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Updating social networks for volunteer {VolunteerId}", id);
-        var command = new UpdateVolunteerSocialNetworksCommand(id, request);
-        var result = await updateSocialNetworksService.Handle(command, cancellationToken);
+        var result = await updateSocialNetworksService.Handle(request.ToCommand(id), cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         return this.ToOkResponse(result.Value);
@@ -69,20 +66,19 @@ public class VolunteersController(
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Updating requisites for volunteer {VolunteerId}", id);
-        var command = new UpdateVolunteerRequisitesCommand(id, request);
-        var result = await updateRequisitesService.Handle(command, cancellationToken);
+        var result = await updateRequisitesService.Handle(request.ToCommand(id), cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         return this.ToOkResponse(result.Value);
     }
+
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult> Delete(
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Soft deleting volunteer {VolunteerId}", id);
-        var command = new DeleteVolunteerCommand(id);
-        var result = await deleteVolunteerService.Handle(command, cancellationToken);
+        var result = await deleteVolunteerService.Handle(id.ToCommand(), cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         return this.ToOkResponse(result.Value);
@@ -94,8 +90,7 @@ public class VolunteersController(
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Hard deleting volunteer {VolunteerId}", id);
-        var command = new HardDeleteVolunteerCommand(id);
-        var result = await hardDeleteVolunteerService.Handle(command, cancellationToken);
+        var result = await hardDeleteVolunteerService.Handle(id.ToHardDeleteCommand(), cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         return this.ToOkResponse(result.Value);

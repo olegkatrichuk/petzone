@@ -331,6 +331,33 @@ namespace PetZone.Infrastructure.Migrations
                                 .HasForeignKey("PetId");
                         });
 
+                    b.OwnsMany("PetZone.Domain.Models.PetPhoto", "Photos", b1 =>
+                        {
+                            b1.Property<Guid>("PetId");
+
+                            b1.Property<int>("__synthesizedOrdinal")
+                                .ValueGeneratedOnAdd();
+
+                            b1.Property<string>("FilePath")
+                                .IsRequired()
+                                .HasMaxLength(500);
+
+                            b1.Property<bool>("IsMain");
+
+                            b1.HasKey("PetId", "__synthesizedOrdinal");
+
+                            b1.ToTable("pets");
+
+                            b1
+                                .ToJson("Photos")
+                                .HasColumnType("jsonb");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PetId");
+                        });
+
+                    b.Navigation("Photos");
+
                     b.Navigation("Requisites");
                 });
 
