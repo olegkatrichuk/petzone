@@ -14,6 +14,10 @@ public static class DependencyInjection
         services.AddScoped<UpdateVolunteerRequisitesService>();
         services.AddScoped<DeleteVolunteerService>();
         services.AddScoped<HardDeleteVolunteerService>();
+        services.AddScoped<CreatePetService>();
+        services.AddScoped<UploadPetPhotosService>();
+        services.AddScoped<DeletePetPhotosService>();
+        services.AddScoped<MovePetService>();
         
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 

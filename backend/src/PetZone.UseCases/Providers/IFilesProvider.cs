@@ -23,4 +23,10 @@ public interface IFilesProvider
         string bucketName,
         string fileName,
         CancellationToken ct = default);
+    
+    Task<Result<IReadOnlyList<FileInfo>, Error>> ListFiles(
+        string bucketName,
+        CancellationToken ct = default);
+
+    public record FileInfo(string FileName, DateTime LastModified);
 }
