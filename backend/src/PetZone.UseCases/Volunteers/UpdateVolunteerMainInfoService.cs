@@ -13,7 +13,7 @@ public class UpdateVolunteerMainInfoService(
     IValidator<UpdateVolunteerMainInfoCommand> validator,
     ILogger<UpdateVolunteerMainInfoService> logger)
 {
-    public async Task<Result<Guid, Error>> Handle(
+    public async Task<Result<Guid, ErrorList>> Handle(
         UpdateVolunteerMainInfoCommand command,
         CancellationToken cancellationToken = default)
     {
@@ -22,15 +22,19 @@ public class UpdateVolunteerMainInfoService(
         var validationResult = await validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
         {
-            var first = validationResult.Errors.First();
-            return Error.Validation(first.ErrorCode, first.ErrorMessage);
+            var errors = validationResult.Errors
+                .Select(e => Error.Validation(e.ErrorCode, e.ErrorMessage))
+                .ToList();
+
+            logger.LogWarning("Validation failed with {Count} errors", errors.Count);
+            return new ErrorList(errors);
         }
 
         var volunteer = await repository.GetByIdAsync(command.VolunteerId, cancellationToken);
         if (volunteer is null)
         {
             logger.LogWarning("Volunteer {VolunteerId} not found", command.VolunteerId);
-            return Error.NotFound("volunteer.not_found", "Волонтёр не найден.");
+            return (ErrorList)Error.NotFound("volunteer.not_found", "Волонтёр не найден.");
         }
 
         var req = command.Request;
@@ -41,7 +45,7 @@ public class UpdateVolunteerMainInfoService(
 
         var result = volunteer.UpdateMainInfo(fullName, email, req.GeneralDescription, experience, phone);
         if (result.IsFailure)
-            return result.Error;
+            return (ErrorList)result.Error;
 
         await repository.SaveAsync(volunteer, cancellationToken);
 
