@@ -13,11 +13,10 @@ public class UploadPetPhotosService(
     IFilesProvider filesProvider,
     ILogger<UploadPetPhotosService> logger)
 {
-    // Семафор — не более 3 одновременных загрузок
     private readonly SemaphoreSlim _semaphore = new(3);
     private const string BucketName = "petzone";
 
-    public async Task<Result<IReadOnlyList<string>, Error>> Handle(
+    public async Task<Result<IReadOnlyList<string>, ErrorList>> Handle(
         UploadPetPhotosCommand command,
         CancellationToken cancellationToken = default)
     {
@@ -25,13 +24,12 @@ public class UploadPetPhotosService(
 
         var volunteer = await volunteerRepository.GetByIdAsync(command.VolunteerId, cancellationToken);
         if (volunteer is null)
-            return Error.NotFound("volunteer.not_found", "Волонтёр не найден.");
+            return (ErrorList)Error.NotFound("volunteer.not_found", "Волонтёр не найден.");
 
         var pet = volunteer.Pets.FirstOrDefault(p => p.Id == command.PetId);
         if (pet is null)
-            return Error.NotFound("pet.not_found", "Питомец не найден.");
+            return (ErrorList)Error.NotFound("pet.not_found", "Питомец не найден.");
 
-        // Параллельная загрузка с семафором
         var uploadTasks = command.Photos.Select(async photo =>
         {
             await _semaphore.WaitAsync(cancellationToken);
@@ -51,19 +49,17 @@ public class UploadPetPhotosService(
 
         var results = await Task.WhenAll(uploadTasks);
 
-        // Проверяем что все загрузки успешны
         var failedResult = results.FirstOrDefault(r => r.IsFailure);
         if (failedResult.IsFailure)
-            return failedResult.Error;
+            return (ErrorList)failedResult.Error;
 
-        // Добавляем фотографии к питомцу
         var uploadedPaths = results.Select(r => r.Value).ToList();
 
         foreach (var path in uploadedPaths)
         {
             var photoResult = PetPhoto.Create(path);
             if (photoResult.IsFailure)
-                return photoResult.Error;
+                return (ErrorList)photoResult.Error;
 
             pet.AddPhoto(photoResult.Value);
         }

@@ -10,7 +10,7 @@ public class HardDeleteVolunteerService(
     IVolunteerRepository repository,
     ILogger<HardDeleteVolunteerService> logger)
 {
-    public async Task<Result<Guid, Error>> Handle(
+    public async Task<Result<Guid, ErrorList>> Handle(
         HardDeleteVolunteerCommand command,
         CancellationToken cancellationToken = default)
     {
@@ -20,7 +20,7 @@ public class HardDeleteVolunteerService(
         if (volunteer is null)
         {
             logger.LogWarning("Volunteer {VolunteerId} not found", command.VolunteerId);
-            return Error.NotFound("volunteer.not_found", "Волонтёр не найден.");
+            return (ErrorList)Error.NotFound("volunteer.not_found", "Волонтёр не найден.");
         }
 
         await repository.HardDeleteAsync(volunteer, cancellationToken);

@@ -10,7 +10,7 @@ public class DeleteVolunteerService(
     IVolunteerRepository repository,
     ILogger<DeleteVolunteerService> logger)
 {
-    public async Task<Result<Guid, Error>> Handle(
+    public async Task<Result<Guid, ErrorList>> Handle(
         DeleteVolunteerCommand command,
         CancellationToken cancellationToken = default)
     {
@@ -20,12 +20,10 @@ public class DeleteVolunteerService(
         if (volunteer is null)
         {
             logger.LogWarning("Volunteer {VolunteerId} not found", command.VolunteerId);
-            return Error.NotFound("volunteer.not_found", "Волонтёр не найден.");
+            return (ErrorList)Error.NotFound("volunteer.not_found", "Волонтёр не найден.");
         }
 
-        // Доменный метод помечает волонтёра и всех его питомцев как удалённых
         volunteer.Delete();
-
         await repository.SoftDeleteAsync(volunteer, cancellationToken);
 
         logger.LogInformation("Volunteer {VolunteerId} soft deleted successfully", volunteer.Id);
