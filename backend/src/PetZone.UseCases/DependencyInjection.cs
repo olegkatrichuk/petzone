@@ -18,6 +18,11 @@ public static class DependencyInjection
         services.AddScoped<UploadPetPhotosService>();
         services.AddScoped<DeletePetPhotosService>();
         services.AddScoped<MovePetService>();
+        services.AddScoped<UpdatePetService>();
+        services.AddScoped<UpdatePetStatusService>();
+        services.AddScoped<DeletePetService>();
+        services.AddScoped<HardDeletePetService>();
+        services.AddScoped<SetMainPhotoService>();
         
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 

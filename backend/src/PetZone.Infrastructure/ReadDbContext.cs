@@ -1,40 +1,42 @@
-﻿using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
-using PetZone.Domain.Models;
 using Microsoft.Extensions.Configuration;
-using PetZone.Domain.Species;
+using PetZone.Domain.Models;
+using System.Text.RegularExpressions;
 
 namespace PetZone.Infrastructure;
 
-public class ApplicationDbContext : DbContext
+public class ReadDbContext : DbContext
 {
     private readonly IConfiguration? _configuration;
     private const string ConnectionStringName = "Database";
 
     // Конструктор для production
-    public ApplicationDbContext(IConfiguration configuration)
+    public ReadDbContext(IConfiguration configuration)
     {
         _configuration = configuration;
     }
 
     // Конструктор для тестов
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    public ReadDbContext(DbContextOptions<ReadDbContext> options) : base(options)
     {
     }
 
     public DbSet<Volunteer> Volunteers { get; set; }
-    public DbSet<Species> Species { get; set; }
+    public DbSet<PetZone.Domain.Species.Species> Species { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured && _configuration != null)
-            optionsBuilder.UseNpgsql(_configuration.GetConnectionString(ConnectionStringName));
+        {
+            optionsBuilder
+                .UseNpgsql(_configuration.GetConnectionString(ConnectionStringName))
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
         foreach (var entity in modelBuilder.Model.GetEntityTypes())
