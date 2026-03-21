@@ -24,9 +24,22 @@ public class VolunteerRepository(ApplicationDbContext dbContext) : IVolunteerRep
     {
         foreach (var pet in volunteer.Pets)
         {
-            if (dbContext.Entry(pet).State == EntityState.Detached)
-                dbContext.Entry(pet).State = EntityState.Added;
+            var entry = dbContext.Entry(pet);
+        
+            if (entry.State == EntityState.Detached)
+                entry.State = EntityState.Added;
+            else if (entry.State == EntityState.Modified)
+            {
+                // Проверяем есть ли питомец в БД
+                var exists = await dbContext.Set<Pet>()
+                    .AsNoTracking()
+                    .AnyAsync(p => p.Id == pet.Id, cancellationToken);
+            
+                if (!exists)
+                    entry.State = EntityState.Added;
+            }
         }
+
         await dbContext.SaveChangesAsync(cancellationToken);
         return volunteer.Id;
     }

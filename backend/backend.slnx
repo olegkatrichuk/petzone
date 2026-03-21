@@ -11,5 +11,6 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/PetZone.Domain.Tests/PetZone.Domain.Tests.csproj" />
+    <Project Path="tests/PetZone.IntegrationTests/PetZone.IntegrationTests.csproj" />
   </Folder>
 </Solution>

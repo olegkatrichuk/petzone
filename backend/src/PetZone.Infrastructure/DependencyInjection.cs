@@ -4,9 +4,11 @@ using Minio;
 using PetZone.Infrastructure.BackgroundServices;
 using PetZone.Infrastructure.Options;
 using PetZone.Infrastructure.Providers;
+using PetZone.Infrastructure.Queries;
 using PetZone.Infrastructure.Repositories;
 using PetZone.UseCases.Providers;
 using PetZone.UseCases.Repositories;
+using PetZone.UseCases.Volunteers;
 
 namespace PetZone.Infrastructure;
 
@@ -42,9 +44,19 @@ public static class DependencyInjection
 
         // Files provider
         services.AddScoped<IFilesProvider, MinioProvider>();
+        
+        services.AddScoped<GetVolunteersHandler>();
+        services.AddScoped<GetVolunteerByIdHandler>();
+        services.AddScoped<GetAllSpeciesHandler>();
+        services.AddScoped<GetBreedsBySpeciesIdHandler>();
+        services.AddScoped<DeleteSpeciesService>();
+        services.AddScoped<DeleteBreedService>();
+        services.AddScoped<GetPetsHandler>();
+        services.AddScoped<GetPetByIdHandler>();
 
         // Background service
         services.AddHostedService<SoftDeleteCleanupService>();
+        services.AddScoped<ReadDbContext>();
 
         return services;
     }
