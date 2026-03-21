@@ -10,18 +10,21 @@ public static class ErrorExtensions
     {
         var statusCode = GetStatusCode(error.Type);
         var envelope = Envelope.Envelope.Error([ErrorInfo.FromError(error)]);
-
         return new ObjectResult(envelope) { StatusCode = statusCode };
     }
 
     public static ActionResult ToResponse(this IReadOnlyList<Error> errors)
     {
-        // Статус определяем по типу первой ошибки
         var statusCode = GetStatusCode(errors[0].Type);
         var errorInfos = errors.Select(ErrorInfo.FromError);
         var envelope = Envelope.Envelope.Error(errorInfos);
-
         return new ObjectResult(envelope) { StatusCode = statusCode };
+    }
+
+    // NEW
+    public static ActionResult ToResponse(this ErrorList errorList)
+    {
+        return errorList.Errors.ToResponse();
     }
 
     public static OkObjectResult ToOkResponse(this ControllerBase _, object? result) =>

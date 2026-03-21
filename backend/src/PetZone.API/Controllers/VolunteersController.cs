@@ -26,7 +26,7 @@ public class VolunteersController(
         var result = await createVolunteerService.Handle(request.ToCommand(), cancellationToken);
         if (result.IsFailure)
         {
-            logger.LogWarning("Failed to create volunteer. Error: {ErrorCode}", result.Error.Code);
+            logger.LogWarning("Failed to create volunteer with {Count} errors", result.Error.Errors.Count);
             return result.Error.ToResponse();
         }
         logger.LogInformation("Volunteer created successfully. Id: {VolunteerId}", result.Value);

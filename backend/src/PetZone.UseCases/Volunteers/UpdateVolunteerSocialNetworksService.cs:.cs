@@ -11,7 +11,7 @@ public class UpdateVolunteerSocialNetworksService(
     IVolunteerRepository repository,
     ILogger<UpdateVolunteerSocialNetworksService> logger)
 {
-    public async Task<Result<Guid, Error>> Handle(
+    public async Task<Result<Guid, ErrorList>> Handle(
         UpdateVolunteerSocialNetworksCommand command,
         CancellationToken cancellationToken = default)
     {
@@ -21,7 +21,7 @@ public class UpdateVolunteerSocialNetworksService(
         if (volunteer is null)
         {
             logger.LogWarning("Volunteer {VolunteerId} not found", command.VolunteerId);
-            return Error.NotFound("volunteer.not_found", "Волонтёр не найден.");
+            return (ErrorList)Error.NotFound("volunteer.not_found", "Волонтёр не найден.");
         }
 
         var socialNetworks = new List<SocialNetwork>();
@@ -29,7 +29,7 @@ public class UpdateVolunteerSocialNetworksService(
         {
             var result = SocialNetwork.Create(sn.Name, sn.Link);
             if (result.IsFailure)
-                return result.Error;
+                return (ErrorList)result.Error;
 
             socialNetworks.Add(result.Value);
         }
