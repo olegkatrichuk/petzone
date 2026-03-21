@@ -12,4 +12,16 @@ public static class PetRequestExtensions
     public static MovePetCommand ToCommand(
         this MovePetRequest request, Guid volunteerId, Guid petId)
         => new(volunteerId, petId, request);
+    
+    public static UpdatePetCommand ToCommand(
+        this UpdatePetRequest request, Guid volunteerId, Guid petId)
+        => new(volunteerId, petId, request);
+
+    public static UpdatePetStatusCommand ToCommand(
+        this UpdatePetStatusRequest request, Guid volunteerId, Guid petId)
+        => new(volunteerId, petId, request);
+
+    public static SetMainPhotoCommand ToCommand(
+        this SetMainPhotoRequest request, Guid volunteerId, Guid petId)
+        => new(volunteerId, petId, request);
 }
