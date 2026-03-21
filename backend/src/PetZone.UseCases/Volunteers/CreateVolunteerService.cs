@@ -1,4 +1,3 @@
-// PetZone.UseCases/Volunteers/CreateVolunteerService.cs
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
@@ -14,7 +13,7 @@ public class CreateVolunteerService(
     IValidator<CreateVolunteerCommand> validator,
     ILogger<CreateVolunteerService> logger)
 {
-    public async Task<Result<Guid, Error>> Handle(
+    public async Task<Result<Guid, ErrorList>> Handle(
         CreateVolunteerCommand command,
         CancellationToken cancellationToken = default)
     {
@@ -23,11 +22,12 @@ public class CreateVolunteerService(
         var validationResult = await validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
         {
-            var first = validationResult.Errors.First();
-            logger.LogWarning("Validation failed: {ErrorCode} - {ErrorMessage}",
-                first.ErrorCode, first.ErrorMessage);
+            var errors = validationResult.Errors
+                .Select(e => Error.Validation(e.ErrorCode, e.ErrorMessage))
+                .ToList();
 
-            return Error.Validation(first.ErrorCode, first.ErrorMessage);
+            logger.LogWarning("Validation failed with {Count} errors", errors.Count);
+            return new ErrorList(errors);
         }
 
         var req = command.Request;
@@ -42,7 +42,7 @@ public class CreateVolunteerService(
             req.GeneralDescription, experience, phone);
 
         if (volunteerResult.IsFailure)
-            return volunteerResult.Error;
+            return (ErrorList)volunteerResult.Error;
 
         var volunteer = volunteerResult.Value;
 

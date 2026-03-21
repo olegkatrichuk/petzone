@@ -11,7 +11,7 @@ public class UpdateVolunteerRequisitesService(
     IVolunteerRepository repository,
     ILogger<UpdateVolunteerRequisitesService> logger)
 {
-    public async Task<Result<Guid, Error>> Handle(
+    public async Task<Result<Guid, ErrorList>> Handle(
         UpdateVolunteerRequisitesCommand command,
         CancellationToken cancellationToken = default)
     {
@@ -21,7 +21,7 @@ public class UpdateVolunteerRequisitesService(
         if (volunteer is null)
         {
             logger.LogWarning("Volunteer {VolunteerId} not found", command.VolunteerId);
-            return Error.NotFound("volunteer.not_found", "Волонтёр не найден.");
+            return (ErrorList)Error.NotFound("volunteer.not_found", "Волонтёр не найден.");
         }
 
         var requisites = new List<Requisite>();
@@ -29,7 +29,7 @@ public class UpdateVolunteerRequisitesService(
         {
             var result = Requisite.Create(r.Name, r.Description);
             if (result.IsFailure)
-                return result.Error;
+                return (ErrorList)result.Error;
 
             requisites.Add(result.Value);
         }
