@@ -6,6 +6,7 @@ using PetZone.UseCases.Commands;
 using PetZone.UseCases.Volunteers;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Webp;
+using PetPhotoDto = PetZone.UseCases.Commands.PetPhotoDto;
 
 namespace PetZone.API.Controllers;
 
@@ -13,6 +14,11 @@ namespace PetZone.API.Controllers;
 [Route("volunteers/{volunteerId:guid}/pets")]
 public class PetsController(
     CreatePetService createPetService,
+    UpdatePetService updatePetService,
+    UpdatePetStatusService updatePetStatusService,
+    DeletePetService deletePetService,
+    HardDeletePetService hardDeletePetService,
+    SetMainPhotoService setMainPhotoService,
     UploadPetPhotosService uploadPetPhotosService,
     DeletePetPhotosService deletePetPhotosService,
     MovePetService movePetService,
@@ -49,7 +55,8 @@ public class PetsController(
             var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
 
             if (!AllowedExtensions.Contains(extension))
-                return BadRequest($"Недопустимый тип файла: {extension}. Разрешены: {string.Join(", ", AllowedExtensions)}");
+                return BadRequest(
+                    $"Недопустимый тип файла: {extension}. Разрешены: {string.Join(", ", AllowedExtensions)}");
 
             if (file.Length > MaxFileSize)
                 return BadRequest($"Файл {file.FileName} превышает максимальный размер 5MB.");
@@ -114,5 +121,73 @@ public class PetsController(
         outputStream.Position = 0;
 
         return outputStream;
+    }
+
+    [HttpPut("{petId:guid}")]
+    public async Task<ActionResult> Update(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromBody] UpdatePetRequest request,
+        CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Updating pet {PetId}", petId);
+        var result = await updatePetService.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+        return this.ToOkResponse(result.Value);
+    }
+
+    [HttpPut("{petId:guid}/status")]
+    public async Task<ActionResult> UpdateStatus(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromBody] UpdatePetStatusRequest request,
+        CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Updating status for pet {PetId}", petId);
+        var result = await updatePetStatusService.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+        return this.ToOkResponse(result.Value);
+    }
+
+    [HttpDelete("{petId:guid}")]
+    public async Task<ActionResult> Delete(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Soft deleting pet {PetId}", petId);
+        var result = await deletePetService.Handle(new DeletePetCommand(volunteerId, petId), cancellationToken);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+        return this.ToOkResponse(result.Value);
+    }
+
+    [HttpDelete("{petId:guid}/hard")]
+    public async Task<ActionResult> HardDelete(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Hard deleting pet {PetId}", petId);
+        var result = await hardDeletePetService.Handle(new HardDeletePetCommand(volunteerId, petId), cancellationToken);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+        return this.ToOkResponse(result.Value);
+    }
+
+    [HttpPut("{petId:guid}/main-photo")]
+    public async Task<ActionResult> SetMainPhoto(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromBody] SetMainPhotoRequest request,
+        CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Setting main photo for pet {PetId}", petId);
+        var result = await setMainPhotoService.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+        return this.ToOkResponse(result.Value);
     }
 }

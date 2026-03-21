@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using PetZone.API.Extensions;
 using PetZone.API.Extensions.Requests;
 using PetZone.Contracts.Volunteers;
+using PetZone.UseCases.Queries;
 using PetZone.UseCases.Volunteers;
 
 namespace PetZone.API.Controllers;
@@ -15,6 +16,8 @@ public class VolunteersController(
     UpdateVolunteerRequisitesService updateRequisitesService,
     DeleteVolunteerService deleteVolunteerService,
     HardDeleteVolunteerService hardDeleteVolunteerService,
+    GetVolunteersHandler getVolunteersHandler,
+    GetVolunteerByIdHandler getVolunteerByIdHandler,
     ILogger<VolunteersController> logger) : ControllerBase
 {
     [HttpPost]
@@ -93,6 +96,38 @@ public class VolunteersController(
         var result = await hardDeleteVolunteerService.Handle(id.ToHardDeleteCommand(), cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
+        return this.ToOkResponse(result.Value);
+    }
+    [HttpGet]
+    public async Task<ActionResult> GetAll(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        CancellationToken cancellationToken = default)
+    {
+        logger.LogInformation("Getting volunteers. Page: {Page}, PageSize: {PageSize}", page, pageSize);
+
+        var query = new GetVolunteersQuery(page, pageSize);
+        var result = await getVolunteersHandler.Handle(query, cancellationToken);
+
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+
+        return this.ToOkResponse(result.Value);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult> GetById(
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        logger.LogInformation("Getting volunteer by id {VolunteerId}", id);
+
+        var query = new GetVolunteerByIdQuery(id);
+        var result = await getVolunteerByIdHandler.Handle(query, cancellationToken);
+
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+
         return this.ToOkResponse(result.Value);
     }
 }
