@@ -1,18 +1,20 @@
-using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
-using PetZone.Infrastructure;
+using PetZone.Species.Infrastructure;
+using PetZone.Volunteers.Infrastructure;
 
 namespace PetZone.IntegrationTests;
 
 public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebFactory>, IAsyncLifetime
 {
     protected readonly HttpClient Client;
-    protected readonly ApplicationDbContext DbContext;
+    protected readonly VolunteersDbContext DbContext;
+    protected readonly SpeciesDbContext SpeciesContext;
 
     protected BaseIntegrationTest(IntegrationTestWebFactory factory)
     {
         var scope = factory.Services.CreateScope();
-        DbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        DbContext = scope.ServiceProvider.GetRequiredService<VolunteersDbContext>();
+        SpeciesContext = scope.ServiceProvider.GetRequiredService<SpeciesDbContext>();
         Client = factory.CreateClient();
     }
 
@@ -20,9 +22,10 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebFact
 
     public async Task DisposeAsync()
     {
-        // Очищаем БД после каждого теста
         DbContext.Volunteers.RemoveRange(DbContext.Volunteers);
-        DbContext.Species.RemoveRange(DbContext.Species);
         await DbContext.SaveChangesAsync();
+
+        SpeciesContext.Species.RemoveRange(SpeciesContext.Species);
+        await SpeciesContext.SaveChangesAsync();
     }
 }

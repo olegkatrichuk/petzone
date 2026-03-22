@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\PetZone.Species.Domain\PetZone.Species.Domain.csproj" />
+    <ProjectReference Include="..\..\Shared\PetZone.Core\PetZone.Core.csproj" />
+    <ProjectReference Include="..\PetZone.Species.Contracts\PetZone.Species.Contracts.csproj" />
+    <ProjectReference Include="..\..\Shared\PetZone.SharedKernel\PetZone.SharedKernel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CSharpFunctionalExtensions" Version="3.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.5" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

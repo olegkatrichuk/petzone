@@ -8,8 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PetZone.UseCases\PetZone.UseCases.csproj" />
-      <ProjectReference Include="..\PetZone.Domain\PetZone.Domain.csproj" />
+        <Compile Remove="Migrations\**\*.cs" />
     </ItemGroup>
 
     <ItemGroup>
@@ -19,6 +18,12 @@
       <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.5" />
       <PackageReference Include="Minio" Version="7.0.0" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Volunteers\PetZone.Volunteers.Domain\PetZone.Volunteers.Domain.csproj" />
+      <ProjectReference Include="..\Species\PetZone.Species.Domain\PetZone.Species.Domain.csproj" />
+      <ProjectReference Include="..\Shared\PetZone.SharedKernel\PetZone.SharedKernel.csproj" />
     </ItemGroup>
 
 </Project>

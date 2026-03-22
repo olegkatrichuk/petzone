@@ -1,5 +1,5 @@
-using PetZone.Contracts.Volunteers;
-using PetZone.UseCases.Commands;
+using PetZone.Volunteers.Contracts;
+using PetZone.Volunteers.Application.Commands;
 
 namespace PetZone.API.Extensions.Requests;
 

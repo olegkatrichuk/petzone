@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using PetZone.Infrastructure;
+using PetZone.Species.Infrastructure;
+using PetZone.Volunteers.Infrastructure;
 using Testcontainers.PostgreSql;
 
 namespace PetZone.IntegrationTests;
 
-public  class IntegrationTestWebFactory : WebApplicationFactory<Program>, IAsyncLifetime
+public class IntegrationTestWebFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:17-alpine")
@@ -23,23 +24,22 @@ public  class IntegrationTestWebFactory : WebApplicationFactory<Program>, IAsync
     {
         builder.ConfigureTestServices(services =>
         {
-            // Отключаем background services
             services.RemoveAll<IHostedService>();
 
-            services.RemoveAll<ApplicationDbContext>();
-            services.RemoveAll<ReadDbContext>();
-
-            services.AddScoped<ApplicationDbContext>(_ =>
-                new ApplicationDbContext(
-                    new DbContextOptionsBuilder<ApplicationDbContext>()
+            // Замінюємо VolunteersDbContext
+            services.RemoveAll<VolunteersDbContext>();
+            services.AddScoped<VolunteersDbContext>(_ =>
+                new VolunteersDbContext(
+                    new DbContextOptionsBuilder<VolunteersDbContext>()
                         .UseNpgsql(_dbContainer.GetConnectionString())
                         .Options));
 
-            services.AddScoped<ReadDbContext>(_ =>
-                new ReadDbContext(
-                    new DbContextOptionsBuilder<ReadDbContext>()
+            // Замінюємо SpeciesDbContext
+            services.RemoveAll<SpeciesDbContext>();
+            services.AddScoped<SpeciesDbContext>(_ =>
+                new SpeciesDbContext(
+                    new DbContextOptionsBuilder<SpeciesDbContext>()
                         .UseNpgsql(_dbContainer.GetConnectionString())
-                        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                         .Options));
         });
     }
@@ -49,8 +49,14 @@ public  class IntegrationTestWebFactory : WebApplicationFactory<Program>, IAsync
         await _dbContainer.StartAsync();
 
         using var scope = Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        await dbContext.Database.MigrateAsync();
+
+        // Міграції через VolunteersDbContext
+        var volunteersDb = scope.ServiceProvider.GetRequiredService<VolunteersDbContext>();
+        await volunteersDb.Database.MigrateAsync();
+
+        // Міграції через SpeciesDbContext
+        var speciesDb = scope.ServiceProvider.GetRequiredService<SpeciesDbContext>();
+        await speciesDb.Database.MigrateAsync();
     }
 
     public new async Task DisposeAsync()

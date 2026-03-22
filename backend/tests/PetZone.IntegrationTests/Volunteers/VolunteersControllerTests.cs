@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
-using PetZone.Contracts.Volunteers;
+using PetZone.Volunteers.Contracts;
 
 namespace PetZone.IntegrationTests.Volunteers;
 
