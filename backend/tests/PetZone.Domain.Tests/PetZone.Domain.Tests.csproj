@@ -15,11 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
+    <ProjectReference Include="..\..\src\Volunteers\PetZone.Volunteers.Domain\PetZone.Volunteers.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\PetZone.Domain\PetZone.Domain.csproj" />
+    <Using Include="Xunit" />
   </ItemGroup>
 
 </Project>

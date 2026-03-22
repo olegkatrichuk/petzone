@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Http.Features;
 using PetZone.API.Middleware;
-using PetZone.Infrastructure;
-using PetZone.UseCases;
+using PetZone.Species.Application;
+using PetZone.Species.Infrastructure;
+using PetZone.Volunteers.Application;
+using PetZone.Volunteers.Infrastructure;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,9 +21,17 @@ builder.Host.UseSerilog((context, config) =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
-builder.Services.AddInfrastructure();
-builder.Services.AddApplication();
+
+// Регистрируем контроллеры из модулей Presentation
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(PetZone.Volunteers.Presentation.VolunteersController).Assembly)
+    .AddApplicationPart(typeof(PetZone.Species.Presentation.SpeciesController).Assembly);
+
+// Модули
+builder.Services.AddVolunteersApplication();
+builder.Services.AddVolunteersInfrastructure(builder.Configuration);
+builder.Services.AddSpeciesApplication();
+builder.Services.AddSpeciesInfrastructure(builder.Configuration);
 
 builder.Services.Configure<FormOptions>(options =>
 {
@@ -44,13 +54,12 @@ app.UseSerilogRequestLogging();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(); 
-    
-    //применить миграции
-    
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

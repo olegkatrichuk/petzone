@@ -1,8 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
-using PetZone.Contracts.Volunteers;
-using PetZone.Domain.Species;
+using PetZone.Volunteers.Contracts;
+using SpeciesEntity = PetZone.Species.Domain.Species;
+using PetZone.Species.Domain;
 
 namespace PetZone.IntegrationTests.Volunteers;
 
@@ -192,11 +193,11 @@ public class PetsControllerTests(IntegrationTestWebFactory factory)
 
     private async Task SeedSpeciesAsync()
     {
-        var speciesResult = Species.Create(_speciesId, "Собака");
+        var speciesResult = SpeciesEntity.Create(_speciesId, "Собака");
         var breedResult = Breed.Create(_breedId, "Лабрадор");
         speciesResult.Value.AddBreed(breedResult.Value);
-        DbContext.Species.Add(speciesResult.Value);
-        await DbContext.SaveChangesAsync();
+        SpeciesContext.Species.Add(speciesResult.Value);
+        await SpeciesContext.SaveChangesAsync();
     }
 
     private CreatePetRequest CreatePetRequest() =>
