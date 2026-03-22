@@ -1,4 +1,4 @@
-using PetZone.Domain.Shared;
+using PetZone.SharedKernel;
 
 namespace PetZone.API.Envelope;
 
