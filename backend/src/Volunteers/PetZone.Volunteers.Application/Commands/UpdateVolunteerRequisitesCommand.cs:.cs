@@ -1,0 +1,3 @@
+namespace PetZone.Volunteers.Application.Commands;
+
+public record UpdateVolunteerRequisitesCommand(Guid VolunteerId, UpdateVolunteerRequisitesRequest Request);

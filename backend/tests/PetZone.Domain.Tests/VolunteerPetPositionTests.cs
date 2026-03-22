@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using PetZone.Domain.Models;
+using PetZone.Volunteers.Domain.Models;
 using Xunit;
 
 namespace PetZone.Domain.Tests;

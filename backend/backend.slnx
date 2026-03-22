@@ -4,10 +4,26 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/PetZone.API/PetZone.API.csproj" />
-    <Project Path="src/PetZone.Contracts/PetZone.Contracts.csproj" />
-    <Project Path="src/PetZone.Domain/PetZone.Domain.csproj" />
     <Project Path="src/PetZone.Infrastructure/PetZone.Infrastructure.csproj" />
-    <Project Path="src\PetZone.UseCases\PetZone.UseCases.csproj" />
+  </Folder>
+  <Folder Name="/src/Shared/">
+    <Project Path="src/Shared/PetZone.Core/PetZone.Core.csproj" />
+    <Project Path="src/Shared/PetZone.Framework/PetZone.Framework.csproj" />
+    <Project Path="src/Shared/PetZone.SharedKernel/PetZone.SharedKernel.csproj" />
+  </Folder>
+  <Folder Name="/src/Species/">
+    <Project Path="src/Species/PetZone.Species.Application/PetZone.Species.Application.csproj" />
+    <Project Path="src/Species/PetZone.Species.Contracts/PetZone.Species.Contracts.csproj" />
+    <Project Path="src/Species/PetZone.Species.Domain/PetZone.Species.Domain.csproj" />
+    <Project Path="src/Species/PetZone.Species.Infrastructure/PetZone.Species.Infrastructure.csproj" />
+    <Project Path="src/Species/PetZone.Species.Presentation/PetZone.Species.Presentation.csproj" />
+  </Folder>
+  <Folder Name="/src/Volunteers/">
+    <Project Path="src/Volunteers/PetZone.Volunteers.Application/PetZone.Volunteers.Application.csproj" />
+    <Project Path="src/Volunteers/PetZone.Volunteers.Contracts/PetZone.Volunteers.Contracts.csproj" />
+    <Project Path="src/Volunteers/PetZone.Volunteers.Domain/PetZone.Volunteers.Domain.csproj" />
+    <Project Path="src/Volunteers/PetZone.Volunteers.Infrastructure/PetZone.Volunteers.Infrastructure.csproj" />
+    <Project Path="src/Volunteers/PetZone.Volunteers.Presentation/PetZone.Volunteers.Presentation.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/PetZone.Domain.Tests/PetZone.Domain.Tests.csproj" />

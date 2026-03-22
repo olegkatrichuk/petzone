@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PetZone.API.Envelope;
-using PetZone.Domain.Shared;
+using PetZone.SharedKernel;
 
 namespace PetZone.API.Extensions;
 

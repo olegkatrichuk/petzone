@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\PetZone.Volunteers.Domain\PetZone.Volunteers.Domain.csproj" />
+    <ProjectReference Include="..\..\Species\PetZone.Species.Domain\PetZone.Species.Domain.csproj" />
+    <ProjectReference Include="..\..\Shared\PetZone.Core\PetZone.Core.csproj" />
+    <ProjectReference Include="..\PetZone.Volunteers.Contracts\PetZone.Volunteers.Contracts.csproj" />
+    <ProjectReference Include="..\..\Species\PetZone.Species.Contracts\PetZone.Species.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CSharpFunctionalExtensions" Version="3.7.0" />
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.5" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
