@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PetZone.Accounts.Infrastructure.Authorization;
 using PetZone.Volunteers.Application.Commands;
 using PetZone.Volunteers.Application.Volunteers;
 using PetZone.Volunteers.Contracts;
@@ -11,6 +13,7 @@ using PetPhotoDto = PetZone.Volunteers.Application.Commands.PetPhotoDto;
 
 namespace PetZone.Volunteers.Presentation;
 
+[Authorize]
 [ApiController]
 [Route("volunteers/{volunteerId:guid}/pets")]
 public class PetsController(
@@ -28,6 +31,7 @@ public class PetsController(
     private static readonly string[] AllowedExtensions = [".jpg", ".jpeg", ".png", ".webp"];
     private const long MaxFileSize = 5 * 1024 * 1024; // 5MB
 
+    [Authorize(Policy = Permissions.Volunteers.Create)]
     [HttpPost]
     public async Task<ActionResult> Create(
         [FromRoute] Guid volunteerId,
@@ -41,6 +45,7 @@ public class PetsController(
         return this.ToOkResponse(result.Value);
     }
 
+    [Authorize(Policy = Permissions.Pets.UploadPhotos)]
     [HttpPost("{petId:guid}/photos")]
     public async Task<ActionResult> UploadPhotos(
         [FromRoute] Guid volunteerId,
@@ -79,6 +84,7 @@ public class PetsController(
         return this.ToOkResponse(result.Value);
     }
 
+    [Authorize(Policy = Permissions.Pets.DeletePhotos)]
     [HttpDelete("{petId:guid}/photos")]
     public async Task<ActionResult> DeletePhotos(
         [FromRoute] Guid volunteerId,
@@ -94,6 +100,7 @@ public class PetsController(
         return this.ToOkResponse(result.Value);
     }
 
+    [Authorize(Policy = Permissions.Pets.Move)]
     [HttpPut("{petId:guid}/position")]
     public async Task<ActionResult> MovePet(
         [FromRoute] Guid volunteerId,
@@ -121,6 +128,7 @@ public class PetsController(
         return outputStream;
     }
 
+    [Authorize(Policy = Permissions.Pets.Update)]
     [HttpPut("{petId:guid}")]
     public async Task<ActionResult> Update(
         [FromRoute] Guid volunteerId,
@@ -135,6 +143,7 @@ public class PetsController(
         return this.ToOkResponse(result.Value);
     }
 
+    [Authorize(Policy = Permissions.Pets.UpdateStatus)]
     [HttpPut("{petId:guid}/status")]
     public async Task<ActionResult> UpdateStatus(
         [FromRoute] Guid volunteerId,
@@ -149,6 +158,7 @@ public class PetsController(
         return this.ToOkResponse(result.Value);
     }
 
+    [Authorize(Policy = Permissions.Pets.Delete)]
     [HttpDelete("{petId:guid}")]
     public async Task<ActionResult> Delete(
         [FromRoute] Guid volunteerId,
@@ -162,6 +172,7 @@ public class PetsController(
         return this.ToOkResponse(result.Value);
     }
 
+    [Authorize(Policy = Permissions.Pets.Delete)]
     [HttpDelete("{petId:guid}/hard")]
     public async Task<ActionResult> HardDelete(
         [FromRoute] Guid volunteerId,
@@ -175,6 +186,7 @@ public class PetsController(
         return this.ToOkResponse(result.Value);
     }
 
+    [Authorize(Policy = Permissions.Pets.SetMainPhoto)]
     [HttpPut("{petId:guid}/main-photo")]
     public async Task<ActionResult> SetMainPhoto(
         [FromRoute] Guid volunteerId,

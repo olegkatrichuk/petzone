@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Accounts\PetZone.Accounts.Infrastructure\PetZone.Accounts.Infrastructure.csproj" />
     <ProjectReference Include="..\PetZone.Volunteers.Application\PetZone.Volunteers.Application.csproj" />
     <ProjectReference Include="..\PetZone.Volunteers.Contracts\PetZone.Volunteers.Contracts.csproj" />
     <ProjectReference Include="..\PetZone.Volunteers.Infrastructure\PetZone.Volunteers.Infrastructure.csproj" />

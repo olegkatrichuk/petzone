@@ -6,6 +6,13 @@
     <Project Path="src/PetZone.API/PetZone.API.csproj" />
     <Project Path="src/PetZone.Infrastructure/PetZone.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/src/Accounts/">
+    <Project Path="src/Accounts/PetZone.Accounts.Application/PetZone.Accounts.Application.csproj" />
+    <Project Path="src/Accounts/PetZone.Accounts.Contracts/PetZone.Accounts.Contracts.csproj" />
+    <Project Path="src/Accounts/PetZone.Accounts.Domain/PetZone.Accounts.Domain.csproj" />
+    <Project Path="src/Accounts/PetZone.Accounts.Infrastructure/PetZone.Accounts.Infrastructure.csproj" />
+    <Project Path="src/Accounts/PetZone.Accounts.Presentation/PetZone.Accounts.Presentation.csproj" />
+  </Folder>
   <Folder Name="/src/Shared/">
     <Project Path="src/Shared/PetZone.Core/PetZone.Core.csproj" />
     <Project Path="src/Shared/PetZone.Framework/PetZone.Framework.csproj" />
