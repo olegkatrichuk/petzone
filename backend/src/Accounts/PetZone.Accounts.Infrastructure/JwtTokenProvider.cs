@@ -12,11 +12,14 @@ public class JwtTokenProvider(IOptions<JwtOptions> options) : IJwtTokenProvider
 {
     private readonly JwtOptions _options = options.Value;
 
-    public string GenerateToken(User user, IList<string> roles)
+    public (string AccessToken, Guid Jti) GenerateAccessToken(User user, IList<string> roles)
     {
+        var jti = Guid.NewGuid();
+
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new(JwtRegisteredClaimNames.Jti, jti.ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
             new(JwtRegisteredClaimNames.GivenName, user.FirstName),
             new(JwtRegisteredClaimNames.FamilyName, user.LastName),
@@ -34,6 +37,8 @@ public class JwtTokenProvider(IOptions<JwtOptions> options) : IJwtTokenProvider
             expires: DateTime.UtcNow.AddMinutes(_options.ExpirationMinutes),
             signingCredentials: credentials);
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        return (new JwtSecurityTokenHandler().WriteToken(token), jti);
     }
+
+    public Guid GenerateRefreshToken() => Guid.NewGuid();
 }
