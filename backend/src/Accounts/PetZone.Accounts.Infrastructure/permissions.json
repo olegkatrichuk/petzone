@@ -1,0 +1,61 @@
+{
+  "Permissions": {
+    "Volunteers": [
+      "volunteers.create",
+      "volunteers.update",
+      "volunteers.delete",
+      "volunteers.read"
+    ],
+    "Pets": [
+      "pets.create",
+      "pets.update",
+      "pets.delete",
+      "pets.read",
+      "pets.upload-photos",
+      "pets.delete-photos",
+      "pets.set-main-photo",
+      "pets.move",
+      "pets.update-status"
+    ],
+    "Species": [
+      "species.read",
+      "species.delete"
+    ]
+  },
+  "RolePermissions": {
+    "Admin": [
+      "volunteers.create",
+      "volunteers.update",
+      "volunteers.delete",
+      "volunteers.read",
+      "pets.create",
+      "pets.update",
+      "pets.delete",
+      "pets.read",
+      "pets.upload-photos",
+      "pets.delete-photos",
+      "pets.set-main-photo",
+      "pets.move",
+      "pets.update-status",
+      "species.read",
+      "species.delete"
+    ],
+    "Volunteer": [
+      "volunteers.read",
+      "pets.create",
+      "pets.update",
+      "pets.read",
+      "pets.upload-photos",
+      "pets.delete-photos",
+      "pets.set-main-photo",
+      "pets.move",
+      "pets.update-status",
+      "species.read"
+    ],
+    "Participant": [
+      "volunteers.read",
+      "pets.read",
+      "species.read"
+    ]
+  }
+}

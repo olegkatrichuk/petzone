@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.OpenApi;
+using PetZone.Accounts.Infrastructure;
 using PetZone.API.Middleware;
 using PetZone.Species.Application;
 using PetZone.Species.Infrastructure;
@@ -8,7 +10,6 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Serilog
 builder.Host.UseSerilog((context, config) =>
 {
     config
@@ -20,35 +21,50 @@ builder.Host.UseSerilog((context, config) =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Введите JWT токен"
+    });
 
-// Регистрируем контроллеры из модулей Presentation
+    c.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+    });
+});
+
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(PetZone.Volunteers.Presentation.VolunteersController).Assembly)
-    .AddApplicationPart(typeof(PetZone.Species.Presentation.SpeciesController).Assembly);
+    .AddApplicationPart(typeof(PetZone.Species.Presentation.SpeciesController).Assembly)
+    .AddApplicationPart(typeof(PetZone.Accounts.Presentation.AccountsController).Assembly);
 
-// Модули
 builder.Services.AddVolunteersApplication();
 builder.Services.AddVolunteersInfrastructure(builder.Configuration);
 builder.Services.AddSpeciesApplication();
 builder.Services.AddSpeciesInfrastructure(builder.Configuration);
+builder.Services.AddAccountsInfrastructure(builder.Configuration);
 
 builder.Services.Configure<FormOptions>(options =>
 {
-    options.MultipartBodyLengthLimit = 100 * 1024 * 1024; // 100MB
+    options.MultipartBodyLengthLimit = 100 * 1024 * 1024;
 });
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.Limits.MaxRequestBodySize = 100 * 1024 * 1024; // 100MB
+    options.Limits.MaxRequestBodySize = 100 * 1024 * 1024;
 });
 
 var app = builder.Build();
 
-// 2. Exception Middleware — первым в pipeline
-app.UseMiddleware<ExceptionMiddleware>();
+await DataSeeder.SeedAsync(app.Services);
 
-// 3. Логирование HTTP запросов
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
@@ -57,7 +73,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

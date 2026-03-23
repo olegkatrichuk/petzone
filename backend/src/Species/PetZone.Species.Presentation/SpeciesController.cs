@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PetZone.Accounts.Infrastructure.Authorization;
 using PetZone.Species.Application.Commands;
 using PetZone.Species.Application.Queries;
 using PetZone.Species.Infrastructure.Queries;
@@ -16,6 +18,7 @@ public class SpeciesController(
     DeleteBreedService deleteBreedService,
     ILogger<SpeciesController> logger) : ControllerBase
 {
+    [Authorize(Policy = Permissions.Species.Read)]
     [HttpGet]
     public async Task<ActionResult> GetAll(CancellationToken cancellationToken)
     {
@@ -25,7 +28,8 @@ public class SpeciesController(
             return result.Error.ToResponse();
         return this.ToOkResponse(result.Value);
     }
-
+    
+    [Authorize(Policy = Permissions.Species.Read)]
     [HttpGet("{speciesId:guid}/breeds")]
     public async Task<ActionResult> GetBreeds(
         [FromRoute] Guid speciesId,
@@ -39,6 +43,7 @@ public class SpeciesController(
         return this.ToOkResponse(result.Value);
     }
 
+    [Authorize(Policy = Permissions.Species.Delete)]
     [HttpDelete("{speciesId:guid}")]
     public async Task<ActionResult> DeleteSpecies(
         [FromRoute] Guid speciesId,
@@ -52,6 +57,7 @@ public class SpeciesController(
         return this.ToOkResponse(result.Value);
     }
 
+    [Authorize(Policy = Permissions.Species.Delete)]
     [HttpDelete("{speciesId:guid}/breeds/{breedId:guid}")]
     public async Task<ActionResult> DeleteBreed(
         [FromRoute] Guid speciesId,
