@@ -12,6 +12,7 @@
     <ProjectReference Include="..\PetZone.Species.Infrastructure\PetZone.Species.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Shared\PetZone.SharedKernel\PetZone.SharedKernel.csproj" />
     <ProjectReference Include="..\..\Volunteers\PetZone.Volunteers.Presentation\PetZone.Volunteers.Presentation.csproj" />
+    <ProjectReference Include="..\..\Accounts\PetZone.Accounts.Infrastructure\PetZone.Accounts.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
