@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PetZone.Volunteers.Application.Commands;
@@ -6,11 +7,10 @@ using PetZone.Volunteers.Application.Volunteers;
 using PetZone.Volunteers.Contracts;
 using PetZone.Volunteers.Infrastructure.Queries;
 using PetZone.Volunteers.Presentation.Extensions;
+using PetZone.Accounts.Infrastructure.Authorization;
 
 namespace PetZone.Volunteers.Presentation;
 
-[ApiController]
-[Route("[controller]")]
 public class VolunteersController(
     CreateVolunteerService createVolunteerService,
     UpdateVolunteerMainInfoService updateMainInfoService,
@@ -22,6 +22,8 @@ public class VolunteersController(
     GetVolunteerByIdHandler getVolunteerByIdHandler,
     ILogger<VolunteersController> logger) : ControllerBase
 {
+    
+    [Authorize(Policy = Permissions.Volunteers.Create)]
     [HttpPost]
     public async Task<ActionResult> Create(
         [FromBody] CreateVolunteerRequest request,
@@ -38,6 +40,7 @@ public class VolunteersController(
         return this.ToOkResponse(result.Value);
     }
 
+    [Authorize(Policy = Permissions.Volunteers.Update)]
     [HttpPut("{id:guid}/main-info")]
     public async Task<ActionResult> UpdateMainInfo(
         [FromRoute] Guid id,
@@ -51,6 +54,7 @@ public class VolunteersController(
         return this.ToOkResponse(result.Value);
     }
 
+    [Authorize(Policy = Permissions.Volunteers.Update)]
     [HttpPut("{id:guid}/social-networks")]
     public async Task<ActionResult> UpdateSocialNetworks(
         [FromRoute] Guid id,
@@ -64,6 +68,7 @@ public class VolunteersController(
         return this.ToOkResponse(result.Value);
     }
 
+    [Authorize(Policy = Permissions.Volunteers.Update)]
     [HttpPut("{id:guid}/requisites")]
     public async Task<ActionResult> UpdateRequisites(
         [FromRoute] Guid id,
@@ -77,6 +82,7 @@ public class VolunteersController(
         return this.ToOkResponse(result.Value);
     }
 
+    [Authorize(Policy = Permissions.Volunteers.Delete)]
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult> Delete(
         [FromRoute] Guid id,
@@ -89,6 +95,7 @@ public class VolunteersController(
         return this.ToOkResponse(result.Value);
     }
 
+    [Authorize(Policy = Permissions.Volunteers.Delete)]
     [HttpDelete("{id:guid}/hard")]
     public async Task<ActionResult> HardDelete(
         [FromRoute] Guid id,
@@ -100,7 +107,8 @@ public class VolunteersController(
             return result.Error.ToResponse();
         return this.ToOkResponse(result.Value);
     }
-
+    
+    [Authorize(Policy = Permissions.Volunteers.Read)]
     [HttpGet]
     public async Task<ActionResult> GetAll(
         [FromQuery] int page = 1,
@@ -117,7 +125,8 @@ public class VolunteersController(
 
         return this.ToOkResponse(result.Value);
     }
-
+    
+    [Authorize(Policy = Permissions.Volunteers.Read)]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult> GetById(
         [FromRoute] Guid id,

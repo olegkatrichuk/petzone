@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5">
           <PrivateAssets>all</PrivateAssets>
@@ -29,6 +30,8 @@
       <ProjectReference Include="..\Shared\PetZone.Framework\PetZone.Framework.csproj" />
       <ProjectReference Include="..\Shared\PetZone.Core\PetZone.Core.csproj" />
       <ProjectReference Include="..\Shared\PetZone.SharedKernel\PetZone.SharedKernel.csproj" />
+      <ProjectReference Include="..\Accounts\PetZone.Accounts.Presentation\PetZone.Accounts.Presentation.csproj" />
+      <ProjectReference Include="..\Accounts\PetZone.Accounts.Infrastructure\PetZone.Accounts.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
