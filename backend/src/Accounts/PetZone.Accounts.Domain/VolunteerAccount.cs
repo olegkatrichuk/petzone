@@ -2,6 +2,8 @@ namespace PetZone.Accounts.Domain;
 
 public class VolunteerAccount
 {
+    public const string RoleName = "Volunteer";
+
     public Guid Id { get; set; }
     public Guid UserId { get; set; }
     public User User { get; set; } = null!;
