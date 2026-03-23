@@ -7,11 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using PetZone.Accounts.Application;
 using PetZone.Accounts.Application.Accounts;
+using PetZone.Accounts.Application.Repositories;
 using PetZone.Accounts.Domain;
 using PetZone.Accounts.Infrastructure.Authorization;
-using System.Text;
-using PetZone.Accounts.Application.Repositories;
 using PetZone.Accounts.Infrastructure.Repositories;
+using System.Text;
 
 namespace PetZone.Accounts.Infrastructure;
 
@@ -38,18 +38,22 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<AccountsDbContext>()
             .AddDefaultTokenProviders();
 
-        // JWT Options
+        // Options
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
+        services.Configure<RefreshSessionOptions>(configuration.GetSection(RefreshSessionOptions.SectionName));
 
-        // JWT Provider
+        // Providers
         services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
 
         // Services
         services.AddScoped<RegisterUserService>();
         services.AddScoped<LoginUserService>();
+        services.AddScoped<RefreshTokenService>();
+
         // Repositories & UnitOfWork
         services.AddScoped<IAccountsUnitOfWork, AccountsUnitOfWork>();
         services.AddScoped<IParticipantAccountRepository, ParticipantAccountRepository>();
+        services.AddScoped<IRefreshSessionRepository, RefreshSessionRepository>();
 
         // JWT Authentication
         var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>()!;

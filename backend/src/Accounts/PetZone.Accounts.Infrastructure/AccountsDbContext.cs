@@ -13,6 +13,7 @@ public class AccountsDbContext(DbContextOptions<AccountsDbContext> options)
     public DbSet<ParticipantAccount> ParticipantAccounts => Set<ParticipantAccount>();
     public DbSet<VolunteerAccount> VolunteerAccounts => Set<VolunteerAccount>();
     public DbSet<AdminAccount> AdminAccounts => Set<AdminAccount>();
+    public DbSet<RefreshSession> RefreshSessions => Set<RefreshSession>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -23,5 +24,6 @@ public class AccountsDbContext(DbContextOptions<AccountsDbContext> options)
         builder.ApplyConfiguration(new ParticipantAccountConfiguration());
         builder.ApplyConfiguration(new VolunteerAccountConfiguration());
         builder.ApplyConfiguration(new AdminAccountConfiguration());
+        builder.ApplyConfiguration(new RefreshSessionConfiguration());
     }
 }
