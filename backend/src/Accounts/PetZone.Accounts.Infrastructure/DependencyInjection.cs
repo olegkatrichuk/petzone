@@ -10,6 +10,8 @@ using PetZone.Accounts.Application.Accounts;
 using PetZone.Accounts.Domain;
 using PetZone.Accounts.Infrastructure.Authorization;
 using System.Text;
+using PetZone.Accounts.Application.Repositories;
+using PetZone.Accounts.Infrastructure.Repositories;
 
 namespace PetZone.Accounts.Infrastructure;
 
@@ -45,6 +47,9 @@ public static class DependencyInjection
         // Services
         services.AddScoped<RegisterUserService>();
         services.AddScoped<LoginUserService>();
+        // Repositories & UnitOfWork
+        services.AddScoped<IAccountsUnitOfWork, AccountsUnitOfWork>();
+        services.AddScoped<IParticipantAccountRepository, ParticipantAccountRepository>();
 
         // JWT Authentication
         var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>()!;

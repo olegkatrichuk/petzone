@@ -8,6 +8,7 @@ using PetZone.Volunteers.Application;
 using PetZone.Volunteers.Infrastructure;
 using Serilog;
 
+DotNetEnv.Env.Load(Path.Combine(AppContext.BaseDirectory, "../../../../../.env"));
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, config) =>

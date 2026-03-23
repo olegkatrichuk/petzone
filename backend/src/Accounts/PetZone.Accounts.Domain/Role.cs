@@ -4,9 +4,9 @@ namespace PetZone.Accounts.Domain;
 
 public class Role : IdentityRole<Guid>
 {
-    public const string Admin = "Admin";
-    public const string Volunteer = "Volunteer";
-    public const string Participant = "Participant";
+    public const string Admin = AdminAccount.RoleName;
+    public const string Volunteer = VolunteerAccount.RoleName;
+    public const string Participant = ParticipantAccount.RoleName;
 
     public ICollection<RolePermission> RolePermissions { get; set; } = [];
 }
