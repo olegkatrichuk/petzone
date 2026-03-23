@@ -7,4 +7,5 @@ public class JwtOptions
     public string Issuer { get; init; } = string.Empty;
     public string Audience { get; init; } = string.Empty;
     public int ExpirationMinutes { get; init; } = 60;
+    public int RefreshExpirationDays { get; init; } = 7;
 }
