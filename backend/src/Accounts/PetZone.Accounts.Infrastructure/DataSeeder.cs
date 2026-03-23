@@ -14,10 +14,12 @@ public static class DataSeeder
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AccountsDbContext>();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<AccountsDbContext>>();
 
         await SeedRolesAsync(roleManager, logger);
         await SeedPermissionsAsync(context, roleManager, logger);
+        await SeedAdminAsync(context, userManager, roleManager, logger);
     }
 
     private static async Task SeedRolesAsync(RoleManager<Role> roleManager, ILogger logger)
@@ -31,6 +33,74 @@ public static class DataSeeder
                 await roleManager.CreateAsync(new Role { Name = role });
                 logger.LogInformation("Role {Role} created", role);
             }
+        }
+    }
+
+    private static async Task SeedAdminAsync(
+        AccountsDbContext context,
+        UserManager<User> userManager,
+        RoleManager<Role> roleManager,
+        ILogger logger)
+    {
+        var adminEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL");
+        var adminPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD");
+        var adminFirstName = Environment.GetEnvironmentVariable("ADMIN_FIRST_NAME") ?? "Admin";
+        var adminLastName = Environment.GetEnvironmentVariable("ADMIN_LAST_NAME") ?? "PetZone";
+
+        if (string.IsNullOrWhiteSpace(adminEmail) || string.IsNullOrWhiteSpace(adminPassword))
+        {
+            logger.LogWarning("ADMIN_EMAIL or ADMIN_PASSWORD not set in environment");
+            return;
+        }
+
+        // Перевіряємо чи адмін вже існує
+        var existingAdmin = await userManager.FindByEmailAsync(adminEmail);
+        if (existingAdmin is not null)
+        {
+            logger.LogInformation("Admin already exists, skipping");
+            return;
+        }
+
+        var adminRole = await roleManager.FindByNameAsync(Role.Admin);
+        if (adminRole is null)
+        {
+            logger.LogWarning("Admin role not found");
+            return;
+        }
+
+        var adminUser = User.CreateAdmin(adminEmail, adminFirstName, adminLastName, adminRole);
+
+        // Створюємо user і AdminAccount в одній транзакції
+        await using var transaction = await context.Database.BeginTransactionAsync();
+        try
+        {
+            var result = await userManager.CreateAsync(adminUser, adminPassword);
+            if (!result.Succeeded)
+            {
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                logger.LogError("Failed to create admin: {Errors}", errors);
+                await transaction.RollbackAsync();
+                return;
+            }
+
+            await userManager.AddToRoleAsync(adminUser, Role.Admin);
+
+            var adminAccount = new AdminAccount
+            {
+                Id = Guid.NewGuid(),
+                UserId = adminUser.Id
+            };
+
+            context.AdminAccounts.Add(adminAccount);
+            await context.SaveChangesAsync();
+
+            await transaction.CommitAsync();
+            logger.LogInformation("Admin user created successfully");
+        }
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync();
+            logger.LogError(ex, "Failed to create admin in transaction");
         }
     }
 
@@ -52,7 +122,6 @@ public static class DataSeeder
         var json = await File.ReadAllTextAsync(jsonPath);
         var doc = JsonDocument.Parse(json);
 
-        // Seed Permissions
         var allCodes = doc.RootElement
             .GetProperty("Permissions")
             .EnumerateObject()
@@ -71,7 +140,6 @@ public static class DataSeeder
 
         await context.SaveChangesAsync();
 
-        // Seed RolePermissions
         var rolePermissions = doc.RootElement.GetProperty("RolePermissions");
 
         foreach (var roleEntry in rolePermissions.EnumerateObject())
