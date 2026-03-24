@@ -8,9 +8,12 @@ public class VolunteerRequestsDbContextFactory
 {
     public VolunteerRequestsDbContext CreateDbContext(string[] args)
     {
+        var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__Database")
+            ?? throw new InvalidOperationException(
+                "Set the 'ConnectionStrings__Database' environment variable before running migrations.");
+
         var optionsBuilder = new DbContextOptionsBuilder<VolunteerRequestsDbContext>();
-        optionsBuilder.UseNpgsql(
-            "Host=localhost;Port=5434;Database=petzone_db;Username=petzone;Password=Ruslan2802@");
+        optionsBuilder.UseNpgsql(connectionString);
 
         return new VolunteerRequestsDbContext(optionsBuilder.Options);
     }
