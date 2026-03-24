@@ -5,7 +5,8 @@ public enum ErrorType
     Failure,
     Validation,
     NotFound,
-    Conflict
+    Conflict,
+    Forbidden
 }
 
 public record Error(string Code, string Description, ErrorType Type, string? InvalidField = null)
@@ -23,4 +24,6 @@ public record Error(string Code, string Description, ErrorType Type, string? Inv
 
     public static Error Conflict(string code, string description) =>
         new(code, description, ErrorType.Conflict);
+    public static Error Forbidden(string code, string description) =>
+        new(code, description, ErrorType.Forbidden);
 }

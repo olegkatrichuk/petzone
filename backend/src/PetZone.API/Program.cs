@@ -6,6 +6,7 @@ using PetZone.Species.Application;
 using PetZone.Species.Infrastructure;
 using PetZone.Volunteers.Application;
 using PetZone.Volunteers.Infrastructure;
+using PetZone.VolunteerRequests.Infrastructure;
 using Serilog;
 
 DotNetEnv.Env.Load(Path.Combine(AppContext.BaseDirectory, "../../../../../.env"));
@@ -43,13 +44,15 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(PetZone.Volunteers.Presentation.VolunteersController).Assembly)
     .AddApplicationPart(typeof(PetZone.Species.Presentation.SpeciesController).Assembly)
-    .AddApplicationPart(typeof(PetZone.Accounts.Presentation.AccountsController).Assembly);
+    .AddApplicationPart(typeof(PetZone.Accounts.Presentation.AccountsController).Assembly)
+    .AddApplicationPart(typeof(PetZone.VolunteerRequests.Presentation.VolunteerRequestsController).Assembly);
 
 builder.Services.AddVolunteersApplication();
 builder.Services.AddVolunteersInfrastructure(builder.Configuration);
 builder.Services.AddSpeciesApplication();
 builder.Services.AddSpeciesInfrastructure(builder.Configuration);
 builder.Services.AddAccountsInfrastructure(builder.Configuration);
+builder.Services.AddVolunteerRequestsInfrastructure(builder.Configuration);
 
 builder.Services.Configure<FormOptions>(options =>
 {

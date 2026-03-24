@@ -3,7 +3,7 @@ using PetZone.SharedKernel;
 
 namespace PetZone.Volunteers.Domain.Models
 {
-    public class Volunteer : Entity<Guid> , ISoftDeletable
+    public class Volunteer : SoftDeletableEntity<Guid>
     {
         public const int MaxGeneralDescriptionLength = 2000;
 
@@ -21,29 +21,20 @@ namespace PetZone.Volunteers.Domain.Models
 
         private readonly List<Pet> _pets = new();
         public IReadOnlyList<Pet> Pets => _pets.AsReadOnly();
-        
-        public bool IsDeleted { get; private set; }
-        public DateTime? DeletedAt { get; private set; }
 
-        public void Delete()
+        public override void Delete()
         {
-            IsDeleted = true;
-            DeletedAt = DateTime.UtcNow;
-
-            // Все питомцы тоже помечаются как удалённые
+            base.Delete();
             foreach (var pet in _pets)
                 pet.Delete();
         }
 
-        public void Restore()
+        public override void Restore()
         {
-            IsDeleted = false;
-            DeletedAt = null;
-
+            base.Restore();
             foreach (var pet in _pets)
                 pet.Restore();
         }
-        
 
         private Volunteer(
             Guid id, FullName name, Email email, string generalDescription,
@@ -73,25 +64,21 @@ namespace PetZone.Volunteers.Domain.Models
             return new Volunteer(id, name, email, generalDescription.Trim(), experience, phone);
         }
 
-        // --- СЧЁТЧИКИ ---
-
         public int CountPetsFoundHome() => _pets.Count(p => p.Status == HelpStatus.FoundHome);
         public int CountPetsLookingForHome() => _pets.Count(p => p.Status == HelpStatus.LookingForHome);
         public int CountPetsInTreatment() => _pets.Count(p => p.Status == HelpStatus.NeedsHelp);
-
-        // --- УПРАВЛЕНИЕ ПИТОМЦАМИ ---
 
         public Result<Volunteer, Error> AddPet(Pet pet)
         {
             if (_pets.Contains(pet))
                 return Error.Validation("volunteer.pet_already_exists", "Питомец уже добавлен.");
 
-            // Новый питомец всегда получает следующий порядковый номер
             pet.SetPosition(_pets.Count + 1);
             _pets.Add(pet);
 
             return this;
         }
+
         public Result<Volunteer, Error> UpdateMainInfo(
             FullName name, Email email, string generalDescription,
             Experience experience, PhoneNumber phone)
@@ -99,7 +86,7 @@ namespace PetZone.Volunteers.Domain.Models
             if (string.IsNullOrWhiteSpace(generalDescription))
                 return Error.Validation("volunteer.description_is_empty", "Описание обязательно.");
 
-            if (generalDescription.Length > MaxGeneralDescriptionLength)  // ← было MAX_GENERAL_DESCRIPTION_LENGTH
+            if (generalDescription.Length > MaxGeneralDescriptionLength)
                 return Error.Validation("volunteer.description_too_long",
                     $"Описание не должно превышать {MaxGeneralDescriptionLength} символов.");
 
@@ -123,14 +110,13 @@ namespace PetZone.Volunteers.Domain.Models
             _requisites.Clear();
             _requisites.AddRange(requisites);
         }
+
         public Result<Volunteer, Error> RemovePet(Pet pet)
         {
             if (!_pets.Contains(pet))
                 return Error.Validation("volunteer.pet_not_found", "Питомец не найден.");
 
             _pets.Remove(pet);
-
-            // Пересчитываем позиции всех оставшихся
             RecalculatePositions();
 
             return this;
@@ -150,8 +136,6 @@ namespace PetZone.Volunteers.Domain.Models
 
             var currentPosition = pet.Position;
 
-            // Двигаем вперёд (5 → 2): питомцы на позициях 2,3,4 сдвигаются на +1
-            // Двигаем назад  (2 → 5): питомцы на позициях 3,4,5 сдвигаются на -1
             if (newPosition < currentPosition)
             {
                 foreach (var p in _pets.Where(p => p.Position >= newPosition && p.Position < currentPosition))
@@ -169,16 +153,12 @@ namespace PetZone.Volunteers.Domain.Models
         }
 
         public Result<Volunteer, Error> MovePetToFirst(Pet pet) => MovePet(pet, 1);
-
         public Result<Volunteer, Error> MovePetToLast(Pet pet) => MovePet(pet, _pets.Count);
-
-        // --- УПРАВЛЕНИЕ СОЦСЕТЯМИ И РЕКВИЗИТАМИ ---
 
         public Result<Volunteer, Error> AddSocialNetwork(SocialNetwork network)
         {
             if (!_socialNetworks.Contains(network))
                 _socialNetworks.Add(network);
-
             return this;
         }
 
@@ -186,11 +166,8 @@ namespace PetZone.Volunteers.Domain.Models
         {
             if (!_requisites.Contains(requisite))
                 _requisites.Add(requisite);
-
             return this;
         }
-
-        // --- ПРИВАТНЫЕ ХЕЛПЕРЫ ---
 
         private void RecalculatePositions()
         {
@@ -198,6 +175,5 @@ namespace PetZone.Volunteers.Domain.Models
             for (int i = 0; i < sorted.Count; i++)
                 sorted[i].SetPosition(i + 1);
         }
-        
     }
 }

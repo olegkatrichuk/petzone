@@ -11,6 +11,8 @@ using PetZone.Accounts.Infrastructure.Authorization;
 
 namespace PetZone.Volunteers.Presentation;
 
+[ApiController]
+[Route("[controller]")]
 public class VolunteersController(
     CreateVolunteerService createVolunteerService,
     UpdateVolunteerMainInfoService updateMainInfoService,

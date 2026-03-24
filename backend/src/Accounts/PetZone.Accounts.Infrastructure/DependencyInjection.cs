@@ -12,6 +12,7 @@ using PetZone.Accounts.Domain;
 using PetZone.Accounts.Infrastructure.Authorization;
 using PetZone.Accounts.Infrastructure.Repositories;
 using System.Text;
+using PetZone.Accounts.Application.Accounts.GetUserInfo;
 
 namespace PetZone.Accounts.Infrastructure;
 
@@ -49,6 +50,7 @@ public static class DependencyInjection
         services.AddScoped<RegisterUserService>();
         services.AddScoped<LoginUserService>();
         services.AddScoped<RefreshTokenService>();
+        services.AddScoped<GetUserInfoService>();
 
         // Repositories & UnitOfWork
         services.AddScoped<IAccountsUnitOfWork, AccountsUnitOfWork>();

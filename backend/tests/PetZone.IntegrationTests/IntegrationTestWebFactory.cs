@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -25,6 +27,22 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>, IAsyncL
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll<IHostedService>();
+
+            // Bypass authentication — override default scheme set by JWT in AddAccountsInfrastructure
+            services.AddAuthentication()
+                .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
+                    TestAuthHandler.SchemeName, _ => { });
+
+            services.PostConfigure<AuthenticationOptions>(options =>
+            {
+                options.DefaultAuthenticateScheme = TestAuthHandler.SchemeName;
+                options.DefaultChallengeScheme = TestAuthHandler.SchemeName;
+                options.DefaultScheme = TestAuthHandler.SchemeName;
+            });
+
+            // Bypass authorization entirely
+            services.RemoveAll<IAuthorizationService>();
+            services.AddSingleton<IAuthorizationService, AllowAllAuthorizationService>();
 
             // Замінюємо VolunteersDbContext
             services.RemoveAll<VolunteersDbContext>();
