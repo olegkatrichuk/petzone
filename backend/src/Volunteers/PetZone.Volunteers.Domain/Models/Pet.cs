@@ -10,16 +10,14 @@ namespace PetZone.Volunteers.Domain.Models
         FoundHome
     }
 
-    public class Pet : Entity<Guid>, ISoftDeletable
+    public class Pet : SoftDeletableEntity<Guid>
     {
-        // --- КОНСТАНТЫ ---
         public const int MAX_NICKNAME_LENGTH = 100;
         public const int MAX_GENERAL_DESCRIPTION_LENGTH = 2000;
         public const int MAX_COLOR_LENGTH = 50;
         public const int MAX_MICROCHIP_NUMBER_LENGTH = 50;
         public const int MAX_ADOPTION_CONDITIONS_LENGTH = 1000;
 
-        // --- СВОЙСТВА ---
         public string Nickname { get; private set; }
         public SpeciesBreed SpeciesBreedInfo { get; private set; }
         public string GeneralDescription { get; private set; }
@@ -38,17 +36,13 @@ namespace PetZone.Volunteers.Domain.Models
         public string? MicrochipNumber { get; private set; }
         public Guid? VolunteerId { get; private set; }
         public int Position { get; private set; }
-        public bool IsDeleted { get; private set; }
-        public DateTime? DeletedAt { get; private set; }
 
-        // --- КОЛЛЕКЦИИ ---
         private readonly List<Requisite> _requisites = new();
         public IReadOnlyList<Requisite> Requisites => _requisites.AsReadOnly();
 
         private readonly List<PetPhoto> _photos = new();
         public IReadOnlyList<PetPhoto> Photos => _photos.AsReadOnly();
 
-        // --- КОНСТРУКТОРЫ ---
         private Pet(
             Guid id, string nickname, string generalDescription, string color,
             HealthInfo health, Address location, Weight weight, Height height,
@@ -78,7 +72,6 @@ namespace PetZone.Volunteers.Domain.Models
 
         private Pet() { }
 
-        // --- ФАБРИЧНЫЙ МЕТОД ---
         public static Result<Pet, Error> Create(
             Guid id, string nickname, string generalDescription, string color,
             HealthInfo health, Address location, Weight weight, Height height,
@@ -119,8 +112,6 @@ namespace PetZone.Volunteers.Domain.Models
                 dateOfBirth, isVaccinated, status,
                 microchipNumber?.Trim(), volunteerId, adoptionConditions?.Trim(), speciesBreedInfo);
         }
-
-        // --- ОСНОВНОЕ ПОВЕДЕНИЕ ---
 
         public Result<Pet, Error> Update(
             string nickname, string generalDescription, string color,
@@ -173,8 +164,6 @@ namespace PetZone.Volunteers.Domain.Models
             return this;
         }
 
-        // --- МЕДИЦИНА ---
-
         public void UpdateHealth(HealthInfo newHealthInfo, Weight newWeight)
         {
             Health = newHealthInfo;
@@ -191,8 +180,6 @@ namespace PetZone.Volunteers.Domain.Models
             IsVaccinated = vaccinated;
             IsCastrated = castrated;
         }
-
-        // --- ФОТОГРАФИИ ---
 
         public Result<Pet, Error> AddPhoto(PetPhoto photo)
         {
@@ -241,8 +228,6 @@ namespace PetZone.Volunteers.Domain.Models
             return this;
         }
 
-        // --- РЕКВИЗИТЫ ---
-
         public Result<Pet, Error> AddRequisite(Requisite requisite)
         {
             if (requisite == null)
@@ -254,22 +239,6 @@ namespace PetZone.Volunteers.Domain.Models
             return this;
         }
 
-        // --- ПОЗИЦИЯ ---
-
         internal void SetPosition(int position) => Position = position;
-
-        // --- SOFT DELETE ---
-
-        public void Delete()
-        {
-            IsDeleted = true;
-            DeletedAt = DateTime.UtcNow;
-        }
-
-        public void Restore()
-        {
-            IsDeleted = false;
-            DeletedAt = null;
-        }
     }
 }

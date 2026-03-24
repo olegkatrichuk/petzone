@@ -24,16 +24,106 @@ public static class DataSeeder
 
     private static async Task SeedRolesAsync(RoleManager<Role> roleManager, ILogger logger)
     {
+        // 1 запит — завантажуємо всі існуючі ролі одразу
+        var existingRoles = await roleManager.Roles
+            .Select(r => r.Name!)
+            .ToListAsync();
+
         string[] roles = [Role.Admin, Role.Volunteer, Role.Participant];
 
-        foreach (var role in roles)
+        foreach (var role in roles.Except(existingRoles))
         {
-            if (!await roleManager.RoleExistsAsync(role))
+            await roleManager.CreateAsync(new Role { Name = role });
+            logger.LogInformation("Role {Role} created", role);
+        }
+    }
+
+    private static async Task SeedPermissionsAsync(
+        AccountsDbContext context,
+        RoleManager<Role> roleManager,
+        ILogger logger)
+    {
+        var jsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "permissions.json");
+
+        if (!File.Exists(jsonPath))
+        {
+            logger.LogWarning("permissions.json not found at {Path}", jsonPath);
+            return;
+        }
+
+        var json = await File.ReadAllTextAsync(jsonPath);
+        var doc = JsonDocument.Parse(json);
+
+        var allCodes = doc.RootElement
+            .GetProperty("Permissions")
+            .EnumerateObject()
+            .SelectMany(g => g.Value.EnumerateArray().Select(v => v.GetString()!))
+            .Distinct()
+            .ToList();
+
+        // 1 запит — завантажуємо всі існуючі permissions
+        var existingPermissions = await context.Permissions.ToListAsync();
+        var existingCodes = existingPermissions.Select(p => p.Code).ToHashSet();
+
+        var newPermissions = allCodes
+            .Where(code => !existingCodes.Contains(code))
+            .Select(code => new Permission { Id = Guid.NewGuid(), Code = code })
+            .ToList();
+
+        if (newPermissions.Count > 0)
+        {
+            context.Permissions.AddRange(newPermissions);
+            await context.SaveChangesAsync();
+            existingPermissions.AddRange(newPermissions);
+        }
+
+        // 1 запит — завантажуємо всі існуючі role-permissions
+        var existingRolePermissions = await context.RolePermissions.ToListAsync();
+        var existingRolePermissionSet = existingRolePermissions
+            .Select(rp => (rp.RoleId, rp.PermissionId))
+            .ToHashSet();
+
+        // 1 запит — завантажуємо всі ролі
+        var allRoles = await roleManager.Roles.ToListAsync();
+        var rolesByName = allRoles.ToDictionary(r => r.Name!, r => r);
+        var permissionsByCode = existingPermissions.ToDictionary(p => p.Code, p => p);
+
+        var rolePermissionsToAdd = new List<RolePermission>();
+        var rolePermissions = doc.RootElement.GetProperty("RolePermissions");
+
+        foreach (var roleEntry in rolePermissions.EnumerateObject())
+        {
+            if (!rolesByName.TryGetValue(roleEntry.Name, out var role))
+                continue;
+
+            var permCodes = roleEntry.Value
+                .EnumerateArray()
+                .Select(v => v.GetString()!)
+                .ToList();
+
+            foreach (var code in permCodes)
             {
-                await roleManager.CreateAsync(new Role { Name = role });
-                logger.LogInformation("Role {Role} created", role);
+                if (!permissionsByCode.TryGetValue(code, out var permission))
+                    continue;
+
+                if (!existingRolePermissionSet.Contains((role.Id, permission.Id)))
+                {
+                    rolePermissionsToAdd.Add(new RolePermission
+                    {
+                        RoleId = role.Id,
+                        PermissionId = permission.Id
+                    });
+                }
             }
         }
+
+        if (rolePermissionsToAdd.Count > 0)
+        {
+            context.RolePermissions.AddRange(rolePermissionsToAdd);
+            await context.SaveChangesAsync();
+        }
+
+        logger.LogInformation("Permissions seeded successfully");
     }
 
     private static async Task SeedAdminAsync(
@@ -53,7 +143,6 @@ public static class DataSeeder
             return;
         }
 
-        // Перевіряємо чи адмін вже існує
         var existingAdmin = await userManager.FindByEmailAsync(adminEmail);
         if (existingAdmin is not null)
         {
@@ -70,7 +159,6 @@ public static class DataSeeder
 
         var adminUser = User.CreateAdmin(adminEmail, adminFirstName, adminLastName, adminRole);
 
-        // Створюємо user і AdminAccount в одній транзакції
         await using var transaction = await context.Database.BeginTransactionAsync();
         try
         {
@@ -85,15 +173,13 @@ public static class DataSeeder
 
             await userManager.AddToRoleAsync(adminUser, Role.Admin);
 
-            var adminAccount = new AdminAccount
+            context.AdminAccounts.Add(new AdminAccount
             {
                 Id = Guid.NewGuid(),
                 UserId = adminUser.Id
-            };
+            });
 
-            context.AdminAccounts.Add(adminAccount);
             await context.SaveChangesAsync();
-
             await transaction.CommitAsync();
             logger.LogInformation("Admin user created successfully");
         }
@@ -102,78 +188,5 @@ public static class DataSeeder
             await transaction.RollbackAsync();
             logger.LogError(ex, "Failed to create admin in transaction");
         }
-    }
-
-    private static async Task SeedPermissionsAsync(
-        AccountsDbContext context,
-        RoleManager<Role> roleManager,
-        ILogger logger)
-    {
-        var jsonPath = Path.Combine(
-            AppDomain.CurrentDomain.BaseDirectory,
-            "permissions.json");
-
-        if (!File.Exists(jsonPath))
-        {
-            logger.LogWarning("permissions.json not found at {Path}", jsonPath);
-            return;
-        }
-
-        var json = await File.ReadAllTextAsync(jsonPath);
-        var doc = JsonDocument.Parse(json);
-
-        var allCodes = doc.RootElement
-            .GetProperty("Permissions")
-            .EnumerateObject()
-            .SelectMany(g => g.Value.EnumerateArray().Select(v => v.GetString()!))
-            .Distinct()
-            .ToList();
-
-        foreach (var code in allCodes)
-        {
-            if (!await context.Permissions.AnyAsync(p => p.Code == code))
-            {
-                context.Permissions.Add(new Permission { Id = Guid.NewGuid(), Code = code });
-                logger.LogInformation("Permission {Code} created", code);
-            }
-        }
-
-        await context.SaveChangesAsync();
-
-        var rolePermissions = doc.RootElement.GetProperty("RolePermissions");
-
-        foreach (var roleEntry in rolePermissions.EnumerateObject())
-        {
-            var roleName = roleEntry.Name;
-            var role = await roleManager.FindByNameAsync(roleName);
-            if (role is null) continue;
-
-            var permCodes = roleEntry.Value.EnumerateArray()
-                .Select(v => v.GetString()!)
-                .ToList();
-
-            foreach (var code in permCodes)
-            {
-                var permission = await context.Permissions
-                    .FirstOrDefaultAsync(p => p.Code == code);
-
-                if (permission is null) continue;
-
-                var exists = await context.RolePermissions
-                    .AnyAsync(rp => rp.RoleId == role.Id && rp.PermissionId == permission.Id);
-
-                if (!exists)
-                {
-                    context.RolePermissions.Add(new RolePermission
-                    {
-                        RoleId = role.Id,
-                        PermissionId = permission.Id
-                    });
-                }
-            }
-        }
-
-        await context.SaveChangesAsync();
-        logger.LogInformation("Permissions seeded successfully");
     }
 }

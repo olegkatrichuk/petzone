@@ -40,7 +40,7 @@ public class SoftDeleteCleanupService(
         try
         {
             var volunteersToDelete = await dbContext.Volunteers
-                .Where(v => v.IsDeleted && v.DeletedAt < cutoffDate)
+                .Where(v => v.IsDeleted && v.DeletionDate < cutoffDate)
                 .ToListAsync(cancellationToken);
 
             if (volunteersToDelete.Count == 0)

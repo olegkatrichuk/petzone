@@ -12,7 +12,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.HasKey(v => v.Id);
         builder.Property(v => v.IsDeleted).IsRequired();
-        builder.Property(v => v.DeletedAt).IsRequired(false);
+        builder.Property(v => v.DeletionDate).IsRequired(false);
 
         builder.Property(v => v.GeneralDescription)
                .HasMaxLength(Volunteer.MaxGeneralDescriptionLength)

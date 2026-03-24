@@ -61,6 +61,6 @@ public class RefreshTokenService(
 
         logger.LogInformation("Token refreshed successfully for user {UserId}", user.Id);
 
-        return new LoginResult(accessToken, refreshToken);
+        return new LoginResult(accessToken, newRefreshToken);
     }
 }

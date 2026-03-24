@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PetZone.Accounts.Application.Accounts;
+using PetZone.Accounts.Application.Accounts.GetUserInfo;
 using PetZone.Accounts.Application.Commands;
 using PetZone.Accounts.Contracts;
+using PetZone.SharedKernel;
 using PetZone.Volunteers.Presentation.Extensions;
 
 namespace PetZone.Accounts.Presentation;
@@ -65,6 +67,22 @@ public class AccountsController(
         SetRefreshTokenCookie(result.Value.RefreshToken);
 
         return this.ToOkResponse(new LoginResponse(result.Value.AccessToken));
+    }
+    
+    [HttpGet("{userId:guid}")]
+    public async Task<IActionResult> GetUserInfo(
+        [FromRoute] Guid userId,
+        [FromServices] GetUserInfoService service,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetUserInfoQuery(userId);
+        var result = await service.Handle(query, cancellationToken);
+
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : result.Error.Type == ErrorType.NotFound
+                ? NotFound(result.Error)
+                : BadRequest(result.Error);
     }
 
     private void SetRefreshTokenCookie(Guid refreshToken)

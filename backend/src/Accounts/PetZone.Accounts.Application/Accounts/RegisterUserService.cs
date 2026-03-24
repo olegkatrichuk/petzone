@@ -35,18 +35,17 @@ public class RegisterUserService(
             command.Request.LastName,
             participantRole);
 
-        using var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
+        var result = await userManager.CreateAsync(user, command.Request.Password);
+        if (!result.Succeeded)
+        {
+            var errors = result.Errors
+                .Select(e => Error.Validation(e.Code, e.Description))
+                .ToList();
+            return new ErrorList(errors);
+        }
+
         try
         {
-            var result = await userManager.CreateAsync(user, command.Request.Password);
-            if (!result.Succeeded)
-            {
-                var errors = result.Errors
-                    .Select(e => Error.Validation(e.Code, e.Description))
-                    .ToList();
-                return new ErrorList(errors);
-            }
-
             await userManager.AddToRoleAsync(user, Role.Participant);
 
             var participantAccount = new ParticipantAccount

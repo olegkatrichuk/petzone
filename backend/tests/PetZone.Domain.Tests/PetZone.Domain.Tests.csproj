@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Volunteers\PetZone.Volunteers.Domain\PetZone.Volunteers.Domain.csproj" />
+    <ProjectReference Include="..\..\src\VolunteerRequests\PetZone.VolunteerRequests.Domain\PetZone.VolunteerRequests.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

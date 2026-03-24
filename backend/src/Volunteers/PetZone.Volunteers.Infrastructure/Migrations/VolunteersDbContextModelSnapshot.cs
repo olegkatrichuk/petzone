@@ -49,9 +49,9 @@ namespace PetZone.Volunteers.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("date_of_birth");
 
-                    b.Property<DateTime?>("DeletedAt")
+                    b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_at");
+                        .HasColumnName("deletion_date");
 
                     b.Property<string>("GeneralDescription")
                         .IsRequired()
@@ -183,9 +183,9 @@ namespace PetZone.Volunteers.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<DateTime?>("DeletedAt")
+                    b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_at");
+                        .HasColumnName("deletion_date");
 
                     b.Property<string>("GeneralDescription")
                         .HasMaxLength(2000)

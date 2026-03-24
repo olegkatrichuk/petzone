@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\PetZone.VolunteerRequests.Application\PetZone.VolunteerRequests.Application.csproj" />
+    <ProjectReference Include="..\PetZone.VolunteerRequests.Contracts\PetZone.VolunteerRequests.Contracts.csproj" />
+    <ProjectReference Include="..\..\Shared\PetZone.Framework\PetZone.Framework.csproj" />
+    <ProjectReference Include="..\..\Volunteers\PetZone.Volunteers.Presentation\PetZone.Volunteers.Presentation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CSharpFunctionalExtensions" Version="3.7.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.9" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
