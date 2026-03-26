@@ -7,6 +7,7 @@ using PetZone.VolunteerRequests.Application.Commands.EditMessage;
 using PetZone.VolunteerRequests.Application.Queries.GetDiscussion;
 using PetZone.Volunteers.Presentation.Extensions;
 using System.Security.Claims;
+using PetZone.VolunteerRequests.Application.Queries.GetDiscussionByRelationId;
 
 namespace PetZone.VolunteerRequests.Presentation;
 
@@ -93,6 +94,17 @@ public class DiscussionsController : ControllerBase
         CancellationToken cancellationToken)
     {
         var query = new GetDiscussionQuery(discussionId);
+        var result = await handler.Handle(query, cancellationToken);
+        return result.IsSuccess ? this.ToOkResponse(result.Value) : result.Error.ToResponse();
+    }
+    // GET /discussions/by-relation/{relationId}
+    [HttpGet("by-relation/{relationId:guid}")]
+    public async Task<IActionResult> GetByRelationId(
+        [FromRoute] Guid relationId,
+        [FromServices] GetDiscussionByRelationIdHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetDiscussionByRelationIdQuery(relationId);
         var result = await handler.Handle(query, cancellationToken);
         return result.IsSuccess ? this.ToOkResponse(result.Value) : result.Error.ToResponse();
     }
