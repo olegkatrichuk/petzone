@@ -12,7 +12,7 @@ using PetZone.VolunteerRequests.Infrastructure;
 namespace PetZone.VolunteerRequests.Infrastructure.Migrations
 {
     [DbContext(typeof(VolunteerRequestsDbContext))]
-    [Migration("20260324191021_InitialCreate")]
+    [Migration("20260326065706_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,6 +25,28 @@ namespace PetZone.VolunteerRequests.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("PetZone.VolunteerRequests.Domain.Discussion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("RelationId")
+                        .HasColumnType("uuid");
+
+                    b.PrimitiveCollection<string>("Users")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("users");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("discussions", "volunteer_requests");
+                });
 
             modelBuilder.Entity("PetZone.VolunteerRequests.Domain.RejectedUser", b =>
                 {
@@ -71,6 +93,44 @@ namespace PetZone.VolunteerRequests.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("volunteer_requests", "volunteer_requests");
+                });
+
+            modelBuilder.Entity("PetZone.VolunteerRequests.Domain.Discussion", b =>
+                {
+                    b.OwnsMany("PetZone.VolunteerRequests.Domain.Message", "Messages", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uuid");
+
+                            b1.Property<DateTime>("CreatedAt")
+                                .HasColumnType("timestamp with time zone");
+
+                            b1.Property<Guid>("DiscussionId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<bool>("IsEdited")
+                                .HasColumnType("boolean");
+
+                            b1.Property<string>("Text")
+                                .IsRequired()
+                                .HasMaxLength(2000)
+                                .HasColumnType("character varying(2000)");
+
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uuid");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("DiscussionId");
+
+                            b1.ToTable("messages", "volunteer_requests");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DiscussionId");
+                        });
+
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("PetZone.VolunteerRequests.Domain.VolunteerRequest", b =>

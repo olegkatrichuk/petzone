@@ -3,12 +3,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PetZone.VolunteerRequests.Application;
+using PetZone.VolunteerRequests.Application.Commands.AddMessage;
 using PetZone.VolunteerRequests.Application.Commands.ApproveVolunteerRequest;
+using PetZone.VolunteerRequests.Application.Commands.CloseDiscussion;
 using PetZone.VolunteerRequests.Application.Commands.CreateVolunteerRequest;
+using PetZone.VolunteerRequests.Application.Commands.DeleteMessage;
+using PetZone.VolunteerRequests.Application.Commands.EditMessage;
 using PetZone.VolunteerRequests.Application.Commands.RejectVolunteerRequest;
 using PetZone.VolunteerRequests.Application.Commands.SendForRevision;
 using PetZone.VolunteerRequests.Application.Commands.TakeOnReview;
 using PetZone.VolunteerRequests.Application.Commands.UpdateVolunteerRequest;
+using PetZone.VolunteerRequests.Application.Queries.GetDiscussion;
 using PetZone.VolunteerRequests.Application.Queries.GetRequestsByAdmin;
 using PetZone.VolunteerRequests.Application.Queries.GetRequestsByUser;
 using PetZone.VolunteerRequests.Application.Queries.GetUnreviewedRequests;
@@ -45,6 +50,15 @@ public static class DependencyInjection
         services.AddScoped<GetUnreviewedRequestsHandler>();
         services.AddScoped<GetRequestsByAdminHandler>();
         services.AddScoped<GetRequestsByUserHandler>();
+        // Repositories
+        services.AddScoped<IDiscussionRepository, DiscussionRepository>();
+
+
+        services.AddScoped<AddMessageHandler>();
+        services.AddScoped<DeleteMessageHandler>();
+        services.AddScoped<EditMessageHandler>();
+        services.AddScoped<CloseDiscussionHandler>();
+        services.AddScoped<GetDiscussionHandler>();
 
         return services;
     }
