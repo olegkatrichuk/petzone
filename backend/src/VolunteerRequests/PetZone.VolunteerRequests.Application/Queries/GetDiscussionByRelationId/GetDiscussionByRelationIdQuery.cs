@@ -1,0 +1,3 @@
+namespace PetZone.VolunteerRequests.Application.Queries.GetDiscussionByRelationId;
+
+public record GetDiscussionByRelationIdQuery(Guid RelationId);
