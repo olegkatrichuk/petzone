@@ -9,11 +9,11 @@ public class VolunteerRequestsDbContextFactory
     public VolunteerRequestsDbContext CreateDbContext(string[] args)
     {
         var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__Database")
-            ?? throw new InvalidOperationException(
-                "Set the 'ConnectionStrings__Database' environment variable before running migrations.");
+            ?? "Host=localhost;Port=5434;Database=petzone_db;Username=petzone;Password=changeme";
 
         var optionsBuilder = new DbContextOptionsBuilder<VolunteerRequestsDbContext>();
-        optionsBuilder.UseNpgsql(connectionString);
+        optionsBuilder.UseNpgsql(connectionString,
+            b => b.MigrationsHistoryTable("__EFMigrationsHistory", "volunteer_requests"));
 
         return new VolunteerRequestsDbContext(optionsBuilder.Options);
     }

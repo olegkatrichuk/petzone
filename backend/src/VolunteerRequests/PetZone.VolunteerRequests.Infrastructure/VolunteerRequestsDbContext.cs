@@ -8,6 +8,7 @@ public class VolunteerRequestsDbContext(DbContextOptions<VolunteerRequestsDbCont
 {
     public DbSet<VolunteerRequest> VolunteerRequests => Set<VolunteerRequest>();
     public DbSet<RejectedUser> RejectedUsers => Set<RejectedUser>();
+    public DbSet<Discussion> Discussions => Set<Discussion>(); // ← додай
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
