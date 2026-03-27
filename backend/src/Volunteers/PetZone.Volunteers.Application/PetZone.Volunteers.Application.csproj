@@ -4,6 +4,7 @@
     <ProjectReference Include="..\PetZone.Volunteers.Domain\PetZone.Volunteers.Domain.csproj" />
     <ProjectReference Include="..\..\Species\PetZone.Species.Domain\PetZone.Species.Domain.csproj" />
     <ProjectReference Include="..\..\Shared\PetZone.Core\PetZone.Core.csproj" />
+    <ProjectReference Include="..\..\Shared\PetZone.Framework\PetZone.Framework.csproj" />
     <ProjectReference Include="..\PetZone.Volunteers.Contracts\PetZone.Volunteers.Contracts.csproj" />
     <ProjectReference Include="..\..\Species\PetZone.Species.Contracts\PetZone.Species.Contracts.csproj" />
   </ItemGroup>
