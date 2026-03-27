@@ -1,15 +1,16 @@
 using CSharpFunctionalExtensions;
-using PetZone.SharedKernel;
-using PetZone.SharedKernel;
-using PetZone.SharedKernel;
 using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.Logging;
+using PetZone.SharedKernel;
+using PetZone.Volunteers.Application.Events;
 
 namespace PetZone.Volunteers.Application.Volunteers;
 
 public class UpdateVolunteerMainInfoService(
     IVolunteerRepository repository,
     IValidator<UpdateVolunteerMainInfoCommand> validator,
+    IPublisher publisher,
     ILogger<UpdateVolunteerMainInfoService> logger)
 {
     public async Task<Result<Guid, ErrorList>> Handle(
@@ -47,6 +48,10 @@ public class UpdateVolunteerMainInfoService(
             return (ErrorList)result.Error;
 
         await repository.SaveAsync(volunteer, cancellationToken);
+
+        await publisher.Publish(
+            new VolunteerUpdatedEvent(volunteer.Id),
+            cancellationToken);
 
         logger.LogInformation("Volunteer {VolunteerId} main info updated successfully", volunteer.Id);
 

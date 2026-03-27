@@ -1,6 +1,8 @@
 using CSharpFunctionalExtensions;
+using MassTransit;
 using Microsoft.Extensions.Logging;
 using PetZone.SharedKernel;
+using PetZone.VolunteerRequests.Application.Events;
 using PetZone.VolunteerRequests.Application.Repositories;
 
 namespace PetZone.VolunteerRequests.Application.Commands.SendForRevision;
@@ -8,6 +10,7 @@ namespace PetZone.VolunteerRequests.Application.Commands.SendForRevision;
 public class SendForRevisionHandler(
     IVolunteerRequestRepository repository,
     IVolunteerRequestsUnitOfWork unitOfWork,
+    IPublishEndpoint publishEndpoint,
     ILogger<SendForRevisionHandler> logger)
 {
     public async Task<Result<Guid, ErrorList>> Handle(
@@ -28,6 +31,14 @@ public class SendForRevisionHandler(
             return (ErrorList)result.Error;
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await publishEndpoint.Publish(
+            new VolunteerRequestStatusChangedEvent(
+                UserId: request.UserId,
+                RequestId: request.Id,
+                Status: "RevisionRequired",
+                Comment: command.Comment),
+            cancellationToken);
 
         logger.LogInformation("Volunteer request {RequestId} sent for revision", command.RequestId);
 

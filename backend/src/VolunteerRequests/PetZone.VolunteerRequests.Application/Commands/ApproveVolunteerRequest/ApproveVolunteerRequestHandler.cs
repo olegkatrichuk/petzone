@@ -1,7 +1,9 @@
 using CSharpFunctionalExtensions;
+using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using PetZone.SharedKernel;
+using PetZone.VolunteerRequests.Application.Events;
 using PetZone.VolunteerRequests.Application.Repositories;
 
 namespace PetZone.VolunteerRequests.Application.Commands.ApproveVolunteerRequest;
@@ -13,6 +15,7 @@ public class ApproveVolunteerRequestHandler(
     IVolunteerRequestRepository repository,
     IVolunteerRequestsUnitOfWork unitOfWork,
     IMediator mediator,
+    IPublishEndpoint publishEndpoint,
     ILogger<ApproveVolunteerRequestHandler> logger)
 {
     public async Task<Result<Guid, ErrorList>> Handle(
@@ -40,6 +43,14 @@ public class ApproveVolunteerRequestHandler(
             return (ErrorList)approveResult.Error;
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await publishEndpoint.Publish(
+            new VolunteerRequestStatusChangedEvent(
+                UserId: request.UserId,
+                RequestId: request.Id,
+                Status: "Approved",
+                Comment: null),
+            cancellationToken);
 
         logger.LogInformation("Volunteer request {RequestId} approved", command.RequestId);
 

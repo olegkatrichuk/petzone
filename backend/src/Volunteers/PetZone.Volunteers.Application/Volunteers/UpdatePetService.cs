@@ -1,14 +1,15 @@
 using CSharpFunctionalExtensions;
-using PetZone.SharedKernel;
-using PetZone.SharedKernel;
-using PetZone.SharedKernel;
+using MediatR;
 using Microsoft.Extensions.Logging;
+using PetZone.SharedKernel;
+using PetZone.Volunteers.Application.Events;
 
 namespace PetZone.Volunteers.Application.Volunteers;
 
 public class UpdatePetService(
     IVolunteerRepository volunteerRepository,
     ISpeciesRepository speciesRepository,
+    IPublisher publisher,
     ILogger<UpdatePetService> logger)
 {
     public async Task<Result<Guid, ErrorList>> Handle(
@@ -71,6 +72,10 @@ public class UpdatePetService(
             return (ErrorList)updateResult.Error;
 
         await volunteerRepository.SaveAsync(volunteer, cancellationToken);
+
+        await publisher.Publish(
+            new PetUpdatedEvent(command.PetId, command.VolunteerId),
+            cancellationToken);
 
         logger.LogInformation("Pet {PetId} updated successfully", command.PetId);
 
