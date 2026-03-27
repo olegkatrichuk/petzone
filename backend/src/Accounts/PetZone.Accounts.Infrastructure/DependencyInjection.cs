@@ -1,3 +1,5 @@
+using MassTransit;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,15 +9,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using PetZone.Accounts.Application;
 using PetZone.Accounts.Application.Accounts;
-using PetZone.Accounts.Application.Repositories;
-using PetZone.Accounts.Domain;
-using PetZone.Accounts.Infrastructure.Authorization;
-using PetZone.Accounts.Infrastructure.Repositories;
-using System.Text;
-using MassTransit;
 using PetZone.Accounts.Application.Accounts.ConfirmEmail;
 using PetZone.Accounts.Application.Accounts.GetConfirmationLink;
 using PetZone.Accounts.Application.Accounts.GetUserInfo;
+using PetZone.Accounts.Application.Repositories;
+using PetZone.Accounts.Domain;
+using PetZone.Accounts.Infrastructure.Authorization;
+using PetZone.Accounts.Infrastructure.Cache;
+using PetZone.Accounts.Infrastructure.Repositories;
+using System.Text;
 
 namespace PetZone.Accounts.Infrastructure;
 
@@ -60,7 +62,11 @@ public static class DependencyInjection
         // Repositories & UnitOfWork
         services.AddScoped<IAccountsUnitOfWork, AccountsUnitOfWork>();
         services.AddScoped<IParticipantAccountRepository, ParticipantAccountRepository>();
-        services.AddScoped<IRefreshSessionRepository, RefreshSessionRepository>();
+        services.AddScoped<IRefreshSessionRepository, RedisRefreshSessionRepository>();
+
+        // MediatR (cache invalidation handlers)
+        services.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssembly(typeof(UserCacheInvalidationHandler).Assembly));
 
         // JWT Authentication
         var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>()!;

@@ -1,6 +1,8 @@
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
+using PetZone.Core;
 using PetZone.SharedKernel;
 using PetZone.Volunteers.Application.Queries;
 using PetZone.Volunteers.Contracts;
@@ -9,13 +11,23 @@ namespace PetZone.Volunteers.Infrastructure.Queries;
 
 public class GetPetByIdHandler(
     VolunteersDbContext dbContext,
+    ICacheService cacheService,
     ILogger<GetPetByIdHandler> logger)
 {
+    private static readonly DistributedCacheEntryOptions CacheOptions = new()
+    {
+        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
+    };
+
     public async Task<Result<PetDto, ErrorList>> Handle(
         GetPetByIdQuery query,
         CancellationToken cancellationToken = default)
     {
         logger.LogInformation("Getting pet by id {PetId}", query.PetId);
+
+        var cached = await cacheService.GetAsync<PetDto>($"pet:{query.PetId}", cancellationToken);
+        if (cached is not null)
+            return cached;
 
         var rawPet = await dbContext.Volunteers
             .Where(v => !v.IsDeleted)
@@ -74,6 +86,8 @@ public class GetPetByIdHandler(
                 .OrderByDescending(p => p.IsMain)
                 .Select(p => new PetPhotoDto(p.FilePath, p.IsMain))
                 .ToList());
+
+        await cacheService.SetAsync($"pet:{query.PetId}", pet, CacheOptions, cancellationToken);
 
         return pet;
     }

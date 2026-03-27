@@ -1,6 +1,8 @@
 using CSharpFunctionalExtensions;
+using MassTransit;
 using Microsoft.Extensions.Logging;
 using PetZone.SharedKernel;
+using PetZone.VolunteerRequests.Application.Events;
 using PetZone.VolunteerRequests.Application.Repositories;
 using PetZone.VolunteerRequests.Domain;
 
@@ -10,6 +12,7 @@ public class RejectVolunteerRequestHandler(
     IVolunteerRequestRepository repository,
     IRejectedUserRepository rejectedUserRepository,
     IVolunteerRequestsUnitOfWork unitOfWork,
+    IPublishEndpoint publishEndpoint,
     ILogger<RejectVolunteerRequestHandler> logger)
 {
     public async Task<Result<Guid, ErrorList>> Handle(
@@ -32,6 +35,14 @@ public class RejectVolunteerRequestHandler(
         var rejectedUser = RejectedUser.Create(request.UserId);
         await rejectedUserRepository.AddAsync(rejectedUser, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await publishEndpoint.Publish(
+            new VolunteerRequestStatusChangedEvent(
+                UserId: request.UserId,
+                RequestId: request.Id,
+                Status: "Rejected",
+                Comment: command.Comment),
+            cancellationToken);
 
         logger.LogInformation("Volunteer request {RequestId} rejected", command.RequestId);
 

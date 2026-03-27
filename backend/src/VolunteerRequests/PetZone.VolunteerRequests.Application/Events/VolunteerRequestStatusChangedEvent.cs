@@ -1,4 +1,4 @@
-namespace NotificationService.Application.Events;
+namespace PetZone.VolunteerRequests.Application.Events;
 
 public record VolunteerRequestStatusChangedEvent(
     Guid UserId,

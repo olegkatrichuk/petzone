@@ -1,13 +1,14 @@
 using CSharpFunctionalExtensions;
-using PetZone.SharedKernel;
-using PetZone.SharedKernel;
-using PetZone.SharedKernel;
+using MediatR;
 using Microsoft.Extensions.Logging;
+using PetZone.SharedKernel;
+using PetZone.Volunteers.Application.Events;
 
 namespace PetZone.Volunteers.Application.Volunteers;
 
 public class DeleteVolunteerService(
     IVolunteerRepository repository,
+    IPublisher publisher,
     ILogger<DeleteVolunteerService> logger)
 {
     public async Task<Result<Guid, ErrorList>> Handle(
@@ -25,6 +26,10 @@ public class DeleteVolunteerService(
 
         volunteer.Delete();
         await repository.SoftDeleteAsync(volunteer, cancellationToken);
+
+        await publisher.Publish(
+            new VolunteerDeletedEvent(volunteer.Id),
+            cancellationToken);
 
         logger.LogInformation("Volunteer {VolunteerId} soft deleted successfully", volunteer.Id);
 
