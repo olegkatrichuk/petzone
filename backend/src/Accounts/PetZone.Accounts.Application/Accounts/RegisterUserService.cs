@@ -1,7 +1,9 @@
 using CSharpFunctionalExtensions;
+using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using PetZone.Accounts.Application.Commands;
+using PetZone.Accounts.Application.Events;
 using PetZone.Accounts.Application.Repositories;
 using PetZone.Accounts.Domain;
 using PetZone.SharedKernel;
@@ -13,6 +15,7 @@ public class RegisterUserService(
     RoleManager<Role> roleManager,
     IParticipantAccountRepository participantAccountRepository,
     IAccountsUnitOfWork unitOfWork,
+    IPublishEndpoint publishEndpoint,
     ILogger<RegisterUserService> logger)
 {
     public async Task<Result<Guid, ErrorList>> Handle(
@@ -35,17 +38,17 @@ public class RegisterUserService(
             command.Request.LastName,
             participantRole);
 
-        var result = await userManager.CreateAsync(user, command.Request.Password);
-        if (!result.Succeeded)
-        {
-            var errors = result.Errors
-                .Select(e => Error.Validation(e.Code, e.Description))
-                .ToList();
-            return new ErrorList(errors);
-        }
-
         try
         {
+            var result = await userManager.CreateAsync(user, command.Request.Password);
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors
+                    .Select(e => Error.Validation(e.Code, e.Description))
+                    .ToList();
+                return new ErrorList(errors);
+            }
+
             await userManager.AddToRoleAsync(user, Role.Participant);
 
             var participantAccount = new ParticipantAccount
@@ -56,6 +59,12 @@ public class RegisterUserService(
 
             await participantAccountRepository.AddAsync(participantAccount, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            await publishEndpoint.Publish(new UserRegisteredEvent(
+                user.Id,
+                user.Email!,
+                user.FirstName,
+                user.LastName), cancellationToken);
 
             logger.LogInformation("User {Email} registered successfully", command.Request.Email);
             return user.Id;

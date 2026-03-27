@@ -38,7 +38,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
+      <Content Include="..\..\.dockerignore" Condition="Exists('..\..\.dockerignore')">
         <Link>.dockerignore</Link>
       </Content>
     </ItemGroup>

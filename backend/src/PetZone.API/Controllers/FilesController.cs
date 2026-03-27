@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PetZone.API.Extensions;
-using PetZone.Volunteers.Application.Providers;
+using PetZone.Framework.Files;
 
 namespace PetZone.API.Controllers;
 

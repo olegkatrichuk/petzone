@@ -484,4 +484,4 @@ $RECYCLE.BIN/
 .idea/
 compose.yaml
 .env
-.env
+appsettings.Development.json
