@@ -3,7 +3,7 @@ using PetZone.SharedKernel;
 using PetZone.SharedKernel;
 using PetZone.SharedKernel;
 using Microsoft.Extensions.Logging;
-using PetZone.Volunteers.Application.Providers;
+using PetZone.Framework.Files;
 
 namespace PetZone.Volunteers.Application.Volunteers;
 

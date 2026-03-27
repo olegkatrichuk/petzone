@@ -1,0 +1,13 @@
+/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.Domain/bin/Debug/net10.0/NotificationService.Domain.deps.json
+/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.Domain/bin/Debug/net10.0/NotificationService.Domain.dll
+/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.Domain/bin/Debug/net10.0/NotificationService.Domain.pdb
+/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.Domain/obj/Debug/net10.0/NotificationService.Domain.csproj.AssemblyReference.cache
+/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.Domain/obj/Debug/net10.0/NotificationService.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.Domain/obj/Debug/net10.0/NotificationService.Domain.AssemblyInfoInputs.cache
+/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.Domain/obj/Debug/net10.0/NotificationService.Domain.AssemblyInfo.cs
+/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.Domain/obj/Debug/net10.0/NotificationService.Domain.csproj.CoreCompileInputs.cache
+/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.Domain/obj/Debug/net10.0/NotificationService.Domain.sourcelink.json
+/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.Domain/obj/Debug/net10.0/NotificationService.Domain.dll
+/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.Domain/obj/Debug/net10.0/refint/NotificationService.Domain.dll
+/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.Domain/obj/Debug/net10.0/NotificationService.Domain.pdb
+/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.Domain/obj/Debug/net10.0/ref/NotificationService.Domain.dll

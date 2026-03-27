@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PetZone.Accounts.Application.Accounts;
+using PetZone.Accounts.Application.Accounts.ConfirmEmail;
+using PetZone.Accounts.Application.Accounts.GetConfirmationLink;
 using PetZone.Accounts.Application.Accounts.GetUserInfo;
 using PetZone.Accounts.Application.Commands;
 using PetZone.Accounts.Contracts;
@@ -84,6 +86,29 @@ public class AccountsController(
                 ? NotFound(result.Error)
                 : BadRequest(result.Error);
     }
+    
+    // GET /accounts/{userId}/confirmation-token
+    [HttpGet("{userId:guid}/confirmation-token")]
+    public async Task<IActionResult> GetConfirmationToken(
+        [FromRoute] Guid userId,
+        [FromServices] GetConfirmationLinkService service,
+        CancellationToken cancellationToken)
+    {
+        var result = await service.Handle(userId, cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+    }
+
+// GET /accounts/confirm-email
+    [HttpGet("confirm-email")]
+    public async Task<IActionResult> ConfirmEmail(
+        [FromQuery] Guid userId,
+        [FromQuery] string token,
+        [FromServices] ConfirmEmailService service,
+        CancellationToken cancellationToken)
+    {
+        var result = await service.Handle(userId, token, cancellationToken);
+        return result.IsSuccess ? Ok("Email confirmed successfully") : BadRequest(result.Error);
+    }
 
     private void SetRefreshTokenCookie(Guid refreshToken)
     {
@@ -95,4 +120,5 @@ public class AccountsController(
             Expires = DateTimeOffset.UtcNow.AddDays(7)
         });
     }
+    
 }

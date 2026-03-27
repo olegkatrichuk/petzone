@@ -12,6 +12,9 @@ using PetZone.Accounts.Domain;
 using PetZone.Accounts.Infrastructure.Authorization;
 using PetZone.Accounts.Infrastructure.Repositories;
 using System.Text;
+using MassTransit;
+using PetZone.Accounts.Application.Accounts.ConfirmEmail;
+using PetZone.Accounts.Application.Accounts.GetConfirmationLink;
 using PetZone.Accounts.Application.Accounts.GetUserInfo;
 
 namespace PetZone.Accounts.Infrastructure;
@@ -51,6 +54,8 @@ public static class DependencyInjection
         services.AddScoped<LoginUserService>();
         services.AddScoped<RefreshTokenService>();
         services.AddScoped<GetUserInfoService>();
+        services.AddScoped<GetConfirmationLinkService>();
+        services.AddScoped<ConfirmEmailService>();
 
         // Repositories & UnitOfWork
         services.AddScoped<IAccountsUnitOfWork, AccountsUnitOfWork>();
@@ -84,6 +89,22 @@ public static class DependencyInjection
         services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
         services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
         services.AddAuthorization();
+        // MassTransit
+        services.AddMassTransit(x =>
+        {
+            x.UsingRabbitMq((ctx, cfg) =>
+            {
+                cfg.Host(configuration["RabbitMq:Host"] ?? "localhost",
+                    ushort.Parse(configuration["RabbitMq:Port"] ?? "5672"),
+                    "/", h =>
+                    {
+                        h.Username(configuration["RabbitMq:Username"] ?? "guest");
+                        h.Password(configuration["RabbitMq:Password"] ?? "guest");
+                    });
+
+                cfg.ConfigureEndpoints(ctx);
+            });
+        });
 
         return services;
     }

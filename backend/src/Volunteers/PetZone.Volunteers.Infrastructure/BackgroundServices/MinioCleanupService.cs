@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using PetZone.Volunteers.Application.Providers;
+using PetZone.Framework.Files;
 
 namespace PetZone.Volunteers.Infrastructure.BackgroundServices;
 
