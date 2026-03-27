@@ -1,6 +1,12 @@
+using Elastic.Ingest.Elasticsearch;
+using Elastic.Ingest.Elasticsearch.DataStreams;
+using Elastic.Serilog.Sinks;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.OpenApi;
+using OpenTelemetry.Metrics;
 using PetZone.Accounts.Infrastructure;
+using PetZone.Framework.Cache;
+using StackExchange.Redis;
 using PetZone.API.Middleware;
 using PetZone.Species.Application;
 using PetZone.Species.Infrastructure;
@@ -14,13 +20,39 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, config) =>
 {
+    var elasticsearchUrl = context.Configuration["Elasticsearch:Url"] ?? "http://localhost:9200";
+
     config
         .ReadFrom.Configuration(context.Configuration)
         .WriteTo.Console()
         .WriteTo.Seq(
             context.Configuration["Seq:ServerUrl"] ?? "http://localhost:5341",
-            apiKey: context.Configuration["Seq:ApiKey"]);
+            apiKey: context.Configuration["Seq:ApiKey"])
+        .WriteTo.Elasticsearch(
+            [new Uri(elasticsearchUrl)],
+            opts =>
+            {
+                opts.DataStream = new DataStreamName("logs", "petzone", "default");
+                opts.BootstrapMethod = BootstrapMethod.Failure;
+            });
 });
+
+var redisConnectionString = builder.Configuration["Redis:ConnectionString"] ?? "localhost:6379";
+builder.Services.AddSingleton<IConnectionMultiplexer>(
+    ConnectionMultiplexer.Connect(redisConnectionString));
+builder.Services.AddStackExchangeRedisCache(options =>
+    options.Configuration = redisConnectionString);
+builder.Services.AddScoped<PetZone.Core.ICacheService, CacheService>();
+
+builder.Services.AddOpenTelemetry()
+    .WithMetrics(metrics =>
+    {
+        metrics
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddRuntimeInstrumentation()
+            .AddPrometheusExporter();
+    });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -81,6 +113,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapPrometheusScrapingEndpoint();
 
 app.Run();
 

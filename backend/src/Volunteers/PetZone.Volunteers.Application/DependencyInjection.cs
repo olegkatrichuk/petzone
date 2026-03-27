@@ -1,4 +1,5 @@
 using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using PetZone.Volunteers.Application.Volunteers;
 
@@ -26,6 +27,8 @@ public static class DependencyInjection
         services.AddScoped<MovePetService>();
 
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+        services.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
 
         return services;
     }

@@ -1,14 +1,15 @@
 using CSharpFunctionalExtensions;
-using PetZone.SharedKernel;
-using PetZone.SharedKernel;
-using PetZone.SharedKernel;
+using MediatR;
 using Microsoft.Extensions.Logging;
+using PetZone.SharedKernel;
+using PetZone.Volunteers.Application.Events;
 
 namespace PetZone.Volunteers.Application.Volunteers;
 
 public class CreatePetService(
     IVolunteerRepository volunteerRepository,
     ISpeciesRepository speciesRepository,
+    IPublisher publisher,
     ILogger<CreatePetService> logger)
 {
     public async Task<Result<Guid, ErrorList>> Handle(
@@ -72,6 +73,10 @@ public class CreatePetService(
             return (ErrorList)addResult.Error;
 
         await volunteerRepository.SaveAsync(volunteer, cancellationToken);
+
+        await publisher.Publish(
+            new PetCreatedEvent(petResult.Value.Id, command.VolunteerId),
+            cancellationToken);
 
         logger.LogInformation("Pet created successfully. Id: {PetId}", petResult.Value.Id);
 

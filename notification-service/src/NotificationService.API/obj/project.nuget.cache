@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "dgSpecHash": "wz6meJ34fOo=",
-  "success": true,
+  "dgSpecHash": "gAORcdYVci0=",
+  "success": false,
   "projectFilePath": "/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.API/NotificationService.API.csproj",
   "expectedPackageFiles": [
     "/Users/olegkatrichuk/.nuget/packages/bouncycastle.cryptography/2.6.2/bouncycastle.cryptography.2.6.2.nupkg.sha512",
@@ -56,5 +56,28 @@
     "/Users/olegkatrichuk/.nuget/packages/system.composition.typedparts/9.0.0/system.composition.typedparts.9.0.0.nupkg.sha512",
     "/Users/olegkatrichuk/.nuget/packages/system.security.cryptography.pkcs/10.0.0/system.security.cryptography.pkcs.10.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1105",
+      "level": "Error",
+      "message": "Unable to find project information for '/Users/olegkatrichuk/RiderProjects/petzone/backend/src/Accounts/PetZone.Accounts.Application/PetZone.Accounts.Application.csproj'. If you are using Visual Studio, this may be because the project is unloaded or not part of the current solution so run a restore from the command-line. Otherwise, the project file may be invalid or missing targets required for restore.",
+      "projectPath": "/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.API/NotificationService.API.csproj",
+      "filePath": "/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.API/NotificationService.API.csproj",
+      "libraryId": "/Users/olegkatrichuk/RiderProjects/petzone/backend/src/Accounts/PetZone.Accounts.Application/PetZone.Accounts.Application.csproj",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    },
+    {
+      "code": "NU1105",
+      "level": "Error",
+      "message": "Unable to find project information for '/Users/olegkatrichuk/RiderProjects/petzone/backend/src/VolunteerRequests/PetZone.VolunteerRequests.Application/PetZone.VolunteerRequests.Application.csproj'. If you are using Visual Studio, this may be because the project is unloaded or not part of the current solution so run a restore from the command-line. Otherwise, the project file may be invalid or missing targets required for restore.",
+      "projectPath": "/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.API/NotificationService.API.csproj",
+      "filePath": "/Users/olegkatrichuk/RiderProjects/petzone/notification-service/src/NotificationService.API/NotificationService.API.csproj",
+      "libraryId": "/Users/olegkatrichuk/RiderProjects/petzone/backend/src/VolunteerRequests/PetZone.VolunteerRequests.Application/PetZone.VolunteerRequests.Application.csproj",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
 }

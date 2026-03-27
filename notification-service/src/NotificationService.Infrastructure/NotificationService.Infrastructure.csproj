@@ -3,6 +3,8 @@
   <ItemGroup>
     <ProjectReference Include="..\NotificationService.Application\NotificationService.Application.csproj" />
     <ProjectReference Include="..\NotificationService.Domain\NotificationService.Domain.csproj" />
+    <ProjectReference Include="..\..\..\backend\src\Accounts\PetZone.Accounts.Application\PetZone.Accounts.Application.csproj" />
+    <ProjectReference Include="..\..\..\backend\src\VolunteerRequests\PetZone.VolunteerRequests.Application\PetZone.VolunteerRequests.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

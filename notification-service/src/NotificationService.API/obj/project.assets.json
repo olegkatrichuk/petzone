@@ -1072,6 +1072,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
+          "/Users/olegkatrichuk/RiderProjects/petzone/backend/src/Accounts/PetZone.Accounts.Application/PetZone.Accounts.Application.csproj": "1.0.0",
+          "/Users/olegkatrichuk/RiderProjects/petzone/backend/src/VolunteerRequests/PetZone.VolunteerRequests.Application/PetZone.VolunteerRequests.Application.csproj": "1.0.0",
           "MailKit": "4.15.1",
           "MassTransit": "8.4.1",
           "MassTransit.RabbitMQ": "8.4.1",
@@ -3955,5 +3957,25 @@
         }
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1105",
+      "level": "Error",
+      "message": "Unable to find project information for '/Users/olegkatrichuk/RiderProjects/petzone/backend/src/Accounts/PetZone.Accounts.Application/PetZone.Accounts.Application.csproj'. If you are using Visual Studio, this may be because the project is unloaded or not part of the current solution so run a restore from the command-line. Otherwise, the project file may be invalid or missing targets required for restore.",
+      "libraryId": "/Users/olegkatrichuk/RiderProjects/petzone/backend/src/Accounts/PetZone.Accounts.Application/PetZone.Accounts.Application.csproj",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    },
+    {
+      "code": "NU1105",
+      "level": "Error",
+      "message": "Unable to find project information for '/Users/olegkatrichuk/RiderProjects/petzone/backend/src/VolunteerRequests/PetZone.VolunteerRequests.Application/PetZone.VolunteerRequests.Application.csproj'. If you are using Visual Studio, this may be because the project is unloaded or not part of the current solution so run a restore from the command-line. Otherwise, the project file may be invalid or missing targets required for restore.",
+      "libraryId": "/Users/olegkatrichuk/RiderProjects/petzone/backend/src/VolunteerRequests/PetZone.VolunteerRequests.Application/PetZone.VolunteerRequests.Application.csproj",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
 }

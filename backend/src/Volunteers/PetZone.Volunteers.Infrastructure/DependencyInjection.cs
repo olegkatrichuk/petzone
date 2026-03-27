@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,6 +7,7 @@ using PetZone.Core;
 using PetZone.Species.Application;
 using PetZone.Framework.Files;
 using PetZone.Volunteers.Infrastructure.BackgroundServices;
+using PetZone.Volunteers.Infrastructure.Cache;
 using PetZone.Volunteers.Infrastructure.Options;
 using PetZone.Volunteers.Infrastructure.Queries;
 using PetZone.Volunteers.Application.Repositories;
@@ -52,6 +54,10 @@ public static class DependencyInjection
         // Options
         services.Configure<SoftDeleteOptions>(opts =>
             configuration.GetSection(SoftDeleteOptions.SectionName).Bind(opts));
+
+        // Cache invalidation handlers
+        services.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssembly(typeof(PetCacheInvalidationHandler).Assembly));
 
         // Background Services
         services.AddHostedService<MinioCleanupService>();
