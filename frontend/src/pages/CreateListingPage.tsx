@@ -45,14 +45,13 @@ type FormValues = {
 }
 
 export default function CreateListingPage() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const navigate = useLangNavigate()
   const { user } = useAuthStore()
   const [toast, setToast] = useState<string | null>(null)
   const [createListing] = useCreateListingMutation()
 
-  const locale = i18n.language?.slice(0, 2) || 'uk'
-  const { data: speciesList = [] } = useGetSpeciesQuery({ locale })
+  const { data: speciesList = [] } = useGetSpeciesQuery()
 
   const schema = useMemo(() => z.object({
     title: z.string().min(1, t('validation.required')).max(200),
@@ -80,7 +79,7 @@ export default function CreateListingPage() {
 
   const selectedSpeciesId = watch('speciesId')
   const { data: breeds = [] } = useGetBreedsQuery(
-    { speciesId: selectedSpeciesId, locale },
+    selectedSpeciesId,
     { skip: !selectedSpeciesId }
   )
 

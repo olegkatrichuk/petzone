@@ -180,7 +180,7 @@ export default function ListingsPage() {
     { speciesId, city, page, pageSize: PAGE_SIZE },
   )
 
-  const { data: speciesList = [] } = useGetSpeciesQuery('uk')
+  const { data: speciesList = [] } = useGetSpeciesQuery()
 
   // Reset on filter change
   useEffect(() => {
