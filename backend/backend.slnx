@@ -32,6 +32,13 @@
     <Project Path="src/VolunteerRequests/PetZone.VolunteerRequests.Infrastructure/PetZone.VolunteerRequests.Infrastructure.csproj" />
     <Project Path="src/VolunteerRequests/PetZone.VolunteerRequests.Presentation/PetZone.VolunteerRequests.Presentation.csproj" />
   </Folder>
+  <Folder Name="/src/Listings/">
+    <Project Path="src/Listings/PetZone.Listings.Application/PetZone.Listings.Application.csproj" />
+    <Project Path="src/Listings/PetZone.Listings.Contracts/PetZone.Listings.Contracts.csproj" />
+    <Project Path="src/Listings/PetZone.Listings.Domain/PetZone.Listings.Domain.csproj" />
+    <Project Path="src/Listings/PetZone.Listings.Infrastructure/PetZone.Listings.Infrastructure.csproj" />
+    <Project Path="src/Listings/PetZone.Listings.Presentation/PetZone.Listings.Presentation.csproj" />
+  </Folder>
   <Folder Name="/src/Volunteers/">
     <Project Path="src/Volunteers/PetZone.Volunteers.Application/PetZone.Volunteers.Application.csproj" />
     <Project Path="src/Volunteers/PetZone.Volunteers.Contracts/PetZone.Volunteers.Contracts.csproj" />

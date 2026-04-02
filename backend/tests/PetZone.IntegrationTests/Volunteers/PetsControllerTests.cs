@@ -27,6 +27,7 @@ public class PetsControllerTests(IntegrationTestWebFactory factory)
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
+    
     [Fact]
     public async Task CreatePet_InvalidBreed_ShouldReturn400()
     {
@@ -193,8 +194,8 @@ public class PetsControllerTests(IntegrationTestWebFactory factory)
 
     private async Task SeedSpeciesAsync()
     {
-        var speciesResult = SpeciesEntity.Create(_speciesId, "Собака");
-        var breedResult = Breed.Create(_breedId, "Лабрадор");
+        var speciesResult = SpeciesEntity.Create(_speciesId, new Dictionary<string, string> { ["uk"] = "Собака", ["en"] = "Dog" });
+        var breedResult = Breed.Create(_breedId, new Dictionary<string, string> { ["uk"] = "Лабрадор", ["en"] = "Labrador" });
         speciesResult.Value.AddBreed(breedResult.Value);
         SpeciesContext.Species.Add(speciesResult.Value);
         await SpeciesContext.SaveChangesAsync();

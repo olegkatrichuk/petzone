@@ -42,6 +42,8 @@
       <ProjectReference Include="..\Accounts\PetZone.Accounts.Infrastructure\PetZone.Accounts.Infrastructure.csproj" />
       <ProjectReference Include="..\VolunteerRequests\PetZone.VolunteerRequests.Presentation\PetZone.VolunteerRequests.Presentation.csproj" />
       <ProjectReference Include="..\VolunteerRequests\PetZone.VolunteerRequests.Infrastructure\PetZone.VolunteerRequests.Infrastructure.csproj" />
+      <ProjectReference Include="..\Listings\PetZone.Listings.Presentation\PetZone.Listings.Presentation.csproj" />
+      <ProjectReference Include="..\Listings\PetZone.Listings.Infrastructure\PetZone.Listings.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

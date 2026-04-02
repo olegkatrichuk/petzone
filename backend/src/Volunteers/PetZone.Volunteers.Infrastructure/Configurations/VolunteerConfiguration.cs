@@ -18,6 +18,10 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                .HasMaxLength(Volunteer.MaxGeneralDescriptionLength)
                .IsRequired(false);
 
+        builder.Property(v => v.PhotoPath)
+               .HasMaxLength(Volunteer.MaxPhotoPathLength)
+               .IsRequired(false);
+
         builder.ComplexProperty(v => v.Name, n =>
         {
             n.Property(p => p.FirstName)

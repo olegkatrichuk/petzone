@@ -196,6 +196,11 @@ namespace PetZone.Volunteers.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
 
+                    b.Property<string>("PhotoPath")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("photo_path");
+
                     b.ComplexProperty(typeof(Dictionary<string, object>), "Email", "PetZone.Volunteers.Domain.Models.Volunteer.Email#Email", b1 =>
                         {
                             b1.IsRequired();

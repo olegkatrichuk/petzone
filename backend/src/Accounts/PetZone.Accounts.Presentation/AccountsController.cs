@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -6,6 +7,8 @@ using PetZone.Accounts.Application.Accounts.ConfirmEmail;
 using PetZone.Accounts.Application.Accounts.GetConfirmationLink;
 using PetZone.Accounts.Application.Accounts.GetUserInfo;
 using PetZone.Accounts.Application.Commands;
+using PetZone.Accounts.Application;
+using PetZone.Accounts.Application.Repositories;
 using PetZone.Accounts.Contracts;
 using PetZone.SharedKernel;
 using PetZone.Volunteers.Presentation.Extensions;
@@ -18,6 +21,8 @@ public class AccountsController(
     RegisterUserService registerUserService,
     LoginUserService loginUserService,
     RefreshTokenService refreshTokenService,
+    IRefreshSessionRepository refreshSessionRepository,
+    IAccountsUnitOfWork unitOfWork,
     ILogger<AccountsController> logger) : ControllerBase
 {
     private const string RefreshTokenCookie = "refreshToken";
@@ -71,6 +76,7 @@ public class AccountsController(
         return this.ToOkResponse(new LoginResponse(result.Value.AccessToken));
     }
     
+    [Authorize]
     [HttpGet("{userId:guid}")]
     public async Task<IActionResult> GetUserInfo(
         [FromRoute] Guid userId,
@@ -88,6 +94,7 @@ public class AccountsController(
     }
     
     // GET /accounts/{userId}/confirmation-token
+    [Authorize]
     [HttpGet("{userId:guid}/confirmation-token")]
     public async Task<IActionResult> GetConfirmationToken(
         [FromRoute] Guid userId,
@@ -108,6 +115,28 @@ public class AccountsController(
     {
         var result = await service.Handle(userId, token, cancellationToken);
         return result.IsSuccess ? Ok("Email confirmed successfully") : BadRequest(result.Error);
+    }
+
+    [HttpPost("logout")]
+    public async Task<ActionResult> Logout(CancellationToken cancellationToken)
+    {
+        if (!Request.Cookies.TryGetValue(RefreshTokenCookie, out var refreshTokenStr)
+            || !Guid.TryParse(refreshTokenStr, out var refreshToken))
+        {
+            Response.Cookies.Delete(RefreshTokenCookie);
+            return Ok();
+        }
+
+        var session = await refreshSessionRepository.GetByRefreshTokenAsync(refreshToken, cancellationToken);
+        if (session is not null)
+        {
+            await refreshSessionRepository.DeleteAsync(session, cancellationToken);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+        }
+
+        Response.Cookies.Delete(RefreshTokenCookie);
+        logger.LogInformation("User logged out");
+        return Ok();
     }
 
     private void SetRefreshTokenCookie(Guid refreshToken)

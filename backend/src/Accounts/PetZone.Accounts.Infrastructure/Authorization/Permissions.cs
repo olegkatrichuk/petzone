@@ -26,6 +26,7 @@ public static class Permissions
     public static class Species
     {
         public const string Read = "species.read";
+        public const string Create = "species.create";
         public const string Delete = "species.delete";
     }
 }
