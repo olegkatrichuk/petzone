@@ -13,6 +13,7 @@ using PetZone.Species.Infrastructure;
 using PetZone.Volunteers.Application;
 using PetZone.Volunteers.Infrastructure;
 using PetZone.VolunteerRequests.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using PetZone.Listings.Application;
 using PetZone.Listings.Infrastructure;
 using Serilog;
@@ -102,6 +103,17 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 
 var app = builder.Build();
+
+// Apply migrations automatically on startup
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await services.GetRequiredService<AccountsDbContext>().Database.MigrateAsync();
+    await services.GetRequiredService<VolunteersDbContext>().Database.MigrateAsync();
+    await services.GetRequiredService<SpeciesDbContext>().Database.MigrateAsync();
+    await services.GetRequiredService<VolunteerRequestsDbContext>().Database.MigrateAsync();
+    await services.GetRequiredService<ListingsDbContext>().Database.MigrateAsync();
+}
 
 await DataSeeder.SeedAsync(app.Services);
 await PetZone.Species.Infrastructure.SpeciesSeeder.SeedAsync(app.Services);
