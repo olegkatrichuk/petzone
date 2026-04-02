@@ -30,6 +30,8 @@ public static class DependencyInjection
         services.AddScoped<GetBreedsBySpeciesIdHandler>();
         services.AddScoped<DeleteSpeciesService>();
         services.AddScoped<DeleteBreedService>();
+        services.AddScoped<CreateSpeciesService>();
+        services.AddScoped<CreateBreedService>();
 
         // Options
         var softDeleteOptions = new SoftDeleteOptions();

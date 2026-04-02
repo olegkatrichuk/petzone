@@ -110,7 +110,7 @@ public class VolunteersController(
         return this.ToOkResponse(result.Value);
     }
     
-    [Authorize(Policy = Permissions.Volunteers.Read)]
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult> GetAll(
         [FromQuery] int page = 1,
@@ -128,7 +128,7 @@ public class VolunteersController(
         return this.ToOkResponse(result.Value);
     }
     
-    [Authorize(Policy = Permissions.Volunteers.Read)]
+    [AllowAnonymous]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult> GetById(
         [FromRoute] Guid id,

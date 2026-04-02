@@ -7,11 +7,14 @@ namespace PetZone.Volunteers.Domain.Models
     {
         public const int MaxGeneralDescriptionLength = 2000;
 
+        public const int MaxPhotoPathLength = 500;
+
         public FullName Name { get; private set; }
         public Email Email { get; private set; }
         public string GeneralDescription { get; private set; }
         public Experience Experience { get; private set; }
         public PhoneNumber Phone { get; private set; }
+        public string? PhotoPath { get; private set; }
 
         private readonly List<SocialNetwork> _socialNetworks = new();
         public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks.AsReadOnly();
@@ -63,6 +66,8 @@ namespace PetZone.Volunteers.Domain.Models
 
             return new Volunteer(id, name, email, generalDescription.Trim(), experience, phone);
         }
+
+        public void UpdatePhoto(string? photoPath) => PhotoPath = photoPath;
 
         public int CountPetsFoundHome() => _pets.Count(p => p.Status == HelpStatus.FoundHome);
         public int CountPetsLookingForHome() => _pets.Count(p => p.Status == HelpStatus.LookingForHome);

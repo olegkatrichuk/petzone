@@ -19,6 +19,7 @@
     ],
     "Species": [
       "species.read",
+      "species.create",
       "species.delete"
     ]
   },
@@ -38,6 +39,7 @@
       "pets.move",
       "pets.update-status",
       "species.read",
+      "species.create",
       "species.delete"
     ],
     "Volunteer": [

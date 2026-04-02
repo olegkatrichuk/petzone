@@ -29,15 +29,14 @@ namespace PetZone.Species.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("name");
-
                     b.Property<Guid?>("SpeciesId")
                         .HasColumnType("uuid")
                         .HasColumnName("species_id");
+
+                    b.Property<string>("Translations")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("translations");
 
                     b.HasKey("Id");
 
@@ -53,11 +52,10 @@ namespace PetZone.Species.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Translations")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("name");
+                        .HasColumnType("jsonb")
+                        .HasColumnName("translations");
 
                     b.HasKey("Id");
 

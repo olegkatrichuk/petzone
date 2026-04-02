@@ -13,6 +13,7 @@ namespace PetZone.Volunteers.Domain.Models
     public class Pet : SoftDeletableEntity<Guid>
     {
         public const int MAX_NICKNAME_LENGTH = 100;
+        public const int MAX_PHOTOS_COUNT = 5;
         public const int MAX_GENERAL_DESCRIPTION_LENGTH = 2000;
         public const int MAX_COLOR_LENGTH = 50;
         public const int MAX_MICROCHIP_NUMBER_LENGTH = 50;
@@ -185,6 +186,10 @@ namespace PetZone.Volunteers.Domain.Models
         {
             if (photo == null)
                 return Error.Validation("pet.photo_is_null", "Фото не может быть пустым.");
+
+            if (_photos.Count >= MAX_PHOTOS_COUNT)
+                return Error.Validation("pet.photos_limit_exceeded",
+                    $"Нельзя добавить больше {MAX_PHOTOS_COUNT} фото для одного питомца.");
 
             if (_photos.Any(p => p.FilePath == photo.FilePath))
                 return Error.Validation("pet.photo_already_exists", "Фото уже добавлено.");

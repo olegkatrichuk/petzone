@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PetZone.Listings.Application\PetZone.Listings.Application.csproj" />
+    <ProjectReference Include="..\PetZone.Listings.Contracts\PetZone.Listings.Contracts.csproj" />
+    <ProjectReference Include="..\PetZone.Listings.Infrastructure\PetZone.Listings.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Shared\PetZone.SharedKernel\PetZone.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\Volunteers\PetZone.Volunteers.Presentation\PetZone.Volunteers.Presentation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.5" />
+  </ItemGroup>
+
+</Project>

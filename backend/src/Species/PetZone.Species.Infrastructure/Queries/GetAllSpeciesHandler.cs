@@ -17,13 +17,18 @@ public class GetAllSpeciesHandler(
     {
         logger.LogInformation("Getting all species");
 
-        var species = await dbContext.Species
-            .OrderBy(s => s.Name)
+        var allSpecies = await dbContext.Species
+            .Include(s => s.Breeds)
+            .ToListAsync(cancellationToken);
+
+        var species = allSpecies
+            .OrderBy(s => s.GetName(query.Locale))
             .Select(s => new SpeciesDto(
                 s.Id,
-                s.Name,
-                s.Breeds.Count))
-            .ToListAsync(cancellationToken);
+                s.GetName(query.Locale),
+                s.Breeds.Count,
+                s.Translations))
+            .ToList();
 
         return species;
     }

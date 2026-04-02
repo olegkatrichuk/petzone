@@ -1,3 +1,3 @@
 namespace PetZone.Species.Contracts;
 
-public record CreateSpeciesRequest(string Name);
+public record CreateSpeciesRequest(Dictionary<string, string> Translations);

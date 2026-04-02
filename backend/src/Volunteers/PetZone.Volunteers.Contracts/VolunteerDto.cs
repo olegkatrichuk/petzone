@@ -10,4 +10,7 @@ public record VolunteerDto(
     int ExperienceYears,
     string GeneralDescription,
     int PetsCount,
-    bool IsDeleted);
+    bool IsDeleted,
+    string? PhotoPath,
+    IReadOnlyList<SocialNetworkDto> SocialNetworks,
+    IReadOnlyList<RequisiteDto> Requisites);
