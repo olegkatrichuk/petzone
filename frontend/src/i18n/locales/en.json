@@ -1,0 +1,690 @@
+{
+  "app": {
+    "name": "PetZone",
+    "tagline": "Platform for helping animals"
+  },
+  "nav": {
+    "home": "Home",
+    "volunteers": "Volunteers",
+    "pets": "Animals",
+    "about": "About",
+    "faq": "FAQ",
+    "map": "Map",
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "Profile",
+    "favorites": "Favorites",
+    "register": "Register",
+    "listings": "Listings"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "login": "Login",
+    "register": "Register",
+    "registerBtn": "Create account",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already registered?",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "patronymic": "Middle name",
+    "phone": "Phone",
+    "experienceYears": "Experience (years)",
+    "description": "About yourself"
+  },
+  "register": {
+    "tabUser": "User",
+    "tabVolunteer": "Volunteer"
+  },
+  "validation": {
+    "emailRequired": "Please enter your email",
+    "emailInvalid": "Invalid email format",
+    "passwordRequired": "Please enter your password",
+    "passwordMin": "Minimum 6 characters",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordsMismatch": "Passwords do not match",
+    "firstNameRequired": "Please enter your first name",
+    "lastNameRequired": "Please enter your last name",
+    "patronymicRequired": "Please enter your middle name",
+    "phoneRequired": "Please enter your phone number",
+    "experienceMin": "Must be 0 or more",
+    "experienceMax": "Must be 100 or less",
+    "descriptionMin": "Minimum 10 characters",
+    "required": "Required field"
+  },
+  "pets": {
+    "pageTitle": "Find your pet 🐾",
+    "filters": "Filters",
+    "apply": "Apply",
+    "reset": "Reset filters",
+    "searchByName": "Search by name",
+    "notFound": "Nothing found 🐾",
+    "notFoundHint": "Try changing your search filters",
+    "loadError": "Failed to load animals. Please try again later.",
+    "details": "Details",
+    "saveToFavorites": "Save to favorites",
+    "removeFromFavorites": "Remove from favorites",
+    "vaccinated": "Vaccinated",
+    "notVaccinated": "Not vaccinated",
+    "castrated": "Neutered",
+    "notCastrated": "Not neutered",
+    "of": "of",
+    "statusLabel": "Status",
+    "any": "Any",
+    "species": "Species",
+    "breed": "Breed",
+    "kg": "kg",
+    "cm": "cm",
+    "volunteer": "View volunteer",
+    "ageRange": "Age (months)",
+    "weightRange": "Weight (kg)",
+    "minAge": "From",
+    "maxAge": "To",
+    "minWeight": "From",
+    "maxWeight": "To",
+    "sortBy": "Sort by",
+    "sortByName": "By name",
+    "sortByAge": "By age",
+    "sortByCity": "By city",
+    "sortByWeight": "By weight",
+    "sortOrder": "Order",
+    "sortAsc": "Ascending",
+    "sortDesc": "Descending",
+    "status": {
+      "needsHelp": "Needs help",
+      "lookingForHome": "Looking for home",
+      "foundHome": "Found home"
+    },
+    "color": {
+      "label": "Color",
+      "any": "Any",
+      "black": "Black",
+      "white": "White",
+      "gray": "Gray",
+      "orange": "Orange",
+      "mixed": "Mixed"
+    },
+    "location": {
+      "label": "City"
+    },
+    "health": {
+      "label": "Health",
+      "any": "Any",
+      "vaccinated": "Vaccinated",
+      "castrated": "Neutered",
+      "both": "Vaccinated & neutered"
+    },
+    "recentlyViewed": "Recently Viewed",
+    "clearRecent": "Clear",
+    "share": "Share",
+    "linkCopied": "Link copied!",
+    "addedToFavorites": "Added to favorites",
+    "removedFromFavorites": "Removed from favorites",
+    "updating": "Updating...",
+    "ageYears": "yr.",
+    "ageMonths": "mo.",
+    "ageLessThanMonth": "< 1 mo.",
+    "loadMore": "Load more",
+    "allLoaded": "All animals loaded",
+    "loading": "Loading...",
+    "addToCompare": "Compare",
+    "removeFromCompare": "Remove from compare",
+    "compareBar": {
+      "title": "Compare",
+      "compare": "Compare",
+      "clear": "Clear",
+      "hint": "Max 3 animals"
+    },
+    "compareDialog": {
+      "title": "Compare animals",
+      "close": "Close",
+      "status": "Status",
+      "age": "Age",
+      "weight": "Weight",
+      "height": "Height",
+      "color": "Color",
+      "city": "City",
+      "vaccinated": "Vaccinated",
+      "castrated": "Neutered"
+    }
+  },
+  "volunteerAnimals": {
+    "title": "Volunteer's animals",
+    "all": "All",
+    "lookingForHome": "Looking for home",
+    "needsHelp": "Needs help",
+    "noPets": "No animals in this category",
+    "backToProfile": "← Back to profile"
+  },
+  "help": {
+    "title": "Help volunteer",
+    "subtitle": "Your support helps the volunteer save animals",
+    "requisitesTitle": "Bank details for transfer",
+    "noRequisites": "The volunteer has not provided bank details",
+    "socialTitle": "Social networks",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "backToProfile": "← Back to profile"
+  },
+  "applications": {
+    "title": "My applications",
+    "empty": "No applications yet",
+    "emptyHint": "Submit an application to become a volunteer",
+    "submitBtn": "Submit application",
+    "experience": "Experience: {{years}} yr.",
+    "certificates": "Certificates",
+    "requisites": "Requisites",
+    "createdAt": "Submitted: {{date}}",
+    "comment": "Administrator's comment",
+    "updateBtn": "Update application",
+    "status": {
+      "Submitted": "Submitted",
+      "OnReview": "Under review",
+      "RevisionRequired": "Revision required",
+      "Rejected": "Rejected",
+      "Approved": "Approved"
+    }
+  },
+  "editVolunteer": {
+    "title": "Edit profile",
+    "tabMainInfo": "Main info",
+    "tabSocialNetworks": "Social networks",
+    "tabRequisites": "Requisites",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "patronymic": "Middle name",
+    "email": "Email",
+    "phone": "Phone",
+    "description": "About yourself",
+    "experience": "Experience (years)",
+    "addLink": "Add link",
+    "linkName": "Name",
+    "linkUrl": "URL",
+    "addRequisite": "Add requisite",
+    "requisiteName": "Name",
+    "requisiteDescription": "Description (e.g. card number)",
+    "saveBtn": "Save",
+    "saveSuccess": "Saved successfully!",
+    "notOwner": "You don't have permission to edit this profile."
+  },
+  "news": {
+    "title": "News & announcements",
+    "comingSoon": "This section is under development",
+    "comingSoonHint": "Volunteer news and announcements will appear here soon",
+    "backToProfile": "← Back to profile"
+  },
+  "favorites": {
+    "title": "Favorites 🌟",
+    "empty": "Your favorites list is empty",
+    "emptyHint": "Click ⭐ on pet cards to save them here",
+    "browsePets": "Browse pets",
+    "notLoggedIn": "Log in to save favorites",
+    "loginBtn": "Log in"
+  },
+  "profile": {
+    "title": "My Profile",
+    "email": "Email",
+    "role": "Role",
+    "roles": {
+      "Volunteer": "Volunteer",
+      "Participant": "Participant",
+      "Admin": "Administrator"
+    },
+    "volunteerProfile": "My volunteer profile",
+    "editProfile": "Edit profile",
+    "logoutBtn": "Log out",
+    "notLoggedIn": "You are not logged in.",
+    "loginBtn": "Log in",
+    "memberSince": "PetZone member"
+  },
+  "petDetail": {
+    "notFound": "Pet not found or an error occurred.",
+    "backToList": "← Back to pets",
+    "about": "About",
+    "characteristics": "Characteristics",
+    "health": "Health",
+    "adoptionConditions": "Adoption conditions",
+    "microchip": "Microchip",
+    "volunteer": "Volunteer",
+    "viewVolunteer": "View volunteer profile",
+    "vaccinated": "Vaccinated",
+    "notVaccinated": "Not vaccinated",
+    "castrated": "Neutered",
+    "notCastrated": "Not neutered",
+    "weight": "Weight",
+    "height": "Height",
+    "city": "City",
+    "saveToFavorites": "Save to favorites",
+    "removeFromFavorites": "Remove from favorites",
+    "photos": "Photos",
+    "similarPets": "Similar Pets 🐾"
+  },
+  "volunteers": {
+    "pageTitle": "Volunteers 🐾",
+    "searchByName": "Search by name",
+    "experience": "Experience: {{years}} yr.",
+    "notFound": "No volunteers found",
+    "notFoundHint": "Try changing the filters",
+    "loadError": "Failed to load volunteers. Please try again later.",
+    "viewProfile": "View profile",
+    "of": "of"
+  },
+  "pages": {
+    "login": {
+      "title": "Login",
+      "placeholder": "Login form will be added later"
+    },
+    "register": {
+      "title": "Register",
+      "placeholder": "Registration form will be added later"
+    },
+    "profile": {
+      "title": "Profile",
+      "placeholder": "Profile information will be added later"
+    },
+    "volunteers": {
+      "title": "Volunteers",
+      "placeholder": "Volunteers list will be added later"
+    },
+    "home": {
+      "welcome": "Welcome to PetZone 🐾",
+      "subtitle": "Platform for helping animals — connecting volunteers and pets in need"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Find Your Companion",
+      "subtitle": "A platform that connects homeless animals with people ready to give them a home and care",
+      "browsePets": "Browse Pets",
+      "becomeVolunteer": "Become a Volunteer"
+    },
+    "stats": {
+      "pets": "animals looking for a home",
+      "volunteers": "active volunteers",
+      "free": "completely free"
+    },
+    "how": {
+      "title": "How It Works",
+      "step1": {
+        "title": "Choose a Pet",
+        "desc": "Browse pet profiles, filter by species, city, and other parameters"
+      },
+      "step2": {
+        "title": "Contact a Volunteer",
+        "desc": "Every animal has a responsible volunteer — write to them directly"
+      },
+      "step3": {
+        "title": "Give a Home",
+        "desc": "Take your new companion home and give them endless love"
+      }
+    },
+    "cta": {
+      "title": "Become a Volunteer",
+      "subtitle": "Help animals find a home. Register as a volunteer and post your animals on the platform",
+      "btn": "Apply Now"
+    }
+  },
+  "footer": {
+    "description": "Platform for helping animals — connecting volunteers and pets that need care",
+    "by": "Developed by Oleg Katrichuk",
+    "rights": "All rights reserved.",
+    "nav": "Navigation",
+    "forVolunteers": "For Volunteers",
+    "becomeVolunteer": "Become a Volunteer"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "subtitle": "Looks like this page ran away like a stray kitten. But we'll find you something better!",
+    "goHome": "Go home",
+    "browsePets": "Browse pets"
+  },
+  "chat": {
+    "title": "Chat with Administrator",
+    "pollHint": "Messages update every 10 seconds",
+    "placeholder": "Write a message... (Enter to send)",
+    "empty": "No messages yet. Be the first to write!",
+    "closed": "Closed",
+    "closedHint": "This conversation is closed. No new messages can be sent.",
+    "edited": "edited",
+    "edit": "Edit",
+    "delete": "Delete",
+    "notFound": "Conversation not found or you don't have access.",
+    "openChat": "Open chat"
+  },
+  "faq": {
+    "pageTitle": "Frequently Asked Questions",
+    "metaDesc": "Answers to common questions about PetZone — adopting animals, registering as a volunteer, and how the platform works",
+    "badge": "FAQ",
+    "subtitle": "Find answers to the most common questions about the platform",
+    "category": {
+      "all": "All",
+      "general": "General",
+      "adoption": "Adoption",
+      "volunteers": "For Volunteers",
+      "technical": "Technical"
+    },
+    "ctaTitle": "Didn't find your answer?",
+    "ctaSubtitle": "Browse animals or become a volunteer — together we help more",
+    "q1": {
+      "q": "What is PetZone?",
+      "a": "PetZone is a free platform that connects volunteers who rescue animals with people ready to give them a home. We are not a shelter — we are the link between animals and their future owners."
+    },
+    "q2": {
+      "q": "Do I need an account to browse animals?",
+      "a": "No. You can browse animal profiles and volunteer profiles without registering. Registration is only required for volunteers to post their animals."
+    },
+    "q3": {
+      "q": "How do I adopt an animal?",
+      "a": "Find an animal you like and visit the responsible volunteer's profile. Their contact details are listed there — write to them directly to arrange a meeting and discuss the adoption terms."
+    },
+    "q4": {
+      "q": "Is there a fee to adopt?",
+      "a": "The PetZone platform is free. Adoption conditions (vaccination, neutering, deposit) are set by the volunteer individually for each animal."
+    },
+    "q5": {
+      "q": "How do I know if an animal is healthy?",
+      "a": "Each animal's page shows vaccination and neutering status. For more health details, contact the volunteer directly."
+    },
+    "q6": {
+      "q": "How do I become a volunteer on PetZone?",
+      "a": "Click 'Become a Volunteer', fill in the application form, and submit it. An administrator will review your application, and if approved — you will get access to the volunteer dashboard."
+    },
+    "q7": {
+      "q": "What can I do in the volunteer dashboard?",
+      "a": "Add and edit animal profiles, upload photos, set contact details and payment info for donations, and publish news and announcements."
+    },
+    "q8": {
+      "q": "How many animals can I list?",
+      "a": "There is no limit. You can add as many animals as you care for."
+    },
+    "q9": {
+      "q": "What languages does the platform support?",
+      "a": "The platform supports 5 languages: Ukrainian, English, Polish, German, and French. You can change the language in the top right corner."
+    },
+    "q10": {
+      "q": "Does the site work on mobile?",
+      "a": "Yes, PetZone is fully responsive and works on mobile devices and tablets."
+    }
+  },
+  "admin": {
+    "pageTitle": "Admin Panel",
+    "pageSubtitle": "Volunteer application management",
+    "tabUnreviewed": "New Applications",
+    "tabMine": "My Applications",
+    "takeOnReview": "Take on Review",
+    "approve": "Approve",
+    "sendForRevision": "Send for Revision",
+    "reject": "Reject",
+    "revisionDialogTitle": "Send for Revision",
+    "rejectDialogTitle": "Reject Application",
+    "commentLabel": "Comment for applicant",
+    "commentRequired": "Please enter a comment",
+    "submitted": "Submitted",
+    "experience": "Experience",
+    "years": "yr.",
+    "filterByStatus": "Filter by status",
+    "noUnreviewed": "No new applications — all reviewed!",
+    "noRequests": "No applications in this category",
+    "loadError": "Failed to load applications",
+    "accessDenied": "Access denied. Admin role required.",
+    "navLabel": "Admin Panel"
+  },
+  "about": {
+    "pageTitle": "About Us",
+    "metaDesc": "Learn more about PetZone's mission — a platform connecting homeless animals with loving homes through a network of volunteers",
+    "hero": {
+      "badge": "Our Mission",
+      "title": "Every Animal Deserves a Home",
+      "subtitle": "PetZone is a platform that connects homeless animals with people ready to give them a home. We believe that together we can make the world a better place — one animal at a time."
+    },
+    "mission": {
+      "title": "Why We Exist",
+      "card1": {
+        "title": "The Problem",
+        "desc": "Every year thousands of animals end up on the streets or in shelters. They need more than just a roof — they need love and a permanent family."
+      },
+      "card2": {
+        "title": "Our Solution",
+        "desc": "We built a convenient tool that helps volunteers represent their animals and find them true owners."
+      },
+      "card3": {
+        "title": "The Result",
+        "desc": "A transparent system where anyone can browse animals, contact a volunteer, and learn the adoption or care conditions."
+      }
+    },
+    "values": {
+      "title": "Our Values",
+      "v1": {
+        "title": "Transparency",
+        "desc": "All information about animals and volunteers is open. No hidden conditions."
+      },
+      "v2": {
+        "title": "Care",
+        "desc": "Every decision is made with the wellbeing of animals and convenience of volunteers in mind."
+      },
+      "v3": {
+        "title": "Community",
+        "desc": "We build a network of caring people who together make a difference."
+      },
+      "v4": {
+        "title": "Accessibility",
+        "desc": "The platform is completely free for volunteers and people looking for a pet."
+      }
+    },
+    "team": {
+      "title": "Who's Behind This",
+      "desc": "PetZone is a pet project created out of love for animals and a desire to use technology for a good cause. The project is actively developing and open to collaboration.",
+      "founder": "Founder & Developer"
+    },
+    "cta": {
+      "title": "Join the Community",
+      "subtitle": "Register as a volunteer and help animals find a home",
+      "btn": "Become a Volunteer"
+    }
+  },
+  "errors": {
+    "unknown": "Something went wrong",
+    "retry": "Retry",
+    "address.city_is_empty": "City is required",
+    "address.city_too_long": "City name is too long",
+    "address.street_is_empty": "Street is required",
+    "address.street_too_long": "Street name is too long",
+    "breed.name_is_empty": "Breed name cannot be empty",
+    "breed.name_too_long": "Breed name is too long",
+    "breed.not_found": "Breed not found",
+    "breed.translations_empty": "Please add a breed name translation",
+    "discussion.already_closed": "Discussion is already closed",
+    "discussion.closed": "Discussion is closed",
+    "discussion.duplicate_users": "Discussion participants cannot be duplicated",
+    "discussion.forbidden": "Access to this discussion is forbidden",
+    "discussion.invalid_users": "Invalid discussion participants",
+    "discussion.not_found": "Discussion not found",
+    "email.confirmation_failed": "Email confirmation failed",
+    "email.is_empty": "Email is required",
+    "email.is_invalid": "Invalid email format",
+    "email.too_long": "Email is too long",
+    "experience.too_large": "Experience cannot exceed 100 years",
+    "experience.too_small": "Experience cannot be negative",
+    "fullname.firstname_is_empty": "First name is required",
+    "fullname.firstname_too_long": "First name is too long",
+    "fullname.lastname_is_empty": "Last name is required",
+    "fullname.lastname_too_long": "Last name is too long",
+    "fullname.patronymic_too_long": "Patronymic is too long",
+    "healthinfo.description_is_empty": "Health description is required",
+    "healthinfo.description_too_long": "Health description is too long",
+    "healthinfo.diet_too_long": "Diet description is too long",
+    "height.too_large": "Height is too large",
+    "height.too_small": "Height is too small",
+    "message.empty_text": "Message cannot be empty",
+    "message.forbidden": "Access to this message is forbidden",
+    "message.not_found": "Message not found",
+    "minio.delete_failed": "Failed to delete file",
+    "minio.list_failed": "Failed to list files",
+    "minio.presigned_failed": "Failed to generate link",
+    "minio.upload_failed": "Failed to upload file",
+    "pet.breed_not_found": "Pet breed not found",
+    "pet.color_is_empty": "Pet color is required",
+    "pet.color_too_long": "Color is too long",
+    "pet.conditions_too_long": "Adoption conditions are too long",
+    "pet.description_is_empty": "Pet description is required",
+    "pet.description_too_long": "Pet description is too long",
+    "pet.invalid_status": "Invalid pet status",
+    "pet.microchip_too_long": "Microchip number is too long",
+    "pet.nickname_is_empty": "Pet name is required",
+    "pet.nickname_too_long": "Pet name is too long",
+    "pet.not_found": "Pet not found",
+    "pet.photo_already_exists": "This photo already exists",
+    "pet.photo_is_null": "Photo cannot be empty",
+    "pet.photo_not_found": "Photo not found",
+    "pet.photos_limit_exceeded": "Photo limit exceeded (maximum 5)",
+    "pet.requisite_is_null": "Requisite cannot be empty",
+    "petphoto.path_is_empty": "Photo path cannot be empty",
+    "petphoto.path_too_long": "Photo path is too long",
+    "phone.is_empty": "Phone number is required",
+    "phone.too_long": "Phone number is too long",
+    "refresh.expired": "Session expired. Please log in again",
+    "refresh.not_found": "Session not found",
+    "requisite.description_is_empty": "Requisite description is required",
+    "requisite.description_too_long": "Requisite description is too long",
+    "requisite.name_is_empty": "Requisite name is required",
+    "requisite.name_too_long": "Requisite name is too long",
+    "role.not_found": "Role not found",
+    "social_network.link_is_empty": "Social network link is required",
+    "social_network.name_is_empty": "Social network name is required",
+    "socialnetwork.link_is_empty": "Social network link is required",
+    "socialnetwork.link_too_long": "Social network link is too long",
+    "socialnetwork.name_is_empty": "Social network name is required",
+    "socialnetwork.name_too_long": "Social network name is too long",
+    "species.already_exists": "This species already exists",
+    "species.breed_already_exists": "This breed already exists",
+    "species.breed_is_null": "Breed cannot be empty",
+    "species.name_is_empty": "Species name cannot be empty",
+    "species.name_too_long": "Species name is too long",
+    "species.not_found": "Species not found",
+    "species.has_pets": "Cannot delete a species that has associated pets",
+    "species.translations_empty": "Please add a species name translation",
+    "speciesbreed.breed_is_empty": "Breed cannot be empty",
+    "speciesbreed.species_is_empty": "Species cannot be empty",
+    "user.already_exists": "A user with this email already exists",
+    "user.invalid_password": "Invalid password",
+    "user.not_found": "User not found",
+    "user.register_failed": "Registration failed. Please try again",
+    "volunteer.description_is_empty": "Volunteer description is required",
+    "volunteer.description_too_long": "Volunteer description is too long",
+    "volunteer.invalid_position": "Invalid position",
+    "volunteer.not_found": "Volunteer not found",
+    "volunteer.pet_already_exists": "This pet already exists for the volunteer",
+    "volunteer.pet_not_found": "Volunteer's pet not found",
+    "volunteer_request.already_exists": "Application has already been submitted",
+    "volunteer_request.empty_comment": "Comment cannot be empty",
+    "volunteer_request.forbidden": "Access to this application is forbidden",
+    "volunteer_request.invalid_info": "Invalid application data",
+    "volunteer_request.invalid_status": "Invalid application status",
+    "volunteer_request.not_found": "Application not found",
+    "volunteer_request.user_blocked": "User is blocked",
+    "weight.too_large": "Weight is too large",
+    "weight.too_small": "Weight is too small"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "back": "Back",
+    "chooseFile": "Choose file",
+    "invalidImage": "File must be an image (JPG, PNG, WEBP…)",
+    "noFileSelected": "Please select an image file"
+  },
+  "volunteerRequest": {
+    "tabUser": "User Registration",
+    "tabVolunteer": "Volunteer Application",
+    "infoText": "Fill out this form to apply as a volunteer. The more details you provide, the faster your application will be reviewed.",
+    "loginRequiredText": "You must be logged in to submit a volunteer application.",
+    "loginBtn": "Log in",
+    "experience": "Volunteering experience (years)",
+    "certificates": "Certificates & documents",
+    "addCertificate": "Add certificate",
+    "certificatePlaceholder": "Certificate name or link",
+    "requisites": "Bank details / payment info",
+    "addRequisite": "Add requisite",
+    "requisitePlaceholder": "e.g. Monobank card number",
+    "submit": "Submit application",
+    "successTitle": "Application sent",
+    "successText": "Your volunteer application has been submitted. An administrator will review it shortly.",
+    "toHome": "Go to home",
+    "alreadyRegistered": "Already registered?",
+    "login": "Log in"
+  },
+  "map": {
+    "pageTitle": "Animals Map",
+    "legendPets": "Volunteer pets",
+    "legendListings": "Listings",
+    "all": "All",
+    "onlyPets": "Pets only",
+    "onlyListings": "Listings only",
+    "hint": "Only cities with known coordinates are shown. Click a marker to open the card."
+  },
+  "listings": {
+    "sectionTitle": "Adoption Listings",
+    "sectionSubtitle": "Pet owners looking for a new loving family for their companion",
+    "ownerBadge": "Owner",
+    "addBtn": "Add listing",
+    "empty": "No listings yet",
+    "loginRequired": "You need to be logged in to post a listing",
+    "createTitle": "New Listing",
+    "titleLabel": "Title",
+    "descriptionLabel": "Description",
+    "ageMonthsLabel": "Age (months)",
+    "phoneLabel": "Contact phone",
+    "phoneHint": "Optional — will be shown in the listing",
+    "submitBtn": "Publish",
+    "detailTitle": "Listing",
+    "contactTitle": "Contacts",
+    "statusActive": "Active",
+    "statusAdopted": "Found a home",
+    "statusRemoved": "Removed",
+    "markAdoptedBtn": "Mark as adopted",
+    "editBtn": "Edit",
+    "deleteBtn": "Delete",
+    "deleteConfirm": "Delete this listing?",
+    "myListings": "My listings",
+    "addPhotoBtn": "Add photo",
+    "removePhotoBtn": "Remove photo",
+    "photoUploading": "Uploading...",
+    "photoHint": "Up to 5 photos, JPG/PNG/WEBP",
+    "pageTitle": "Pet Adoption Listings",
+    "pageDescription": "Owners looking for a new loving family for their pets",
+    "allSpecies": "All species",
+    "cityFilter": "Search by city",
+    "applyFilter": "Search",
+    "clearFilter": "Clear",
+    "showAll": "See all"
+  },
+  "volunteerProfile": {
+    "myProfile": "My profile",
+    "myAnimals": "My animals",
+    "addAnimal": "Add animal",
+    "myNews": "My news & announcements",
+    "myApplications": "My applications",
+    "volunteerProfileLabel": "Volunteer profile",
+    "volunteerAnimals": "Volunteer's animals",
+    "volunteerNews": "News & announcements",
+    "myCabinet": "My cabinet",
+    "volunteerLabel": "Volunteer",
+    "editProfile": "Edit profile",
+    "helpVolunteer": "Help volunteer",
+    "changePhoto": "Change photo",
+    "clickToChangePhoto": "Click to change photo",
+    "experience": "Experience: {{years}} yr.",
+    "foundHome": "Found home: {{count}}",
+    "contacts": "Contacts",
+    "socialNetworks": "Social networks",
+    "notFound": "Volunteer not found or an error occurred.",
+    "backToHome": "← Back to home",
+    "noPetsInCategory": "No animals in this category",
+    "lookingForHomeTitle": "Looking for home 🏠",
+    "lookingForHomeSubtitle": "Animals of this volunteer looking for a loving family",
+    "needsHelpTitle": "Needs help 🆘",
+    "needsHelpSubtitle": "Animals that currently can't be rehomed — they need support",
+    "avatarModalTitle": "Edit avatar"
+  }
+}

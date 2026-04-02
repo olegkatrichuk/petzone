@@ -1,0 +1,498 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
+import { useLangNavigate } from '../hooks/useLangNavigate'
+import { DEFAULT_LANG } from '../lib/langUtils'
+import { useAuthStore } from '../store/authStore'
+import PageMeta from '../components/meta/PageMeta'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
+import Paper from '@mui/material/Paper'
+import Chip from '@mui/material/Chip'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import Alert from '@mui/material/Alert'
+import CircularProgress from '@mui/material/CircularProgress'
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import DialogActions from '@mui/material/DialogActions'
+import TextField from '@mui/material/TextField'
+import Divider from '@mui/material/Divider'
+import Tooltip from '@mui/material/Tooltip'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
+import AssignmentIcon from '@mui/icons-material/Assignment'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import EditNoteIcon from '@mui/icons-material/EditNote'
+import CancelIcon from '@mui/icons-material/Cancel'
+import ChatIcon from '@mui/icons-material/Chat'
+import PersonIcon from '@mui/icons-material/Person'
+import WorkHistoryIcon from '@mui/icons-material/WorkHistory'
+import CardMembershipIcon from '@mui/icons-material/CardMembership'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+import { VolunteerRequestStatus } from '../types/volunteerRequest'
+import type { VolunteerRequestDto } from '../types/volunteerRequest'
+import {
+  useGetUnreviewedRequestsQuery,
+  useGetAdminRequestsQuery,
+  useTakeOnReviewMutation,
+  useApproveRequestMutation,
+  useSendForRevisionMutation,
+  useRejectRequestMutation,
+} from '../services/adminApi'
+import Pagination from '../components/ui/Pagination'
+
+const CORAL = '#FF6B6B'
+const PAGE_SIZE = 10
+
+// ── Status chip ────────────────────────────────────────────
+
+const STATUS_CFG: Record<VolunteerRequestStatus, { label: string; bg: string; color: string }> = {
+  [VolunteerRequestStatus.Submitted]:       { label: 'Надіслано',           bg: '#EFF6FF', color: '#2563EB' },
+  [VolunteerRequestStatus.OnReview]:        { label: 'На розгляді',          bg: '#FEF9C3', color: '#CA8A04' },
+  [VolunteerRequestStatus.RevisionRequired]:{ label: 'Потрібні зміни',       bg: '#FFF7ED', color: '#EA580C' },
+  [VolunteerRequestStatus.Rejected]:        { label: 'Відхилено',            bg: '#FEF2F2', color: '#DC2626' },
+  [VolunteerRequestStatus.Approved]:        { label: 'Схвалено',             bg: '#F0FDF4', color: '#16A34A' },
+}
+
+function StatusChip({ status }: { status: VolunteerRequestStatus }) {
+  const cfg = STATUS_CFG[status]
+  return (
+    <Chip
+      label={cfg.label}
+      size="small"
+      sx={{ bgcolor: cfg.bg, color: cfg.color, fontWeight: 600, fontSize: 12 }}
+    />
+  )
+}
+
+// ── Comment dialog ─────────────────────────────────────────
+
+interface CommentDialogProps {
+  open: boolean
+  title: string
+  confirmLabel: string
+  confirmColor: 'error' | 'warning'
+  onClose: () => void
+  onConfirm: (comment: string) => void
+  loading: boolean
+}
+
+function CommentDialog({ open, title, confirmLabel, confirmColor, onClose, onConfirm, loading }: CommentDialogProps) {
+  const { t } = useTranslation()
+  const [comment, setComment] = useState('')
+
+  const handleConfirm = () => {
+    if (!comment.trim()) return
+    onConfirm(comment.trim())
+  }
+
+  const handleClose = () => {
+    setComment('')
+    onClose()
+  }
+
+  return (
+    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent sx={{ pt: '16px !important' }}>
+        <TextField
+          autoFocus
+          multiline
+          rows={4}
+          fullWidth
+          label={t('admin.commentLabel')}
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          error={!comment.trim() && comment.length > 0}
+          helperText={!comment.trim() && comment.length > 0 ? t('admin.commentRequired') : ''}
+          sx={{ '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: CORAL } }}
+        />
+      </DialogContent>
+      <DialogActions sx={{ px: 3, pb: 3, gap: 1 }}>
+        <Button onClick={handleClose} sx={{ color: '#6B7280', textTransform: 'none' }}>
+          {t('common.cancel')}
+        </Button>
+        <Button
+          variant="contained"
+          disabled={!comment.trim() || loading}
+          onClick={handleConfirm}
+          color={confirmColor}
+          sx={{ textTransform: 'none', fontWeight: 700, minWidth: 100 }}
+        >
+          {loading ? <CircularProgress size={18} color="inherit" /> : confirmLabel}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
+}
+
+// ── Request card ───────────────────────────────────────────
+
+interface RequestCardProps {
+  request: VolunteerRequestDto
+  showTakeOnReview?: boolean
+}
+
+function RequestCard({ request, showTakeOnReview = false }: RequestCardProps) {
+  const { t } = useTranslation()
+  const navigate = useLangNavigate()
+  const [revisionOpen, setRevisionOpen] = useState(false)
+  const [rejectOpen, setRejectOpen] = useState(false)
+
+  const [takeOnReview, { isLoading: takingReview }] = useTakeOnReviewMutation()
+  const [approve, { isLoading: approving }] = useApproveRequestMutation()
+  const [sendForRevision, { isLoading: sendingRevision }] = useSendForRevisionMutation()
+  const [rejectRequest, { isLoading: rejecting }] = useRejectRequestMutation()
+
+  const isOnReview = request.status === VolunteerRequestStatus.OnReview
+  const createdDate = new Date(request.createdAt).toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric' })
+
+  return (
+    <Paper elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 3, p: 3 }}>
+      {/* Header row */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2, gap: 1, flexWrap: 'wrap' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Box sx={{ width: 40, height: 40, borderRadius: 2, bgcolor: '#F3F4F6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <PersonIcon sx={{ color: '#6B7280' }} />
+          </Box>
+          <Box>
+            <Typography variant="body2" sx={{ fontFamily: 'monospace', color: '#6B7280', fontSize: 11 }}>
+              ID: {request.userId.slice(0, 8)}…
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              {t('admin.submitted')}: {createdDate}
+            </Typography>
+          </Box>
+        </Box>
+        <StatusChip status={request.status} />
+      </Box>
+
+      {/* Volunteer info */}
+      <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', mb: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+          <WorkHistoryIcon sx={{ fontSize: 16, color: '#9CA3AF' }} />
+          <Typography variant="body2" color="text.secondary">
+            {t('admin.experience')}: <strong>{request.volunteerInfo.experience} {t('admin.years')}</strong>
+          </Typography>
+        </Box>
+      </Box>
+
+      {/* Certificates */}
+      {request.volunteerInfo.certificates.length > 0 && (
+        <Box sx={{ mb: 1.5 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 0.75 }}>
+            <CardMembershipIcon sx={{ fontSize: 15, color: '#9CA3AF' }} />
+            <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', letterSpacing: 0.5 }}>
+              {t('applications.certificates')}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap' }}>
+            {request.volunteerInfo.certificates.map((cert, i) => (
+              <Chip key={i} label={cert} size="small" variant="outlined" sx={{ borderColor: '#E5E7EB', fontSize: 12 }} />
+            ))}
+          </Box>
+        </Box>
+      )}
+
+      {/* Requisites */}
+      {request.volunteerInfo.requisites.length > 0 && (
+        <Box sx={{ mb: 1.5 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 0.75 }}>
+            <AccountBalanceWalletIcon sx={{ fontSize: 15, color: '#9CA3AF' }} />
+            <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', letterSpacing: 0.5 }}>
+              {t('applications.requisites')}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap' }}>
+            {request.volunteerInfo.requisites.map((req, i) => (
+              <Chip key={i} label={req} size="small" variant="outlined" sx={{ borderColor: '#E5E7EB', fontSize: 12 }} />
+            ))}
+          </Box>
+        </Box>
+      )}
+
+      {/* Rejection comment */}
+      {request.rejectionComment && (
+        <Alert severity="warning" sx={{ mb: 1.5, fontSize: 13 }}>
+          <strong>{t('applications.comment')}:</strong> {request.rejectionComment}
+        </Alert>
+      )}
+
+      <Divider sx={{ mb: 2 }} />
+
+      {/* Actions */}
+      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+        {showTakeOnReview && (
+          <Button
+            variant="contained"
+            size="small"
+            startIcon={takingReview ? <CircularProgress size={14} color="inherit" /> : <AssignmentIcon />}
+            disabled={takingReview}
+            onClick={() => takeOnReview(request.id)}
+            sx={{ bgcolor: CORAL, '&:hover': { bgcolor: '#e55555' }, textTransform: 'none', fontWeight: 600 }}
+          >
+            {t('admin.takeOnReview')}
+          </Button>
+        )}
+
+        {isOnReview && (
+          <>
+            <Tooltip title={t('admin.approve')}>
+              <Button
+                variant="contained"
+                size="small"
+                color="success"
+                startIcon={approving ? <CircularProgress size={14} color="inherit" /> : <CheckCircleIcon />}
+                disabled={approving}
+                onClick={() => approve(request.id)}
+                sx={{ textTransform: 'none', fontWeight: 600 }}
+              >
+                {t('admin.approve')}
+              </Button>
+            </Tooltip>
+
+            <Tooltip title={t('admin.sendForRevision')}>
+              <IconButton
+                size="small"
+                color="warning"
+                disabled={sendingRevision}
+                onClick={() => setRevisionOpen(true)}
+                sx={{ border: '1px solid', borderColor: 'warning.main' }}
+              >
+                <EditNoteIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title={t('admin.reject')}>
+              <IconButton
+                size="small"
+                color="error"
+                disabled={rejecting}
+                onClick={() => setRejectOpen(true)}
+                sx={{ border: '1px solid', borderColor: 'error.main' }}
+              >
+                <CancelIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </>
+        )}
+
+        {/* Chat button — visible when discussion exists */}
+        {request.discussionId && (
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<ChatIcon />}
+            onClick={() => navigate(`/discussion/${request.discussionId}`)}
+            sx={{ borderColor: '#6B7280', color: '#6B7280', textTransform: 'none', '&:hover': { borderColor: CORAL, color: CORAL, bgcolor: '#FFF0F0' } }}
+          >
+            {t('chat.openChat')}
+          </Button>
+        )}
+      </Box>
+
+      {/* Dialogs */}
+      <CommentDialog
+        open={revisionOpen}
+        title={t('admin.revisionDialogTitle')}
+        confirmLabel={t('admin.sendForRevision')}
+        confirmColor="warning"
+        loading={sendingRevision}
+        onClose={() => setRevisionOpen(false)}
+        onConfirm={(comment) => {
+          sendForRevision({ requestId: request.id, comment }).then(() => setRevisionOpen(false))
+        }}
+      />
+      <CommentDialog
+        open={rejectOpen}
+        title={t('admin.rejectDialogTitle')}
+        confirmLabel={t('admin.reject')}
+        confirmColor="error"
+        loading={rejecting}
+        onClose={() => setRejectOpen(false)}
+        onConfirm={(comment) => {
+          rejectRequest({ requestId: request.id, comment }).then(() => setRejectOpen(false))
+        }}
+      />
+    </Paper>
+  )
+}
+
+// ── Unreviewed tab ──────────────────────────────────────────
+
+function UnreviewedTab() {
+  const { t } = useTranslation()
+  const [page, setPage] = useState(1)
+
+  const { data, isLoading, isError, refetch } = useGetUnreviewedRequestsQuery({ page, pageSize: PAGE_SIZE })
+
+  if (isLoading) {
+    return <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}><CircularProgress sx={{ color: CORAL }} /></Box>
+  }
+
+  if (isError) {
+    return (
+      <Alert severity="error" action={<Button size="small" onClick={refetch} sx={{ color: CORAL, textTransform: 'none' }}>{t('errors.retry')}</Button>}>
+        {t('admin.loadError')}
+      </Alert>
+    )
+  }
+
+  const items = data?.items ?? []
+
+  if (items.length === 0) {
+    return (
+      <Box sx={{ textAlign: 'center', py: 10 }}>
+        <CheckCircleIcon sx={{ fontSize: 56, color: '#22C55E', mb: 2 }} />
+        <Typography variant="h6" color="text.secondary">{t('admin.noUnreviewed')}</Typography>
+      </Box>
+    )
+  }
+
+  return (
+    <>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        {items.map((req) => (
+          <RequestCard key={req.id} request={req} showTakeOnReview />
+        ))}
+      </Box>
+      {data && (
+        <Pagination page={page} pageSize={PAGE_SIZE} totalCount={data.totalCount} onChange={setPage} ofLabel={t('volunteers.of')} />
+      )}
+    </>
+  )
+}
+
+// ── Admin's requests tab ───────────────────────────────────
+
+const ADMIN_STATUS_OPTIONS = [
+  VolunteerRequestStatus.OnReview,
+  VolunteerRequestStatus.RevisionRequired,
+  VolunteerRequestStatus.Approved,
+  VolunteerRequestStatus.Rejected,
+]
+
+function MyRequestsTab() {
+  const { t } = useTranslation()
+  const [page, setPage] = useState(1)
+  const [statusFilter, setStatusFilter] = useState<VolunteerRequestStatus>(VolunteerRequestStatus.OnReview)
+
+  const { data, isLoading, isError, refetch } = useGetAdminRequestsQuery({ page, pageSize: PAGE_SIZE, status: statusFilter })
+
+  const handleStatusChange = (newStatus: VolunteerRequestStatus) => {
+    setStatusFilter(newStatus)
+    setPage(1)
+  }
+
+  if (isLoading) {
+    return <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}><CircularProgress sx={{ color: CORAL }} /></Box>
+  }
+
+  if (isError) {
+    return (
+      <Alert severity="error" action={<Button size="small" onClick={refetch} sx={{ color: CORAL, textTransform: 'none' }}>{t('errors.retry')}</Button>}>
+        {t('admin.loadError')}
+      </Alert>
+    )
+  }
+
+  const items = data?.items ?? []
+
+  return (
+    <>
+      {/* Status filter */}
+      <FormControl size="small" sx={{ mb: 3, minWidth: 200 }}>
+        <InputLabel>{t('admin.filterByStatus')}</InputLabel>
+        <Select
+          value={statusFilter}
+          label={t('admin.filterByStatus')}
+          onChange={(e) => handleStatusChange(e.target.value as VolunteerRequestStatus)}
+        >
+          {ADMIN_STATUS_OPTIONS.map((s) => (
+            <MenuItem key={s} value={s}>{STATUS_CFG[s].label}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {items.length === 0 ? (
+        <Box sx={{ textAlign: 'center', py: 8 }}>
+          <Typography color="text.secondary">{t('admin.noRequests')}</Typography>
+        </Box>
+      ) : (
+        <>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {items.map((req) => (
+              <RequestCard key={req.id} request={req} />
+            ))}
+          </Box>
+          {data && (
+            <Pagination page={page} pageSize={PAGE_SIZE} totalCount={data.totalCount} onChange={setPage} ofLabel={t('volunteers.of')} />
+          )}
+        </>
+      )}
+    </>
+  )
+}
+
+// ── Main page ──────────────────────────────────────────────
+
+export default function AdminPage() {
+  const { t } = useTranslation()
+  const { user } = useAuthStore()
+  const navigate = useNavigate()
+  const { lang } = useParams<{ lang: string }>()
+  const [tab, setTab] = useState(0)
+
+  // Guard: only Admin role
+  if (!user || user.role !== 'Admin') {
+    return (
+      <Container maxWidth="sm" sx={{ py: 8, textAlign: 'center' }}>
+        <Alert severity="error" sx={{ mb: 3 }}>{t('admin.accessDenied')}</Alert>
+        <Button onClick={() => navigate(`/${lang ?? DEFAULT_LANG}`)} sx={{ color: CORAL, textTransform: 'none' }}>
+          {t('notFound.goHome')}
+        </Button>
+      </Container>
+    )
+  }
+
+  return (
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <PageMeta title={t('admin.pageTitle')} description={t('admin.pageTitle')} path="/admin" noIndex />
+
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h4" fontWeight="bold" sx={{ mb: 0.5 }}>
+          {t('admin.pageTitle')}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {t('admin.pageSubtitle')}
+        </Typography>
+      </Box>
+
+      <Tabs
+        value={tab}
+        onChange={(_, v) => setTab(v)}
+        sx={{
+          mb: 3,
+          borderBottom: '1px solid #E5E7EB',
+          '& .MuiTab-root': { textTransform: 'none', fontWeight: 500 },
+          '& .Mui-selected': { color: `${CORAL} !important` },
+          '& .MuiTabs-indicator': { bgcolor: CORAL },
+        }}
+      >
+        <Tab label={t('admin.tabUnreviewed')} />
+        <Tab label={t('admin.tabMine')} />
+      </Tabs>
+
+      {tab === 0 && <UnreviewedTab />}
+      {tab === 1 && <MyRequestsTab />}
+    </Container>
+  )
+}
