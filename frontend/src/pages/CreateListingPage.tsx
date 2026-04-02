@@ -18,8 +18,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { useGetAllSpeciesQuery } from '../services/speciesApi'
-import { useGetBreedsBySpeciesQuery } from '../services/speciesApi'
+import { useGetSpeciesQuery, useGetBreedsQuery } from '../services/speciesApi'
 import { useCreateListingMutation } from '../services/listingsApi'
 import { useAuthStore } from '../store/authStore'
 import { Link } from 'react-router-dom'
@@ -53,7 +52,7 @@ export default function CreateListingPage() {
   const [createListing] = useCreateListingMutation()
 
   const locale = i18n.language?.slice(0, 2) || 'uk'
-  const { data: speciesList = [] } = useGetAllSpeciesQuery({ locale })
+  const { data: speciesList = [] } = useGetSpeciesQuery({ locale })
 
   const schema = useMemo(() => z.object({
     title: z.string().min(1, t('validation.required')).max(200),
@@ -80,7 +79,7 @@ export default function CreateListingPage() {
   })
 
   const selectedSpeciesId = watch('speciesId')
-  const { data: breeds = [] } = useGetBreedsBySpeciesQuery(
+  const { data: breeds = [] } = useGetBreedsQuery(
     { speciesId: selectedSpeciesId, locale },
     { skip: !selectedSpeciesId }
   )
