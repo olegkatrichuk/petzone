@@ -13,6 +13,8 @@ using PetZone.Species.Infrastructure;
 using PetZone.Volunteers.Application;
 using PetZone.Volunteers.Infrastructure;
 using PetZone.VolunteerRequests.Infrastructure;
+using PetZone.Listings.Application;
+using PetZone.Listings.Infrastructure;
 using Serilog;
 
 DotNetEnv.Env.Load(Path.Combine(AppContext.BaseDirectory, "../../../../../.env"));
@@ -77,7 +79,8 @@ builder.Services.AddControllers()
     .AddApplicationPart(typeof(PetZone.Volunteers.Presentation.VolunteersController).Assembly)
     .AddApplicationPart(typeof(PetZone.Species.Presentation.SpeciesController).Assembly)
     .AddApplicationPart(typeof(PetZone.Accounts.Presentation.AccountsController).Assembly)
-    .AddApplicationPart(typeof(PetZone.VolunteerRequests.Presentation.VolunteerRequestsController).Assembly);
+    .AddApplicationPart(typeof(PetZone.VolunteerRequests.Presentation.VolunteerRequestsController).Assembly)
+    .AddApplicationPart(typeof(PetZone.Listings.Presentation.ListingsController).Assembly);
 
 builder.Services.AddVolunteersApplication();
 builder.Services.AddVolunteersInfrastructure(builder.Configuration);
@@ -85,6 +88,8 @@ builder.Services.AddSpeciesApplication();
 builder.Services.AddSpeciesInfrastructure(builder.Configuration);
 builder.Services.AddAccountsInfrastructure(builder.Configuration);
 builder.Services.AddVolunteerRequestsInfrastructure(builder.Configuration);
+builder.Services.AddListingsApplication();
+builder.Services.AddListingsInfrastructure(builder.Configuration);
 
 builder.Services.Configure<FormOptions>(options =>
 {
@@ -99,6 +104,7 @@ builder.WebHost.ConfigureKestrel(options =>
 var app = builder.Build();
 
 await DataSeeder.SeedAsync(app.Services);
+await PetZone.Species.Infrastructure.SpeciesSeeder.SeedAsync(app.Services);
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseSerilogRequestLogging();

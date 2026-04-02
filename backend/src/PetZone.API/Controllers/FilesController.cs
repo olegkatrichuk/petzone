@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetZone.API.Extensions;
 using PetZone.Framework.Files;
@@ -12,6 +13,7 @@ public class FilesController(
 {
     private const string BucketName = "petzone";
 
+    [Authorize]
     [HttpPost("upload")]
     public async Task<ActionResult> Upload(
         IFormFile file,
@@ -33,6 +35,7 @@ public class FilesController(
         return this.ToOkResponse(result.Value);
     }
 
+    [Authorize]
     [HttpDelete("{fileName}")]
     public async Task<ActionResult> Delete(
         [FromRoute] string fileName,

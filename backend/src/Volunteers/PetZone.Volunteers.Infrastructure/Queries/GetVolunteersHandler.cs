@@ -39,7 +39,10 @@ public class GetVolunteersHandler(
                 v.Experience.Years,
                 v.GeneralDescription,
                 v.Pets.Count(p => !p.IsDeleted),
-                v.IsDeleted))
+                v.IsDeleted,
+                v.PhotoPath,
+                v.SocialNetworks.Select(s => new SocialNetworkDto(s.Name, s.Link)).ToList(),
+                v.Requisites.Select(r => new RequisiteDto(r.Name, r.Description)).ToList()))
             .ToListAsync(cancellationToken);
 
         return new PagedList<VolunteerDto>(volunteers, totalCount, query.Page, query.PageSize);

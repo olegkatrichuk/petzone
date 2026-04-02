@@ -1,5 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace PetZone.Accounts.Contracts;
 
 public record LoginRequest(
-    string Email,
-    string Password);
+    [Required][EmailAddress][MaxLength(256)] string Email,
+    [Required][MaxLength(128)] string Password);

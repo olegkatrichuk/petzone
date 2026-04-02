@@ -485,3 +485,4 @@ $RECYCLE.BIN/
 compose.yaml
 .env
 appsettings.Development.json
+**/launchSettings.json

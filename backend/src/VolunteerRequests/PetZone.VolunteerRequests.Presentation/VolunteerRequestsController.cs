@@ -6,6 +6,7 @@ using PetZone.VolunteerRequests.Application.Commands.RejectVolunteerRequest;
 using PetZone.VolunteerRequests.Application.Commands.SendForRevision;
 using PetZone.VolunteerRequests.Application.Commands.TakeOnReview;
 using PetZone.VolunteerRequests.Application.Commands.UpdateVolunteerRequest;
+using PetZone.VolunteerRequests.Application.Queries.GetRequestById;
 using PetZone.VolunteerRequests.Application.Queries.GetRequestsByAdmin;
 using PetZone.VolunteerRequests.Application.Queries.GetRequestsByUser;
 using PetZone.VolunteerRequests.Application.Queries.GetUnreviewedRequests;
@@ -26,6 +27,17 @@ public class VolunteerRequestsController : ControllerBase
                     ?? User.FindFirst("sub");
         if (claim is null) return null;
         return Guid.TryParse(claim.Value, out var id) ? id : null;
+    }
+
+    [HttpGet("{requestId:guid}")]
+    [Authorize]
+    public async Task<IActionResult> GetById(
+        [FromRoute] Guid requestId,
+        [FromServices] GetRequestByIdHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(new GetRequestByIdQuery(requestId), cancellationToken);
+        return result.IsSuccess ? this.ToOkResponse(result.Value) : result.Error.ToResponse();
     }
 
     // POST /volunteerrequests

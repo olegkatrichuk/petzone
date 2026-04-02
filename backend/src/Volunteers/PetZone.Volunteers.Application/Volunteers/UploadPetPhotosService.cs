@@ -1,9 +1,8 @@
 using CSharpFunctionalExtensions;
-using PetZone.SharedKernel;
-using PetZone.SharedKernel;
-using PetZone.SharedKernel;
 using Microsoft.Extensions.Logging;
 using PetZone.Framework.Files;
+using PetZone.SharedKernel;
+using PetZone.Volunteers.Domain.Models;
 
 namespace PetZone.Volunteers.Application.Volunteers;
 
@@ -28,6 +27,13 @@ public class UploadPetPhotosService(
         var pet = volunteer.Pets.FirstOrDefault(p => p.Id == command.PetId);
         if (pet is null)
             return (ErrorList)Error.NotFound("pet.not_found", "Питомец не найден.");
+
+        var newPhotosCount = command.Photos.Count();
+        var currentPhotosCount = pet.Photos.Count;
+
+        if (currentPhotosCount + newPhotosCount > Pet.MAX_PHOTOS_COUNT)
+            return (ErrorList)Error.Validation("pet.photos_limit_exceeded",
+                $"У питомца уже {currentPhotosCount} фото. Можно добавить не более {Pet.MAX_PHOTOS_COUNT - currentPhotosCount}.");
 
         var uploadTasks = command.Photos.Select(async photo =>
         {

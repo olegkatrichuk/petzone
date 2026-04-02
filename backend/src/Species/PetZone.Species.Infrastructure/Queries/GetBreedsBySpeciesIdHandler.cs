@@ -25,8 +25,8 @@ public class GetBreedsBySpeciesIdHandler(
             return (ErrorList)Error.NotFound("species.not_found", "Вид не найден.");
 
         var breeds = species.Breeds
-            .OrderBy(b => b.Name)
-            .Select(b => new BreedDto(b.Id, b.Name))
+            .OrderBy(b => b.GetName(query.Locale))
+            .Select(b => new BreedDto(b.Id, b.GetName(query.Locale), b.Translations))
             .ToList();
 
         return breeds;
