@@ -1,0 +1,650 @@
+{
+  "app": {
+    "name": "PetZone",
+    "tagline": "Plattform zur Tierhilfe"
+  },
+  "nav": {
+    "home": "Startseite",
+    "volunteers": "Freiwillige",
+    "pets": "Tiere",
+    "about": "Über uns",
+    "faq": "FAQ",
+    "map": "Karte",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "profile": "Profil",
+    "favorites": "Favoriten",
+    "register": "Registrieren",
+    "listings": "Anzeigen"
+  },
+  "auth": {
+    "email": "E-Mail",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "registerBtn": "Konto erstellen",
+    "noAccount": "Noch kein Konto?",
+    "hasAccount": "Bereits registriert?",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "patronymic": "Zweiter Vorname",
+    "phone": "Telefon",
+    "experienceYears": "Erfahrung (Jahre)",
+    "description": "Über mich"
+  },
+  "register": {
+    "tabUser": "Nutzer",
+    "tabVolunteer": "Freiwilliger"
+  },
+  "validation": {
+    "emailRequired": "Bitte E-Mail eingeben",
+    "emailInvalid": "Ungültiges E-Mail-Format",
+    "passwordRequired": "Bitte Passwort eingeben",
+    "passwordMin": "Mindestens 6 Zeichen",
+    "confirmPasswordRequired": "Bitte Passwort bestätigen",
+    "passwordsMismatch": "Passwörter stimmen nicht überein",
+    "firstNameRequired": "Bitte Vornamen eingeben",
+    "lastNameRequired": "Bitte Nachnamen eingeben",
+    "patronymicRequired": "Bitte zweiten Vornamen eingeben",
+    "phoneRequired": "Bitte Telefonnummer eingeben",
+    "experienceMin": "Muss 0 oder mehr sein",
+    "experienceMax": "Darf nicht mehr als 100 sein",
+    "descriptionMin": "Mindestens 10 Zeichen",
+    "required": "Pflichtfeld"
+  },
+  "pets": {
+    "pageTitle": "Finde dein Haustier 🐾",
+    "filters": "Filter",
+    "apply": "Anwenden",
+    "reset": "Filter zurücksetzen",
+    "searchByName": "Nach Name suchen",
+    "notFound": "Nichts gefunden 🐾",
+    "notFoundHint": "Versuche, die Suchfilter zu ändern",
+    "loadError": "Die Tierliste konnte nicht geladen werden. Bitte versuche es später erneut.",
+    "details": "Details",
+    "saveToFavorites": "Zu Favoriten hinzufügen",
+    "removeFromFavorites": "Aus Favoriten entfernen",
+    "vaccinated": "Geimpft",
+    "notVaccinated": "Nicht geimpft",
+    "castrated": "Kastriert",
+    "notCastrated": "Nicht kastriert",
+    "of": "von",
+    "statusLabel": "Status",
+    "any": "Beliebig",
+    "species": "Tierart",
+    "breed": "Rasse",
+    "kg": "kg",
+    "cm": "cm",
+    "volunteer": "Freiwilligen ansehen",
+    "ageRange": "Alter (Monate)",
+    "weightRange": "Gewicht (kg)",
+    "minAge": "Von",
+    "maxAge": "Bis",
+    "minWeight": "Von",
+    "maxWeight": "Bis",
+    "sortBy": "Sortieren nach",
+    "sortByName": "Nach Name",
+    "sortByAge": "Nach Alter",
+    "sortByCity": "Nach Stadt",
+    "sortByWeight": "Nach Gewicht",
+    "sortOrder": "Reihenfolge",
+    "sortAsc": "Aufsteigend",
+    "sortDesc": "Absteigend",
+    "status": {
+      "needsHelp": "Braucht Hilfe",
+      "lookingForHome": "Sucht ein Zuhause",
+      "foundHome": "Hat ein Zuhause gefunden"
+    },
+    "color": {
+      "label": "Farbe",
+      "any": "Beliebig",
+      "black": "Schwarz",
+      "white": "Weiß",
+      "gray": "Grau",
+      "orange": "Orange",
+      "mixed": "Gemischt"
+    },
+    "location": {
+      "label": "Stadt"
+    },
+    "health": {
+      "label": "Gesundheit",
+      "any": "Beliebig",
+      "vaccinated": "Geimpft",
+      "castrated": "Kastriert",
+      "both": "Geimpft und kastriert"
+    },
+    "linkCopied": "Link kopiert!",
+    "addedToFavorites": "Zu Favoriten hinzugefügt",
+    "removedFromFavorites": "Aus Favoriten entfernt",
+    "updating": "Aktualisierung...",
+    "ageYears": "J.",
+    "ageMonths": "Mo.",
+    "ageLessThanMonth": "< 1 Mo.",
+    "loadMore": "Mehr laden",
+    "allLoaded": "Alle Tiere geladen",
+    "loading": "Laden...",
+    "addToCompare": "Vergleichen",
+    "removeFromCompare": "Aus Vergleich entfernen",
+    "compareBar": {
+      "title": "Vergleich",
+      "compare": "Vergleichen",
+      "clear": "Leeren",
+      "hint": "Max. 3 Tiere"
+    },
+    "compareDialog": {
+      "title": "Tiere vergleichen",
+      "close": "Schließen",
+      "status": "Status",
+      "age": "Alter",
+      "weight": "Gewicht",
+      "height": "Größe",
+      "color": "Farbe",
+      "city": "Stadt",
+      "vaccinated": "Geimpft",
+      "castrated": "Kastriert"
+    }
+  },
+  "volunteerAnimals": {
+    "title": "Tiere des Freiwilligen",
+    "all": "Alle",
+    "lookingForHome": "Suchen ein Zuhause",
+    "needsHelp": "Brauchen Hilfe",
+    "noPets": "Keine Tiere in dieser Kategorie",
+    "backToProfile": "← Zurück zum Profil"
+  },
+  "help": {
+    "title": "Freiwilligen unterstützen",
+    "subtitle": "Ihre Unterstützung hilft dem Freiwilligen, Tiere zu retten",
+    "requisitesTitle": "Bankdaten für Überweisung",
+    "noRequisites": "Der Freiwillige hat keine Bankdaten angegeben",
+    "socialTitle": "Soziale Netzwerke",
+    "copy": "Kopieren",
+    "copied": "Kopiert!",
+    "backToProfile": "← Zurück zum Profil"
+  },
+  "applications": {
+    "title": "Meine Anträge",
+    "empty": "Noch keine Anträge",
+    "emptyHint": "Stellen Sie einen Antrag, um Freiwilliger zu werden",
+    "submitBtn": "Antrag stellen",
+    "experience": "Erfahrung: {{years}} J.",
+    "certificates": "Zertifikate",
+    "requisites": "Bankdaten",
+    "createdAt": "Eingereicht: {{date}}",
+    "comment": "Kommentar des Administrators",
+    "updateBtn": "Antrag aktualisieren",
+    "status": {
+      "Submitted": "Eingereicht",
+      "OnReview": "In Prüfung",
+      "RevisionRequired": "Überarbeitung erforderlich",
+      "Rejected": "Abgelehnt",
+      "Approved": "Genehmigt"
+    }
+  },
+  "editVolunteer": {
+    "title": "Profil bearbeiten",
+    "tabMainInfo": "Hauptinformationen",
+    "tabSocialNetworks": "Soziale Netzwerke",
+    "tabRequisites": "Bankdaten",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "patronymic": "Zweiter Vorname",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "description": "Über mich",
+    "experience": "Erfahrung (Jahre)",
+    "addLink": "Link hinzufügen",
+    "linkName": "Name",
+    "linkUrl": "URL",
+    "addRequisite": "Bankdaten hinzufügen",
+    "requisiteName": "Name",
+    "requisiteDescription": "Beschreibung (z.B. Kartennummer)",
+    "saveBtn": "Speichern",
+    "saveSuccess": "Erfolgreich gespeichert!",
+    "notOwner": "Sie haben keine Berechtigung, dieses Profil zu bearbeiten."
+  },
+  "news": {
+    "title": "Neuigkeiten & Ankündigungen",
+    "comingSoon": "Dieser Bereich ist noch in Entwicklung",
+    "comingSoonHint": "Neuigkeiten und Ankündigungen des Freiwilligen erscheinen hier bald",
+    "backToProfile": "← Zurück zum Profil"
+  },
+  "favorites": {
+    "title": "Favoriten 🌟",
+    "empty": "Ihre Favoritenliste ist leer",
+    "emptyHint": "Klicken Sie ⭐ auf Tierkarten, um sie hier zu speichern",
+    "browsePets": "Tiere durchsuchen",
+    "notLoggedIn": "Melden Sie sich an, um Favoriten zu speichern",
+    "loginBtn": "Anmelden"
+  },
+  "profile": {
+    "title": "Mein Profil",
+    "email": "E-Mail",
+    "role": "Rolle",
+    "roles": {
+      "Volunteer": "Freiwilliger",
+      "Participant": "Teilnehmer",
+      "Admin": "Administrator"
+    },
+    "volunteerProfile": "Mein Freiwilligenprofil",
+    "editProfile": "Profil bearbeiten",
+    "logoutBtn": "Abmelden",
+    "notLoggedIn": "Sie sind nicht angemeldet.",
+    "loginBtn": "Anmelden",
+    "memberSince": "PetZone-Mitglied"
+  },
+  "petDetail": {
+    "notFound": "Tier nicht gefunden oder ein Fehler ist aufgetreten.",
+    "backToList": "← Zurück zur Liste",
+    "about": "Über das Tier",
+    "characteristics": "Eigenschaften",
+    "health": "Gesundheit",
+    "adoptionConditions": "Adoptionsbedingungen",
+    "microchip": "Mikrochip",
+    "volunteer": "Freiwilliger",
+    "viewVolunteer": "Freiwilligenprofil ansehen",
+    "vaccinated": "Geimpft",
+    "notVaccinated": "Nicht geimpft",
+    "castrated": "Kastriert",
+    "notCastrated": "Nicht kastriert",
+    "weight": "Gewicht",
+    "height": "Größe",
+    "city": "Stadt",
+    "saveToFavorites": "Zu Favoriten hinzufügen",
+    "removeFromFavorites": "Aus Favoriten entfernen",
+    "photos": "Fotos"
+  },
+  "volunteers": {
+    "pageTitle": "Freiwillige 🐾",
+    "searchByName": "Nach Name suchen",
+    "experience": "Erfahrung: {{years}} J.",
+    "notFound": "Keine Freiwilligen gefunden",
+    "notFoundHint": "Versuchen Sie die Filter zu ändern",
+    "loadError": "Freiwilligenliste konnte nicht geladen werden. Bitte später erneut versuchen.",
+    "viewProfile": "Profil ansehen",
+    "of": "von"
+  },
+  "pages": {
+    "login": {
+      "title": "Anmelden",
+      "placeholder": "Anmeldeformular wird später hinzugefügt"
+    },
+    "register": {
+      "title": "Registrieren",
+      "placeholder": "Registrierungsformular wird später hinzugefügt"
+    },
+    "profile": {
+      "title": "Profil",
+      "placeholder": "Profilinformationen werden später hinzugefügt"
+    },
+    "volunteers": {
+      "title": "Freiwillige",
+      "placeholder": "Liste der Freiwilligen wird später hinzugefügt"
+    },
+    "home": {
+      "welcome": "Willkommen bei PetZone 🐾",
+      "subtitle": "Plattform zur Tierhilfe — verbinden Freiwillige und Tiere, die Fürsorge brauchen"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Finde deinen Begleiter",
+      "subtitle": "Eine Plattform, die obdachlose Tiere mit Menschen verbindet, die bereit sind, ihnen ein Zuhause zu geben",
+      "browsePets": "Tiere durchsuchen",
+      "becomeVolunteer": "Freiwilliger werden"
+    },
+    "stats": {
+      "pets": "Tiere suchen ein Zuhause",
+      "volunteers": "aktive Freiwillige",
+      "free": "völlig kostenlos"
+    },
+    "how": {
+      "title": "Wie es funktioniert",
+      "step1": {
+        "title": "Wähle ein Tier",
+        "desc": "Durchsuche Tierprofile, filtere nach Art, Stadt und anderen Parametern"
+      },
+      "step2": {
+        "title": "Kontaktiere einen Freiwilligen",
+        "desc": "Jedes Tier hat einen verantwortlichen Freiwilligen — schreibe direkt an ihn"
+      },
+      "step3": {
+        "title": "Gib ein Zuhause",
+        "desc": "Nimm deinen neuen Begleiter mit nach Hause und gib ihm grenzenlose Liebe"
+      }
+    },
+    "cta": {
+      "title": "Werde Freiwilliger",
+      "subtitle": "Hilf Tieren, ein Zuhause zu finden. Registriere dich als Freiwilliger und stelle deine Tiere auf der Plattform vor",
+      "btn": "Jetzt bewerben"
+    }
+  },
+  "footer": {
+    "description": "Plattform zur Tierhilfe — verbinden Freiwillige und Tiere, die Fürsorge brauchen",
+    "by": "Entwickelt von Oleg Katrichuk",
+    "rights": "Alle Rechte vorbehalten.",
+    "nav": "Navigation",
+    "forVolunteers": "Für Freiwillige",
+    "becomeVolunteer": "Freiwilliger werden"
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "subtitle": "Diese Seite ist davongelaufen wie ein streundes Kätzchen. Aber wir finden etwas Besseres für dich!",
+    "goHome": "Zur Startseite",
+    "browsePets": "Tiere durchsuchen"
+  },
+  "about": {
+    "pageTitle": "Über uns",
+    "metaDesc": "Erfahren Sie mehr über die Mission von PetZone — eine Plattform, die obdachlose Tiere mit liebevollen Zuhausen durch ein Netzwerk von Freiwilligen verbindet",
+    "hero": {
+      "badge": "Unsere Mission",
+      "title": "Jedes Tier verdient ein Zuhause",
+      "subtitle": "PetZone ist eine Plattform, die obdachlose Tiere mit Menschen verbindet, die bereit sind, ihnen ein Zuhause zu geben. Wir glauben, dass wir gemeinsam die Welt verbessern können — ein Tier nach dem anderen."
+    },
+    "mission": {
+      "title": "Warum wir existieren",
+      "card1": {
+        "title": "Das Problem",
+        "desc": "Jedes Jahr landen Tausende von Tieren auf der Straße oder in Tierheimen. Sie brauchen nicht nur ein Dach — sie brauchen Liebe und eine dauerhafte Familie."
+      },
+      "card2": {
+        "title": "Unsere Lösung",
+        "desc": "Wir haben ein praktisches Tool entwickelt, das Freiwilligen hilft, ihre Schützlinge vorzustellen und echte Besitzer zu finden."
+      },
+      "card3": {
+        "title": "Das Ergebnis",
+        "desc": "Ein transparentes System, in dem jeder Tiere durchsuchen, Freiwillige kontaktieren und Adoptionsbedingungen erfahren kann."
+      }
+    },
+    "values": {
+      "title": "Unsere Werte",
+      "v1": {
+        "title": "Transparenz",
+        "desc": "Alle Informationen über Tiere und Freiwillige sind offen. Keine versteckten Bedingungen."
+      },
+      "v2": {
+        "title": "Fürsorge",
+        "desc": "Jede Entscheidung wird mit Blick auf das Wohlbefinden der Tiere und die Bequemlichkeit der Freiwilligen getroffen."
+      },
+      "v3": {
+        "title": "Gemeinschaft",
+        "desc": "Wir bauen ein Netzwerk fürsorglicher Menschen auf, die gemeinsam einen Unterschied machen."
+      },
+      "v4": {
+        "title": "Zugänglichkeit",
+        "desc": "Die Plattform ist für Freiwillige und Tiersucher völlig kostenlos."
+      }
+    },
+    "team": {
+      "title": "Wer dahintersteckt",
+      "desc": "PetZone ist ein Herzensprojekt, das aus Liebe zu Tieren und dem Wunsch entstanden ist, Technologie für einen guten Zweck einzusetzen. Das Projekt entwickelt sich aktiv weiter und ist offen für Zusammenarbeit.",
+      "founder": "Gründer & Entwickler"
+    },
+    "cta": {
+      "title": "Der Gemeinschaft beitreten",
+      "subtitle": "Registrieren Sie sich als Freiwilliger und helfen Sie Tieren, ein Zuhause zu finden",
+      "btn": "Freiwilliger werden"
+    }
+  },
+  "faq": {
+    "pageTitle": "Häufig gestellte Fragen",
+    "metaDesc": "Antworten auf häufige Fragen zu PetZone — Tieradoption, Freiwilligenregistrierung und Funktionsweise der Plattform",
+    "badge": "FAQ",
+    "subtitle": "Finden Sie Antworten auf die häufigsten Fragen zur Plattform",
+    "category": {
+      "all": "Alle",
+      "general": "Allgemein",
+      "adoption": "Adoption",
+      "volunteers": "Für Freiwillige",
+      "technical": "Technisch"
+    },
+    "ctaTitle": "Keine Antwort gefunden?",
+    "ctaSubtitle": "Stöbern Sie in Tieren oder werden Sie Freiwilliger — gemeinsam helfen wir mehr",
+    "q1": {
+      "q": "Was ist PetZone?",
+      "a": "PetZone ist eine kostenlose Plattform, die Freiwillige, die Tiere retten, mit Menschen verbindet, die ihnen ein Zuhause geben möchten. Wir sind kein Tierheim — wir sind das Bindeglied zwischen Tieren und ihren zukünftigen Besitzern."
+    },
+    "q2": {
+      "q": "Benötige ich ein Konto, um Tiere zu durchsuchen?",
+      "a": "Nein. Tierprofile und Freiwilligenprofile können ohne Registrierung durchsucht werden. Eine Registrierung ist nur für Freiwillige erforderlich, um ihre Tiere zu veröffentlichen."
+    },
+    "q3": {
+      "q": "Wie adoptiere ich ein Tier?",
+      "a": "Finden Sie ein Tier, das Ihnen gefällt, und besuchen Sie das Profil des zuständigen Freiwilligen. Dort finden Sie seine Kontaktdaten — schreiben Sie direkt und vereinbaren Sie ein Treffen."
+    },
+    "q4": {
+      "q": "Kostet die Adoption etwas?",
+      "a": "Die PetZone-Plattform ist kostenlos. Adoptionsbedingungen (Impfung, Kastration, Kaution) werden vom Freiwilligen individuell für jedes Tier festgelegt."
+    },
+    "q5": {
+      "q": "Wie weiß ich, ob das Tier gesund ist?",
+      "a": "Auf jeder Tierseite werden Impf- und Kastrationsstatus angezeigt. Für weitere Gesundheitsdetails wenden Sie sich direkt an den Freiwilligen."
+    },
+    "q6": {
+      "q": "Wie werde ich Freiwilliger bei PetZone?",
+      "a": "Klicken Sie auf 'Freiwilliger werden', füllen Sie das Antragsformular aus und senden Sie es ab. Ein Administrator prüft Ihren Antrag und bei Genehmigung erhalten Sie Zugang zum Freiwilligen-Dashboard."
+    },
+    "q7": {
+      "q": "Was kann ich im Freiwilligen-Dashboard tun?",
+      "a": "Tierprofile hinzufügen und bearbeiten, Fotos hochladen, Kontaktdaten und Zahlungsinformationen hinterlegen sowie Neuigkeiten und Ankündigungen veröffentlichen."
+    },
+    "q8": {
+      "q": "Wie viele Tiere kann ich einstellen?",
+      "a": "Es gibt keine Begrenzung. Sie können so viele Tiere hinzufügen, wie Sie betreuen."
+    },
+    "q9": {
+      "q": "Welche Sprachen werden unterstützt?",
+      "a": "Die Plattform unterstützt 5 Sprachen: Ukrainisch, Englisch, Polnisch, Deutsch und Französisch. Die Sprache kann oben rechts geändert werden."
+    },
+    "q10": {
+      "q": "Funktioniert die Website auf Mobilgeräten?",
+      "a": "Ja, PetZone ist vollständig responsiv und funktioniert auf Mobilgeräten und Tablets."
+    }
+  },
+  "errors": {
+    "unknown": "Etwas ist schiefgelaufen",
+    "retry": "Erneut versuchen",
+    "address.city_is_empty": "Stadt ist erforderlich",
+    "address.city_too_long": "Stadtname ist zu lang",
+    "address.street_is_empty": "Straße ist erforderlich",
+    "address.street_too_long": "Straßenname ist zu lang",
+    "breed.name_is_empty": "Rassenname darf nicht leer sein",
+    "breed.name_too_long": "Rassenname ist zu lang",
+    "breed.not_found": "Rasse nicht gefunden",
+    "breed.translations_empty": "Bitte Übersetzung des Rassennamens hinzufügen",
+    "discussion.already_closed": "Diskussion ist bereits geschlossen",
+    "discussion.closed": "Diskussion ist geschlossen",
+    "discussion.duplicate_users": "Diskussionsteilnehmer dürfen sich nicht wiederholen",
+    "discussion.forbidden": "Kein Zugang zu dieser Diskussion",
+    "discussion.invalid_users": "Ungültige Diskussionsteilnehmer",
+    "discussion.not_found": "Diskussion nicht gefunden",
+    "email.confirmation_failed": "E-Mail-Bestätigung fehlgeschlagen",
+    "email.is_empty": "E-Mail ist erforderlich",
+    "email.is_invalid": "Ungültiges E-Mail-Format",
+    "email.too_long": "E-Mail ist zu lang",
+    "experience.too_large": "Erfahrung darf 100 Jahre nicht überschreiten",
+    "experience.too_small": "Erfahrung darf nicht negativ sein",
+    "fullname.firstname_is_empty": "Vorname ist erforderlich",
+    "fullname.firstname_too_long": "Vorname ist zu lang",
+    "fullname.lastname_is_empty": "Nachname ist erforderlich",
+    "fullname.lastname_too_long": "Nachname ist zu lang",
+    "fullname.patronymic_too_long": "Patronym ist zu lang",
+    "healthinfo.description_is_empty": "Gesundheitsbeschreibung ist erforderlich",
+    "healthinfo.description_too_long": "Gesundheitsbeschreibung ist zu lang",
+    "healthinfo.diet_too_long": "Diätbeschreibung ist zu lang",
+    "height.too_large": "Größe ist zu groß",
+    "height.too_small": "Größe ist zu klein",
+    "message.empty_text": "Nachricht darf nicht leer sein",
+    "message.forbidden": "Kein Zugang zu dieser Nachricht",
+    "message.not_found": "Nachricht nicht gefunden",
+    "minio.delete_failed": "Fehler beim Löschen der Datei",
+    "minio.list_failed": "Fehler beim Abrufen der Dateiliste",
+    "minio.presigned_failed": "Fehler beim Generieren des Links",
+    "minio.upload_failed": "Fehler beim Hochladen der Datei",
+    "pet.breed_not_found": "Tierrasse nicht gefunden",
+    "pet.color_is_empty": "Tierfarbe ist erforderlich",
+    "pet.color_too_long": "Farbe ist zu lang",
+    "pet.conditions_too_long": "Adoptionsbedingungen sind zu lang",
+    "pet.description_is_empty": "Tierbeschreibung ist erforderlich",
+    "pet.description_too_long": "Tierbeschreibung ist zu lang",
+    "pet.invalid_status": "Ungültiger Tierstatus",
+    "pet.microchip_too_long": "Mikrochipnummer ist zu lang",
+    "pet.nickname_is_empty": "Tiername ist erforderlich",
+    "pet.nickname_too_long": "Tiername ist zu lang",
+    "pet.not_found": "Tier nicht gefunden",
+    "pet.photo_already_exists": "Dieses Foto existiert bereits",
+    "pet.photo_is_null": "Foto darf nicht leer sein",
+    "pet.photo_not_found": "Foto nicht gefunden",
+    "pet.photos_limit_exceeded": "Fotolimit überschritten (maximal 5)",
+    "pet.requisite_is_null": "Zahlungsdetails dürfen nicht leer sein",
+    "petphoto.path_is_empty": "Fotopfad darf nicht leer sein",
+    "petphoto.path_too_long": "Fotopfad ist zu lang",
+    "phone.is_empty": "Telefonnummer ist erforderlich",
+    "phone.too_long": "Telefonnummer ist zu lang",
+    "refresh.expired": "Sitzung abgelaufen. Bitte erneut anmelden",
+    "refresh.not_found": "Sitzung nicht gefunden",
+    "requisite.description_is_empty": "Beschreibung der Zahlungsdetails ist erforderlich",
+    "requisite.description_too_long": "Beschreibung der Zahlungsdetails ist zu lang",
+    "requisite.name_is_empty": "Name der Zahlungsdetails ist erforderlich",
+    "requisite.name_too_long": "Name der Zahlungsdetails ist zu lang",
+    "role.not_found": "Rolle nicht gefunden",
+    "social_network.link_is_empty": "Link zum sozialen Netzwerk ist erforderlich",
+    "social_network.name_is_empty": "Name des sozialen Netzwerks ist erforderlich",
+    "socialnetwork.link_is_empty": "Link zum sozialen Netzwerk ist erforderlich",
+    "socialnetwork.link_too_long": "Link zum sozialen Netzwerk ist zu lang",
+    "socialnetwork.name_is_empty": "Name des sozialen Netzwerks ist erforderlich",
+    "socialnetwork.name_too_long": "Name des sozialen Netzwerks ist zu lang",
+    "species.already_exists": "Diese Tierart existiert bereits",
+    "species.breed_already_exists": "Diese Rasse existiert bereits",
+    "species.breed_is_null": "Rasse darf nicht leer sein",
+    "species.name_is_empty": "Tierartname darf nicht leer sein",
+    "species.name_too_long": "Tierartname ist zu lang",
+    "species.not_found": "Tierart nicht gefunden",
+    "species.has_pets": "Eine Tierart mit zugeordneten Tieren kann nicht gelöscht werden",
+    "species.translations_empty": "Bitte Übersetzung des Tierartnamens hinzufügen",
+    "speciesbreed.breed_is_empty": "Rasse darf nicht leer sein",
+    "speciesbreed.species_is_empty": "Tierart darf nicht leer sein",
+    "user.already_exists": "Ein Benutzer mit dieser E-Mail-Adresse existiert bereits",
+    "user.invalid_password": "Ungültiges Passwort",
+    "user.not_found": "Benutzer nicht gefunden",
+    "user.register_failed": "Registrierung fehlgeschlagen. Bitte erneut versuchen",
+    "volunteer.description_is_empty": "Freiwilligenbeschreibung ist erforderlich",
+    "volunteer.description_too_long": "Freiwilligenbeschreibung ist zu lang",
+    "volunteer.invalid_position": "Ungültige Position",
+    "volunteer.not_found": "Freiwilliger nicht gefunden",
+    "volunteer.pet_already_exists": "Dieses Tier existiert bereits beim Freiwilligen",
+    "volunteer.pet_not_found": "Tier des Freiwilligen nicht gefunden",
+    "volunteer_request.already_exists": "Antrag wurde bereits eingereicht",
+    "volunteer_request.empty_comment": "Kommentar darf nicht leer sein",
+    "volunteer_request.forbidden": "Kein Zugang zu diesem Antrag",
+    "volunteer_request.invalid_info": "Ungültige Antragsdaten",
+    "volunteer_request.invalid_status": "Ungültiger Antragsstatus",
+    "volunteer_request.not_found": "Antrag nicht gefunden",
+    "volunteer_request.user_blocked": "Benutzer ist gesperrt",
+    "weight.too_large": "Gewicht ist zu groß",
+    "weight.too_small": "Gewicht ist zu klein"
+  },
+  "common": {
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "back": "Zurück",
+    "chooseFile": "Datei auswählen",
+    "invalidImage": "Die Datei muss ein Bild sein (JPG, PNG, WEBP…)",
+    "noFileSelected": "Bitte eine Bilddatei auswählen"
+  },
+  "volunteerRequest": {
+    "tabUser": "Benutzerregistrierung",
+    "tabVolunteer": "Freiwilligenantrag",
+    "infoText": "Füllen Sie dieses Formular aus, um sich als Freiwilliger zu bewerben. Je mehr Informationen Sie angeben, desto schneller wird Ihr Antrag bearbeitet.",
+    "loginRequiredText": "Sie müssen angemeldet sein, um einen Freiwilligenantrag zu stellen.",
+    "loginBtn": "Anmelden",
+    "experience": "Freiwilligenerfahrung (Jahre)",
+    "certificates": "Zertifikate & Dokumente",
+    "addCertificate": "Zertifikat hinzufügen",
+    "certificatePlaceholder": "Zertifikatsname oder Link",
+    "requisites": "Bankdaten / Zahlungsinformationen",
+    "addRequisite": "Bankdaten hinzufügen",
+    "requisitePlaceholder": "z.B. Monobank-Kartennummer",
+    "submit": "Antrag einreichen",
+    "successTitle": "Antrag gesendet",
+    "successText": "Ihr Freiwilligenantrag wurde erfolgreich eingereicht. Ein Administrator wird ihn in Kürze prüfen.",
+    "toHome": "Zur Startseite",
+    "alreadyRegistered": "Bereits registriert?",
+    "login": "Anmelden"
+  },
+  "map": {
+    "pageTitle": "Tierkarte",
+    "legendPets": "Freiwillige Tiere",
+    "legendListings": "Anzeigen",
+    "all": "Alle",
+    "onlyPets": "Nur Tiere",
+    "onlyListings": "Nur Anzeigen",
+    "hint": "Es werden nur Städte mit bekannten Koordinaten angezeigt. Klicken Sie auf einen Marker, um die Karte zu öffnen."
+  },
+  "listings": {
+    "sectionTitle": "Vermittlungsanzeigen",
+    "sectionSubtitle": "Tierbesitzer suchen eine neue liebevolle Familie für ihr Tier",
+    "ownerBadge": "Besitzer",
+    "addBtn": "Anzeige aufgeben",
+    "empty": "Noch keine Anzeigen",
+    "loginRequired": "Sie müssen angemeldet sein, um eine Anzeige aufzugeben",
+    "createTitle": "Neue Anzeige",
+    "titleLabel": "Titel",
+    "descriptionLabel": "Beschreibung",
+    "ageMonthsLabel": "Alter (Monate)",
+    "phoneLabel": "Kontakttelefon",
+    "phoneHint": "Optional — wird in der Anzeige angezeigt",
+    "submitBtn": "Veröffentlichen",
+    "detailTitle": "Anzeige",
+    "contactTitle": "Kontakte",
+    "statusActive": "Aktiv",
+    "statusAdopted": "Hat ein Zuhause gefunden",
+    "statusRemoved": "Entfernt",
+    "markAdoptedBtn": "Als vermittelt markieren",
+    "editBtn": "Bearbeiten",
+    "deleteBtn": "Löschen",
+    "deleteConfirm": "Diese Anzeige löschen?",
+    "myListings": "Meine Anzeigen",
+    "addPhotoBtn": "Foto hinzufügen",
+    "removePhotoBtn": "Foto entfernen",
+    "photoUploading": "Wird hochgeladen...",
+    "photoHint": "Bis zu 5 Fotos, JPG/PNG/WEBP",
+    "pageTitle": "Tieradoptionsanzeigen",
+    "pageDescription": "Besitzer suchen eine neue liebevolle Familie für ihre Haustiere",
+    "allSpecies": "Alle Arten",
+    "cityFilter": "Nach Stadt suchen",
+    "applyFilter": "Suchen",
+    "clearFilter": "Zurücksetzen",
+    "showAll": "Alle anzeigen"
+  },
+  "volunteerProfile": {
+    "myProfile": "Mein Profil",
+    "myAnimals": "Meine Tiere",
+    "addAnimal": "Tier hinzufügen",
+    "myNews": "Meine Neuigkeiten",
+    "myApplications": "Meine Anträge",
+    "volunteerProfileLabel": "Freiwilligenprofil",
+    "volunteerAnimals": "Tiere des Freiwilligen",
+    "volunteerNews": "Neuigkeiten & Ankündigungen",
+    "myCabinet": "Mein Bereich",
+    "volunteerLabel": "Freiwilliger",
+    "editProfile": "Profil bearbeiten",
+    "helpVolunteer": "Freiwilligen unterstützen",
+    "changePhoto": "Foto ändern",
+    "clickToChangePhoto": "Klicken, um Foto zu ändern",
+    "experience": "Erfahrung: {{years}} J.",
+    "foundHome": "Zuhause gefunden: {{count}}",
+    "contacts": "Kontakte",
+    "socialNetworks": "Soziale Netzwerke",
+    "notFound": "Freiwilliger nicht gefunden oder ein Fehler ist aufgetreten.",
+    "backToHome": "← Zur Startseite",
+    "noPetsInCategory": "Keine Tiere in dieser Kategorie",
+    "lookingForHomeTitle": "Suchen ein Zuhause 🏠",
+    "lookingForHomeSubtitle": "Tiere dieses Freiwilligen suchen eine liebevolle Familie",
+    "needsHelpTitle": "Brauchen Hilfe 🆘",
+    "needsHelpSubtitle": "Tiere, die noch kein neues Zuhause finden können — sie brauchen Unterstützung",
+    "avatarModalTitle": "Avatar ändern"
+  }
+}

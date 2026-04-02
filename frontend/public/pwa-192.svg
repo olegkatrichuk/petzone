@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <!-- Background -->
+  <rect width="192" height="192" rx="40" fill="#1e1b4b"/>
+  <!-- Paw print in coral -->
+  <!-- Top-left toe -->
+  <ellipse cx="66" cy="62" rx="13" ry="17" fill="#FF6B6B"/>
+  <!-- Top-right toe -->
+  <ellipse cx="126" cy="62" rx="13" ry="17" fill="#FF6B6B"/>
+  <!-- Middle-left toe -->
+  <ellipse cx="46" cy="90" rx="11" ry="15" fill="#FF6B6B"/>
+  <!-- Middle-right toe -->
+  <ellipse cx="146" cy="90" rx="11" ry="15" fill="#FF6B6B"/>
+  <!-- Main pad -->
+  <ellipse cx="96" cy="128" rx="38" ry="32" fill="#FF6B6B"/>
+  <!-- Inner pad highlight -->
+  <ellipse cx="96" cy="130" rx="24" ry="20" fill="#e55555" opacity="0.4"/>
+</svg>

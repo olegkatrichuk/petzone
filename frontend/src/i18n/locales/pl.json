@@ -1,0 +1,650 @@
+{
+  "app": {
+    "name": "PetZone",
+    "tagline": "Platforma pomocy zwierzętom"
+  },
+  "nav": {
+    "home": "Strona główna",
+    "volunteers": "Wolontariusze",
+    "pets": "Zwierzęta",
+    "about": "O nas",
+    "faq": "FAQ",
+    "map": "Mapa",
+    "login": "Zaloguj",
+    "logout": "Wyloguj",
+    "profile": "Profil",
+    "favorites": "Ulubione",
+    "register": "Rejestracja",
+    "listings": "Ogłoszenia"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Hasło",
+    "confirmPassword": "Potwierdź hasło",
+    "login": "Zaloguj",
+    "register": "Zarejestruj się",
+    "registerBtn": "Utwórz konto",
+    "noAccount": "Nie masz konta?",
+    "hasAccount": "Masz już konto?",
+    "firstName": "Imię",
+    "lastName": "Nazwisko",
+    "patronymic": "Drugie imię",
+    "phone": "Telefon",
+    "experienceYears": "Doświadczenie (lata)",
+    "description": "O sobie"
+  },
+  "register": {
+    "tabUser": "Użytkownik",
+    "tabVolunteer": "Wolontariusz"
+  },
+  "validation": {
+    "emailRequired": "Podaj email",
+    "emailInvalid": "Nieprawidłowy format email",
+    "passwordRequired": "Podaj hasło",
+    "passwordMin": "Minimum 6 znaków",
+    "confirmPasswordRequired": "Potwierdź hasło",
+    "passwordsMismatch": "Hasła nie są zgodne",
+    "firstNameRequired": "Podaj imię",
+    "lastNameRequired": "Podaj nazwisko",
+    "patronymicRequired": "Podaj drugie imię",
+    "phoneRequired": "Podaj numer telefonu",
+    "experienceMin": "Musi być 0 lub więcej",
+    "experienceMax": "Musi być 100 lub mniej",
+    "descriptionMin": "Minimum 10 znaków",
+    "required": "Pole wymagane"
+  },
+  "pets": {
+    "pageTitle": "Znajdź swojego pupila 🐾",
+    "filters": "Filtry",
+    "apply": "Zastosuj",
+    "reset": "Resetuj filtry",
+    "searchByName": "Szukaj po imieniu",
+    "notFound": "Nic nie znaleziono 🐾",
+    "notFoundHint": "Spróbuj zmienić filtry wyszukiwania",
+    "loadError": "Nie udało się załadować listy zwierząt. Spróbuj ponownie później.",
+    "details": "Szczegóły",
+    "saveToFavorites": "Zapisz do ulubionych",
+    "removeFromFavorites": "Usuń z ulubionych",
+    "vaccinated": "Zaszczepiony",
+    "notVaccinated": "Niezaszczepiony",
+    "castrated": "Wykastrowany",
+    "notCastrated": "Niewykastrowany",
+    "of": "z",
+    "statusLabel": "Status",
+    "any": "Dowolne",
+    "species": "Gatunek",
+    "breed": "Rasa",
+    "kg": "kg",
+    "cm": "cm",
+    "volunteer": "Zobacz wolontariusza",
+    "ageRange": "Wiek (miesiące)",
+    "weightRange": "Waga (kg)",
+    "minAge": "Od",
+    "maxAge": "Do",
+    "minWeight": "Od",
+    "maxWeight": "Do",
+    "sortBy": "Sortuj według",
+    "sortByName": "Według imienia",
+    "sortByAge": "Według wieku",
+    "sortByCity": "Według miasta",
+    "sortByWeight": "Według wagi",
+    "sortOrder": "Kolejność",
+    "sortAsc": "Rosnąco",
+    "sortDesc": "Malejąco",
+    "status": {
+      "needsHelp": "Potrzebuje pomocy",
+      "lookingForHome": "Szuka domu",
+      "foundHome": "Znalazł dom"
+    },
+    "color": {
+      "label": "Umaszczenie",
+      "any": "Dowolne",
+      "black": "Czarny",
+      "white": "Biały",
+      "gray": "Szary",
+      "orange": "Rudy",
+      "mixed": "Mieszany"
+    },
+    "location": {
+      "label": "Miasto"
+    },
+    "health": {
+      "label": "Zdrowie",
+      "any": "Dowolne",
+      "vaccinated": "Zaszczepiony",
+      "castrated": "Wykastrowany",
+      "both": "Zaszczepiony i wykastrowany"
+    },
+    "linkCopied": "Link skopiowany!",
+    "addedToFavorites": "Dodano do ulubionych",
+    "removedFromFavorites": "Usunięto z ulubionych",
+    "updating": "Aktualizacja...",
+    "ageYears": "r.",
+    "ageMonths": "mies.",
+    "ageLessThanMonth": "< 1 mies.",
+    "loadMore": "Załaduj więcej",
+    "allLoaded": "Wszystkie zwierzęta załadowane",
+    "loading": "Ładowanie...",
+    "addToCompare": "Porównaj",
+    "removeFromCompare": "Usuń z porównania",
+    "compareBar": {
+      "title": "Porównanie",
+      "compare": "Porównaj",
+      "clear": "Wyczyść",
+      "hint": "Maks. 3 zwierzęta"
+    },
+    "compareDialog": {
+      "title": "Porównanie zwierząt",
+      "close": "Zamknij",
+      "status": "Status",
+      "age": "Wiek",
+      "weight": "Waga",
+      "height": "Wzrost",
+      "color": "Kolor",
+      "city": "Miasto",
+      "vaccinated": "Zaszczepiony",
+      "castrated": "Wykastrowany"
+    }
+  },
+  "volunteerAnimals": {
+    "title": "Zwierzęta wolontariusza",
+    "all": "Wszystkie",
+    "lookingForHome": "Szukają domu",
+    "needsHelp": "Potrzebują pomocy",
+    "noPets": "Brak zwierząt w tej kategorii",
+    "backToProfile": "← Powrót do profilu"
+  },
+  "help": {
+    "title": "Wesprzyj wolontariusza",
+    "subtitle": "Twoje wsparcie pomaga wolontariuszowi ratować zwierzęta",
+    "requisitesTitle": "Dane bankowe do przelewu",
+    "noRequisites": "Wolontariusz nie podał danych bankowych",
+    "socialTitle": "Media społecznościowe",
+    "copy": "Kopiuj",
+    "copied": "Skopiowano!",
+    "backToProfile": "← Powrót do profilu"
+  },
+  "applications": {
+    "title": "Moje zgłoszenia",
+    "empty": "Nie ma jeszcze żadnych zgłoszeń",
+    "emptyHint": "Złóż zgłoszenie, aby zostać wolontariuszem",
+    "submitBtn": "Złóż zgłoszenie",
+    "experience": "Doświadczenie: {{years}} r.",
+    "certificates": "Certyfikaty",
+    "requisites": "Dane bankowe",
+    "createdAt": "Złożono: {{date}}",
+    "comment": "Komentarz administratora",
+    "updateBtn": "Zaktualizuj zgłoszenie",
+    "status": {
+      "Submitted": "Złożono",
+      "OnReview": "W trakcie przeglądu",
+      "RevisionRequired": "Wymagana korekta",
+      "Rejected": "Odrzucono",
+      "Approved": "Zatwierdzone"
+    }
+  },
+  "editVolunteer": {
+    "title": "Edytuj profil",
+    "tabMainInfo": "Informacje podstawowe",
+    "tabSocialNetworks": "Media społecznościowe",
+    "tabRequisites": "Dane bankowe",
+    "firstName": "Imię",
+    "lastName": "Nazwisko",
+    "patronymic": "Drugie imię",
+    "email": "Email",
+    "phone": "Telefon",
+    "description": "O sobie",
+    "experience": "Doświadczenie (lat)",
+    "addLink": "Dodaj link",
+    "linkName": "Nazwa",
+    "linkUrl": "URL",
+    "addRequisite": "Dodaj dane",
+    "requisiteName": "Nazwa",
+    "requisiteDescription": "Opis (np. numer karty)",
+    "saveBtn": "Zapisz",
+    "saveSuccess": "Zapisano pomyślnie!",
+    "notOwner": "Nie masz uprawnień do edycji tego profilu."
+  },
+  "news": {
+    "title": "Aktualności i ogłoszenia",
+    "comingSoon": "Ta sekcja jest w trakcie budowy",
+    "comingSoonHint": "Aktualności i ogłoszenia wolontariusza pojawią się tutaj wkrótce",
+    "backToProfile": "← Powrót do profilu"
+  },
+  "favorites": {
+    "title": "Ulubione 🌟",
+    "empty": "Lista ulubionych jest pusta",
+    "emptyHint": "Kliknij ⭐ na kartach zwierząt, aby je tutaj zapisać",
+    "browsePets": "Przeglądaj zwierzęta",
+    "notLoggedIn": "Zaloguj się, aby zapisywać ulubione",
+    "loginBtn": "Zaloguj się"
+  },
+  "profile": {
+    "title": "Mój profil",
+    "email": "Email",
+    "role": "Rola",
+    "roles": {
+      "Volunteer": "Wolontariusz",
+      "Participant": "Uczestnik",
+      "Admin": "Administrator"
+    },
+    "volunteerProfile": "Mój profil wolontariusza",
+    "editProfile": "Edytuj profil",
+    "logoutBtn": "Wyloguj się",
+    "notLoggedIn": "Nie jesteś zalogowany.",
+    "loginBtn": "Zaloguj się",
+    "memberSince": "Członek PetZone"
+  },
+  "petDetail": {
+    "notFound": "Zwierzę nie znalezione lub wystąpił błąd.",
+    "backToList": "← Powrót do listy",
+    "about": "O zwierzęciu",
+    "characteristics": "Charakterystyka",
+    "health": "Zdrowie",
+    "adoptionConditions": "Warunki adopcji",
+    "microchip": "Mikrochip",
+    "volunteer": "Wolontariusz",
+    "viewVolunteer": "Zobacz profil wolontariusza",
+    "vaccinated": "Zaszczepiony",
+    "notVaccinated": "Niezaszczepiony",
+    "castrated": "Wykastrowany",
+    "notCastrated": "Niewykastrowany",
+    "weight": "Waga",
+    "height": "Wzrost",
+    "city": "Miasto",
+    "saveToFavorites": "Zapisz do ulubionych",
+    "removeFromFavorites": "Usuń z ulubionych",
+    "photos": "Zdjęcia"
+  },
+  "volunteers": {
+    "pageTitle": "Wolontariusze 🐾",
+    "searchByName": "Szukaj po imieniu",
+    "experience": "Doświadczenie: {{years}} r.",
+    "notFound": "Nie znaleziono wolontariuszy",
+    "notFoundHint": "Spróbuj zmienić filtry",
+    "loadError": "Nie udało się załadować listy wolontariuszy. Spróbuj później.",
+    "viewProfile": "Zobacz profil",
+    "of": "z"
+  },
+  "pages": {
+    "login": {
+      "title": "Logowanie",
+      "placeholder": "Formularz logowania zostanie dodany później"
+    },
+    "register": {
+      "title": "Rejestracja",
+      "placeholder": "Formularz rejestracji zostanie dodany później"
+    },
+    "profile": {
+      "title": "Profil",
+      "placeholder": "Informacje o profilu zostaną dodane później"
+    },
+    "volunteers": {
+      "title": "Wolontariusze",
+      "placeholder": "Lista wolontariuszy zostanie dodana później"
+    },
+    "home": {
+      "welcome": "Witaj w PetZone 🐾",
+      "subtitle": "Platforma pomocy zwierzętom — łączymy wolontariuszy ze zwierzętami potrzebującymi opieki"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Znajdź swojego towarzysza",
+      "subtitle": "Platforma łącząca bezdomne zwierzęta z ludźmi gotowymi dać im dom i troskę",
+      "browsePets": "Przeglądaj zwierzęta",
+      "becomeVolunteer": "Zostań wolontariuszem"
+    },
+    "stats": {
+      "pets": "zwierząt szuka domu",
+      "volunteers": "aktywnych wolontariuszy",
+      "free": "całkowicie bezpłatnie"
+    },
+    "how": {
+      "title": "Jak to działa",
+      "step1": {
+        "title": "Wybierz zwierzę",
+        "desc": "Przeglądaj profile zwierząt, filtruj według gatunku, miasta i innych parametrów"
+      },
+      "step2": {
+        "title": "Skontaktuj się z wolontariuszem",
+        "desc": "Każde zwierzę ma odpowiedzialnego wolontariusza — napisz do niego bezpośrednio"
+      },
+      "step3": {
+        "title": "Daj dom",
+        "desc": "Zabierz swojego nowego towarzysza do domu i daj mu nieskończoną miłość"
+      }
+    },
+    "cta": {
+      "title": "Zostań wolontariuszem",
+      "subtitle": "Pomagaj zwierzętom znajdować domy. Zarejestruj się jako wolontariusz i umieść swoje zwierzęta na platformie",
+      "btn": "Złóż wniosek"
+    }
+  },
+  "footer": {
+    "description": "Platforma pomocy zwierzętom — łączymy wolontariuszy ze zwierzętami potrzebującymi opieki",
+    "by": "Stworzone przez Olega Katrichuka",
+    "rights": "Wszelkie prawa zastrzeżone.",
+    "nav": "Nawigacja",
+    "forVolunteers": "Dla wolontariuszy",
+    "becomeVolunteer": "Zostań wolontariuszem"
+  },
+  "notFound": {
+    "title": "Strona nie znaleziona",
+    "subtitle": "Wygląda na to, że ta strona uciekła jak bezdomny kotek. Ale znajdziemy Ci coś lepszego!",
+    "goHome": "Strona główna",
+    "browsePets": "Przeglądaj zwierzęta"
+  },
+  "about": {
+    "pageTitle": "O nas",
+    "metaDesc": "Dowiedz się więcej o misji PetZone — platformy łączącej bezdomne zwierzęta z kochającymi domami przez sieć wolontariuszy",
+    "hero": {
+      "badge": "Nasza misja",
+      "title": "Każde zwierzę zasługuje na dom",
+      "subtitle": "PetZone to platforma łącząca bezdomne zwierzęta z ludźmi gotowymi dać im dom. Wierzymy, że razem możemy zmienić świat na lepsze — jedno zwierzę na raz."
+    },
+    "mission": {
+      "title": "Dlaczego istniejemy",
+      "card1": {
+        "title": "Problem",
+        "desc": "Co roku tysiące zwierząt trafia na ulice lub do schronisk. Potrzebują nie tylko dachu nad głową, ale miłości i stałej rodziny."
+      },
+      "card2": {
+        "title": "Nasze rozwiązanie",
+        "desc": "Stworzyliśmy wygodne narzędzie, które pomaga wolontariuszom prezentować swoje podopieczne i znajdować im prawdziwych właścicieli."
+      },
+      "card3": {
+        "title": "Rezultat",
+        "desc": "Przejrzysty system, gdzie każdy może przeglądać zwierzęta, kontaktować się z wolontariuszem i poznać warunki adopcji."
+      }
+    },
+    "values": {
+      "title": "Nasze wartości",
+      "v1": {
+        "title": "Przejrzystość",
+        "desc": "Wszystkie informacje o zwierzętach i wolontariuszach są otwarte. Żadnych ukrytych warunków."
+      },
+      "v2": {
+        "title": "Troska",
+        "desc": "Każda decyzja jest podejmowana z myślą o dobrostanie zwierząt i wygodzie wolontariuszy."
+      },
+      "v3": {
+        "title": "Społeczność",
+        "desc": "Budujemy sieć wrażliwych ludzi, którzy razem robią różnicę."
+      },
+      "v4": {
+        "title": "Dostępność",
+        "desc": "Platforma jest całkowicie bezpłatna dla wolontariuszy i osób szukających pupila."
+      }
+    },
+    "team": {
+      "title": "Kto za tym stoi",
+      "desc": "PetZone to projekt stworzony z miłości do zwierząt i chęci wykorzystania technologii dla dobrej sprawy. Projekt aktywnie się rozwija i jest otwarty na współpracę.",
+      "founder": "Założyciel i programista"
+    },
+    "cta": {
+      "title": "Dołącz do społeczności",
+      "subtitle": "Zarejestruj się jako wolontariusz i pomagaj zwierzętom znajdować dom",
+      "btn": "Zostań wolontariuszem"
+    }
+  },
+  "faq": {
+    "pageTitle": "Najczęściej zadawane pytania",
+    "metaDesc": "Odpowiedzi na najczęstsze pytania dotyczące PetZone — adopcja zwierząt, rejestracja wolontariuszy i działanie platformy",
+    "badge": "FAQ",
+    "subtitle": "Znajdź odpowiedzi na najczęstsze pytania dotyczące platformy",
+    "category": {
+      "all": "Wszystkie",
+      "general": "Ogólne",
+      "adoption": "Adopcja",
+      "volunteers": "Dla wolontariuszy",
+      "technical": "Techniczne"
+    },
+    "ctaTitle": "Nie znalazłeś odpowiedzi?",
+    "ctaSubtitle": "Przeglądaj zwierzęta lub zostań wolontariuszem — razem pomagamy więcej",
+    "q1": {
+      "q": "Czym jest PetZone?",
+      "a": "PetZone to bezpłatna platforma łącząca wolontariuszy ratujących zwierzęta z osobami gotowymi dać im dom. Nie jesteśmy schroniskiem — jesteśmy łącznikiem między zwierzętami a przyszłymi właścicielami."
+    },
+    "q2": {
+      "q": "Czy potrzebuję konta, by przeglądać zwierzęta?",
+      "a": "Nie. Profile zwierząt i wolontariuszy można przeglądać bez rejestracji. Rejestracja jest wymagana tylko dla wolontariuszy, aby publikować swoich podopiecznych."
+    },
+    "q3": {
+      "q": "Jak adoptować zwierzę?",
+      "a": "Znajdź zwierzę, które ci się spodoba, i odwiedź profil odpowiedzialnego wolontariusza. Znajdziesz tam jego dane kontaktowe — napisz bezpośrednio i ustal warunki przekazania."
+    },
+    "q4": {
+      "q": "Czy adopcja jest płatna?",
+      "a": "Platforma PetZone jest bezpłatna. Warunki adopcji (szczepienia, sterylizacja, kaucja) ustala wolontariusz indywidualnie dla każdego zwierzęcia."
+    },
+    "q5": {
+      "q": "Jak sprawdzić, czy zwierzę jest zdrowe?",
+      "a": "Na stronie każdego zwierzęcia pokazany jest status szczepień i kastracji. Po więcej szczegółów skontaktuj się bezpośrednio z wolontariuszem."
+    },
+    "q6": {
+      "q": "Jak zostać wolontariuszem na PetZone?",
+      "a": "Kliknij 'Zostań wolontariuszem', wypełnij formularz zgłoszeniowy i wyślij. Administrator rozpatrzy wniosek, a po zatwierdzeniu — otrzymasz dostęp do panelu wolontariusza."
+    },
+    "q7": {
+      "q": "Co mogę robić w panelu wolontariusza?",
+      "a": "Dodawać i edytować profile zwierząt, przesyłać zdjęcia, podawać dane kontaktowe i dane do wpłat, publikować aktualności i ogłoszenia."
+    },
+    "q8": {
+      "q": "Ile zwierząt mogę dodać?",
+      "a": "Bez ograniczeń. Możesz dodać tyle zwierząt, ile masz pod opieką."
+    },
+    "q9": {
+      "q": "W jakich językach działa platforma?",
+      "a": "Platforma obsługuje 5 języków: ukraiński, angielski, polski, niemiecki i francuski. Język można zmienić w prawym górnym rogu."
+    },
+    "q10": {
+      "q": "Czy strona działa na urządzeniach mobilnych?",
+      "a": "Tak, PetZone jest w pełni responsywna i działa na telefonach i tabletach."
+    }
+  },
+  "errors": {
+    "unknown": "Coś poszło nie tak",
+    "retry": "Ponów",
+    "address.city_is_empty": "Miasto jest wymagane",
+    "address.city_too_long": "Nazwa miasta jest zbyt długa",
+    "address.street_is_empty": "Ulica jest wymagana",
+    "address.street_too_long": "Nazwa ulicy jest zbyt długa",
+    "breed.name_is_empty": "Nazwa rasy nie może być pusta",
+    "breed.name_too_long": "Nazwa rasy jest zbyt długa",
+    "breed.not_found": "Rasa nie znaleziona",
+    "breed.translations_empty": "Dodaj tłumaczenie nazwy rasy",
+    "discussion.already_closed": "Dyskusja jest już zamknięta",
+    "discussion.closed": "Dyskusja jest zamknięta",
+    "discussion.duplicate_users": "Uczestnicy dyskusji nie mogą się powtarzać",
+    "discussion.forbidden": "Brak dostępu do tej dyskusji",
+    "discussion.invalid_users": "Nieprawidłowi uczestnicy dyskusji",
+    "discussion.not_found": "Dyskusja nie znaleziona",
+    "email.confirmation_failed": "Potwierdzenie email nie powiodło się",
+    "email.is_empty": "Email jest wymagany",
+    "email.is_invalid": "Nieprawidłowy format email",
+    "email.too_long": "Email jest zbyt długi",
+    "experience.too_large": "Doświadczenie nie może przekraczać 100 lat",
+    "experience.too_small": "Doświadczenie nie może być ujemne",
+    "fullname.firstname_is_empty": "Imię jest wymagane",
+    "fullname.firstname_too_long": "Imię jest zbyt długie",
+    "fullname.lastname_is_empty": "Nazwisko jest wymagane",
+    "fullname.lastname_too_long": "Nazwisko jest zbyt długie",
+    "fullname.patronymic_too_long": "Imię patronimiczne jest zbyt długie",
+    "healthinfo.description_is_empty": "Opis zdrowia jest wymagany",
+    "healthinfo.description_too_long": "Opis zdrowia jest zbyt długi",
+    "healthinfo.diet_too_long": "Opis diety jest zbyt długi",
+    "height.too_large": "Wzrost jest zbyt duży",
+    "height.too_small": "Wzrost jest zbyt mały",
+    "message.empty_text": "Wiadomość nie może być pusta",
+    "message.forbidden": "Brak dostępu do tej wiadomości",
+    "message.not_found": "Wiadomość nie znaleziona",
+    "minio.delete_failed": "Błąd usuwania pliku",
+    "minio.list_failed": "Błąd pobierania listy plików",
+    "minio.presigned_failed": "Błąd generowania linku",
+    "minio.upload_failed": "Błąd przesyłania pliku",
+    "pet.breed_not_found": "Rasa zwierzęcia nie znaleziona",
+    "pet.color_is_empty": "Kolor zwierzęcia jest wymagany",
+    "pet.color_too_long": "Kolor jest zbyt długi",
+    "pet.conditions_too_long": "Warunki adopcji są zbyt długie",
+    "pet.description_is_empty": "Opis zwierzęcia jest wymagany",
+    "pet.description_too_long": "Opis zwierzęcia jest zbyt długi",
+    "pet.invalid_status": "Nieprawidłowy status zwierzęcia",
+    "pet.microchip_too_long": "Numer mikrochipa jest zbyt długi",
+    "pet.nickname_is_empty": "Imię zwierzęcia jest wymagane",
+    "pet.nickname_too_long": "Imię zwierzęcia jest zbyt długie",
+    "pet.not_found": "Zwierzę nie znalezione",
+    "pet.photo_already_exists": "To zdjęcie już istnieje",
+    "pet.photo_is_null": "Zdjęcie nie może być puste",
+    "pet.photo_not_found": "Zdjęcie nie znalezione",
+    "pet.photos_limit_exceeded": "Przekroczono limit zdjęć (maksimum 5)",
+    "pet.requisite_is_null": "Dane do przelewu nie mogą być puste",
+    "petphoto.path_is_empty": "Ścieżka do zdjęcia nie może być pusta",
+    "petphoto.path_too_long": "Ścieżka do zdjęcia jest zbyt długa",
+    "phone.is_empty": "Numer telefonu jest wymagany",
+    "phone.too_long": "Numer telefonu jest zbyt długi",
+    "refresh.expired": "Sesja wygasła. Zaloguj się ponownie",
+    "refresh.not_found": "Sesja nie znaleziona",
+    "requisite.description_is_empty": "Opis danych do przelewu jest wymagany",
+    "requisite.description_too_long": "Opis danych do przelewu jest zbyt długi",
+    "requisite.name_is_empty": "Nazwa danych do przelewu jest wymagana",
+    "requisite.name_too_long": "Nazwa danych do przelewu jest zbyt długa",
+    "role.not_found": "Rola nie znaleziona",
+    "social_network.link_is_empty": "Link do sieci społecznościowej jest wymagany",
+    "social_network.name_is_empty": "Nazwa sieci społecznościowej jest wymagana",
+    "socialnetwork.link_is_empty": "Link do sieci społecznościowej jest wymagany",
+    "socialnetwork.link_too_long": "Link do sieci społecznościowej jest zbyt długi",
+    "socialnetwork.name_is_empty": "Nazwa sieci społecznościowej jest wymagana",
+    "socialnetwork.name_too_long": "Nazwa sieci społecznościowej jest zbyt długa",
+    "species.already_exists": "Ten gatunek już istnieje",
+    "species.breed_already_exists": "Ta rasa już istnieje",
+    "species.breed_is_null": "Rasa nie może być pusta",
+    "species.name_is_empty": "Nazwa gatunku nie może być pusta",
+    "species.name_too_long": "Nazwa gatunku jest zbyt długa",
+    "species.not_found": "Gatunek nie znaleziony",
+    "species.has_pets": "Nie można usunąć gatunku powiązanego ze zwierzętami",
+    "species.translations_empty": "Dodaj tłumaczenie nazwy gatunku",
+    "speciesbreed.breed_is_empty": "Rasa nie może być pusta",
+    "speciesbreed.species_is_empty": "Gatunek nie może być pusty",
+    "user.already_exists": "Użytkownik z tym adresem email już istnieje",
+    "user.invalid_password": "Nieprawidłowe hasło",
+    "user.not_found": "Użytkownik nie znaleziony",
+    "user.register_failed": "Rejestracja nie powiodła się. Spróbuj ponownie",
+    "volunteer.description_is_empty": "Opis wolontariusza jest wymagany",
+    "volunteer.description_too_long": "Opis wolontariusza jest zbyt długi",
+    "volunteer.invalid_position": "Nieprawidłowa pozycja",
+    "volunteer.not_found": "Wolontariusz nie znaleziony",
+    "volunteer.pet_already_exists": "To zwierzę już istnieje u wolontariusza",
+    "volunteer.pet_not_found": "Zwierzę wolontariusza nie znalezione",
+    "volunteer_request.already_exists": "Zgłoszenie zostało już przesłane",
+    "volunteer_request.empty_comment": "Komentarz nie może być pusty",
+    "volunteer_request.forbidden": "Brak dostępu do tego zgłoszenia",
+    "volunteer_request.invalid_info": "Nieprawidłowe dane zgłoszenia",
+    "volunteer_request.invalid_status": "Nieprawidłowy status zgłoszenia",
+    "volunteer_request.not_found": "Zgłoszenie nie znalezione",
+    "volunteer_request.user_blocked": "Użytkownik jest zablokowany",
+    "weight.too_large": "Waga jest zbyt duża",
+    "weight.too_small": "Waga jest zbyt mała"
+  },
+  "common": {
+    "cancel": "Anuluj",
+    "save": "Zapisz",
+    "back": "Wstecz",
+    "chooseFile": "Wybierz plik",
+    "invalidImage": "Plik musi być obrazem (JPG, PNG, WEBP…)",
+    "noFileSelected": "Proszę wybrać plik obrazu"
+  },
+  "volunteerRequest": {
+    "tabUser": "Rejestracja użytkownika",
+    "tabVolunteer": "Zgłoszenie wolontariusza",
+    "infoText": "Wypełnij formularz, aby złożyć wniosek jako wolontariusz. Im więcej informacji podasz, tym szybciej Twoje zgłoszenie zostanie rozpatrzone.",
+    "loginRequiredText": "Musisz być zalogowany, aby złożyć zgłoszenie wolontariusza.",
+    "loginBtn": "Zaloguj się",
+    "experience": "Doświadczenie wolontariusza (lat)",
+    "certificates": "Certyfikaty i dokumenty",
+    "addCertificate": "Dodaj certyfikat",
+    "certificatePlaceholder": "Nazwa lub link do certyfikatu",
+    "requisites": "Dane bankowe / płatności",
+    "addRequisite": "Dodaj dane",
+    "requisitePlaceholder": "np. numer karty Monobank",
+    "submit": "Wyślij zgłoszenie",
+    "successTitle": "Zgłoszenie wysłane",
+    "successText": "Twoje zgłoszenie wolontariusza zostało pomyślnie wysłane. Administrator rozpatrzy je wkrótce.",
+    "toHome": "Idź do strony głównej",
+    "alreadyRegistered": "Masz już konto?",
+    "login": "Zaloguj się"
+  },
+  "map": {
+    "pageTitle": "Mapa zwierząt",
+    "legendPets": "Wolontariusze",
+    "legendListings": "Ogłoszenia",
+    "all": "Wszystkie",
+    "onlyPets": "Tylko zwierzęta",
+    "onlyListings": "Tylko ogłoszenia",
+    "hint": "Pokazane są tylko miasta o znanych współrzędnych. Kliknij znacznik, aby przejść do karty."
+  },
+  "listings": {
+    "sectionTitle": "Ogłoszenia o adopcji",
+    "sectionSubtitle": "Właściciele zwierząt szukający nowej rodziny dla swojego pupila",
+    "ownerBadge": "Właściciel",
+    "addBtn": "Dodaj ogłoszenie",
+    "empty": "Brak ogłoszeń",
+    "loginRequired": "Musisz się zalogować, aby dodać ogłoszenie",
+    "createTitle": "Nowe ogłoszenie",
+    "titleLabel": "Tytuł",
+    "descriptionLabel": "Opis",
+    "ageMonthsLabel": "Wiek (miesiące)",
+    "phoneLabel": "Telefon kontaktowy",
+    "phoneHint": "Opcjonalnie — będzie widoczny w ogłoszeniu",
+    "submitBtn": "Opublikuj",
+    "detailTitle": "Ogłoszenie",
+    "contactTitle": "Kontakty",
+    "statusActive": "Aktywne",
+    "statusAdopted": "Znalazł dom",
+    "statusRemoved": "Usunięte",
+    "markAdoptedBtn": "Oznacz jako adoptowane",
+    "editBtn": "Edytuj",
+    "deleteBtn": "Usuń",
+    "deleteConfirm": "Usunąć to ogłoszenie?",
+    "myListings": "Moje ogłoszenia",
+    "addPhotoBtn": "Dodaj zdjęcie",
+    "removePhotoBtn": "Usuń zdjęcie",
+    "photoUploading": "Przesyłanie...",
+    "photoHint": "Do 5 zdjęć, JPG/PNG/WEBP",
+    "pageTitle": "Ogłoszenia adopcyjne",
+    "pageDescription": "Właściciele szukają nowej kochającej rodziny dla swoich zwierząt",
+    "allSpecies": "Wszystkie gatunki",
+    "cityFilter": "Szukaj po mieście",
+    "applyFilter": "Szukaj",
+    "clearFilter": "Wyczyść",
+    "showAll": "Zobacz wszystkie"
+  },
+  "volunteerProfile": {
+    "myProfile": "Mój profil",
+    "myAnimals": "Moje zwierzęta",
+    "addAnimal": "Dodaj zwierzę",
+    "myNews": "Moje aktualności",
+    "myApplications": "Moje zgłoszenia",
+    "volunteerProfileLabel": "Profil wolontariusza",
+    "volunteerAnimals": "Zwierzęta wolontariusza",
+    "volunteerNews": "Aktualności i ogłoszenia",
+    "myCabinet": "Mój panel",
+    "volunteerLabel": "Wolontariusz",
+    "editProfile": "Edytuj profil",
+    "helpVolunteer": "Wesprzyj wolontariusza",
+    "changePhoto": "Zmień zdjęcie",
+    "clickToChangePhoto": "Kliknij, aby zmienić zdjęcie",
+    "experience": "Doświadczenie: {{years}} l.",
+    "foundHome": "Znalazły dom: {{count}}",
+    "contacts": "Kontakty",
+    "socialNetworks": "Media społecznościowe",
+    "notFound": "Wolontariusz nie znaleziony lub wystąpił błąd.",
+    "backToHome": "← Powrót do strony głównej",
+    "noPetsInCategory": "Brak zwierząt w tej kategorii",
+    "lookingForHomeTitle": "Szukają domu 🏠",
+    "lookingForHomeSubtitle": "Zwierzęta tego wolontariusza szukają kochającej rodziny",
+    "needsHelpTitle": "Potrzebują pomocy 🆘",
+    "needsHelpSubtitle": "Zwierzęta, które nie mogą jeszcze szukać domu — potrzebują wsparcia",
+    "avatarModalTitle": "Zmień awatar"
+  }
+}

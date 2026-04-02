@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Background -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1b4b"/>
+      <stop offset="60%" style="stop-color:#312e81"/>
+      <stop offset="100%" style="stop-color:#4c1d95"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Paw icon (centered top) -->
+  <g transform="translate(520, 120)">
+    <!-- Main paw pad -->
+    <ellipse cx="80" cy="140" rx="55" ry="45" fill="#FF6B6B" opacity="0.9"/>
+    <!-- Top left toe -->
+    <ellipse cx="25" cy="85" rx="25" ry="20" fill="#FF6B6B" opacity="0.9"/>
+    <!-- Top center-left toe -->
+    <ellipse cx="65" cy="60" rx="25" ry="20" fill="#FF6B6B" opacity="0.9"/>
+    <!-- Top center-right toe -->
+    <ellipse cx="105" cy="60" rx="25" ry="20" fill="#FF6B6B" opacity="0.9"/>
+    <!-- Top right toe -->
+    <ellipse cx="140" cy="85" rx="25" ry="20" fill="#FF6B6B" opacity="0.9"/>
+  </g>
+
+  <!-- PetZone title -->
+  <text x="600" y="360" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="bold" fill="white" text-anchor="middle" letter-spacing="-2">PetZone</text>
+
+  <!-- Tagline -->
+  <text x="600" y="430" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="rgba(255,255,255,0.75)" text-anchor="middle" font-weight="400">Знайди свого улюбленця</text>
+
+  <!-- Bottom accent line -->
+  <rect x="500" y="480" width="200" height="4" rx="2" fill="#FF6B6B" opacity="0.8"/>
+</svg>
