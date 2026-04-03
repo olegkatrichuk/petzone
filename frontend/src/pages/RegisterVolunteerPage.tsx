@@ -150,15 +150,17 @@ export default function RegisterVolunteerPage() {
           {t('common.back')}
         </Button>
 
-        <Tabs
-          value={1}
-          centered
-          TabIndicatorProps={{ style: { backgroundColor: CORAL } }}
-          sx={{ mb: 3, '& .MuiTab-root.Mui-selected': { color: CORAL } }}
-        >
-          <Tab label={t('volunteerRequest.tabUser')} component={Link} to="/register" />
-          <Tab label={t('volunteerRequest.tabVolunteer')} />
-        </Tabs>
+        {!user && (
+          <Tabs
+            value={1}
+            centered
+            TabIndicatorProps={{ style: { backgroundColor: CORAL } }}
+            sx={{ mb: 3, '& .MuiTab-root.Mui-selected': { color: CORAL } }}
+          >
+            <Tab label={t('volunteerRequest.tabUser')} component={Link} to="/register" />
+            <Tab label={t('volunteerRequest.tabVolunteer')} />
+          </Tabs>
+        )}
 
         <Paper
           elevation={0}
@@ -328,14 +330,17 @@ export default function RegisterVolunteerPage() {
           </Button>
         </Box>
 
-        <Divider sx={{ my: 3 }} />
-
-        <Typography variant="body2" color="text.secondary" textAlign="center">
-          {t('volunteerRequest.alreadyRegistered')}{' '}
-          <Link to="/login" style={{ color: CORAL, fontWeight: 600, textDecoration: 'none' }}>
-            {t('volunteerRequest.login')}
-          </Link>
-        </Typography>
+        {!user && (
+          <>
+            <Divider sx={{ my: 3 }} />
+            <Typography variant="body2" color="text.secondary" textAlign="center">
+              {t('volunteerRequest.alreadyRegistered')}{' '}
+              <Link to="/login" style={{ color: CORAL, fontWeight: 600, textDecoration: 'none' }}>
+                {t('volunteerRequest.login')}
+              </Link>
+            </Typography>
+          </>
+        )}
       </Container>
 
       <Dialog open={successOpen} onClose={handleSuccessClose}>
