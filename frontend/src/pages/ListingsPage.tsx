@@ -29,10 +29,23 @@ const PAGE_SIZE = 12
 
 function PhotoThumb({ fileName }: { fileName: string }) {
   const [url, setUrl] = useState<string | null>(null)
+  const [visible, setVisible] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
   const fetchedRef = useRef(false)
 
   useEffect(() => {
-    if (fetchedRef.current) return
+    const el = containerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect() } },
+      { rootMargin: '200px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!visible || fetchedRef.current) return
     fetchedRef.current = true
     api.get(`/files/${encodeURIComponent(fileName)}/url`)
       .then(res => {
@@ -40,19 +53,16 @@ function PhotoThumb({ fileName }: { fileName: string }) {
         setUrl(typeof data === 'string' ? data : data?.result ?? null)
       })
       .catch(() => setUrl(null))
-  }, [fileName])
-
-  if (!url) {
-    return (
-      <Box sx={{ height: 180, borderRadius: 2, bgcolor: '#F3F4F6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <CircularProgress size={24} sx={{ color: CORAL }} />
-      </Box>
-    )
-  }
+  }, [visible, fileName])
 
   return (
-    <Box sx={{ height: 180, borderRadius: 2, overflow: 'hidden' }}>
-      <Box component="img" src={url} alt="" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+    <Box ref={containerRef} sx={{ height: 180, borderRadius: 2, overflow: 'hidden', bgcolor: '#F3F4F6' }}>
+      {url
+        ? <Box component="img" src={url} alt="" loading="lazy" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        : visible
+          ? <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CircularProgress size={24} sx={{ color: CORAL }} /></Box>
+          : null
+      }
     </Box>
   )
 }
