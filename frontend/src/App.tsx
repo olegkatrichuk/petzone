@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { ScrollToTop } from './components/ui/ScrollToTop'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import LangLayout from './components/layout/LangLayout'
@@ -45,6 +46,8 @@ function RootRedirect() {
 
 function App() {
   return (
+    <>
+    <ScrollToTop />
     <Routes>
       {/* Root → redirect to browser language */}
       <Route path="/" element={<RootRedirect />} />
@@ -81,6 +84,7 @@ function App() {
       {/* Fallback — redirect unknown paths to default lang root */}
       <Route path="*" element={<RootRedirect />} />
     </Routes>
+    </>
   )
 }
 

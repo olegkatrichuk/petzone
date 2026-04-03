@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { LangLink as Link } from '../components/ui/LangLink'
 import { useTranslation } from 'react-i18next'
 import PageMeta from '../components/meta/PageMeta'
 import Box from '@mui/material/Box'

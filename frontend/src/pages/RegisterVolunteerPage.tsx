@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { getApiError } from '../lib/getApiError'
-import { Link } from 'react-router-dom'
+import { LangLink as Link } from '../components/ui/LangLink'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
 import { useForm, useFieldArray } from 'react-hook-form'

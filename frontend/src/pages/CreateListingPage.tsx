@@ -25,7 +25,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useGetSpeciesQuery, useGetBreedsQuery } from '../services/speciesApi'
 import { useCreateListingMutation, useAddListingPhotoMutation, useRemoveListingPhotoMutation } from '../services/listingsApi'
 import { useAuthStore } from '../store/authStore'
-import { Link } from 'react-router-dom'
+import { LangLink as Link } from '../components/ui/LangLink'
 import { getApiError } from '../lib/getApiError'
 import { api } from '../lib/axios'
 
