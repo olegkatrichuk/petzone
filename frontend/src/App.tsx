@@ -30,6 +30,7 @@ const ListingsPage = lazy(() => import('./pages/ListingsPage'))
 const CreateListingPage = lazy(() => import('./pages/CreateListingPage'))
 const ListingDetailPage = lazy(() => import('./pages/ListingDetailPage'))
 const MyListingsPage = lazy(() => import('./pages/MyListingsPage'))
+const EditListingPage = lazy(() => import('./pages/EditListingPage'))
 const MapPage = lazy(() => import('./pages/MapPage'))
 
 function PageLoader() {
@@ -76,6 +77,7 @@ function App() {
         <Route path="listings" element={<Suspense fallback={<PageLoader />}><ListingsPage /></Suspense>} />
         <Route path="listings/create" element={<Suspense fallback={<PageLoader />}><CreateListingPage /></Suspense>} />
         <Route path="listings/:listingId" element={<Suspense fallback={<PageLoader />}><ListingDetailPage /></Suspense>} />
+        <Route path="listings/:listingId/edit" element={<Suspense fallback={<PageLoader />}><EditListingPage /></Suspense>} />
         <Route path="my-listings" element={<Suspense fallback={<PageLoader />}><MyListingsPage /></Suspense>} />
         <Route path="map" element={<Suspense fallback={<PageLoader />}><MapPage /></Suspense>} />
         <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFoundPage /></Suspense>} />

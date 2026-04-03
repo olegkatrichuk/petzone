@@ -19,6 +19,7 @@ import DialogActions from '@mui/material/DialogActions'
 import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import EditIcon from '@mui/icons-material/Edit'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import PhoneIcon from '@mui/icons-material/Phone'
 import EmailIcon from '@mui/icons-material/Email'
@@ -306,6 +307,14 @@ export default function ListingDetailPage() {
             <>
               <Divider sx={{ my: 3 }} />
               <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                <Button
+                  variant="outlined"
+                  startIcon={<EditIcon />}
+                  onClick={() => navigate(`/listings/${listingId}/edit`)}
+                  sx={{ borderColor: CORAL, color: CORAL, '&:hover': { borderColor: '#e55555', bgcolor: 'rgba(255,107,107,0.04)' }, textTransform: 'none', fontWeight: 700, borderRadius: 2 }}
+                >
+                  {t('listings.editBtn') || 'Редагувати'}
+                </Button>
                 <Button
                   variant="contained"
                   onClick={handleMarkAdopted}
