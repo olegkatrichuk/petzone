@@ -71,4 +71,16 @@ public class FilesController(
 
         return this.ToOkResponse(result.Value);
     }
+
+    [HttpGet("{fileName}/redirect")]
+    [ResponseCache(Duration = 300)]
+    public async Task<ActionResult> RedirectToFile(
+        [FromRoute] string fileName,
+        CancellationToken cancellationToken)
+    {
+        var result = await filesProvider.GetPresignedUrl(BucketName, fileName, cancellationToken);
+        if (result.IsFailure)
+            return NotFound();
+        return Redirect(result.Value);
+    }
 }

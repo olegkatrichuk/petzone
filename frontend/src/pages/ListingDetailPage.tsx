@@ -187,6 +187,8 @@ export default function ListingDetailPage() {
         title={listing.title}
         description={listing.description}
         path={`/listings/${listing.id}`}
+        image={listing.photos[0] ? `/api/files/${encodeURIComponent(listing.photos[0])}/redirect` : undefined}
+        type="article"
         noIndex={listing.status !== 'Active'}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({

@@ -21,7 +21,9 @@ export default function PageMeta({ title, description, path = '', image, type = 
   const currentLang = lang ?? DEFAULT_LANG
   const fullTitle = `${title} | ${SITE_NAME}`
   const canonicalUrl = `${SITE_URL}/${currentLang}${path}`
-  const ogImage = image ?? `${SITE_URL}/og-default.svg`
+  const ogImage = image
+    ? (image.startsWith('http') ? image : `${SITE_URL}${image}`)
+    : `${SITE_URL}/og-default.svg`
 
   return (
     <Helmet>
