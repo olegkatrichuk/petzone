@@ -1,4 +1,13 @@
 User-agent: *
 Allow: /
 
+# Private pages — do not index
+Disallow: /*/admin
+Disallow: /*/profile
+Disallow: /*/my-listings
+Disallow: /*/favorites
+Disallow: /*/volunteer-applications
+Disallow: /*/edit-profile
+Disallow: /*/listings/create
+
 Sitemap: https://getpetzone.com/sitemap.xml

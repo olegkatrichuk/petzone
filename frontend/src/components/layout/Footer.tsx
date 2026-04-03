@@ -113,12 +113,9 @@ export default function Footer() {
 
       <Divider sx={{ bgcolor: 'rgba(255,255,255,0.1)', mx: { xs: 3, md: 6 } }} />
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: { xs: 3, md: 6 }, pt: 2, flexWrap: 'wrap', gap: 1 }}>
+      <Box sx={{ px: { xs: 3, md: 6 }, pt: 2 }}>
         <Typography variant="caption" sx={{ opacity: 0.4 }}>
           © {new Date().getFullYear()} PetZone — {t('footer.rights')}
-        </Typography>
-        <Typography variant="caption" sx={{ opacity: 0.4 }}>
-          {t('footer.by')}
         </Typography>
       </Box>
     </Box>

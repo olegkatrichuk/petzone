@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
+import ShareButton from '../components/ui/ShareButton'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Paper from '@mui/material/Paper'
@@ -181,7 +182,12 @@ export default function ListingDetailPage() {
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: '#FAFAFA', py: 4 }}>
-      <PageMeta title={listing.title} description={listing.description} path={`/listings/${listing.id}`} noIndex />
+      <PageMeta
+        title={listing.title}
+        description={listing.description}
+        path={`/listings/${listing.id}`}
+        noIndex={listing.status !== 'Active'}
+      />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'ItemPage',
@@ -247,7 +253,9 @@ export default function ListingDetailPage() {
 
           <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1, mb: 2 }}>
             <Typography variant="h5" fontWeight="bold">{listing.title}</Typography>
-            <Chip
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0 }}>
+              <ShareButton title={listing.title} text={listing.description} />
+              <Chip
               label={
                 listing.status === 'Active' ? t('listings.statusActive')
                   : listing.status === 'Adopted' ? t('listings.statusAdopted')
@@ -257,9 +265,10 @@ export default function ListingDetailPage() {
               sx={{
                 bgcolor: listing.status === 'Active' ? '#D1FAE5' : listing.status === 'Adopted' ? '#DBEAFE' : '#F3F4F6',
                 color: listing.status === 'Active' ? '#059669' : listing.status === 'Adopted' ? '#2563EB' : '#6B7280',
-                fontWeight: 600, flexShrink: 0,
+                fontWeight: 600,
               }}
             />
+            </Box>
           </Box>
 
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 2 }}>

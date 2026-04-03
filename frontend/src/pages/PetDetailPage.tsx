@@ -32,6 +32,7 @@ import PetCard from '../components/pets/PetCard'
 import Skeleton from '@mui/material/Skeleton'
 import AppBreadcrumbs from '../components/ui/AppBreadcrumbs'
 import { useRecentlyViewedStore } from '../store/recentlyViewedStore'
+import ShareButton from '../components/ui/ShareButton'
 
 const CORAL = '#FF6B6B'
 
@@ -186,6 +187,8 @@ export default function PetDetailPage() {
                     sx={{ mt: 0.5, bgcolor: statusCfg.bg, color: statusCfg.text, fontWeight: 600 }}
                   />
                 </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <ShareButton title={pet.nickname} text={pet.generalDescription ?? ''} />
                 <Tooltip title={has(petId ?? '') ? t('petDetail.removeFromFavorites') : t('petDetail.saveToFavorites')}>
                   <IconButton
                     onClick={() => {
@@ -198,6 +201,7 @@ export default function PetDetailPage() {
                     {has(petId ?? '') ? <StarIcon /> : <StarBorderIcon />}
                   </IconButton>
                 </Tooltip>
+                </Box>
               </Box>
 
               {/* Characteristics */}
