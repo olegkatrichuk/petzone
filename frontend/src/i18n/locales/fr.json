@@ -41,7 +41,7 @@
     "emailRequired": "Veuillez entrer votre email",
     "emailInvalid": "Format d'email invalide",
     "passwordRequired": "Veuillez entrer votre mot de passe",
-    "passwordMin": "Minimum 6 caractères",
+    "passwordMin": "Minimum 8 caractères",
     "confirmPasswordRequired": "Veuillez confirmer votre mot de passe",
     "passwordsMismatch": "Les mots de passe ne correspondent pas",
     "firstNameRequired": "Veuillez entrer votre prénom",

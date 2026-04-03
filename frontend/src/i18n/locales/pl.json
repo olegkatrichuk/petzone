@@ -41,7 +41,7 @@
     "emailRequired": "Podaj email",
     "emailInvalid": "Nieprawidłowy format email",
     "passwordRequired": "Podaj hasło",
-    "passwordMin": "Minimum 6 znaków",
+    "passwordMin": "Minimum 8 znaków",
     "confirmPasswordRequired": "Potwierdź hasło",
     "passwordsMismatch": "Hasła nie są zgodne",
     "firstNameRequired": "Podaj imię",

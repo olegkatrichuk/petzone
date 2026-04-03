@@ -41,7 +41,7 @@
     "emailRequired": "Введите email",
     "emailInvalid": "Неверный формат email",
     "passwordRequired": "Введите пароль",
-    "passwordMin": "Минимум 6 символов",
+    "passwordMin": "Минимум 8 символов",
     "confirmPasswordRequired": "Подтвердите пароль",
     "passwordsMismatch": "Пароли не совпадают",
     "firstNameRequired": "Введите имя",

@@ -41,7 +41,7 @@
     "emailRequired": "Bitte E-Mail eingeben",
     "emailInvalid": "Ungültiges E-Mail-Format",
     "passwordRequired": "Bitte Passwort eingeben",
-    "passwordMin": "Mindestens 6 Zeichen",
+    "passwordMin": "Mindestens 8 Zeichen",
     "confirmPasswordRequired": "Bitte Passwort bestätigen",
     "passwordsMismatch": "Passwörter stimmen nicht überein",
     "firstNameRequired": "Bitte Vornamen eingeben",

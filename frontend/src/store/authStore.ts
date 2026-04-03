@@ -20,7 +20,12 @@ const ROLE_CLAIM = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role
 
 function decodeJwt(token: string): UserInfo | null {
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]))
+    // JWT uses base64url encoding (no padding, uses - and _ instead of + and /)
+    // atob() requires standard base64 with padding
+    const base64url = token.split('.')[1]
+    const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/')
+    const padded = base64 + '=='.slice(0, (4 - base64.length % 4) % 4)
+    const payload = JSON.parse(atob(padded))
     // .NET ClaimTypes.Role serializes as full URI; fall back to short "role"
     const rawRole = payload[ROLE_CLAIM] ?? payload.role ?? ''
     const role = Array.isArray(rawRole) ? rawRole[0] : rawRole

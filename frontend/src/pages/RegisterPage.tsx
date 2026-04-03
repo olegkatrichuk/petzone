@@ -41,7 +41,7 @@ function buildSchema(t: (k: string) => string) {
       firstName: z.string().min(1, t('validation.firstNameRequired')),
       lastName: z.string().min(1, t('validation.lastNameRequired')),
       email: z.string().min(1, t('validation.emailRequired')).email(t('validation.emailInvalid')),
-      password: z.string().min(6, t('validation.passwordMin')),
+      password: z.string().min(8, t('validation.passwordMin')),
       confirmPassword: z.string().min(1, t('validation.confirmPasswordRequired')),
     })
     .refine((d) => d.password === d.confirmPassword, {
