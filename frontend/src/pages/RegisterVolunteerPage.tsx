@@ -39,11 +39,6 @@ const fieldSx = {
   '& .MuiInputLabel-root.Mui-focused': { color: CORAL },
 }
 
-type FormValues = {
-  experience: number
-  certificates: { value: string }[]
-  requisites: { value: string }[]
-}
 
 export default function RegisterVolunteerPage() {
   const { t } = useTranslation()
@@ -56,9 +51,13 @@ export default function RegisterVolunteerPage() {
     () =>
       z.object({
         experience: z
-          .number({ invalid_type_error: t('validation.required') })
+          .number()
           .min(0, t('validation.experienceMin'))
           .max(100, t('validation.experienceMax')),
+        motivation: z
+          .string()
+          .min(20, t('validation.motivationMin'))
+          .max(2000, t('validation.motivationMax')),
         certificates: z
           .array(z.object({ value: z.string().min(1, t('validation.required')) }))
           .default([]),
@@ -74,10 +73,10 @@ export default function RegisterVolunteerPage() {
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-  } = useForm<FormValues>({
+  } = useForm({
     resolver: zodResolver(schema),
     mode: 'onChange',
-    defaultValues: { experience: 0, certificates: [], requisites: [] },
+    defaultValues: { experience: 0, motivation: '', certificates: [] as { value: string }[], requisites: [] as { value: string }[] },
   })
 
   const {
@@ -92,10 +91,11 @@ export default function RegisterVolunteerPage() {
     remove: removeReq,
   } = useFieldArray({ control, name: 'requisites' })
 
-  const onSubmit = async (values: FormValues) => {
+  const onSubmit = async (values: { experience: number; motivation: string; certificates: { value: string }[]; requisites: { value: string }[] }) => {
     try {
       await createVolunteerRequest({
         experience: values.experience,
+        motivation: values.motivation,
         certificates: values.certificates.map((c) => c.value),
         requisites: values.requisites.map((r) => r.value),
       })
@@ -174,6 +174,17 @@ export default function RegisterVolunteerPage() {
           onSubmit={handleSubmit(onSubmit)}
           sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}
         >
+          {/* Applicant info (read-only) */}
+          <Box sx={{ bgcolor: '#F9FAFB', border: '1px solid #E5E7EB', borderRadius: 2, p: 2 }}>
+            <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', letterSpacing: 0.5, display: 'block', mb: 0.5 }}>
+              {t('volunteerRequest.applicantInfo')}
+            </Typography>
+            <Typography variant="body2" fontWeight={600}>
+              {[user.firstName, user.lastName].filter(Boolean).join(' ')}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">{user.email}</Typography>
+          </Box>
+
           {/* Experience */}
           <TextField
             {...register('experience', { valueAsNumber: true })}
@@ -183,6 +194,19 @@ export default function RegisterVolunteerPage() {
             error={!!errors.experience}
             helperText={errors.experience?.message}
             inputProps={{ min: 0, max: 100 }}
+            sx={fieldSx}
+          />
+
+          {/* Motivation */}
+          <TextField
+            {...register('motivation')}
+            label={t('volunteerRequest.motivation')}
+            placeholder={t('volunteerRequest.motivationPlaceholder')}
+            multiline
+            minRows={4}
+            fullWidth
+            error={!!errors.motivation}
+            helperText={errors.motivation?.message}
             sx={fieldSx}
           />
 

@@ -8,6 +8,7 @@ export enum VolunteerRequestStatus {
 
 export interface VolunteerInfo {
   experience: number
+  motivation: string
   certificates: string[]
   requisites: string[]
 }

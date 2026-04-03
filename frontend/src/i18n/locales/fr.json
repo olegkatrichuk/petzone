@@ -50,6 +50,8 @@
     "phoneRequired": "Veuillez entrer votre numéro de téléphone",
     "experienceMin": "Doit être 0 ou plus",
     "experienceMax": "Doit être 100 ou moins",
+    "motivationMin": "Minimum 20 caractères — décrivez plus en détail",
+    "motivationMax": "Maximum 2000 caractères",
     "descriptionMin": "Minimum 10 caractères",
     "required": "Champ obligatoire"
   },

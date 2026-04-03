@@ -21,6 +21,7 @@ public class VolunteerRequestConfiguration : IEntityTypeConfiguration<VolunteerR
         builder.OwnsOne(r => r.VolunteerInfo, vi =>
         {
             vi.Property(v => v.Experience).HasColumnName("experience");
+            vi.Property(v => v.Motivation).HasColumnName("motivation").HasMaxLength(2000).IsRequired();
             vi.Property(v => v.Certificates).HasColumnType("jsonb").HasColumnName("certificates");
             vi.Property(v => v.Requisites).HasColumnType("jsonb").HasColumnName("requisites");
         });

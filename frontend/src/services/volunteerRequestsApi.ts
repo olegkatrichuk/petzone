@@ -11,6 +11,7 @@ interface GetMyRequestsParams {
 
 interface UpdateRequestDto {
   experience: number
+  motivation: string
   certificates: string[]
   requisites: string[]
 }

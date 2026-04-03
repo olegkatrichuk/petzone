@@ -2,6 +2,7 @@ import { api } from '../lib/axios'
 
 export interface CreateVolunteerRequestDto {
   experience: number
+  motivation: string
   certificates: string[]
   requisites: string[]
 }

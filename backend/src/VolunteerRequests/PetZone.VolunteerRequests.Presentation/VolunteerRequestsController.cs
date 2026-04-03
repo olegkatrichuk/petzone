@@ -53,7 +53,7 @@ public class VolunteerRequestsController : ControllerBase
 
         var command = new CreateVolunteerRequestCommand(
             userId.Value,
-            new VolunteerInfo(dto.Experience, dto.Certificates, dto.Requisites));
+            new VolunteerInfo(dto.Experience, dto.Motivation, dto.Certificates, dto.Requisites));
 
         var result = await handler.Handle(command, cancellationToken);
         return result.IsSuccess ? this.ToOkResponse(result.Value) : result.Error.ToResponse();
@@ -135,7 +135,7 @@ public class VolunteerRequestsController : ControllerBase
         var command = new UpdateVolunteerRequestCommand(
             userId.Value,
             requestId,
-            new VolunteerInfo(dto.Experience, dto.Certificates, dto.Requisites));
+            new VolunteerInfo(dto.Experience, dto.Motivation, dto.Certificates, dto.Requisites));
 
         var result = await handler.Handle(command, cancellationToken);
         return result.IsSuccess ? this.ToOkResponse(result.Value) : result.Error.ToResponse();

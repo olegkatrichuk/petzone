@@ -47,6 +47,7 @@ import {
   useSendForRevisionMutation,
   useRejectRequestMutation,
 } from '../services/adminApi'
+import { useGetUserByIdQuery } from '../services/accountsApi'
 import Pagination from '../components/ui/Pagination'
 
 const CORAL = '#FF6B6B'
@@ -136,6 +137,32 @@ function CommentDialog({ open, title, confirmLabel, confirmColor, onClose, onCon
 
 // ── Request card ───────────────────────────────────────────
 
+function ApplicantInfo({ userId, createdDate }: { userId: string; createdDate: string }) {
+  const { t } = useTranslation()
+  const { data: userDto } = useGetUserByIdQuery(userId)
+  const fullName = userDto ? [userDto.firstName, userDto.lastName].filter(Boolean).join(' ') : null
+
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+      <Box sx={{ width: 40, height: 40, borderRadius: 2, bgcolor: '#F3F4F6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <PersonIcon sx={{ color: '#6B7280' }} />
+      </Box>
+      <Box>
+        {fullName
+          ? <Typography variant="body2" fontWeight={600}>{fullName}</Typography>
+          : <Typography variant="body2" sx={{ fontFamily: 'monospace', color: '#6B7280', fontSize: 11 }}>ID: {userId.slice(0, 8)}…</Typography>
+        }
+        {userDto?.email && (
+          <Typography variant="caption" color="text.secondary">{userDto.email}</Typography>
+        )}
+        <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+          {t('admin.submitted')}: {createdDate}
+        </Typography>
+      </Box>
+    </Box>
+  )
+}
+
 interface RequestCardProps {
   request: VolunteerRequestDto
   showTakeOnReview?: boolean
@@ -159,19 +186,7 @@ function RequestCard({ request, showTakeOnReview = false }: RequestCardProps) {
     <Paper elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 3, p: 3 }}>
       {/* Header row */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2, gap: 1, flexWrap: 'wrap' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Box sx={{ width: 40, height: 40, borderRadius: 2, bgcolor: '#F3F4F6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <PersonIcon sx={{ color: '#6B7280' }} />
-          </Box>
-          <Box>
-            <Typography variant="body2" sx={{ fontFamily: 'monospace', color: '#6B7280', fontSize: 11 }}>
-              ID: {request.userId.slice(0, 8)}…
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              {t('admin.submitted')}: {createdDate}
-            </Typography>
-          </Box>
-        </Box>
+        <ApplicantInfo userId={request.userId} createdDate={createdDate} />
         <StatusChip status={request.status} />
       </Box>
 
@@ -184,6 +199,18 @@ function RequestCard({ request, showTakeOnReview = false }: RequestCardProps) {
           </Typography>
         </Box>
       </Box>
+
+      {/* Motivation */}
+      {request.volunteerInfo.motivation && (
+        <Box sx={{ mb: 2, bgcolor: '#F9FAFB', borderRadius: 2, p: 2 }}>
+          <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', letterSpacing: 0.5, display: 'block', mb: 0.75 }}>
+            {t('admin.motivation')}
+          </Typography>
+          <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
+            {request.volunteerInfo.motivation}
+          </Typography>
+        </Box>
+      )}
 
       {/* Certificates */}
       {request.volunteerInfo.certificates.length > 0 && (

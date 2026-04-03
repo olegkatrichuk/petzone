@@ -57,20 +57,22 @@ function UpdateForm({ request, onClose }: UpdateFormProps) {
   const { register, handleSubmit, control } = useForm({
     defaultValues: {
       experience: request.volunteerInfo.experience,
-      certificates: request.volunteerInfo.certificates.map((v) => ({ value: v })),
-      requisites: request.volunteerInfo.requisites.map((v) => ({ value: v })),
+      motivation: request.volunteerInfo.motivation ?? '',
+      certificates: request.volunteerInfo.certificates.map((v: string) => ({ value: v })),
+      requisites: request.volunteerInfo.requisites.map((v: string) => ({ value: v })),
     },
   })
 
   const { fields: certFields, append: appendCert, remove: removeCert } = useFieldArray({ control, name: 'certificates' })
   const { fields: reqFields, append: appendReq, remove: removeReq } = useFieldArray({ control, name: 'requisites' })
 
-  const onSubmit = async (values: typeof request.volunteerInfo & { certificates: { value: string }[]; requisites: { value: string }[] }) => {
+  const onSubmit = async (values: { experience: number; motivation: string; certificates: { value: string }[]; requisites: { value: string }[] }) => {
     try {
       await updateRequest({
         requestId: request.id,
         data: {
           experience: values.experience,
+          motivation: values.motivation,
           certificates: values.certificates.map((c) => c.value),
           requisites: values.requisites.map((r) => r.value),
         },
@@ -91,6 +93,16 @@ function UpdateForm({ request, onClose }: UpdateFormProps) {
         type="number"
         size="small"
         inputProps={{ min: 0, max: 100 }}
+        sx={fieldSx}
+      />
+
+      <TextField
+        {...register('motivation')}
+        label={t('volunteerRequest.motivation')}
+        multiline
+        minRows={3}
+        size="small"
+        fullWidth
         sx={fieldSx}
       />
 

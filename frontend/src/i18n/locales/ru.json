@@ -50,6 +50,8 @@
     "phoneRequired": "Введите телефон",
     "experienceMin": "Должно быть 0 или больше",
     "experienceMax": "Не более 100",
+    "motivationMin": "Минимум 20 символов — расскажите подробнее",
+    "motivationMax": "Максимум 2000 символов",
     "descriptionMin": "Минимум 10 символов",
     "required": "Обязательное поле"
   },

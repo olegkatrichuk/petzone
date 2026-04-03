@@ -8,6 +8,7 @@ public class VolunteerRequestTests
 {
     private static VolunteerInfo CreateVolunteerInfo() => new(
         Experience: 2,
+        Motivation: "I want to help animals find new homes.",
         Certificates: ["Certificate 1"],
         Requisites: ["Requisite 1"]
     );

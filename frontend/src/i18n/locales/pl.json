@@ -50,6 +50,8 @@
     "phoneRequired": "Podaj numer telefonu",
     "experienceMin": "Musi być 0 lub więcej",
     "experienceMax": "Musi być 100 lub mniej",
+    "motivationMin": "Minimum 20 znaków — opisz dokładniej",
+    "motivationMax": "Maksimum 2000 znaków",
     "descriptionMin": "Minimum 10 znaków",
     "required": "Pole wymagane"
   },

@@ -486,3 +486,7 @@ compose.yaml
 .env
 appsettings.Development.json
 **/launchSettings.json
+
+# Claude Code
+CLAUDE.md
+.claude/
