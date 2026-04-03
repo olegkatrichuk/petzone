@@ -37,6 +37,8 @@ export default function ProfilePage() {
   const { t } = useTranslation()
   const navigate = useLangNavigate()
   const { user, logout } = useAuthStore()
+  const { data: userDto } = useGetUserByIdQuery(user?.id ?? '', { skip: !user })
+  const { ids: favoriteIds } = useFavoritesStore()
 
   // Not logged in
   if (!user) {
@@ -63,9 +65,6 @@ export default function ProfilePage() {
       </Box>
     )
   }
-
-  const { data: userDto } = useGetUserByIdQuery(user.id)
-  const { ids: favoriteIds } = useFavoritesStore()
 
   const initials = `${user.firstName?.[0] ?? ''}${user.lastName?.[0] ?? ''}`.toUpperCase()
   const fullName = [user.firstName, user.lastName].filter(Boolean).join(' ')
