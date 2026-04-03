@@ -29,18 +29,21 @@ public class MarkAdoptedService(
         listing.MarkAdopted();
         await repository.SaveAsync(listing, ct);
 
-        try
+        _ = Task.Run(async () =>
         {
-            await publishEndpoint.Publish(new ListingAdoptedEvent(
-                listing.Id,
-                listing.UserEmail,
-                listing.UserName,
-                listing.Title), ct);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Failed to publish ListingAdoptedEvent for listing {ListingId}", listing.Id);
-        }
+            try
+            {
+                await publishEndpoint.Publish(new ListingAdoptedEvent(
+                    listing.Id,
+                    listing.UserEmail,
+                    listing.UserName,
+                    listing.Title));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to publish ListingAdoptedEvent for listing {ListingId}", listing.Id);
+            }
+        });
 
         return UnitResult.Success<ErrorList>();
     }

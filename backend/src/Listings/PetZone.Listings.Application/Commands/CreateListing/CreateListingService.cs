@@ -27,19 +27,22 @@ public class CreateListingService(
 
         await repository.AddAsync(result.Value, ct);
 
-        try
+        _ = Task.Run(async () =>
         {
-            await publishEndpoint.Publish(new ListingCreatedEvent(
-                result.Value.Id,
-                command.UserEmail,
-                command.UserName,
-                command.Title,
-                command.City), ct);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Failed to publish ListingCreatedEvent for listing {ListingId}", result.Value.Id);
-        }
+            try
+            {
+                await publishEndpoint.Publish(new ListingCreatedEvent(
+                    result.Value.Id,
+                    command.UserEmail,
+                    command.UserName,
+                    command.Title,
+                    command.City));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to publish ListingCreatedEvent for listing {ListingId}", result.Value.Id);
+            }
+        });
 
         return result.Value.Id;
     }

@@ -32,13 +32,21 @@ public class SendForRevisionHandler(
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        await publishEndpoint.Publish(
-            new VolunteerRequestStatusChangedEvent(
-                UserId: request.UserId,
-                RequestId: request.Id,
-                Status: "RevisionRequired",
-                Comment: command.Comment),
-            cancellationToken);
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                await publishEndpoint.Publish(new VolunteerRequestStatusChangedEvent(
+                    UserId: request.UserId,
+                    RequestId: request.Id,
+                    Status: "RevisionRequired",
+                    Comment: command.Comment));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to publish VolunteerRequestStatusChangedEvent for {RequestId}", request.Id);
+            }
+        });
 
         logger.LogInformation("Volunteer request {RequestId} sent for revision", command.RequestId);
 
