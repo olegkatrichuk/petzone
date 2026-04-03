@@ -11,11 +11,13 @@ public class AdoptionListing : PetZone.SharedKernel.Entity<Guid>
     public const int MaxColorLength = 100;
     public const int MaxCityLength = 150;
     public const int MaxPhoneLength = 30;
+    public const int MaxContactEmailLength = 256;
 
     public Guid UserId { get; private set; }
     public string UserName { get; private set; } = string.Empty;
     public string UserEmail { get; private set; } = string.Empty;
     public string? UserPhone { get; private set; }
+    public string? ContactEmail { get; private set; }
     public string Title { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
     public Guid SpeciesId { get; private set; }
@@ -37,6 +39,7 @@ public class AdoptionListing : PetZone.SharedKernel.Entity<Guid>
         string userName,
         string userEmail,
         string? userPhone,
+        string? contactEmail,
         string title,
         string description,
         Guid speciesId,
@@ -51,6 +54,7 @@ public class AdoptionListing : PetZone.SharedKernel.Entity<Guid>
         UserName = userName;
         UserEmail = userEmail;
         UserPhone = userPhone;
+        ContactEmail = contactEmail;
         Title = title;
         Description = description;
         SpeciesId = speciesId;
@@ -69,6 +73,7 @@ public class AdoptionListing : PetZone.SharedKernel.Entity<Guid>
         string userName,
         string userEmail,
         string? userPhone,
+        string? contactEmail,
         string title,
         string description,
         Guid speciesId,
@@ -107,7 +112,7 @@ public class AdoptionListing : PetZone.SharedKernel.Entity<Guid>
             return new ErrorList(errors);
 
         return new AdoptionListing(
-            Guid.NewGuid(), userId, userName, userEmail, userPhone,
+            Guid.NewGuid(), userId, userName, userEmail, userPhone, contactEmail,
             title, description, speciesId, breedId, ageMonths,
             color, city, vaccinated, castrated);
     }
@@ -122,7 +127,8 @@ public class AdoptionListing : PetZone.SharedKernel.Entity<Guid>
         string city,
         bool vaccinated,
         bool castrated,
-        string? userPhone)
+        string? userPhone,
+        string? contactEmail)
     {
         if (string.IsNullOrWhiteSpace(title))
             return Error.Validation("listing.title_is_empty", "Назва оголошення не може бути порожньою");
@@ -145,6 +151,7 @@ public class AdoptionListing : PetZone.SharedKernel.Entity<Guid>
         Vaccinated = vaccinated;
         Castrated = castrated;
         UserPhone = userPhone;
+        ContactEmail = contactEmail;
 
         return UnitResult.Success<Error>();
     }

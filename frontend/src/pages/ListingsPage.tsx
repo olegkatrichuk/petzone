@@ -231,23 +231,21 @@ export default function ListingsPage() {
               {t('listings.pageDescription')}
             </Typography>
           </Box>
-          {user && (
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              onClick={() => navigate('/listings/create')}
-              sx={{
-                bgcolor: CORAL,
-                '&:hover': { bgcolor: '#e55555' },
-                textTransform: 'none',
-                fontWeight: 700,
-                borderRadius: 2,
-                flexShrink: 0,
-              }}
-            >
-              {t('listings.addBtn')}
-            </Button>
-          )}
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => navigate(user ? '/listings/create' : '/login')}
+            sx={{
+              bgcolor: CORAL,
+              '&:hover': { bgcolor: '#e55555' },
+              textTransform: 'none',
+              fontWeight: 700,
+              borderRadius: 2,
+              flexShrink: 0,
+            }}
+          >
+            {t('listings.addBtn')}
+          </Button>
         </Box>
 
         {/* Filters */}

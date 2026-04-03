@@ -23,6 +23,9 @@ public class MarkAdoptedService(
         if (listing.UserId != command.RequestingUserId)
             return (ErrorList)Error.Forbidden("listing.forbidden", "Немає прав");
 
+        if (listing.Status == ListingStatus.Adopted)
+            return (ErrorList)Error.Validation("listing.already_adopted", "Оголошення вже позначено як 'Знайшов дім'");
+
         listing.MarkAdopted();
         await repository.SaveAsync(listing, ct);
 

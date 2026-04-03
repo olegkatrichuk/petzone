@@ -18,6 +18,7 @@ public class AdoptionListingConfiguration : IEntityTypeConfiguration<AdoptionLis
         builder.Property(l => l.UserName).HasMaxLength(200).IsRequired();
         builder.Property(l => l.UserEmail).HasMaxLength(300).IsRequired();
         builder.Property(l => l.UserPhone).HasMaxLength(30);
+        builder.Property(l => l.ContactEmail).HasMaxLength(256);
         builder.Property(l => l.Title).HasMaxLength(200).IsRequired();
         builder.Property(l => l.Description).HasMaxLength(2000).IsRequired();
         builder.Property(l => l.SpeciesId).IsRequired();

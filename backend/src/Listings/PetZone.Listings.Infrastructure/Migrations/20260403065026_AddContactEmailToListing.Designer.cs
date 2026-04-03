@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PetZone.Listings.Infrastructure;
@@ -11,9 +12,11 @@ using PetZone.Listings.Infrastructure;
 namespace PetZone.Listings.Infrastructure.Migrations
 {
     [DbContext(typeof(ListingsDbContext))]
-    partial class ListingsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260403065026_AddContactEmailToListing")]
+    partial class AddContactEmailToListing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

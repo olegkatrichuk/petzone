@@ -17,10 +17,13 @@ public class UpdateListingService(IListingRepository repository)
         if (listing.UserId != command.RequestingUserId)
             return (ErrorList)Error.Forbidden("listing.forbidden", "Немає прав для редагування цього оголошення");
 
+        if (listing.Status == ListingStatus.Removed)
+            return (ErrorList)Error.Validation("listing.cannot_edit_removed", "Неможливо редагувати видалене оголошення");
+
         var result = listing.Update(
             command.Title, command.Description, command.SpeciesId, command.BreedId,
             command.AgeMonths, command.Color, command.City,
-            command.Vaccinated, command.Castrated, command.Phone);
+            command.Vaccinated, command.Castrated, command.Phone, command.ContactEmail);
 
         if (result.IsFailure)
             return (ErrorList)result.Error;

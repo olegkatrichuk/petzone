@@ -5,6 +5,7 @@ public record CreateListingCommand(
     string UserName,
     string UserEmail,
     string? UserPhone,
+    string? ContactEmail,
     string Title,
     string Description,
     Guid SpeciesId,

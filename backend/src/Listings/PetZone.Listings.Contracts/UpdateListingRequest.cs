@@ -12,5 +12,6 @@ public record UpdateListingRequest(
     [Required][MaxLength(200)] string City,
     bool Vaccinated,
     bool Castrated,
-    [MaxLength(30)] string? Phone
+    [MaxLength(30)] string? Phone,
+    [EmailAddress][MaxLength(256)] string? ContactEmail
 );

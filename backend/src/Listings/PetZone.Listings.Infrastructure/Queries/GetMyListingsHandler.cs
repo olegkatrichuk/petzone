@@ -19,7 +19,7 @@ public class GetMyListingsHandler(ListingsDbContext dbContext)
             .ToListAsync(ct);
 
         return items.Select(l => new ListingDto(
-            l.Id, l.UserId, l.UserName, l.UserEmail, l.UserPhone,
+            l.Id, l.UserId, l.UserName, l.UserEmail, l.UserPhone, l.ContactEmail,
             l.Title, l.Description, l.SpeciesId, l.BreedId,
             l.AgeMonths, l.Color, l.City, l.Vaccinated, l.Castrated,
             l.Photos, l.Status.ToString(), l.CreatedAt)).ToList();

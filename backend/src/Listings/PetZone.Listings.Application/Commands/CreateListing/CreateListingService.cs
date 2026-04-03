@@ -17,7 +17,7 @@ public class CreateListingService(
         CancellationToken ct = default)
     {
         var result = AdoptionListing.Create(
-            command.UserId, command.UserName, command.UserEmail, command.UserPhone,
+            command.UserId, command.UserName, command.UserEmail, command.UserPhone, command.ContactEmail,
             command.Title, command.Description, command.SpeciesId, command.BreedId,
             command.AgeMonths, command.Color, command.City,
             command.Vaccinated, command.Castrated);

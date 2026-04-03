@@ -6,6 +6,7 @@ export interface AdoptionListing {
   userName: string
   userEmail: string
   userPhone?: string
+  contactEmail?: string
   title: string
   description: string
   speciesId: string
@@ -31,6 +32,7 @@ export interface CreateListingPayload {
   vaccinated: boolean
   castrated: boolean
   phone?: string
+  contactEmail?: string
 }
 
 export interface UpdateListingPayload extends CreateListingPayload {}

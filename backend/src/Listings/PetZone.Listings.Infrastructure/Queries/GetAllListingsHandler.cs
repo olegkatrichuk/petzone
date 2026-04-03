@@ -31,7 +31,7 @@ public class GetAllListingsHandler(ListingsDbContext dbContext)
     }
 
     private static ListingDto ToDto(AdoptionListing l) => new(
-        l.Id, l.UserId, l.UserName, l.UserEmail, l.UserPhone,
+        l.Id, l.UserId, l.UserName, l.UserEmail, l.UserPhone, l.ContactEmail,
         l.Title, l.Description, l.SpeciesId, l.BreedId,
         l.AgeMonths, l.Color, l.City, l.Vaccinated, l.Castrated,
         l.Photos, l.Status.ToString(), l.CreatedAt);

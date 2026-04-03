@@ -12,5 +12,6 @@ public record UpdateListingCommand(
     string City,
     bool Vaccinated,
     bool Castrated,
-    string? Phone
+    string? Phone,
+    string? ContactEmail
 );

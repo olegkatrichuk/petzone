@@ -96,7 +96,7 @@ public class ListingsController(
             ?? string.Empty;
 
         var command = new CreateListingCommand(
-            userId.Value, userName, userEmail, request.Phone,
+            userId.Value, userName, userEmail, request.Phone, request.ContactEmail,
             request.Title, request.Description, request.SpeciesId, request.BreedId,
             request.AgeMonths, request.Color, request.City,
             request.Vaccinated, request.Castrated);
@@ -121,7 +121,7 @@ public class ListingsController(
             id, userId.Value,
             request.Title, request.Description, request.SpeciesId, request.BreedId,
             request.AgeMonths, request.Color, request.City,
-            request.Vaccinated, request.Castrated, request.Phone);
+            request.Vaccinated, request.Castrated, request.Phone, request.ContactEmail);
 
         var result = await updateListingService.Handle(command, ct);
         if (result.IsFailure)
