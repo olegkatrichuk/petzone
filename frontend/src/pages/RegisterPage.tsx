@@ -25,9 +25,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import PetsIcon from '@mui/icons-material/Pets'
-import { registerUser } from '../api/auth'
-import type { Envelope } from '../types/api'
-import type { AxiosError } from 'axios'
+import { registerUser, loginUser } from '../api/auth'
+import { useAuthStore } from '../store/authStore'
 
 const CORAL = '#FF6B6B'
 
@@ -90,6 +89,7 @@ function PasswordField({ label, error, registration, autoComplete }: PasswordFie
 export default function RegisterPage() {
   const { t } = useTranslation()
   const navigate = useLangNavigate()
+  const setAccessToken = useAuthStore((s) => s.setAccessToken)
   const [toast, setToast] = useState<string | null>(null)
 
   const schema = buildSchema(t)
@@ -104,7 +104,9 @@ export default function RegisterPage() {
         email: values.email,
         password: values.password,
       })
-      navigate('/login')
+      const token = await loginUser({ email: values.email, password: values.password })
+      setAccessToken(token)
+      navigate('/')
     } catch (err) {
       setToast(getApiError(err, t))
     }
