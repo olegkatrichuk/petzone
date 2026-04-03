@@ -13,8 +13,8 @@ import EmailIcon from '@mui/icons-material/Email'
 
 const CONTACTS = [
   { label: 'GitHub', icon: <GitHubIcon />, href: 'https://github.com/olegkatrichuk' },
-  { label: 'Telegram', icon: <TelegramIcon />, href: 'https://t.me/olegkatrichuk' },
-  { label: 'Email', icon: <EmailIcon />, href: 'mailto:oleg.katrichuk@gmail.com' },
+  { label: 'Telegram', icon: <TelegramIcon />, href: 'https://t.me/Olegnewlife' },
+  { label: 'Email', icon: <EmailIcon />, href: 'mailto:katrichukoleg@gmail.com' },
 ]
 
 export default function Footer() {

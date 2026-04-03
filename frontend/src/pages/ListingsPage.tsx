@@ -165,7 +165,7 @@ function ListingCard({ listing }: { listing: AdoptionListing }) {
 }
 
 export default function ListingsPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const navigate = useLangNavigate()
   const { user } = useAuthStore()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -180,7 +180,8 @@ export default function ListingsPage() {
     { speciesId, city, page, pageSize: PAGE_SIZE },
   )
 
-  const { data: speciesList = [] } = useGetSpeciesQuery()
+  const locale = i18n.language?.slice(0, 2) || 'uk'
+  const { data: speciesList = [] } = useGetSpeciesQuery(locale)
 
   // Reset on filter change
   useEffect(() => {

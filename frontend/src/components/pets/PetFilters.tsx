@@ -53,19 +53,20 @@ interface Props {
 }
 
 export default function PetFiltersPanel({ initialFilters, onApply }: Props) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [local, setLocal] = useState<LocalState>(EMPTY)
 
   const set = <K extends keyof LocalState>(key: K, value: LocalState[K]) =>
     setLocal((prev) => ({ ...prev, [key]: value, ...(key === 'speciesId' ? { breedId: '' } : {}) }))
 
   // RTK Query — species list (fetched once, cached globally)
-  const { data: species = [] } = useGetSpeciesQuery()
+  const locale = i18n.language?.slice(0, 2) || 'uk'
+  const { data: species = [] } = useGetSpeciesQuery(locale)
 
   // RTK Query — breeds for the selected species
   // skipToken prevents the request when no species is selected
   const { data: breeds = [] } = useGetBreedsQuery(
-    local.speciesId ? local.speciesId : skipToken,
+    local.speciesId ? { speciesId: local.speciesId, locale } : skipToken,
   )
 
   const handleApply = () => {
