@@ -671,5 +671,15 @@
     "needsHelpTitle": "Ont besoin d'aide 🆘",
     "needsHelpSubtitle": "Animaux qui ne peuvent pas encore être adoptés — ils ont besoin de soutien",
     "avatarModalTitle": "Modifier l'avatar"
+  },
+  "admin": {
+    "stats": {
+      "total": "Total",
+      "submitted": "Nouveaux",
+      "onReview": "En cours",
+      "revisionRequired": "Révision requise",
+      "approved": "Approuvés",
+      "rejected": "Rejetés"
+    }
   }
 }

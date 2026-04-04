@@ -18,6 +18,7 @@ using PetZone.VolunteerRequests.Application.Queries.GetDiscussionByRelationId;
 using PetZone.VolunteerRequests.Application.Queries.GetRequestById;
 using PetZone.VolunteerRequests.Application.Queries.GetRequestsByAdmin;
 using PetZone.VolunteerRequests.Application.Queries.GetRequestsByUser;
+using PetZone.VolunteerRequests.Application.Queries.GetStats;
 using PetZone.VolunteerRequests.Application.Queries.GetUnreviewedRequests;
 using PetZone.VolunteerRequests.Application.Repositories;
 using PetZone.VolunteerRequests.Infrastructure.Repositories;
@@ -53,6 +54,7 @@ public static class DependencyInjection
         services.AddScoped<GetRequestsByAdminHandler>();
         services.AddScoped<GetRequestsByUserHandler>();
         services.AddScoped<GetRequestByIdHandler>();
+        services.AddScoped<GetStatsHandler>();
         // Repositories
         services.AddScoped<IDiscussionRepository, DiscussionRepository>();
 

@@ -40,6 +40,7 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import { VolunteerRequestStatus } from '../types/volunteerRequest'
 import type { VolunteerRequestDto } from '../types/volunteerRequest'
 import {
+  useGetStatsQuery,
   useGetUnreviewedRequestsQuery,
   useGetAdminRequestsQuery,
   useTakeOnReviewMutation,
@@ -47,6 +48,7 @@ import {
   useSendForRevisionMutation,
   useRejectRequestMutation,
 } from '../services/adminApi'
+import type { VolunteerRequestStats } from '../services/adminApi'
 import { useGetUserByIdQuery } from '../services/accountsApi'
 import Pagination from '../components/ui/Pagination'
 
@@ -61,6 +63,34 @@ const STATUS_CFG: Record<VolunteerRequestStatus, { label: string; bg: string; co
   [VolunteerRequestStatus.RevisionRequired]:{ label: 'Потрібні зміни',       bg: '#FFF7ED', color: '#EA580C' },
   [VolunteerRequestStatus.Rejected]:        { label: 'Відхилено',            bg: '#FEF2F2', color: '#DC2626' },
   [VolunteerRequestStatus.Approved]:        { label: 'Схвалено',             bg: '#F0FDF4', color: '#16A34A' },
+}
+
+// ── Stats panel ────────────────────────────────────────────
+
+interface StatCardProps { label: string; value: number; color: string; bg: string }
+
+function StatCard({ label, value, color, bg }: StatCardProps) {
+  return (
+    <Paper elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 3, p: 2.5, textAlign: 'center', flex: 1, minWidth: 100 }}>
+      <Typography variant="h4" fontWeight="bold" sx={{ color }}>{value}</Typography>
+      <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block', lineHeight: 1.3 }}>{label}</Typography>
+      <Box sx={{ mt: 1, height: 3, borderRadius: 2, bgcolor: bg }} />
+    </Paper>
+  )
+}
+
+function StatsPanel({ stats }: { stats: VolunteerRequestStats }) {
+  const { t } = useTranslation()
+  return (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 4 }}>
+      <StatCard label={t('admin.stats.total')} value={stats.total} color="#1F2937" bg="#E5E7EB" />
+      <StatCard label={t('admin.stats.submitted')} value={stats.submitted} color="#2563EB" bg="#BFDBFE" />
+      <StatCard label={t('admin.stats.onReview')} value={stats.onReview} color="#CA8A04" bg="#FEF08A" />
+      <StatCard label={t('admin.stats.revisionRequired')} value={stats.revisionRequired} color="#EA580C" bg="#FED7AA" />
+      <StatCard label={t('admin.stats.approved')} value={stats.approved} color="#16A34A" bg="#BBF7D0" />
+      <StatCard label={t('admin.stats.rejected')} value={stats.rejected} color="#DC2626" bg="#FECACA" />
+    </Box>
+  )
 }
 
 function StatusChip({ status }: { status: VolunteerRequestStatus }) {
@@ -477,6 +507,7 @@ export default function AdminPage() {
   const navigate = useNavigate()
   const { lang } = useParams<{ lang: string }>()
   const [tab, setTab] = useState(0)
+  const { data: stats } = useGetStatsQuery()
 
   // Guard: only Admin role
   if (!user || user.role !== 'Admin') {
@@ -494,7 +525,7 @@ export default function AdminPage() {
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <PageMeta title={t('admin.pageTitle')} description={t('admin.pageTitle')} path="/admin" noIndex />
 
-      <Box sx={{ mb: 4 }}>
+      <Box sx={{ mb: 3 }}>
         <Typography variant="h4" fontWeight="bold" sx={{ mb: 0.5 }}>
           {t('admin.pageTitle')}
         </Typography>
@@ -502,6 +533,8 @@ export default function AdminPage() {
           {t('admin.pageSubtitle')}
         </Typography>
       </Box>
+
+      {stats && <StatsPanel stats={stats} />}
 
       <Tabs
         value={tab}

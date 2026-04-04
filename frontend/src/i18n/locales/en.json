@@ -449,7 +449,15 @@
     "noRequests": "No applications in this category",
     "loadError": "Failed to load applications",
     "accessDenied": "Access denied. Admin role required.",
-    "navLabel": "Admin Panel"
+    "navLabel": "Admin Panel",
+    "stats": {
+      "total": "Total",
+      "submitted": "New",
+      "onReview": "On Review",
+      "revisionRequired": "Needs Revision",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    }
   },
   "about": {
     "pageTitle": "About Us",

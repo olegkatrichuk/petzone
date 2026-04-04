@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PetZone.VolunteerRequests.Application.Queries.GetStats;
 using PetZone.VolunteerRequests.Application.Queries.GetUnreviewedRequests;
 using PetZone.VolunteerRequests.Application.Repositories;
 using PetZone.VolunteerRequests.Domain;
@@ -78,5 +79,24 @@ public class VolunteerRequestRepository(VolunteerRequestsDbContext dbContext)
             .ToListAsync(cancellationToken);
 
         return new PagedResult<VolunteerRequest>(items, total, page, pageSize);
+    }
+
+    public async Task<VolunteerRequestStats> GetStatsAsync(CancellationToken cancellationToken = default)
+    {
+        var counts = await dbContext.VolunteerRequests
+            .GroupBy(r => r.Status)
+            .Select(g => new { Status = g.Key, Count = g.Count() })
+            .ToListAsync(cancellationToken);
+
+        int Get(VolunteerRequestStatus s) => counts.FirstOrDefault(c => c.Status == s)?.Count ?? 0;
+
+        return new VolunteerRequestStats(
+            Total: counts.Sum(c => c.Count),
+            Submitted: Get(VolunteerRequestStatus.Submitted),
+            OnReview: Get(VolunteerRequestStatus.OnReview),
+            RevisionRequired: Get(VolunteerRequestStatus.RevisionRequired),
+            Approved: Get(VolunteerRequestStatus.Approved),
+            Rejected: Get(VolunteerRequestStatus.Rejected)
+        );
     }
 }

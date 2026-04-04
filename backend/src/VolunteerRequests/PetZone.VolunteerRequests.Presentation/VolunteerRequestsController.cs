@@ -9,6 +9,7 @@ using PetZone.VolunteerRequests.Application.Commands.UpdateVolunteerRequest;
 using PetZone.VolunteerRequests.Application.Queries.GetRequestById;
 using PetZone.VolunteerRequests.Application.Queries.GetRequestsByAdmin;
 using PetZone.VolunteerRequests.Application.Queries.GetRequestsByUser;
+using PetZone.VolunteerRequests.Application.Queries.GetStats;
 using PetZone.VolunteerRequests.Application.Queries.GetUnreviewedRequests;
 using PetZone.VolunteerRequests.Domain;
 using PetZone.VolunteerRequests.Presentation.Requests;
@@ -138,6 +139,16 @@ public class VolunteerRequestsController : ControllerBase
             new VolunteerInfo(dto.Experience, dto.Motivation, dto.Certificates, dto.Requisites));
 
         var result = await handler.Handle(command, cancellationToken);
+        return result.IsSuccess ? this.ToOkResponse(result.Value) : result.Error.ToResponse();
+    }
+
+    [HttpGet("stats")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetStats(
+        [FromServices] GetStatsHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var result = await handler.Handle(new GetStatsQuery(), cancellationToken);
         return result.IsSuccess ? this.ToOkResponse(result.Value) : result.Error.ToResponse();
     }
 

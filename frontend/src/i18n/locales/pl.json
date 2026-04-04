@@ -671,5 +671,15 @@
     "needsHelpTitle": "Potrzebują pomocy 🆘",
     "needsHelpSubtitle": "Zwierzęta, które nie mogą jeszcze szukać domu — potrzebują wsparcia",
     "avatarModalTitle": "Zmień awatar"
+  },
+  "admin": {
+    "stats": {
+      "total": "Łącznie",
+      "submitted": "Nowe",
+      "onReview": "W trakcie",
+      "revisionRequired": "Wymaga poprawek",
+      "approved": "Zatwierdzone",
+      "rejected": "Odrzucone"
+    }
   }
 }
