@@ -29,8 +29,6 @@ import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useAuthStore } from '../store/authStore'
 import { createVolunteerRequest } from '../api/volunteerRequests'
-import type { Envelope } from '../types/api'
-import type { AxiosError } from 'axios'
 
 const CORAL = '#FF6B6B'
 

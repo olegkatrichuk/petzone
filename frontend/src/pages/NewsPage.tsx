@@ -10,7 +10,6 @@ import Paper from '@mui/material/Paper'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArticleIcon from '@mui/icons-material/Article'
 
-const CORAL = '#FF6B6B'
 
 export default function NewsPage() {
   const { t } = useTranslation()

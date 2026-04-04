@@ -14,7 +14,7 @@ import PageMeta from '../components/meta/PageMeta'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import { useGetPetsQuery } from '../services/petsApi'
 import { useGetListingsQuery } from '../services/listingsApi'
-import { PetStatus } from '../types/pet'
+import { PetStatus, type Pet } from '../types/pet'
 
 // Fix default marker icons for Leaflet + Vite
 delete (L.Icon.Default.prototype as unknown as Record<string, unknown>)._getIconUrl
@@ -95,6 +95,7 @@ export default function MapPage() {
   const [mode, setMode] = useState<Mode>('all')
 
   const { data: petsData, isLoading: petsLoading } = useGetPetsQuery({
+    page: 1,
     status: PetStatus.LookingForHome,
     pageSize: 100,
   })
@@ -104,9 +105,9 @@ export default function MapPage() {
 
   const petMarkers = useMemo(() => {
     if (mode === 'listings') return []
-    return (petsData?.items ?? [])
+    return (petsData?.items ?? [] as Pet[])
       .map(pet => ({ pet, coords: getCityCoords(pet.city ?? '') }))
-      .filter(({ coords }) => coords !== null) as { pet: typeof petsData extends { items: infer I } ? I[number] : never; coords: [number, number] }[]
+      .filter((x): x is { pet: Pet; coords: [number, number] } => x.coords !== null)
   }, [petsData, mode])
 
   const listingMarkers = useMemo(() => {

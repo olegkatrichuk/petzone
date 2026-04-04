@@ -32,20 +32,6 @@ const fieldSx = {
   '& .MuiInputLabel-root.Mui-focused': { color: CORAL },
 }
 
-type FormValues = {
-  title: string
-  description: string
-  speciesId: string
-  breedId: string
-  ageMonths: number
-  color: string
-  city: string
-  vaccinated: boolean
-  castrated: boolean
-  phone: string
-  contactEmail: string
-}
-
 export default function EditListingPage() {
   const { listingId } = useParams<{ listingId: string }>()
   const { t, i18n } = useTranslation()
@@ -64,7 +50,7 @@ export default function EditListingPage() {
     description: z.string().min(1, t('validation.required')).max(2000),
     speciesId: z.string().min(1, t('validation.required')),
     breedId: z.string().optional().default(''),
-    ageMonths: z.number({ invalid_type_error: t('validation.required') }).min(0),
+    ageMonths: z.number().min(0),
     color: z.string().min(1, t('validation.required')),
     city: z.string().min(1, t('validation.required')),
     vaccinated: z.boolean().default(false),
@@ -76,7 +62,7 @@ export default function EditListingPage() {
   const {
     register, handleSubmit, control, watch,
     formState: { errors, isSubmitting },
-  } = useForm<FormValues>({
+  } = useForm({
     resolver: zodResolver(schema),
     values: listing ? {
       title: listing.title,
@@ -99,7 +85,7 @@ export default function EditListingPage() {
     { skip: !selectedSpeciesId }
   )
 
-  const onSubmit = async (values: FormValues) => {
+  const onSubmit = async (values: { title: string; description: string; speciesId: string; breedId?: string; ageMonths: number; color: string; city: string; vaccinated?: boolean; castrated?: boolean; phone?: string; contactEmail?: string }) => {
     if (!listingId) return
     try {
       await updateListing({
@@ -112,8 +98,8 @@ export default function EditListingPage() {
           ageMonths: values.ageMonths,
           color: values.color,
           city: values.city,
-          vaccinated: values.vaccinated,
-          castrated: values.castrated,
+          vaccinated: values.vaccinated ?? false,
+          castrated: values.castrated ?? false,
           phone: values.phone || undefined,
           contactEmail: values.contactEmail || undefined,
         },

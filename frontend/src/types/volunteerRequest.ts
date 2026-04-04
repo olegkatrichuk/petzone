@@ -1,10 +1,11 @@
-export enum VolunteerRequestStatus {
-  Submitted = 0,
-  OnReview = 1,
-  RevisionRequired = 2,
-  Rejected = 3,
-  Approved = 4,
-}
+export const VolunteerRequestStatus = {
+  Submitted: 0,
+  OnReview: 1,
+  RevisionRequired: 2,
+  Rejected: 3,
+  Approved: 4,
+} as const
+export type VolunteerRequestStatus = typeof VolunteerRequestStatus[keyof typeof VolunteerRequestStatus]
 
 export interface VolunteerInfo {
   experience: number

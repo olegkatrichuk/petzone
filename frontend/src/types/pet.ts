@@ -3,11 +3,12 @@ export interface PetPhoto {
   isMain: boolean
 }
 
-export enum PetStatus {
-  NeedsHelp = 0,
-  LookingForHome = 1,
-  FoundHome = 2,
-}
+export const PetStatus = {
+  NeedsHelp: 0,
+  LookingForHome: 1,
+  FoundHome: 2,
+} as const
+export type PetStatus = typeof PetStatus[keyof typeof PetStatus]
 
 export interface Pet {
   id: string

@@ -152,6 +152,7 @@ function UpdateForm({ request, onClose }: UpdateFormProps) {
 // Single application card
 function ApplicationCard({ request }: { request: VolunteerRequestDto }) {
   const { t } = useTranslation()
+  const navigate = useLangNavigate()
   const [expanded, setExpanded] = useState(false)
   const [editing, setEditing] = useState(false)
 

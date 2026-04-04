@@ -418,7 +418,7 @@ export default function VolunteerProfilePage() {
     url: `https://getpetzone.com/uk/volunteers/${volunteerId}`,
     email: volunteer.email ?? undefined,
     telephone: volunteer.phone ?? undefined,
-    address: volunteer.city ? { '@type': 'PostalAddress', addressLocality: volunteer.city } : undefined,
+    address: undefined,
   }
 
   return (

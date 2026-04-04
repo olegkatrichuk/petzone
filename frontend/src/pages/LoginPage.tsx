@@ -24,8 +24,6 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import PetsIcon from '@mui/icons-material/Pets'
 import { loginUser } from '../api/auth'
 import { useAuthStore } from '../store/authStore'
-import type { Envelope } from '../types/api'
-import type { AxiosError } from 'axios'
 
 const CORAL = '#FF6B6B'
 
