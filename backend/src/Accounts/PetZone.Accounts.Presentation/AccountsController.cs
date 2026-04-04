@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PetZone.Accounts.Application.Accounts;
 using PetZone.Accounts.Application.Accounts.ConfirmEmail;
+using PetZone.Accounts.Application.Accounts.ForgotPassword;
 using PetZone.Accounts.Application.Accounts.GetConfirmationLink;
 using PetZone.Accounts.Application.Accounts.GetUserInfo;
+using PetZone.Accounts.Application.Accounts.ResetPassword;
 using PetZone.Accounts.Application.Commands;
 using PetZone.Accounts.Application;
 using PetZone.Accounts.Application.Repositories;
@@ -115,6 +117,26 @@ public class AccountsController(
     {
         var result = await service.Handle(userId, token, cancellationToken);
         return result.IsSuccess ? Ok("Email confirmed successfully") : BadRequest(result.Error);
+    }
+
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword(
+        [FromBody] ForgotPasswordRequest request,
+        [FromServices] ForgotPasswordService service,
+        CancellationToken cancellationToken)
+    {
+        await service.Handle(request.Email, cancellationToken);
+        return Ok();
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword(
+        [FromBody] ResetPasswordRequest request,
+        [FromServices] ResetPasswordService service,
+        CancellationToken cancellationToken)
+    {
+        var result = await service.Handle(request.UserId, request.Token, request.NewPassword, cancellationToken);
+        return result.IsSuccess ? Ok() : result.Error.ToResponse();
     }
 
     [HttpPost("logout")]

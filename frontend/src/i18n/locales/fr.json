@@ -31,7 +31,19 @@
     "patronymic": "Deuxième prénom",
     "phone": "Téléphone",
     "experienceYears": "Expérience (années)",
-    "description": "À propos de moi"
+    "description": "À propos de moi",
+    "forgotPassword": "Mot de passe oublié ?",
+    "forgotPasswordHint": "Entrez votre email et nous vous enverrons un lien de réinitialisation",
+    "forgotPasswordSent": "Email envoyé ! Vérifiez votre boîte et suivez le lien.",
+    "sendResetLink": "Envoyer le lien",
+    "backToLogin": "Retour à la connexion",
+    "rememberPassword": "Vous vous souvenez de votre mot de passe ?",
+    "resetPassword": "Réinitialiser le mot de passe",
+    "resetPasswordBtn": "Définir un nouveau mot de passe",
+    "resetPasswordSuccess": "Mot de passe modifié avec succès ! Vous pouvez vous connecter.",
+    "resetLinkInvalid": "Le lien est invalide ou a expiré.",
+    "requestNewLink": "Demander un nouveau lien",
+    "newPassword": "Nouveau mot de passe"
   },
   "register": {
     "tabUser": "Utilisateur",
@@ -53,7 +65,8 @@
     "motivationMin": "Minimum 20 caractères — décrivez plus en détail",
     "motivationMax": "Maximum 2000 caractères",
     "descriptionMin": "Minimum 10 caractères",
-    "required": "Champ obligatoire"
+    "required": "Champ obligatoire",
+    "passwordMismatch": "Les mots de passe ne correspondent pas"
   },
   "pets": {
     "pageTitle": "Trouvez votre compagnon 🐾",

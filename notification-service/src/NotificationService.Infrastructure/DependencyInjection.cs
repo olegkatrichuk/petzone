@@ -39,6 +39,7 @@ public static class DependencyInjection
             x.AddConsumer<UserRegisteredConsumer>();
             x.AddConsumer<ListingCreatedConsumer>();
             x.AddConsumer<ListingAdoptedConsumer>();
+            x.AddConsumer<ForgotPasswordConsumer>();
 
             x.UsingRabbitMq((ctx, cfg) =>
             {

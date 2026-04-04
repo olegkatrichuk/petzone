@@ -10,8 +10,10 @@ using Microsoft.IdentityModel.Tokens;
 using PetZone.Accounts.Application;
 using PetZone.Accounts.Application.Accounts;
 using PetZone.Accounts.Application.Accounts.ConfirmEmail;
+using PetZone.Accounts.Application.Accounts.ForgotPassword;
 using PetZone.Accounts.Application.Accounts.GetConfirmationLink;
 using PetZone.Accounts.Application.Accounts.GetUserInfo;
+using PetZone.Accounts.Application.Accounts.ResetPassword;
 using PetZone.Accounts.Application.Repositories;
 using PetZone.Accounts.Domain;
 using PetZone.Accounts.Infrastructure.Authorization;
@@ -58,6 +60,8 @@ public static class DependencyInjection
         services.AddScoped<GetUserInfoService>();
         services.AddScoped<GetConfirmationLinkService>();
         services.AddScoped<ConfirmEmailService>();
+        services.AddScoped<ForgotPasswordService>();
+        services.AddScoped<ResetPasswordService>();
 
         // Repositories & UnitOfWork
         services.AddScoped<IAccountsUnitOfWork, AccountsUnitOfWork>();

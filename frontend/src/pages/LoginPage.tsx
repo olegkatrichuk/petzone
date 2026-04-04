@@ -178,6 +178,16 @@ export default function LoginPage() {
               }}
             />
 
+            {/* Forgot password */}
+            <Box sx={{ textAlign: 'right', mt: -1 }}>
+              <Link
+                to="/forgot-password"
+                style={{ color: CORAL, fontSize: '0.8125rem', textDecoration: 'none', fontWeight: 500 }}
+              >
+                {t('auth.forgotPassword')}
+              </Link>
+            </Box>
+
             {/* Submit */}
             <Button
               type="submit"

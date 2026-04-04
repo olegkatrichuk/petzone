@@ -31,7 +31,19 @@
     "patronymic": "Drugie imię",
     "phone": "Telefon",
     "experienceYears": "Doświadczenie (lata)",
-    "description": "O sobie"
+    "description": "O sobie",
+    "forgotPassword": "Zapomniałeś hasła?",
+    "forgotPasswordHint": "Podaj email, a wyślemy link do resetowania hasła",
+    "forgotPasswordSent": "Email wysłany! Sprawdź skrzynkę i kliknij w link.",
+    "sendResetLink": "Wyślij link",
+    "backToLogin": "Powrót do logowania",
+    "rememberPassword": "Pamiętasz hasło?",
+    "resetPassword": "Resetuj hasło",
+    "resetPasswordBtn": "Ustaw nowe hasło",
+    "resetPasswordSuccess": "Hasło zmienione pomyślnie! Możesz się teraz zalogować.",
+    "resetLinkInvalid": "Link jest nieważny lub wygasł.",
+    "requestNewLink": "Poproś o nowy link",
+    "newPassword": "Nowe hasło"
   },
   "register": {
     "tabUser": "Użytkownik",
@@ -53,7 +65,8 @@
     "motivationMin": "Minimum 20 znaków — opisz dokładniej",
     "motivationMax": "Maksimum 2000 znaków",
     "descriptionMin": "Minimum 10 znaków",
-    "required": "Pole wymagane"
+    "required": "Pole wymagane",
+    "passwordMismatch": "Hasła nie pasują do siebie"
   },
   "pets": {
     "pageTitle": "Znajdź swojego pupila 🐾",

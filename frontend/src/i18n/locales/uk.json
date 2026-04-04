@@ -31,7 +31,19 @@
     "patronymic": "По батькові",
     "phone": "Телефон",
     "experienceYears": "Досвід (років)",
-    "description": "Про себе"
+    "description": "Про себе",
+    "forgotPassword": "Забули пароль?",
+    "forgotPasswordHint": "Введіть email і ми надішлемо посилання для скидання паролю",
+    "forgotPasswordSent": "Листа надіслано! Перевірте вашу пошту та перейдіть за посиланням.",
+    "sendResetLink": "Надіслати посилання",
+    "backToLogin": "Назад до входу",
+    "rememberPassword": "Пам'ятаєте пароль?",
+    "resetPassword": "Скинути пароль",
+    "resetPasswordBtn": "Встановити новий пароль",
+    "resetPasswordSuccess": "Пароль успішно змінено! Тепер можете увійти.",
+    "resetLinkInvalid": "Посилання недійсне або прострочене.",
+    "requestNewLink": "Запросити нове посилання",
+    "newPassword": "Новий пароль"
   },
   "register": {
     "tabUser": "Користувач",
@@ -53,7 +65,8 @@
     "descriptionMin": "Мінімум 10 символів",
     "motivationMin": "Мінімум 20 символів — розкажіть детальніше",
     "motivationMax": "Максимум 2000 символів",
-    "required": "Обов'язкове поле"
+    "required": "Обов'язкове поле",
+    "passwordMismatch": "Паролі не співпадають"
   },
   "pets": {
     "pageTitle": "Знайди свого улюбленця 🐾",

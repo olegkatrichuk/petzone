@@ -31,7 +31,19 @@
     "patronymic": "Middle name",
     "phone": "Phone",
     "experienceYears": "Experience (years)",
-    "description": "About yourself"
+    "description": "About yourself",
+    "forgotPassword": "Forgot password?",
+    "forgotPasswordHint": "Enter your email and we will send a password reset link",
+    "forgotPasswordSent": "Email sent! Check your inbox and follow the link.",
+    "sendResetLink": "Send reset link",
+    "backToLogin": "Back to login",
+    "rememberPassword": "Remember your password?",
+    "resetPassword": "Reset password",
+    "resetPasswordBtn": "Set new password",
+    "resetPasswordSuccess": "Password changed successfully! You can now log in.",
+    "resetLinkInvalid": "The link is invalid or has expired.",
+    "requestNewLink": "Request a new link",
+    "newPassword": "New password"
   },
   "register": {
     "tabUser": "User",
@@ -53,7 +65,8 @@
     "motivationMin": "Minimum 20 characters — please describe in more detail",
     "motivationMax": "Maximum 2000 characters",
     "descriptionMin": "Minimum 10 characters",
-    "required": "Required field"
+    "required": "Required field",
+    "passwordMismatch": "Passwords do not match"
   },
   "pets": {
     "pageTitle": "Find your pet 🐾",
