@@ -43,7 +43,13 @@
     "resetPasswordSuccess": "Password changed successfully! You can now log in.",
     "resetLinkInvalid": "The link is invalid or has expired.",
     "requestNewLink": "Request a new link",
-    "newPassword": "New password"
+    "newPassword": "New password",
+    "confirmEmail": "Email confirmation",
+    "confirmingEmail": "Confirming your email...",
+    "emailConfirmed": "Email confirmed!",
+    "emailConfirmedHint": "Your email address has been verified. You can now log in.",
+    "confirmEmailFailed": "Confirmation failed",
+    "confirmEmailFailedHint": "The link is invalid or has expired. Please contact support or register again."
   },
   "register": {
     "tabUser": "User",

@@ -34,6 +34,7 @@ const EditListingPage = lazy(() => import('./pages/EditListingPage'))
 const MapPage = lazy(() => import('./pages/MapPage'))
 const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'))
 const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'))
+const ConfirmEmailPage = lazy(() => import('./pages/ConfirmEmailPage'))
 
 function PageLoader() {
   return (
@@ -84,6 +85,7 @@ function App() {
         <Route path="map" element={<Suspense fallback={<PageLoader />}><MapPage /></Suspense>} />
         <Route path="forgot-password" element={<Suspense fallback={<PageLoader />}><ForgotPasswordPage /></Suspense>} />
         <Route path="reset-password" element={<Suspense fallback={<PageLoader />}><ResetPasswordPage /></Suspense>} />
+        <Route path="confirm-email" element={<Suspense fallback={<PageLoader />}><ConfirmEmailPage /></Suspense>} />
         <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFoundPage /></Suspense>} />
       </Route>
 

@@ -43,7 +43,13 @@
     "resetPasswordSuccess": "Hasło zmienione pomyślnie! Możesz się teraz zalogować.",
     "resetLinkInvalid": "Link jest nieważny lub wygasł.",
     "requestNewLink": "Poproś o nowy link",
-    "newPassword": "Nowe hasło"
+    "newPassword": "Nowe hasło",
+    "confirmEmail": "Potwierdzenie email",
+    "confirmingEmail": "Potwierdzamy Twój email...",
+    "emailConfirmed": "Email potwierdzony!",
+    "emailConfirmedHint": "Twój adres email został pomyślnie zweryfikowany. Możesz się teraz zalogować.",
+    "confirmEmailFailed": "Potwierdzenie nie powiodło się",
+    "confirmEmailFailedHint": "Link jest nieważny lub wygasł. Skontaktuj się z pomocą techniczną lub zarejestruj się ponownie."
   },
   "register": {
     "tabUser": "Użytkownik",

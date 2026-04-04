@@ -38,7 +38,7 @@ public class UserRegisteredConsumer(
 
             var encodedToken = Uri.EscapeDataString(token);
             var publicApiUrl = configuration["SiteUrl"] ?? "https://getpetzone.com";
-            var confirmationLink = $"{publicApiUrl}/api/v1/accounts/confirm-email?userId={message.UserId}&token={encodedToken}";
+            var confirmationLink = $"{publicApiUrl}/confirm-email?userId={message.UserId}&token={encodedToken}";
 
             var body = $"""
                 <h2>Ласкаво просимо до PetZone, {message.FirstName}!</h2>

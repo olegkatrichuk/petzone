@@ -36,6 +36,10 @@ export const refreshTokens = async (): Promise<string> => {
 export const logoutUser = (): Promise<void> =>
   api.post('/accounts/logout').then(() => undefined)
 
+export const confirmEmail = async (userId: string, token: string): Promise<void> => {
+  await api.get('/accounts/confirm-email', { params: { userId, token } })
+}
+
 export const forgotPassword = async (email: string): Promise<void> => {
   await api.post('/accounts/forgot-password', { email })
 }

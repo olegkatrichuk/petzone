@@ -43,7 +43,13 @@
     "resetPasswordSuccess": "Passwort erfolgreich geändert! Sie können sich jetzt anmelden.",
     "resetLinkInvalid": "Der Link ist ungültig oder abgelaufen.",
     "requestNewLink": "Neuen Link anfordern",
-    "newPassword": "Neues Passwort"
+    "newPassword": "Neues Passwort",
+    "confirmEmail": "E-Mail-Bestätigung",
+    "confirmingEmail": "Ihre E-Mail wird bestätigt...",
+    "emailConfirmed": "E-Mail bestätigt!",
+    "emailConfirmedHint": "Ihre E-Mail-Adresse wurde erfolgreich verifiziert. Sie können sich jetzt anmelden.",
+    "confirmEmailFailed": "Bestätigung fehlgeschlagen",
+    "confirmEmailFailedHint": "Der Link ist ungültig oder abgelaufen. Bitte wenden Sie sich an den Support oder registrieren Sie sich erneut."
   },
   "register": {
     "tabUser": "Nutzer",

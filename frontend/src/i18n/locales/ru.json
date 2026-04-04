@@ -43,7 +43,13 @@
     "resetPasswordSuccess": "Пароль успешно изменён! Теперь вы можете войти.",
     "resetLinkInvalid": "Ссылка недействительна или устарела.",
     "requestNewLink": "Запросить новую ссылку",
-    "newPassword": "Новый пароль"
+    "newPassword": "Новый пароль",
+    "confirmEmail": "Подтверждение почты",
+    "confirmingEmail": "Подтверждаем вашу почту...",
+    "emailConfirmed": "Почта подтверждена!",
+    "emailConfirmedHint": "Ваш email успешно подтверждён. Теперь можно войти.",
+    "confirmEmailFailed": "Ошибка подтверждения",
+    "confirmEmailFailedHint": "Ссылка недействительна или устарела. Обратитесь в поддержку или зарегистрируйтесь снова."
   },
   "register": {
     "tabUser": "Пользователь",
