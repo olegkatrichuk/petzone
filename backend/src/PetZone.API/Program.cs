@@ -36,7 +36,7 @@ builder.Host.UseSerilog((context, config) =>
             opts =>
             {
                 opts.DataStream = new DataStreamName("logs", "petzone", "default");
-                opts.BootstrapMethod = BootstrapMethod.Failure;
+                opts.BootstrapMethod = BootstrapMethod.Silent;
             });
 });
 
