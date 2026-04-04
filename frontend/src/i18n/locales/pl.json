@@ -326,6 +326,8 @@
     "hero": {
       "title": "Znajdź swojego towarzysza",
       "subtitle": "Platforma łącząca bezdomne zwierzęta z ludźmi gotowymi dać im dom i troskę",
+      "seoText": "Adoptuj psy, koty i inne zwierzęta — za darmo przez sieć sprawdzonych wolontariuszy",
+      "badge": "Platforma adopcji zwierząt",
       "browsePets": "Przeglądaj zwierzęta",
       "becomeVolunteer": "Zostań wolontariuszem"
     },
@@ -336,6 +338,7 @@
     },
     "how": {
       "title": "Jak to działa",
+      "subtitle": "Trzy proste kroki, aby znaleźć towarzysza lub pomóc zwierzęciu",
       "step1": {
         "title": "Wybierz zwierzę",
         "desc": "Przeglądaj profile zwierząt, filtruj według gatunku, miasta i innych parametrów"
@@ -353,6 +356,12 @@
       "title": "Zostań wolontariuszem",
       "subtitle": "Pomagaj zwierzętom znajdować domy. Zarejestruj się jako wolontariusz i umieść swoje zwierzęta na platformie",
       "btn": "Złóż wniosek"
+    },
+    "trust": {
+      "free": "Bezpłatnie",
+      "verified": "Zweryfikowani wolontariusze",
+      "volunteers": "Aktywna społeczność",
+      "ukraine": "Na całej Ukrainie"
     },
     "featured": {
       "title": "Zwierzęta szukają domu",

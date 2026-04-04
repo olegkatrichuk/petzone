@@ -326,6 +326,8 @@
     "hero": {
       "title": "Trouvez votre compagnon",
       "subtitle": "Une plateforme qui connecte les animaux sans-abri avec des personnes prêtes à leur offrir un foyer",
+      "seoText": "Adoptez des chiens, chats et autres animaux — gratuitement via un réseau de bénévoles vérifiés",
+      "badge": "Plateforme d'adoption d'animaux",
       "browsePets": "Voir les animaux",
       "becomeVolunteer": "Devenir bénévole"
     },
@@ -336,6 +338,7 @@
     },
     "how": {
       "title": "Comment ça marche",
+      "subtitle": "Trois étapes simples pour trouver un compagnon ou aider un animal",
       "step1": {
         "title": "Choisissez un animal",
         "desc": "Parcourez les profils d'animaux, filtrez par espèce, ville et autres paramètres"
@@ -353,6 +356,12 @@
       "title": "Devenez bénévole",
       "subtitle": "Aidez les animaux à trouver un foyer. Inscrivez-vous comme bénévole et publiez vos animaux sur la plateforme",
       "btn": "Postuler maintenant"
+    },
+    "trust": {
+      "free": "Gratuit",
+      "verified": "Bénévoles vérifiés",
+      "volunteers": "Communauté active",
+      "ukraine": "Dans toute l'Ukraine"
     },
     "featured": {
       "title": "Animaux cherchant un foyer",

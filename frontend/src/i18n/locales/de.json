@@ -326,6 +326,8 @@
     "hero": {
       "title": "Finde deinen Begleiter",
       "subtitle": "Eine Plattform, die obdachlose Tiere mit Menschen verbindet, die bereit sind, ihnen ein Zuhause zu geben",
+      "seoText": "Hunde, Katzen und andere Tiere adoptieren — kostenlos über ein Netz geprüfter Freiwilliger",
+      "badge": "Tieradoptionsplattform",
       "browsePets": "Tiere durchsuchen",
       "becomeVolunteer": "Freiwilliger werden"
     },
@@ -336,6 +338,7 @@
     },
     "how": {
       "title": "Wie es funktioniert",
+      "subtitle": "Drei einfache Schritte, um einen Begleiter zu finden oder einem Tier zu helfen",
       "step1": {
         "title": "Wähle ein Tier",
         "desc": "Durchsuche Tierprofile, filtere nach Art, Stadt und anderen Parametern"
@@ -353,6 +356,12 @@
       "title": "Werde Freiwilliger",
       "subtitle": "Hilf Tieren, ein Zuhause zu finden. Registriere dich als Freiwilliger und stelle deine Tiere auf der Plattform vor",
       "btn": "Jetzt bewerben"
+    },
+    "trust": {
+      "free": "Kostenlos",
+      "verified": "Geprüfte Freiwillige",
+      "volunteers": "Aktive Gemeinschaft",
+      "ukraine": "In der ganzen Ukraine"
     },
     "featured": {
       "title": "Tiere suchen ein Zuhause",

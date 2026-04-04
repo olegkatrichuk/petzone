@@ -330,6 +330,8 @@
     "hero": {
       "title": "Find Your Companion",
       "subtitle": "A platform that connects homeless animals with people ready to give them a home and care",
+      "seoText": "Adopt dogs, cats and other animals — free of charge through a network of verified volunteers",
+      "badge": "Pet Adoption Platform",
       "browsePets": "Browse Pets",
       "becomeVolunteer": "Become a Volunteer"
     },
@@ -340,6 +342,7 @@
     },
     "how": {
       "title": "How It Works",
+      "subtitle": "Three simple steps to find a companion or help an animal",
       "step1": {
         "title": "Choose a Pet",
         "desc": "Browse pet profiles, filter by species, city, and other parameters"
@@ -357,6 +360,12 @@
       "title": "Become a Volunteer",
       "subtitle": "Help animals find a home. Register as a volunteer and post your animals on the platform",
       "btn": "Apply Now"
+    },
+    "trust": {
+      "free": "Free of charge",
+      "verified": "Verified volunteers",
+      "volunteers": "Active community",
+      "ukraine": "Across Ukraine"
     },
     "featured": {
       "title": "Animals Looking for a Home",
