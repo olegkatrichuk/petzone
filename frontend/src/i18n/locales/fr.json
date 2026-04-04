@@ -693,6 +693,17 @@
   },
   "admin": {
     "tabUsers": "Utilisateurs",
+    "tabSpecies": "Catalogues",
+    "species": {
+      "total": "Espèces au total : {{count}}",
+      "breedsCount": "{{count}} races",
+      "noBreeds": "Pas encore de races",
+      "addSpecies": "Ajouter une espèce",
+      "addSpeciesTitle": "Nouvelle espèce animale",
+      "addBreed": "Ajouter une race",
+      "addBreedTitle": "Nouvelle race",
+      "loadError": "Impossible de charger les catalogues"
+    },
     "users": {
       "search": "Rechercher par email ou nom",
       "email": "Email",

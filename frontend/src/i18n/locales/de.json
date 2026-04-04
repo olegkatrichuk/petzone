@@ -693,6 +693,17 @@
   },
   "admin": {
     "tabUsers": "Benutzer",
+    "tabSpecies": "Kataloge",
+    "species": {
+      "total": "Arten gesamt: {{count}}",
+      "breedsCount": "{{count}} Rassen",
+      "noBreeds": "Noch keine Rassen",
+      "addSpecies": "Art hinzufügen",
+      "addSpeciesTitle": "Neue Tierart",
+      "addBreed": "Rasse hinzufügen",
+      "addBreedTitle": "Neue Rasse",
+      "loadError": "Kataloge konnten nicht geladen werden"
+    },
     "users": {
       "search": "Suche nach E-Mail oder Name",
       "email": "E-Mail",

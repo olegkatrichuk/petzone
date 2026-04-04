@@ -452,6 +452,17 @@
     "tabUnreviewed": "Новые заявки",
     "tabMine": "Мои заявки",
     "tabUsers": "Пользователи",
+    "tabSpecies": "Справочники",
+    "species": {
+      "total": "Всего видов: {{count}}",
+      "breedsCount": "{{count}} пород",
+      "noBreeds": "Пород ещё нет",
+      "addSpecies": "Добавить вид",
+      "addSpeciesTitle": "Новый вид животного",
+      "addBreed": "Добавить породу",
+      "addBreedTitle": "Новая порода",
+      "loadError": "Не удалось загрузить справочники"
+    },
     "users": {
       "search": "Поиск по email или имени",
       "email": "Email",

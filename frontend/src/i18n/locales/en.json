@@ -452,6 +452,17 @@
     "tabUnreviewed": "New Applications",
     "tabMine": "My Applications",
     "tabUsers": "Users",
+    "tabSpecies": "Catalogs",
+    "species": {
+      "total": "Total species: {{count}}",
+      "breedsCount": "{{count}} breeds",
+      "noBreeds": "No breeds yet",
+      "addSpecies": "Add species",
+      "addSpeciesTitle": "New animal species",
+      "addBreed": "Add breed",
+      "addBreedTitle": "New breed",
+      "loadError": "Failed to load catalogs"
+    },
     "users": {
       "search": "Search by email or name",
       "email": "Email",

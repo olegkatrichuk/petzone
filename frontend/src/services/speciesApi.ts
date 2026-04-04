@@ -6,21 +6,49 @@ import type { Species, Breed } from '../types/species'
 export const speciesApi = createApi({
   reducerPath: 'speciesApi',
   baseQuery: axiosBaseQuery(),
+  tagTypes: ['Species', 'Breed'],
   endpoints: (builder) => ({
-    /**
-     * Fetch all available species (used to populate the species filter dropdown).
-     * Cached globally — no arguments, no invalidation needed.
-     */
     getSpecies: builder.query<Species[], string>({
       query: (locale) => ({ url: '/species', params: { locale } }),
+      providesTags: [{ type: 'Species', id: 'LIST' }],
     }),
 
-    /**
-     * Fetch breeds for a given species id.
-     * Pass skipToken when no species is selected to avoid making the request.
-     */
     getBreeds: builder.query<Breed[], { speciesId: string; locale: string }>({
       query: ({ speciesId, locale }) => ({ url: `/species/${speciesId}/breeds`, params: { locale } }),
+      providesTags: (_r, _e, { speciesId }) => [{ type: 'Breed', id: speciesId }],
+    }),
+
+    createSpecies: builder.mutation<Species, { translations: Record<string, string> }>({
+      query: (body) => ({ url: '/species', method: 'POST', data: body }),
+      invalidatesTags: [{ type: 'Species', id: 'LIST' }],
+    }),
+
+    deleteSpecies: builder.mutation<void, string>({
+      query: (speciesId) => ({ url: `/species/${speciesId}`, method: 'DELETE' }),
+      invalidatesTags: [{ type: 'Species', id: 'LIST' }],
+    }),
+
+    createBreed: builder.mutation<Breed, { speciesId: string; translations: Record<string, string> }>({
+      query: ({ speciesId, translations }) => ({
+        url: `/species/${speciesId}/breeds`,
+        method: 'POST',
+        data: { translations },
+      }),
+      invalidatesTags: (_r, _e, { speciesId }) => [
+        { type: 'Breed', id: speciesId },
+        { type: 'Species', id: 'LIST' },
+      ],
+    }),
+
+    deleteBreed: builder.mutation<void, { speciesId: string; breedId: string }>({
+      query: ({ speciesId, breedId }) => ({
+        url: `/species/${speciesId}/breeds/${breedId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (_r, _e, { speciesId }) => [
+        { type: 'Breed', id: speciesId },
+        { type: 'Species', id: 'LIST' },
+      ],
     }),
   }),
 })
@@ -28,4 +56,11 @@ export const speciesApi = createApi({
 // Re-export skipToken so consumers can import it from one place
 export { skipToken }
 
-export const { useGetSpeciesQuery, useGetBreedsQuery } = speciesApi
+export const {
+  useGetSpeciesQuery,
+  useGetBreedsQuery,
+  useCreateSpeciesMutation,
+  useDeleteSpeciesMutation,
+  useCreateBreedMutation,
+  useDeleteBreedMutation,
+} = speciesApi

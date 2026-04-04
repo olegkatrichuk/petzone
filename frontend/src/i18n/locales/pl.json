@@ -693,6 +693,17 @@
   },
   "admin": {
     "tabUsers": "Użytkownicy",
+    "tabSpecies": "Katalogi",
+    "species": {
+      "total": "Gatunków łącznie: {{count}}",
+      "breedsCount": "{{count}} ras",
+      "noBreeds": "Brak ras",
+      "addSpecies": "Dodaj gatunek",
+      "addSpeciesTitle": "Nowy gatunek zwierzęcia",
+      "addBreed": "Dodaj rasę",
+      "addBreedTitle": "Nowa rasa",
+      "loadError": "Nie udało się załadować katalogów"
+    },
     "users": {
       "search": "Szukaj po emailu lub imieniu",
       "email": "Email",

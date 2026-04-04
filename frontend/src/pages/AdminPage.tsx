@@ -63,6 +63,23 @@ import {
 import type { VolunteerRequestStats } from '../services/adminApi'
 import { useGetUserByIdQuery } from '../services/accountsApi'
 import Pagination from '../components/ui/Pagination'
+import Collapse from '@mui/material/Collapse'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import PetsIcon from '@mui/icons-material/Pets'
+import {
+  useGetSpeciesQuery,
+  useGetBreedsQuery,
+  useCreateSpeciesMutation,
+  useDeleteSpeciesMutation,
+  useCreateBreedMutation,
+  useDeleteBreedMutation,
+} from '../services/speciesApi'
+import { SPECIES_LOCALES } from '../types/species'
 
 const CORAL = '#FF6B6B'
 const PAGE_SIZE = 10
@@ -657,6 +674,196 @@ function UsersTab() {
   )
 }
 
+// ── Species tab ────────────────────────────────────────────
+
+interface TranslationDialogProps {
+  open: boolean
+  titleKey: string
+  onClose: () => void
+  onConfirm: (translations: Record<string, string>) => void
+  loading: boolean
+}
+
+function TranslationDialog({ open, titleKey, onClose, onConfirm, loading }: TranslationDialogProps) {
+  const { t } = useTranslation()
+  const [vals, setVals] = useState<Record<string, string>>({})
+
+  const handleClose = () => {
+    setVals({})
+    onClose()
+  }
+
+  const handleConfirm = () => {
+    if (!vals.uk?.trim() && !vals.en?.trim()) return
+    onConfirm(Object.fromEntries(Object.entries(vals).filter(([, v]) => v.trim())))
+    setVals({})
+  }
+
+  return (
+    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+      <DialogTitle>{t(titleKey)}</DialogTitle>
+      <DialogContent sx={{ pt: '16px !important', display: 'flex', flexDirection: 'column', gap: 2 }}>
+        {SPECIES_LOCALES.map((loc) => (
+          <TextField
+            key={loc}
+            label={loc.toUpperCase()}
+            size="small"
+            fullWidth
+            required={loc === 'uk' || loc === 'en'}
+            value={vals[loc] ?? ''}
+            onChange={(e) => setVals((prev) => ({ ...prev, [loc]: e.target.value }))}
+          />
+        ))}
+      </DialogContent>
+      <DialogActions sx={{ px: 3, pb: 3, gap: 1 }}>
+        <Button onClick={handleClose} sx={{ color: '#6B7280', textTransform: 'none' }}>
+          {t('common.cancel')}
+        </Button>
+        <Button
+          variant="contained"
+          disabled={(!vals.uk?.trim() && !vals.en?.trim()) || loading}
+          onClick={handleConfirm}
+          sx={{ bgcolor: CORAL, '&:hover': { bgcolor: '#e55555' }, textTransform: 'none', fontWeight: 700 }}
+        >
+          {loading ? <CircularProgress size={18} color="inherit" /> : t('common.save')}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
+}
+
+function BreedsList({ speciesId, onAdd }: { speciesId: string; onAdd: () => void }) {
+  const { t } = useTranslation()
+  const { data: breeds = [], isLoading } = useGetBreedsQuery({ speciesId, locale: 'uk' })
+  const [deleteBreed, { isLoading: deleting }] = useDeleteBreedMutation()
+
+  if (isLoading) return <Box sx={{ p: 2 }}><CircularProgress size={18} sx={{ color: CORAL }} /></Box>
+
+  return (
+    <Box sx={{ pl: 4, borderLeft: '2px solid #F3F4F6', ml: 2 }}>
+      <List dense disablePadding>
+        {breeds.map((breed) => (
+          <ListItem
+            key={breed.id}
+            disableGutters
+            sx={{ py: 0.5, display: 'flex', justifyContent: 'space-between' }}
+          >
+            <Typography variant="body2" color="text.secondary">• {breed.name}</Typography>
+            <IconButton
+              size="small"
+              disabled={deleting}
+              onClick={() => deleteBreed({ speciesId, breedId: breed.id })}
+              sx={{ color: '#9CA3AF', '&:hover': { color: '#EF4444' } }}
+            >
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          </ListItem>
+        ))}
+        {breeds.length === 0 && (
+          <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
+            {t('admin.species.noBreeds')}
+          </Typography>
+        )}
+      </List>
+      <Button
+        size="small"
+        startIcon={<AddIcon />}
+        onClick={onAdd}
+        sx={{ textTransform: 'none', color: CORAL, mt: 0.5 }}
+      >
+        {t('admin.species.addBreed')}
+      </Button>
+    </Box>
+  )
+}
+
+function SpeciesTab() {
+  const { t } = useTranslation()
+  const [expanded, setExpanded] = useState<string | null>(null)
+  const [addSpeciesOpen, setAddSpeciesOpen] = useState(false)
+  const [addBreedFor, setAddBreedFor] = useState<string | null>(null)
+
+  const { data: species = [], isLoading, isError } = useGetSpeciesQuery('uk')
+  const [createSpecies, { isLoading: creatingSpecies }] = useCreateSpeciesMutation()
+  const [deleteSpecies, { isLoading: deletingSpecies }] = useDeleteSpeciesMutation()
+  const [createBreed, { isLoading: creatingBreed }] = useCreateBreedMutation()
+
+  if (isLoading) return <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}><CircularProgress sx={{ color: CORAL }} /></Box>
+  if (isError) return <Alert severity="error">{t('admin.species.loadError')}</Alert>
+
+  return (
+    <>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Typography variant="body2" color="text.secondary">
+          {t('admin.species.total', { count: species.length })}
+        </Typography>
+        <Button
+          variant="contained"
+          size="small"
+          startIcon={<AddIcon />}
+          onClick={() => setAddSpeciesOpen(true)}
+          sx={{ bgcolor: CORAL, '&:hover': { bgcolor: '#e55555' }, textTransform: 'none', fontWeight: 600 }}
+        >
+          {t('admin.species.addSpecies')}
+        </Button>
+      </Box>
+
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+        {species.map((sp) => (
+          <Paper key={sp.id} elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, overflow: 'hidden' }}>
+            <Box
+              sx={{ display: 'flex', alignItems: 'center', px: 2, py: 1.5, cursor: 'pointer', '&:hover': { bgcolor: '#FAFAFA' } }}
+              onClick={() => setExpanded(expanded === sp.id ? null : sp.id)}
+            >
+              <PetsIcon sx={{ fontSize: 18, color: CORAL, mr: 1.5 }} />
+              <Typography fontWeight={600} sx={{ flex: 1 }}>{sp.name}</Typography>
+              <Chip
+                label={t('admin.species.breedsCount', { count: sp.breedsCount })}
+                size="small"
+                sx={{ bgcolor: '#F3F4F6', color: '#6B7280', fontSize: 11, mr: 1.5 }}
+              />
+              <IconButton
+                size="small"
+                disabled={deletingSpecies}
+                onClick={(e) => { e.stopPropagation(); deleteSpecies(sp.id) }}
+                sx={{ color: '#9CA3AF', '&:hover': { color: '#EF4444' }, mr: 0.5 }}
+              >
+                <DeleteIcon fontSize="small" />
+              </IconButton>
+              {expanded === sp.id ? <ExpandLessIcon sx={{ color: '#9CA3AF' }} /> : <ExpandMoreIcon sx={{ color: '#9CA3AF' }} />}
+            </Box>
+            <Collapse in={expanded === sp.id}>
+              <Box sx={{ px: 2, pb: 2 }}>
+                <BreedsList speciesId={sp.id} onAdd={() => setAddBreedFor(sp.id)} />
+              </Box>
+            </Collapse>
+          </Paper>
+        ))}
+      </Box>
+
+      {/* Add species dialog */}
+      <TranslationDialog
+        open={addSpeciesOpen}
+        titleKey="admin.species.addSpeciesTitle"
+        loading={creatingSpecies}
+        onClose={() => setAddSpeciesOpen(false)}
+        onConfirm={(translations) => createSpecies({ translations }).then(() => setAddSpeciesOpen(false))}
+      />
+
+      {/* Add breed dialog */}
+      <TranslationDialog
+        open={!!addBreedFor}
+        titleKey="admin.species.addBreedTitle"
+        loading={creatingBreed}
+        onClose={() => setAddBreedFor(null)}
+        onConfirm={(translations) =>
+          createBreed({ speciesId: addBreedFor!, translations }).then(() => setAddBreedFor(null))
+        }
+      />
+    </>
+  )
+}
+
 // ── Main page ──────────────────────────────────────────────
 
 export default function AdminPage() {
@@ -708,11 +915,13 @@ export default function AdminPage() {
         <Tab label={t('admin.tabUnreviewed')} />
         <Tab label={t('admin.tabMine')} />
         <Tab label={t('admin.tabUsers')} />
+        <Tab label={t('admin.tabSpecies')} />
       </Tabs>
 
       {tab === 0 && <UnreviewedTab />}
       {tab === 1 && <MyRequestsTab />}
       {tab === 2 && <UsersTab />}
+      {tab === 3 && <SpeciesTab />}
     </Container>
   )
 }

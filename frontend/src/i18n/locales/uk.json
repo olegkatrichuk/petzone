@@ -452,6 +452,17 @@
     "tabUnreviewed": "Нові заявки",
     "tabMine": "Мої заявки",
     "tabUsers": "Користувачі",
+    "tabSpecies": "Довідники",
+    "species": {
+      "total": "Всього видів: {{count}}",
+      "breedsCount": "{{count}} порід",
+      "noBreeds": "Порід ще немає",
+      "addSpecies": "Додати вид",
+      "addSpeciesTitle": "Новий вид тварини",
+      "addBreed": "Додати породу",
+      "addBreedTitle": "Нова порода",
+      "loadError": "Не вдалося завантажити довідники"
+    },
     "users": {
       "search": "Пошук за email або ім'ям",
       "email": "Email",
