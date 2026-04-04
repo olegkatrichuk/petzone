@@ -25,6 +25,8 @@ import VolunteerProfileSkeleton from '../components/skeletons/VolunteerProfileSk
 import AppBreadcrumbs from '../components/ui/AppBreadcrumbs'
 import Divider from '@mui/material/Divider'
 import Chip from '@mui/material/Chip'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
 import Tooltip from '@mui/material/Tooltip'
 import PersonIcon from '@mui/icons-material/Person'
 import PetsIcon from '@mui/icons-material/Pets'
@@ -122,6 +124,47 @@ function VolunteerSidebar({ volunteerId, isOwner }: SidebarProps) {
           )
         })}
       </List>
+    </Paper>
+  )
+}
+
+// ─────────────────────────────────────────────────────────
+// MOBILE NAV TABS
+// ─────────────────────────────────────────────────────────
+
+function MobileVolunteerNav({ volunteerId, isOwner }: SidebarProps) {
+  const { t } = useTranslation()
+  const { pathname } = useLocation()
+  const navigate = useLangNavigate()
+
+  const ownerItems = [
+    { label: t('volunteerProfile.myProfile'), to: `/volunteers/${volunteerId}` },
+    { label: t('volunteerProfile.myAnimals'), to: `/animals/${volunteerId}` },
+    { label: t('volunteerProfile.myNews'), to: `/news/${volunteerId}` },
+    { label: t('volunteerProfile.myApplications'), to: '/volunteer-applications' },
+  ]
+
+  const visitorItems = [
+    { label: t('volunteerProfile.volunteerProfileLabel'), to: `/volunteers/${volunteerId}` },
+    { label: t('volunteerProfile.volunteerAnimals'), to: `/animals/${volunteerId}` },
+    { label: t('volunteerProfile.volunteerNews'), to: `/news/${volunteerId}` },
+  ]
+
+  const items = isOwner ? ownerItems : visitorItems
+  const currentIndex = items.findIndex((item) => pathname.endsWith(item.to) || pathname.includes(item.to.split('/').pop() ?? ''))
+  const value = currentIndex === -1 ? 0 : currentIndex
+
+  return (
+    <Paper elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, display: { xs: 'block', lg: 'none' }, mb: 2, overflow: 'hidden' }}>
+      <Tabs
+        value={value}
+        onChange={(_, i) => navigate(items[i].to)}
+        variant="scrollable"
+        scrollButtons="auto"
+        sx={{ '& .MuiTab-root': { textTransform: 'none', fontSize: '0.85rem', minHeight: 44 }, '& .Mui-selected': { color: CORAL }, '& .MuiTabs-indicator': { bgcolor: CORAL } }}
+      >
+        {items.map((item) => <Tab key={item.to} label={item.label} />)}
+      </Tabs>
     </Paper>
   )
 }
@@ -446,6 +489,7 @@ export default function VolunteerProfilePage() {
 
           {/* ── MAIN CONTENT ────────────────────────────── */}
           <Box sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <MobileVolunteerNav volunteerId={volunteerId!} isOwner={isOwner} />
 
             {/* ── VOLUNTEER INFO CARD ──────────────────── */}
             <Paper elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 3, p: 3 }}>
