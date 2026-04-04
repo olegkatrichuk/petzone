@@ -1,0 +1,24 @@
+CLAUDE.md
+.claude/
+
+# .NET secrets
+**/secrets.json
+**/appsettings.Local.json
+
+# .NET build output
+**/bin/
+**/obj/
+
+# Node / Vite
+**/node_modules/
+**/.vite/
+**/dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vs/
+*.user
