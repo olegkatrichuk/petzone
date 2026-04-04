@@ -357,6 +357,11 @@
       "title": "Become a Volunteer",
       "subtitle": "Help animals find a home. Register as a volunteer and post your animals on the platform",
       "btn": "Apply Now"
+    },
+    "featured": {
+      "title": "Animals Looking for a Home",
+      "subtitle": "Meet our animals — each one is waiting for their forever family",
+      "viewAll": "View all animals"
     }
   },
   "footer": {

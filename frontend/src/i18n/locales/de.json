@@ -353,6 +353,11 @@
       "title": "Werde Freiwilliger",
       "subtitle": "Hilf Tieren, ein Zuhause zu finden. Registriere dich als Freiwilliger und stelle deine Tiere auf der Plattform vor",
       "btn": "Jetzt bewerben"
+    },
+    "featured": {
+      "title": "Tiere suchen ein Zuhause",
+      "subtitle": "Lerne unsere Schützlinge kennen — jeder wartet auf seine Familie",
+      "viewAll": "Alle Tiere ansehen"
     }
   },
   "footer": {

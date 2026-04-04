@@ -353,6 +353,11 @@
       "title": "Zostań wolontariuszem",
       "subtitle": "Pomagaj zwierzętom znajdować domy. Zarejestruj się jako wolontariusz i umieść swoje zwierzęta na platformie",
       "btn": "Złóż wniosek"
+    },
+    "featured": {
+      "title": "Zwierzęta szukają domu",
+      "subtitle": "Poznaj nasze podopieczne — każde czeka na swoją rodzinę",
+      "viewAll": "Zobacz wszystkie zwierzęta"
     }
   },
   "footer": {

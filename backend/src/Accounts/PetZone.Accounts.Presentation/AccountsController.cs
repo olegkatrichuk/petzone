@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Logging;
 using PetZone.Accounts.Application.Accounts;
 using PetZone.Accounts.Application.Accounts.ConfirmEmail;
@@ -29,6 +30,7 @@ public class AccountsController(
 {
     private const string RefreshTokenCookie = "refreshToken";
 
+    [EnableRateLimiting("auth")]
     [HttpPost("register")]
     public async Task<ActionResult> Register(
         [FromBody] RegisterRequest request,
@@ -43,6 +45,7 @@ public class AccountsController(
         return this.ToOkResponse(result.Value);
     }
 
+    [EnableRateLimiting("auth")]
     [HttpPost("login")]
     public async Task<ActionResult> Login(
         [FromBody] LoginRequest request,
@@ -120,6 +123,7 @@ public class AccountsController(
         return result.IsSuccess ? Ok("Email confirmed successfully") : BadRequest(result.Error);
     }
 
+    [EnableRateLimiting("forgot-password")]
     [HttpPost("forgot-password")]
     public async Task<IActionResult> ForgotPassword(
         [FromBody] ForgotPasswordRequest request,

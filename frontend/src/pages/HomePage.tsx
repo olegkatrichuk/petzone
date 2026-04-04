@@ -6,12 +6,16 @@ import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Paper from '@mui/material/Paper'
+import Grid from '@mui/material/Grid'
+import Skeleton from '@mui/material/Skeleton'
 import PetsIcon from '@mui/icons-material/Pets'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism'
 import SearchIcon from '@mui/icons-material/Search'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useGetPetsQuery } from '../services/petsApi'
 import { useGetVolunteersQuery } from '../services/volunteersApi'
+import PetCard from '../components/pets/PetCard'
 
 const CORAL = '#FF6B6B'
 
@@ -49,6 +53,7 @@ export default function HomePage() {
 
   const { data: petsData } = useGetPetsQuery({ page: 1, pageSize: 1 })
   const { data: volunteersData } = useGetVolunteersQuery({ page: 1, pageSize: 1 })
+  const { data: featuredPetsData, isLoading: featuredLoading } = useGetPetsQuery({ page: 1, pageSize: 6 })
 
   const websiteJsonLd = {
     '@context': 'https://schema.org',
@@ -163,6 +168,55 @@ export default function HomePage() {
             <StepCard step={1} titleKey="home.how.step1.title" descKey="home.how.step1.desc" />
             <StepCard step={2} titleKey="home.how.step2.title" descKey="home.how.step2.desc" />
             <StepCard step={3} titleKey="home.how.step3.title" descKey="home.how.step3.desc" />
+          </Box>
+        </Container>
+      </Box>
+
+      {/* Featured Pets */}
+      <Box sx={{ bgcolor: 'white', py: { xs: 6, md: 9 } }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center', mb: 6 }}>
+            <Typography variant="h4" fontWeight="bold" sx={{ mb: 1.5, color: '#1F2937' }}>
+              {t('home.featured.title')}
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 520, mx: 'auto' }}>
+              {t('home.featured.subtitle')}
+            </Typography>
+          </Box>
+
+          {featuredLoading ? (
+            <Grid container spacing={3}>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <Grid key={i} size={{ xs: 12, sm: 6, md: 4 }}>
+                  <Skeleton variant="rounded" height={420} sx={{ borderRadius: 3 }} />
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <Grid container spacing={3}>
+              {(featuredPetsData?.items ?? []).map((pet) => (
+                <Grid key={pet.id} size={{ xs: 12, sm: 6, md: 4 }}>
+                  <PetCard pet={pet} />
+                </Grid>
+              ))}
+            </Grid>
+          )}
+
+          <Box sx={{ textAlign: 'center', mt: 5 }}>
+            <Button
+              variant="outlined"
+              size="large"
+              endIcon={<ArrowForwardIcon />}
+              onClick={() => navigate('/pets')}
+              sx={{
+                borderColor: CORAL, color: CORAL,
+                textTransform: 'none', fontWeight: 600, borderRadius: 3,
+                px: 4, py: 1.4,
+                '&:hover': { bgcolor: '#FFF0F0', borderColor: CORAL },
+              }}
+            >
+              {t('home.featured.viewAll')}
+            </Button>
           </Box>
         </Container>
       </Box>

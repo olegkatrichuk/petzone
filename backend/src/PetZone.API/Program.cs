@@ -1,7 +1,9 @@
+using System.Threading.RateLimiting;
 using Elastic.Ingest.Elasticsearch;
 using Elastic.Ingest.Elasticsearch.DataStreams;
 using Elastic.Serilog.Sinks;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.OpenApi;
 using OpenTelemetry.Metrics;
 using PetZone.Accounts.Infrastructure;
@@ -97,6 +99,34 @@ builder.Services.Configure<FormOptions>(options =>
     options.MultipartBodyLengthLimit = 100 * 1024 * 1024;
 });
 
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    // login: 10 attempts per minute per IP
+    options.AddFixedWindowLimiter("auth", opt =>
+    {
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.PermitLimit = 10;
+        opt.QueueLimit = 0;
+        opt.AutoReplenishment = true;
+    });
+
+    // forgot-password: 3 attempts per 5 minutes per IP
+    options.AddFixedWindowLimiter("forgot-password", opt =>
+    {
+        opt.Window = TimeSpan.FromMinutes(5);
+        opt.PermitLimit = 3;
+        opt.QueueLimit = 0;
+        opt.AutoReplenishment = true;
+    });
+});
+
+var dbConnectionString = builder.Configuration.GetConnectionString("Database")!;
+builder.Services.AddHealthChecks()
+    .AddNpgSql(dbConnectionString, name: "postgres", tags: ["db"])
+    .AddRedis(redisConnectionString, name: "redis", tags: ["cache"]);
+
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.Limits.MaxRequestBodySize = 100 * 1024 * 1024;
@@ -127,11 +157,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 app.MapPrometheusScrapingEndpoint();
+app.MapHealthChecks("/health");
 
 app.Run();
 

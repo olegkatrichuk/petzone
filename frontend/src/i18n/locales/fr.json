@@ -353,6 +353,11 @@
       "title": "Devenez bénévole",
       "subtitle": "Aidez les animaux à trouver un foyer. Inscrivez-vous comme bénévole et publiez vos animaux sur la plateforme",
       "btn": "Postuler maintenant"
+    },
+    "featured": {
+      "title": "Animaux cherchant un foyer",
+      "subtitle": "Faites connaissance avec nos protégés — chacun attend sa famille pour toujours",
+      "viewAll": "Voir tous les animaux"
     }
   },
   "footer": {
