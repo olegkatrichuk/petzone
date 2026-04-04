@@ -634,7 +634,8 @@
     "back": "Back",
     "chooseFile": "Choose file",
     "invalidImage": "File must be an image (JPG, PNG, WEBP…)",
-    "noFileSelected": "Please select an image file"
+    "noFileSelected": "Please select an image file",
+    "uploadError": "Upload failed. Please try again"
   },
   "volunteerRequest": {
     "tabUser": "User Registration",

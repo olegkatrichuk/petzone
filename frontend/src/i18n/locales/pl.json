@@ -586,7 +586,8 @@
     "back": "Wstecz",
     "chooseFile": "Wybierz plik",
     "invalidImage": "Plik musi być obrazem (JPG, PNG, WEBP…)",
-    "noFileSelected": "Proszę wybrać plik obrazu"
+    "noFileSelected": "Proszę wybrać plik obrazu",
+    "uploadError": "Błąd przesyłania. Spróbuj ponownie"
   },
   "volunteerRequest": {
     "tabUser": "Rejestracja użytkownika",

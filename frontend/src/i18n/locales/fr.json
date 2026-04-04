@@ -586,7 +586,8 @@
     "back": "Retour",
     "chooseFile": "Choisir un fichier",
     "invalidImage": "Le fichier doit être une image (JPG, PNG, WEBP…)",
-    "noFileSelected": "Veuillez sélectionner un fichier image"
+    "noFileSelected": "Veuillez sélectionner un fichier image",
+    "uploadError": "Échec du téléchargement. Veuillez réessayer"
   },
   "volunteerRequest": {
     "tabUser": "Inscription utilisateur",

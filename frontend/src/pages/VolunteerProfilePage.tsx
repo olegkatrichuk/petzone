@@ -19,6 +19,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import Alert from '@mui/material/Alert'
+import CircularProgress from '@mui/material/CircularProgress'
 import Skeleton from '@mui/material/Skeleton'
 import VolunteerProfileSkeleton from '../components/skeletons/VolunteerProfileSkeleton'
 import AppBreadcrumbs from '../components/ui/AppBreadcrumbs'
@@ -40,7 +41,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { useAuthStore } from '../store/authStore'
-import { useGetVolunteerByIdQuery } from '../services/volunteersApi'
+import { useGetVolunteerByIdQuery, useUploadPhotoMutation } from '../services/volunteersApi'
 import { useGetPetsQuery } from '../services/petsApi'
 import { PetStatus } from '../types/pet'
 import type { Pet } from '../types/pet'
@@ -131,16 +132,17 @@ function VolunteerSidebar({ volunteerId, isOwner }: SidebarProps) {
 
 interface AvatarEditModalProps {
   open: boolean
+  volunteerId: string
   onClose: () => void
-  onSave: (url: string) => void
   currentUrl: string
 }
 
-function AvatarEditModal({ open, onClose, onSave, currentUrl }: AvatarEditModalProps) {
+function AvatarEditModal({ open, volunteerId, onClose, currentUrl }: AvatarEditModalProps) {
   const { t } = useTranslation()
   const [preview, setPreview] = useState(currentUrl)
   const [file, setFile] = useState<File | null>(null)
   const [error, setError] = useState('')
+  const [uploadPhoto, { isLoading }] = useUploadPhotoMutation()
 
   useEffect(() => {
     if (open) {
@@ -163,13 +165,17 @@ function AvatarEditModal({ open, onClose, onSave, currentUrl }: AvatarEditModalP
     setPreview(URL.createObjectURL(selected))
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!file) {
       setError(t('common.noFileSelected'))
       return
     }
-    onSave(preview)
-    onClose()
+    try {
+      await uploadPhoto({ id: volunteerId, file }).unwrap()
+      onClose()
+    } catch {
+      setError(t('common.uploadError'))
+    }
   }
 
   return (
@@ -218,9 +224,10 @@ function AvatarEditModal({ open, onClose, onSave, currentUrl }: AvatarEditModalP
         <Button
           variant="contained"
           onClick={handleSave}
+          disabled={isLoading || !file}
           sx={{ bgcolor: CORAL, '&:hover': { bgcolor: '#e55555' }, textTransform: 'none', fontWeight: 700 }}
         >
-          {t('common.save')}
+          {isLoading ? <CircularProgress size={20} sx={{ color: 'white' }} /> : t('common.save')}
         </Button>
       </DialogActions>
     </Dialog>
@@ -367,7 +374,6 @@ export default function VolunteerProfilePage() {
 
   const isOwner = !!user && !!volunteerId && user.id === volunteerId
 
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [avatarModalOpen, setAvatarModalOpen] = useState(false)
 
   const {
@@ -407,7 +413,7 @@ export default function VolunteerProfilePage() {
     .filter(Boolean)
     .join(' ')
   const initials = `${volunteer.firstName?.[0] ?? ''}${volunteer.lastName?.[0] ?? ''}`
-  const displayAvatar = avatarUrl ?? volunteer.photoPath ?? null
+  const displayAvatar = volunteer.photoPath ?? null
 
   const personJsonLd = {
     '@context': 'https://schema.org',
@@ -633,8 +639,8 @@ export default function VolunteerProfilePage() {
 
       <AvatarEditModal
         open={avatarModalOpen}
+        volunteerId={volunteerId!}
         onClose={() => setAvatarModalOpen(false)}
-        onSave={(url) => setAvatarUrl(url)}
         currentUrl={displayAvatar ?? ''}
       />
     </Box>

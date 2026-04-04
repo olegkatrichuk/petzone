@@ -47,6 +47,28 @@ const EMPTY: LocalState = {
   minWeight: '', maxWeight: '', sortBy: '', sortDescending: 'false',
 }
 
+function filtersToLocal(f: PetFilters): LocalState {
+  let health: HealthOption = ''
+  if (f.isVaccinated && f.isCastrated) health = 'both'
+  else if (f.isVaccinated) health = 'vaccinated'
+  else if (f.isCastrated) health = 'castrated'
+  return {
+    nickname: f.nickname ?? '',
+    color: f.color ?? '',
+    city: f.city ?? '',
+    health,
+    status: f.status !== undefined ? String(f.status) : '',
+    speciesId: f.speciesId ?? '',
+    breedId: f.breedId ?? '',
+    minAge: f.minAge !== undefined ? String(f.minAge) : '',
+    maxAge: f.maxAge !== undefined ? String(f.maxAge) : '',
+    minWeight: f.minWeight !== undefined ? String(f.minWeight) : '',
+    maxWeight: f.maxWeight !== undefined ? String(f.maxWeight) : '',
+    sortBy: f.sortBy ?? '',
+    sortDescending: f.sortDescending ? 'true' : 'false',
+  }
+}
+
 interface Props {
   initialFilters: PetFilters
   onApply: (filters: PetFilters) => void
@@ -54,7 +76,7 @@ interface Props {
 
 export default function PetFiltersPanel({ initialFilters, onApply }: Props) {
   const { t, i18n } = useTranslation()
-  const [local, setLocal] = useState<LocalState>(EMPTY)
+  const [local, setLocal] = useState<LocalState>(() => filtersToLocal(initialFilters))
 
   const set = <K extends keyof LocalState>(key: K, value: LocalState[K]) =>
     setLocal((prev) => ({ ...prev, [key]: value, ...(key === 'speciesId' ? { breedId: '' } : {}) }))

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PetZone.Volunteers.Application.Commands;
@@ -8,6 +9,9 @@ using PetZone.Volunteers.Contracts;
 using PetZone.Volunteers.Infrastructure.Queries;
 using PetZone.Volunteers.Presentation.Extensions;
 using PetZone.Accounts.Infrastructure.Authorization;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Webp;
+using System.Security.Claims;
 
 namespace PetZone.Volunteers.Presentation;
 
@@ -20,10 +24,13 @@ public class VolunteersController(
     UpdateVolunteerRequisitesService updateRequisitesService,
     DeleteVolunteerService deleteVolunteerService,
     HardDeleteVolunteerService hardDeleteVolunteerService,
+    UploadVolunteerPhotoService uploadVolunteerPhotoService,
     GetVolunteersHandler getVolunteersHandler,
     GetVolunteerByIdHandler getVolunteerByIdHandler,
     ILogger<VolunteersController> logger) : ControllerBase
 {
+    private static readonly string[] AllowedExtensions = [".jpg", ".jpeg", ".png", ".webp"];
+    private const long MaxFileSize = 5 * 1024 * 1024;
     
     [Authorize(Policy = Permissions.Volunteers.Create)]
     [HttpPost]
@@ -128,6 +135,37 @@ public class VolunteersController(
         return this.ToOkResponse(result.Value);
     }
     
+    [Authorize(Policy = Permissions.Volunteers.Update)]
+    [HttpPost("{id:guid}/photo")]
+    public async Task<ActionResult> UploadPhoto(
+        [FromRoute] Guid id,
+        [FromForm] IFormFile file,
+        CancellationToken cancellationToken)
+    {
+        var claim = User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("sub");
+        if (claim is null || !Guid.TryParse(claim.Value, out var requesterId) || requesterId != id)
+            return Forbid();
+
+        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+        if (!AllowedExtensions.Contains(extension))
+            return BadRequest($"Invalid file type: {extension}");
+        if (file.Length > MaxFileSize)
+            return BadRequest("File exceeds 5MB limit");
+
+        using var inputStream = file.OpenReadStream();
+        using var image = await Image.LoadAsync(inputStream, cancellationToken);
+        var outputStream = new MemoryStream();
+        await image.SaveAsync(outputStream, new WebpEncoder { Quality = 85 }, cancellationToken);
+        outputStream.Position = 0;
+
+        var fileName = $"volunteers/{id}/{Guid.NewGuid()}.webp";
+        var result = await uploadVolunteerPhotoService.Handle(id, outputStream, fileName, cancellationToken);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+
+        return this.ToOkResponse(result.Value);
+    }
+
     [AllowAnonymous]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult> GetById(

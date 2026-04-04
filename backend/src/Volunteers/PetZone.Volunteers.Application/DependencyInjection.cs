@@ -26,6 +26,7 @@ public static class DependencyInjection
         services.AddScoped<UploadPetPhotosService>();
         services.AddScoped<DeletePetPhotosService>();
         services.AddScoped<MovePetService>();
+        services.AddScoped<UploadVolunteerPhotoService>();
 
         services.AddScoped<CreateNewsPostService>();
         services.AddScoped<UpdateNewsPostService>();

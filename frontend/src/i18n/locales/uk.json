@@ -635,7 +635,8 @@
     "back": "Назад",
     "chooseFile": "Вибрати файл",
     "invalidImage": "Файл має бути зображенням (JPG, PNG, WEBP…)",
-    "noFileSelected": "Виберіть файл зображення"
+    "noFileSelected": "Виберіть файл зображення",
+    "uploadError": "Помилка завантаження. Спробуйте знову"
   },
   "volunteerRequest": {
     "tabUser": "Реєстрація користувача",

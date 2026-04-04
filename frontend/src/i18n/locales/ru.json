@@ -634,7 +634,8 @@
     "back": "Назад",
     "chooseFile": "Выбрать файл",
     "invalidImage": "Файл должен быть изображением (JPG, PNG, WEBP…)",
-    "noFileSelected": "Выберите файл изображения"
+    "noFileSelected": "Выберите файл изображения",
+    "uploadError": "Ошибка загрузки. Попробуйте снова"
   },
   "volunteerRequest": {
     "tabUser": "Регистрация пользователя",

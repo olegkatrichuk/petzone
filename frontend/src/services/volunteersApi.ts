@@ -59,6 +59,15 @@ export const volunteersApi = createApi({
       }),
       invalidatesTags: (_r, _e, { id }) => [{ type: 'Volunteer', id }],
     }),
+
+    uploadPhoto: builder.mutation<string, { id: string; file: File }>({
+      query: ({ id, file }) => {
+        const formData = new FormData()
+        formData.append('file', file)
+        return { url: `/volunteers/${id}/photo`, method: 'POST', data: formData }
+      },
+      invalidatesTags: (_r, _e, { id }) => [{ type: 'Volunteer', id }],
+    }),
   }),
 })
 
@@ -68,4 +77,5 @@ export const {
   useUpdateMainInfoMutation,
   useUpdateSocialNetworksMutation,
   useUpdateRequisitesMutation,
+  useUploadPhotoMutation,
 } = volunteersApi
