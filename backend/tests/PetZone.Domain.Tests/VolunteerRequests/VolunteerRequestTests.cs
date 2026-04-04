@@ -41,22 +41,24 @@ public class VolunteerRequestTests
     {
         var request = VolunteerRequest.Create(Guid.NewGuid(), CreateVolunteerInfo()).Value;
         var adminId = Guid.NewGuid();
+        var discussionId = Guid.NewGuid();
 
-        var result = request.TakeOnReview(adminId);
+        var result = request.TakeOnReview(adminId, discussionId);
 
         Assert.True(result.IsSuccess);
         Assert.Equal(VolunteerRequestStatus.OnReview, request.Status);
         Assert.Equal(adminId, request.AdminId);
+        Assert.Equal(discussionId, request.DiscussionId);
     }
 
     [Fact]
     public void TakeOnReview_ShouldFail_FromApproved()
     {
         var request = VolunteerRequest.Create(Guid.NewGuid(), CreateVolunteerInfo()).Value;
-        request.TakeOnReview(Guid.NewGuid());
-        request.Approve(Guid.NewGuid());
+        request.TakeOnReview(Guid.NewGuid(), Guid.NewGuid());
+        request.Approve();
 
-        var result = request.TakeOnReview(Guid.NewGuid());
+        var result = request.TakeOnReview(Guid.NewGuid(), Guid.NewGuid());
 
         Assert.True(result.IsFailure);
     }
@@ -66,7 +68,7 @@ public class VolunteerRequestTests
     public void SendForRevision_ShouldSucceed_FromOnReview()
     {
         var request = VolunteerRequest.Create(Guid.NewGuid(), CreateVolunteerInfo()).Value;
-        request.TakeOnReview(Guid.NewGuid());
+        request.TakeOnReview(Guid.NewGuid(), Guid.NewGuid());
 
         var result = request.SendForRevision("Please fix your info");
 
@@ -79,7 +81,7 @@ public class VolunteerRequestTests
     public void SendForRevision_ShouldFail_WhenCommentIsEmpty()
     {
         var request = VolunteerRequest.Create(Guid.NewGuid(), CreateVolunteerInfo()).Value;
-        request.TakeOnReview(Guid.NewGuid());
+        request.TakeOnReview(Guid.NewGuid(), Guid.NewGuid());
 
         var result = request.SendForRevision("");
 
@@ -101,7 +103,7 @@ public class VolunteerRequestTests
     public void Reject_ShouldSucceed_FromOnReview()
     {
         var request = VolunteerRequest.Create(Guid.NewGuid(), CreateVolunteerInfo()).Value;
-        request.TakeOnReview(Guid.NewGuid());
+        request.TakeOnReview(Guid.NewGuid(), Guid.NewGuid());
 
         var result = request.Reject("Not qualified");
 
@@ -114,7 +116,7 @@ public class VolunteerRequestTests
     public void Reject_ShouldFail_WhenCommentIsEmpty()
     {
         var request = VolunteerRequest.Create(Guid.NewGuid(), CreateVolunteerInfo()).Value;
-        request.TakeOnReview(Guid.NewGuid());
+        request.TakeOnReview(Guid.NewGuid(), Guid.NewGuid());
 
         var result = request.Reject("");
 
@@ -136,10 +138,10 @@ public class VolunteerRequestTests
     public void Approve_ShouldSucceed_FromOnReview()
     {
         var request = VolunteerRequest.Create(Guid.NewGuid(), CreateVolunteerInfo()).Value;
-        request.TakeOnReview(Guid.NewGuid());
         var discussionId = Guid.NewGuid();
+        request.TakeOnReview(Guid.NewGuid(), discussionId);
 
-        var result = request.Approve(discussionId);
+        var result = request.Approve();
 
         Assert.True(result.IsSuccess);
         Assert.Equal(VolunteerRequestStatus.Approved, request.Status);
@@ -151,7 +153,7 @@ public class VolunteerRequestTests
     {
         var request = VolunteerRequest.Create(Guid.NewGuid(), CreateVolunteerInfo()).Value;
 
-        var result = request.Approve(Guid.NewGuid());
+        var result = request.Approve();
 
         Assert.True(result.IsFailure);
     }
@@ -161,10 +163,10 @@ public class VolunteerRequestTests
     public void TakeOnReview_ShouldSucceed_FromRevisionRequired()
     {
         var request = VolunteerRequest.Create(Guid.NewGuid(), CreateVolunteerInfo()).Value;
-        request.TakeOnReview(Guid.NewGuid());
+        request.TakeOnReview(Guid.NewGuid(), Guid.NewGuid());
         request.SendForRevision("Fix this");
 
-        var result = request.TakeOnReview(Guid.NewGuid());
+        var result = request.TakeOnReview(Guid.NewGuid(), Guid.NewGuid());
 
         Assert.True(result.IsSuccess);
         Assert.Equal(VolunteerRequestStatus.OnReview, request.Status);

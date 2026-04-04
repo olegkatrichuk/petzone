@@ -33,7 +33,7 @@ public class VolunteerRequest
         };
     }
 
-    public UnitResult<Error> TakeOnReview(Guid adminId)
+    public UnitResult<Error> TakeOnReview(Guid adminId, Guid discussionId)
     {
         if (Status != VolunteerRequestStatus.Submitted &&
             Status != VolunteerRequestStatus.RevisionRequired)
@@ -41,6 +41,7 @@ public class VolunteerRequest
                 $"Cannot take on review from status {Status}.");
 
         AdminId = adminId;
+        DiscussionId = discussionId;
         Status = VolunteerRequestStatus.OnReview;
         return UnitResult.Success<Error>();
     }
@@ -60,14 +61,13 @@ public class VolunteerRequest
         return UnitResult.Success<Error>();
     }
 
-    public UnitResult<Error> Approve(Guid discussionId)
+    public UnitResult<Error> Approve()
     {
         if (Status != VolunteerRequestStatus.OnReview)
             return Error.Conflict("volunteer_request.invalid_status",
                 $"Cannot approve from status {Status}.");
 
         Status = VolunteerRequestStatus.Approved;
-        DiscussionId = discussionId;
         return UnitResult.Success<Error>();
     }
     public UnitResult<Error> Reject(string rejectionComment)

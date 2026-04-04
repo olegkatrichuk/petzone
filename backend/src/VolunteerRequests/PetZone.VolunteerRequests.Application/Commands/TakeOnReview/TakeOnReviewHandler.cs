@@ -30,7 +30,7 @@ public class TakeOnReviewHandler(
         if (discussionResult.IsFailure)
             return (ErrorList)discussionResult.Error;
 
-        var takeResult = request.TakeOnReview(command.AdminId);
+        var takeResult = request.TakeOnReview(command.AdminId, discussionResult.Value);
         if (takeResult.IsFailure)
             return (ErrorList)takeResult.Error;
 

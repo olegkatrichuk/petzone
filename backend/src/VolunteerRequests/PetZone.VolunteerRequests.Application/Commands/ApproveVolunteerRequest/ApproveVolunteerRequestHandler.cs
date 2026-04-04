@@ -38,7 +38,7 @@ public class ApproveVolunteerRequestHandler(
         if (accountResult.IsFailure)
             return (ErrorList)accountResult.Error;
 
-        var approveResult = request.Approve(Guid.NewGuid());
+        var approveResult = request.Approve();
         if (approveResult.IsFailure)
             return (ErrorList)approveResult.Error;
 
