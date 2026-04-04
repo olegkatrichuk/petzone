@@ -230,7 +230,20 @@
     "title": "Actualités et annonces",
     "comingSoon": "Cette section est en cours de développement",
     "comingSoonHint": "Les actualités et annonces du bénévole apparaîtront ici prochainement",
-    "backToProfile": "← Retour au profil"
+    "backToProfile": "← Retour au profil",
+    "create": "Écrire un article",
+    "createTitle": "Nouvel article",
+    "editTitle": "Modifier l'article",
+    "fieldTitle": "Titre",
+    "fieldContent": "Contenu",
+    "publish": "Publier",
+    "empty": "Aucun article pour le moment",
+    "emptyHint": "Le bénévole n'a encore rien publié",
+    "emptyOwnerHint": "Cliquez sur «Écrire un article» pour partager une actualité",
+    "edited": "modifié",
+    "deleteConfirmTitle": "Supprimer l'article ?",
+    "deleteConfirmText": "Cette action est irréversible",
+    "delete": "Supprimer"
   },
   "favorites": {
     "title": "Favoris 🌟",

@@ -21,6 +21,12 @@
       "species.read",
       "species.create",
       "species.delete"
+    ],
+    "News": [
+      "news.read",
+      "news.create",
+      "news.update",
+      "news.delete"
     ]
   },
   "RolePermissions": {
@@ -40,7 +46,11 @@
       "pets.update-status",
       "species.read",
       "species.create",
-      "species.delete"
+      "species.delete",
+      "news.read",
+      "news.create",
+      "news.update",
+      "news.delete"
     ],
     "Volunteer": [
       "volunteers.read",
@@ -52,12 +62,17 @@
       "pets.set-main-photo",
       "pets.move",
       "pets.update-status",
-      "species.read"
+      "species.read",
+      "news.read",
+      "news.create",
+      "news.update",
+      "news.delete"
     ],
     "Participant": [
       "volunteers.read",
       "pets.read",
-      "species.read"
+      "species.read",
+      "news.read"
     ]
   }
 }

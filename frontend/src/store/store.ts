@@ -7,6 +7,7 @@ import { volunteerRequestsApi } from '../services/volunteerRequestsApi'
 import { adminApi } from '../services/adminApi'
 import { discussionApi } from '../services/discussionApi'
 import { listingsApi } from '../services/listingsApi'
+import { newsApi } from '../services/newsApi'
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     [adminApi.reducerPath]: adminApi.reducer,
     [discussionApi.reducerPath]: discussionApi.reducer,
     [listingsApi.reducerPath]: listingsApi.reducer,
+    [newsApi.reducerPath]: newsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -29,6 +31,7 @@ export const store = configureStore({
       adminApi.middleware,
       discussionApi.middleware,
       listingsApi.middleware,
+      newsApi.middleware,
     ),
 })
 

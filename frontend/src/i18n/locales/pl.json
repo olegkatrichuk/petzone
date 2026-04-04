@@ -230,7 +230,20 @@
     "title": "Aktualności i ogłoszenia",
     "comingSoon": "Ta sekcja jest w trakcie budowy",
     "comingSoonHint": "Aktualności i ogłoszenia wolontariusza pojawią się tutaj wkrótce",
-    "backToProfile": "← Powrót do profilu"
+    "backToProfile": "← Powrót do profilu",
+    "create": "Napisz post",
+    "createTitle": "Nowy post",
+    "editTitle": "Edytuj post",
+    "fieldTitle": "Tytuł",
+    "fieldContent": "Treść",
+    "publish": "Opublikuj",
+    "empty": "Brak postów",
+    "emptyHint": "Wolontariusz jeszcze nic nie opublikował",
+    "emptyOwnerHint": "Kliknij «Napisz post», aby podzielić się wiadomością",
+    "edited": "edytowano",
+    "deleteConfirmTitle": "Usunąć post?",
+    "deleteConfirmText": "Tej czynności nie można cofnąć",
+    "delete": "Usuń"
   },
   "favorites": {
     "title": "Ulubione 🌟",

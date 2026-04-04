@@ -31,6 +31,7 @@ public static class DependencyInjection
         // Repositories
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
         services.AddScoped<ISpeciesRepository, SpeciesRepository>();
+        services.AddScoped<INewsPostRepository, NewsPostRepository>();
 
         // Cross-domain checker
         services.AddScoped<IPetSpeciesChecker, PetSpeciesChecker>();
@@ -50,6 +51,7 @@ public static class DependencyInjection
         services.AddScoped<GetVolunteerByIdHandler>();
         services.AddScoped<GetPetsHandler>();
         services.AddScoped<GetPetByIdHandler>();
+        services.AddScoped<GetNewsByVolunteerHandler>();
 
         // Options
         services.Configure<SoftDeleteOptions>(opts =>

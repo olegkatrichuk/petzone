@@ -230,7 +230,20 @@
     "title": "Neuigkeiten & Ankündigungen",
     "comingSoon": "Dieser Bereich ist noch in Entwicklung",
     "comingSoonHint": "Neuigkeiten und Ankündigungen des Freiwilligen erscheinen hier bald",
-    "backToProfile": "← Zurück zum Profil"
+    "backToProfile": "← Zurück zum Profil",
+    "create": "Beitrag schreiben",
+    "createTitle": "Neuer Beitrag",
+    "editTitle": "Beitrag bearbeiten",
+    "fieldTitle": "Titel",
+    "fieldContent": "Inhalt",
+    "publish": "Veröffentlichen",
+    "empty": "Noch keine Beiträge",
+    "emptyHint": "Der Freiwillige hat noch nichts veröffentlicht",
+    "emptyOwnerHint": "Klicken Sie auf «Beitrag schreiben», um eine Neuigkeit zu teilen",
+    "edited": "bearbeitet",
+    "deleteConfirmTitle": "Beitrag löschen?",
+    "deleteConfirmText": "Diese Aktion kann nicht rückgängig gemacht werden",
+    "delete": "Löschen"
   },
   "favorites": {
     "title": "Favoriten 🌟",

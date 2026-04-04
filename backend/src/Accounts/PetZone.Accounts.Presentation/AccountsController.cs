@@ -106,6 +106,7 @@ public class AccountsController(
         var result = await service.Handle(userId, cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
+    
 
 // GET /accounts/confirm-email
     [HttpGet("confirm-email")]

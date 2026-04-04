@@ -233,7 +233,20 @@
     "title": "News & announcements",
     "comingSoon": "This section is under development",
     "comingSoonHint": "Volunteer news and announcements will appear here soon",
-    "backToProfile": "← Back to profile"
+    "backToProfile": "← Back to profile",
+    "create": "Write a post",
+    "createTitle": "New post",
+    "editTitle": "Edit post",
+    "fieldTitle": "Title",
+    "fieldContent": "Content",
+    "publish": "Publish",
+    "empty": "No posts yet",
+    "emptyHint": "The volunteer has not posted anything yet",
+    "emptyOwnerHint": "Click «Write a post» to share a news update",
+    "edited": "edited",
+    "deleteConfirmTitle": "Delete post?",
+    "deleteConfirmText": "This action cannot be undone",
+    "delete": "Delete"
   },
   "favorites": {
     "title": "Favorites 🌟",

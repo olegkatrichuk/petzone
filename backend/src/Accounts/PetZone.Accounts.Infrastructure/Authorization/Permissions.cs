@@ -29,4 +29,12 @@ public static class Permissions
         public const string Create = "species.create";
         public const string Delete = "species.delete";
     }
+
+    public static class News
+    {
+        public const string Read = "news.read";
+        public const string Create = "news.create";
+        public const string Update = "news.update";
+        public const string Delete = "news.delete";
+    }
 }
