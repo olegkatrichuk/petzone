@@ -37,4 +37,10 @@ public static class Permissions
         public const string Update = "news.update";
         public const string Delete = "news.delete";
     }
+
+    public static class Users
+    {
+        public const string Read = "users.read";
+        public const string Ban = "users.ban";
+    }
 }

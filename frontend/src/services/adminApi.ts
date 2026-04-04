@@ -2,6 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 import { axiosBaseQuery } from './baseQuery'
 import type { VolunteerRequestDto, VolunteerRequestStatus } from '../types/volunteerRequest'
 import type { PaginatedResponse } from '../types/api'
+import type { UserListItemDto } from '../types/account'
 
 export interface VolunteerRequestStats {
   total: number
@@ -23,10 +24,21 @@ interface GetAdminRequestsParams {
   status?: VolunteerRequestStatus
 }
 
+interface GetUsersParams {
+  page: number
+  pageSize: number
+  search?: string
+}
+
+interface PagedResult<T> {
+  items: T[]
+  totalCount: number
+}
+
 export const adminApi = createApi({
   reducerPath: 'adminApi',
   baseQuery: axiosBaseQuery(),
-  tagTypes: ['AdminRequest'],
+  tagTypes: ['AdminRequest', 'AdminUser'],
   endpoints: (builder) => ({
     getStats: builder.query<VolunteerRequestStats, void>({
       query: () => ({ url: '/volunteerrequests/stats' }),
@@ -70,6 +82,21 @@ export const adminApi = createApi({
       }),
       invalidatesTags: [{ type: 'AdminRequest', id: 'MINE' }],
     }),
+
+    getUsers: builder.query<PagedResult<UserListItemDto>, GetUsersParams>({
+      query: (params) => ({ url: '/admin/users', params }),
+      providesTags: [{ type: 'AdminUser', id: 'LIST' }],
+    }),
+
+    banUser: builder.mutation<void, string>({
+      query: (userId) => ({ url: `/admin/users/${userId}/ban`, method: 'POST' }),
+      invalidatesTags: [{ type: 'AdminUser', id: 'LIST' }],
+    }),
+
+    unbanUser: builder.mutation<void, string>({
+      query: (userId) => ({ url: `/admin/users/${userId}/unban`, method: 'POST' }),
+      invalidatesTags: [{ type: 'AdminUser', id: 'LIST' }],
+    }),
   }),
 })
 
@@ -81,4 +108,7 @@ export const {
   useApproveRequestMutation,
   useSendForRevisionMutation,
   useRejectRequestMutation,
+  useGetUsersQuery,
+  useBanUserMutation,
+  useUnbanUserMutation,
 } = adminApi

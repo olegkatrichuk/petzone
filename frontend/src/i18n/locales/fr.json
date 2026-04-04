@@ -692,6 +692,20 @@
     "avatarModalTitle": "Modifier l'avatar"
   },
   "admin": {
+    "tabUsers": "Utilisateurs",
+    "users": {
+      "search": "Rechercher par email ou nom",
+      "email": "Email",
+      "name": "Nom",
+      "role": "Rôle",
+      "status": "Statut",
+      "active": "Actif",
+      "banned": "Banni",
+      "ban": "Bannir",
+      "unban": "Débannir",
+      "noResults": "Aucun utilisateur trouvé",
+      "loadError": "Impossible de charger les utilisateurs"
+    },
     "stats": {
       "total": "Total",
       "submitted": "Nouveaux",

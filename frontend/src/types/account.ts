@@ -23,3 +23,13 @@ export interface UserDto {
   volunteerAccount?: VolunteerAccountDto
   adminAccount?: AdminAccountDto
 }
+
+export interface UserListItemDto {
+  id: string
+  email: string
+  firstName: string
+  lastName: string
+  role: 'Admin' | 'Volunteer' | 'Participant'
+  isLocked: boolean
+  lockoutEnd?: string
+}

@@ -27,6 +27,10 @@
       "news.create",
       "news.update",
       "news.delete"
+    ],
+    "Users": [
+      "users.read",
+      "users.ban"
     ]
   },
   "RolePermissions": {
@@ -50,7 +54,9 @@
       "news.read",
       "news.create",
       "news.update",
-      "news.delete"
+      "news.delete",
+      "users.read",
+      "users.ban"
     ],
     "Volunteer": [
       "volunteers.read",

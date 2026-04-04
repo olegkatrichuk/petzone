@@ -39,6 +39,15 @@ import CardMembershipIcon from '@mui/icons-material/CardMembership'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import { VolunteerRequestStatus } from '../types/volunteerRequest'
 import type { VolunteerRequestDto } from '../types/volunteerRequest'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import InputAdornment from '@mui/material/InputAdornment'
+import SearchIcon from '@mui/icons-material/Search'
+import BlockIcon from '@mui/icons-material/Block'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import {
   useGetStatsQuery,
   useGetUnreviewedRequestsQuery,
@@ -47,6 +56,9 @@ import {
   useApproveRequestMutation,
   useSendForRevisionMutation,
   useRejectRequestMutation,
+  useGetUsersQuery,
+  useBanUserMutation,
+  useUnbanUserMutation,
 } from '../services/adminApi'
 import type { VolunteerRequestStats } from '../services/adminApi'
 import { useGetUserByIdQuery } from '../services/accountsApi'
@@ -499,6 +511,152 @@ function MyRequestsTab() {
   )
 }
 
+// ── Users tab ──────────────────────────────────────────────
+
+const ROLE_COLORS: Record<string, { bg: string; color: string }> = {
+  Admin:       { bg: '#EDE9FE', color: '#7C3AED' },
+  Volunteer:   { bg: '#DBEAFE', color: '#2563EB' },
+  Participant: { bg: '#F3F4F6', color: '#4B5563' },
+}
+
+const PAGE_SIZE_USERS = 15
+
+function UsersTab() {
+  const { t } = useTranslation()
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
+
+  // simple debounce via state
+  const handleSearch = (value: string) => {
+    setSearch(value)
+    setPage(1)
+    clearTimeout((handleSearch as any)._t)
+    ;(handleSearch as any)._t = setTimeout(() => setDebouncedSearch(value), 400)
+  }
+
+  const { data, isLoading, isError } = useGetUsersQuery({ page, pageSize: PAGE_SIZE_USERS, search: debouncedSearch || undefined })
+  const [ban, { isLoading: banning }] = useBanUserMutation()
+  const [unban, { isLoading: unbanning }] = useUnbanUserMutation()
+
+  if (isLoading) {
+    return <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}><CircularProgress sx={{ color: CORAL }} /></Box>
+  }
+
+  if (isError) {
+    return <Alert severity="error">{t('admin.users.loadError')}</Alert>
+  }
+
+  const users = data?.items ?? []
+
+  return (
+    <>
+      <TextField
+        size="small"
+        placeholder={t('admin.users.search')}
+        value={search}
+        onChange={(e) => handleSearch(e.target.value)}
+        sx={{ mb: 3, maxWidth: 360 }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon sx={{ color: '#9CA3AF', fontSize: 20 }} />
+            </InputAdornment>
+          ),
+        }}
+      />
+
+      {users.length === 0 ? (
+        <Box sx={{ textAlign: 'center', py: 8 }}>
+          <Typography color="text.secondary">{t('admin.users.noResults')}</Typography>
+        </Box>
+      ) : (
+        <Box sx={{ overflowX: 'auto' }}>
+          <Table size="small" sx={{ minWidth: 600 }}>
+            <TableHead>
+              <TableRow sx={{ '& th': { fontWeight: 700, color: '#374151', bgcolor: '#F9FAFB', borderBottom: '2px solid #E5E7EB' } }}>
+                <TableCell>{t('admin.users.name')}</TableCell>
+                <TableCell>{t('admin.users.email')}</TableCell>
+                <TableCell>{t('admin.users.role')}</TableCell>
+                <TableCell>{t('admin.users.status')}</TableCell>
+                <TableCell align="right"></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {users.map((user) => {
+                const roleCfg = ROLE_COLORS[user.role] ?? ROLE_COLORS.Participant
+                return (
+                  <TableRow key={user.id} hover sx={{ '& td': { borderColor: '#F3F4F6' } }}>
+                    <TableCell>
+                      <Typography variant="body2" fontWeight={500}>
+                        {[user.firstName, user.lastName].filter(Boolean).join(' ') || '—'}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2" color="text.secondary">{user.email}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Chip
+                        label={user.role}
+                        size="small"
+                        sx={{ bgcolor: roleCfg.bg, color: roleCfg.color, fontWeight: 600, fontSize: 11 }}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Chip
+                        label={user.isLocked ? t('admin.users.banned') : t('admin.users.active')}
+                        size="small"
+                        sx={{
+                          bgcolor: user.isLocked ? '#FEE2E2' : '#D1FAE5',
+                          color: user.isLocked ? '#DC2626' : '#059669',
+                          fontWeight: 600, fontSize: 11,
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell align="right">
+                      {user.role !== 'Admin' && (
+                        user.isLocked ? (
+                          <Tooltip title={t('admin.users.unban')}>
+                            <IconButton
+                              size="small"
+                              color="success"
+                              disabled={unbanning}
+                              onClick={() => unban(user.id)}
+                              sx={{ border: '1px solid', borderColor: 'success.main' }}
+                            >
+                              <CheckCircleOutlineIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        ) : (
+                          <Tooltip title={t('admin.users.ban')}>
+                            <IconButton
+                              size="small"
+                              color="error"
+                              disabled={banning}
+                              onClick={() => ban(user.id)}
+                              sx={{ border: '1px solid', borderColor: 'error.main' }}
+                            >
+                              <BlockIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        )
+                      )}
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
+            </TableBody>
+          </Table>
+        </Box>
+      )}
+
+      {data && data.totalCount > PAGE_SIZE_USERS && (
+        <Pagination page={page} pageSize={PAGE_SIZE_USERS} totalCount={data.totalCount} onChange={setPage} ofLabel={t('volunteers.of')} />
+      )}
+    </>
+  )
+}
+
 // ── Main page ──────────────────────────────────────────────
 
 export default function AdminPage() {
@@ -549,10 +707,12 @@ export default function AdminPage() {
       >
         <Tab label={t('admin.tabUnreviewed')} />
         <Tab label={t('admin.tabMine')} />
+        <Tab label={t('admin.tabUsers')} />
       </Tabs>
 
       {tab === 0 && <UnreviewedTab />}
       {tab === 1 && <MyRequestsTab />}
+      {tab === 2 && <UsersTab />}
     </Container>
   )
 }

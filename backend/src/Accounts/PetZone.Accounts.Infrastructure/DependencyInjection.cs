@@ -13,7 +13,10 @@ using PetZone.Accounts.Application.Accounts.ConfirmEmail;
 using PetZone.Accounts.Application.Accounts.ForgotPassword;
 using PetZone.Accounts.Application.Accounts.GetConfirmationLink;
 using PetZone.Accounts.Application.Accounts.GetUserInfo;
+using PetZone.Accounts.Application.Accounts.BanUser;
+using PetZone.Accounts.Application.Accounts.GetUsers;
 using PetZone.Accounts.Application.Accounts.ResetPassword;
+using PetZone.Accounts.Application.Accounts.UnbanUser;
 using PetZone.Accounts.Application.Repositories;
 using PetZone.Accounts.Domain;
 using PetZone.Accounts.Infrastructure.Authorization;
@@ -62,6 +65,9 @@ public static class DependencyInjection
         services.AddScoped<ConfirmEmailService>();
         services.AddScoped<ForgotPasswordService>();
         services.AddScoped<ResetPasswordService>();
+        services.AddScoped<GetUsersService>();
+        services.AddScoped<BanUserService>();
+        services.AddScoped<UnbanUserService>();
 
         // Repositories & UnitOfWork
         services.AddScoped<IAccountsUnitOfWork, AccountsUnitOfWork>();
