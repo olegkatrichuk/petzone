@@ -21,6 +21,7 @@ const HelpVolunteerPage = lazy(() => import('./pages/HelpVolunteerPage'))
 const MyApplicationsPage = lazy(() => import('./pages/MyApplicationsPage'))
 const EditVolunteerProfilePage = lazy(() => import('./pages/EditVolunteerProfilePage'))
 const NewsPage = lazy(() => import('./pages/NewsPage'))
+const DailyDigestPage = lazy(() => import('./pages/DailyDigestPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 const AboutPage = lazy(() => import('./pages/AboutPage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
@@ -71,6 +72,7 @@ function App() {
         <Route path="animals/:volunteerId" element={<Suspense fallback={<PageLoader />}><VolunteerAnimalsPage /></Suspense>} />
         <Route path="help/:volunteerId" element={<Suspense fallback={<PageLoader />}><HelpVolunteerPage /></Suspense>} />
         <Route path="news/:volunteerId" element={<Suspense fallback={<PageLoader />}><NewsPage /></Suspense>} />
+        <Route path="digest" element={<Suspense fallback={<PageLoader />}><DailyDigestPage /></Suspense>} />
         <Route path="edit-profile/volunteer/:volunteerId" element={<Suspense fallback={<PageLoader />}><EditVolunteerProfilePage /></Suspense>} />
         <Route path="volunteer-applications" element={<Suspense fallback={<PageLoader />}><MyApplicationsPage /></Suspense>} />
         <Route path="about" element={<Suspense fallback={<PageLoader />}><AboutPage /></Suspense>} />

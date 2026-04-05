@@ -15,7 +15,8 @@
     "profile": "Profile",
     "favorites": "Favorites",
     "register": "Register",
-    "listings": "Listings"
+    "listings": "Listings",
+    "digest": "Digest"
   },
   "auth": {
     "email": "Email",
@@ -784,5 +785,11 @@
     "needsHelpTitle": "Needs help 🆘",
     "needsHelpSubtitle": "Animals that currently can't be rehomed — they need support",
     "avatarModalTitle": "Edit avatar"
+  },
+  "digest": {
+    "pageTitle": "Daily Digest",
+    "pageSubtitle": "Up-to-date platform statistics and interesting animal facts — updated every day",
+    "empty": "No digest yet",
+    "emptyHint": "The first digest will appear tomorrow morning"
   }
 }

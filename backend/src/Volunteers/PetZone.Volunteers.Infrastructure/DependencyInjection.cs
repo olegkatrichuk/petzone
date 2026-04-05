@@ -52,6 +52,7 @@ public static class DependencyInjection
         services.AddScoped<GetPetsHandler>();
         services.AddScoped<GetPetByIdHandler>();
         services.AddScoped<GetNewsByVolunteerHandler>();
+        services.AddScoped<GetSystemNewsHandler>();
 
         // Options
         services.Configure<SoftDeleteOptions>(opts =>
@@ -64,6 +65,7 @@ public static class DependencyInjection
         // Background Services
         services.AddHostedService<MinioCleanupService>();
         services.AddHostedService<SoftDeleteCleanupService>();
+        services.AddHostedService<DailyContentService>();
 
         return services;
     }

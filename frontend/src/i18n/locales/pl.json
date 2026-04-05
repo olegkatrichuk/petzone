@@ -15,7 +15,8 @@
     "profile": "Profil",
     "favorites": "Ulubione",
     "register": "Rejestracja",
-    "listings": "Ogłoszenia"
+    "listings": "Ogłoszenia",
+    "digest": "Digest"
   },
   "auth": {
     "email": "Email",
@@ -784,5 +785,11 @@
     "delete": "Usuń",
     "notFound": "Rozmowa nie znaleziona lub brak dostępu.",
     "openChat": "Otwórz czat"
+  },
+  "digest": {
+    "pageTitle": "Codzienny digest",
+    "pageSubtitle": "Aktualne statystyki platformy i ciekawostki o zwierzętach — aktualizowane każdego dnia",
+    "empty": "Brak digestu",
+    "emptyHint": "Pierwszy digest pojawi się jutro rano"
   }
 }

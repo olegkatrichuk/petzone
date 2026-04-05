@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { axiosBaseQuery } from './baseQuery'
+import type { SystemNewsResponse } from '../types/systemNews.types'
 
 export interface NewsPostDto {
   id: string
@@ -44,6 +45,13 @@ export const newsApi = createApi({
       query: (id) => ({ url: `/news/${id}`, method: 'DELETE' }),
       invalidatesTags: ['News'],
     }),
+
+    getSystemNews: builder.query<SystemNewsResponse, { page?: number; pageSize?: number }>({
+      query: ({ page = 1, pageSize = 10 } = {}) => ({
+        url: `/news/system?page=${page}&pageSize=${pageSize}`,
+      }),
+      providesTags: ['News'],
+    }),
   }),
 })
 
@@ -52,4 +60,5 @@ export const {
   useCreateNewsPostMutation,
   useUpdateNewsPostMutation,
   useDeleteNewsPostMutation,
+  useGetSystemNewsQuery,
 } = newsApi

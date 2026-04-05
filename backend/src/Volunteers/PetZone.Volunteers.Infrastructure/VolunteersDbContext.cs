@@ -7,7 +7,9 @@ namespace PetZone.Volunteers.Infrastructure;
 public class VolunteersDbContext(DbContextOptions<VolunteersDbContext> options) : DbContext(options)
 {
     public DbSet<Volunteer> Volunteers { get; set; }
+    public DbSet<Pet> Pets { get; set; }
     public DbSet<NewsPost> NewsPosts { get; set; }
+    public DbSet<SystemNewsPost> SystemNewsPosts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

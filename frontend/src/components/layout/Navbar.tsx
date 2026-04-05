@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { labelKey: 'nav.volunteers', path: '/volunteers' },
   { labelKey: 'nav.pets', path: '/pets' },
   { labelKey: 'nav.map', path: '/map' },
+  { labelKey: 'nav.digest', path: '/digest' },
 ]
 
 export default function Navbar() {
