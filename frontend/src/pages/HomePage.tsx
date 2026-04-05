@@ -320,6 +320,44 @@ export default function HomePage() {
         </Container>
       </Box>
 
+      {/* ── Marquee ───────────────────────────────────────── */}
+      <Box
+        sx={{ bgcolor: '#1e1b4b', py: 1.5, overflow: 'hidden', borderBottom: '1px solid rgba(255,107,107,0.2)' }}
+        aria-hidden="true"
+      >
+        {/* Single track — items duplicated for seamless infinite loop */}
+        <Box
+          sx={{
+            display: 'inline-flex',
+            whiteSpace: 'nowrap',
+            animation: 'marqueeScroll 32s linear infinite',
+            '@keyframes marqueeScroll': {
+              from: { transform: 'translateX(0)' },
+              to:   { transform: 'translateX(-50%)' },
+            },
+          }}
+        >
+          {/* Two identical sets — when the first scrolls out, the second takes its place */}
+          {[0, 1].map((setIdx) =>
+            [
+              t('home.marquee.item1'),
+              t('home.marquee.item2'),
+              t('home.marquee.item3'),
+              t('home.marquee.item4'),
+              t('home.marquee.item5'),
+              t('home.marquee.item6'),
+            ].map((text, j) => (
+              <Box key={`${setIdx}-${j}`} sx={{ display: 'inline-flex', alignItems: 'center', mx: 2.5 }}>
+                <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.65)', fontWeight: 500, fontSize: 12, letterSpacing: 0.3 }}>
+                  {text}
+                </Typography>
+                <Box component="span" sx={{ ml: 2.5, color: CORAL, fontSize: 9 }}>✦</Box>
+              </Box>
+            ))
+          )}
+        </Box>
+      </Box>
+
       {/* ── Stats ─────────────────────────────────────────── */}
       <Box component="section" sx={{ bgcolor: 'white', py: 5, borderBottom: '1px solid #E5E7EB' }}>
         <Container maxWidth="sm">
@@ -417,7 +455,7 @@ export default function HomePage() {
               { icon: '🔒', text: t('home.trust.free') },
               { icon: '✅', text: t('home.trust.verified') },
               { icon: '🐾', text: t('home.trust.volunteers') },
-              { icon: '📍', text: t('home.trust.ukraine') },
+              { icon: '📍', text: t('home.trust.location') },
             ].map((item) => (
               <Box key={item.text} sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
                 <Typography sx={{ fontSize: 18 }}>{item.icon}</Typography>

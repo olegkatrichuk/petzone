@@ -365,7 +365,15 @@
       "free": "Free of charge",
       "verified": "Verified volunteers",
       "volunteers": "Active community",
-      "ukraine": "Across Ukraine"
+      "location": "Worldwide"
+    },
+    "marquee": {
+      "item1": "🐕 Adopt dogs and cats",
+      "item2": "❤️ Completely free platform",
+      "item3": "🐾 100+ active volunteers",
+      "item4": "🏠 Find a friend for life",
+      "item5": "✅ Verified animal profiles",
+      "item6": "🌟 Helping animals every day"
     },
     "featured": {
       "title": "Animals Looking for a Home",

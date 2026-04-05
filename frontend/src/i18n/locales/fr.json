@@ -361,7 +361,15 @@
       "free": "Gratuit",
       "verified": "Bénévoles vérifiés",
       "volunteers": "Communauté active",
-      "ukraine": "Dans toute l'Ukraine"
+      "location": "En France et en Europe"
+    },
+    "marquee": {
+      "item1": "🐕 Adoptez chiens et chats",
+      "item2": "❤️ Plateforme entièrement gratuite",
+      "item3": "🐾 Plus de 100 bénévoles actifs",
+      "item4": "🏠 Trouvez un ami pour la vie",
+      "item5": "✅ Profils d'animaux vérifiés",
+      "item6": "🌟 Aider les animaux chaque jour"
     },
     "featured": {
       "title": "Animaux cherchant un foyer",

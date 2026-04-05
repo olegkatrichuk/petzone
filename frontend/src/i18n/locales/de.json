@@ -361,7 +361,15 @@
       "free": "Kostenlos",
       "verified": "Geprüfte Freiwillige",
       "volunteers": "Aktive Gemeinschaft",
-      "ukraine": "In der ganzen Ukraine"
+      "location": "In Deutschland & Europa"
+    },
+    "marquee": {
+      "item1": "🐕 Hunde und Katzen adoptieren",
+      "item2": "❤️ Völlig kostenlose Plattform",
+      "item3": "🐾 Über 100 aktive Freiwillige",
+      "item4": "🏠 Finde einen Freund fürs Leben",
+      "item5": "✅ Geprüfte Tierprofile",
+      "item6": "🌟 Täglich Tieren helfen"
     },
     "featured": {
       "title": "Tiere suchen ein Zuhause",

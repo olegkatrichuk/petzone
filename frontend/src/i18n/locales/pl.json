@@ -361,7 +361,15 @@
       "free": "Bezpłatnie",
       "verified": "Zweryfikowani wolontariusze",
       "volunteers": "Aktywna społeczność",
-      "ukraine": "Na całej Ukrainie"
+      "location": "W Polsce i Europie"
+    },
+    "marquee": {
+      "item1": "🐕 Adoptuj psy i koty",
+      "item2": "❤️ Całkowicie bezpłatna platforma",
+      "item3": "🐾 Ponad 100 wolontariuszy",
+      "item4": "🏠 Znajdź przyjaciela na całe życie",
+      "item5": "✅ Zweryfikowane profile zwierząt",
+      "item6": "🌟 Pomagamy zwierzętom każdego dnia"
     },
     "featured": {
       "title": "Zwierzęta szukają domu",
