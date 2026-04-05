@@ -93,6 +93,8 @@ export default function PetCard({ pet }: Props) {
     <Card
       elevation={0}
       sx={{
+        height: '100%',
+        width: '100%',
         border: '1px solid #E5E7EB',
         borderRadius: 3,
         display: 'flex',

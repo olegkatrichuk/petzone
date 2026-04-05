@@ -6,7 +6,7 @@ import Divider from '@mui/material/Divider'
 
 export default function PetCardSkeleton() {
   return (
-    <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 3 }}>
+    <Card elevation={0} sx={{ width: '100%', border: '1px solid #E5E7EB', borderRadius: 3 }}>
       {/* Photo */}
       <Skeleton variant="rectangular" height={220} />
 

@@ -26,7 +26,7 @@ export default function PetsList({ pets, isLoading, isFetching = false }: Props)
     return (
       <Grid container spacing={3}>
         {Array.from({ length: 9 }).map((_, i) => (
-          <Grid key={i} size={{ xs: 12, sm: 6, lg: 4 }}>
+          <Grid key={i} size={{ xs: 12, sm: 6, lg: 4 }} sx={{ display: 'flex' }}>
             <PetCardSkeleton />
           </Grid>
         ))}
@@ -76,7 +76,7 @@ export default function PetsList({ pets, isLoading, isFetching = false }: Props)
       <Box sx={{ opacity: isFetching ? 0.55 : 1, transition: 'opacity 0.2s ease' }}>
         <Grid container spacing={3}>
           {pets.map((pet) => (
-            <Grid key={pet.id} size={{ xs: 12, sm: 6, lg: 4 }}>
+            <Grid key={pet.id} size={{ xs: 12, sm: 6, lg: 4 }} sx={{ display: 'flex' }}>
               <PetCard pet={pet} />
             </Grid>
           ))}
