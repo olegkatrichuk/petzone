@@ -122,7 +122,7 @@ public static class VolunteersSeeder
             var url = $"https://api.unsplash.com/search/photos?query={Uri.EscapeDataString(query)}&per_page={Math.Min(count, 30)}&client_id={accessKey}";
             var result = await http.GetFromJsonAsync<UnsplashSearchResponse>(url);
             return result?.Results?
-                .Select(r => r.Urls.Raw.Split('?')[0] + "?w=800&q=80&auto=format&fit=crop")
+                .Select(r => r.Urls.Raw.Split('?')[0] + "?w=800&h=600&q=80&auto=format&fit=crop")
                 .ToList() ?? [];
         }
         catch (Exception ex)
@@ -133,8 +133,8 @@ public static class VolunteersSeeder
     }
 
     private static string FallbackPhoto(bool isDog) => isDog
-        ? "https://images.unsplash.com/photo-1552053831-71594a27632d?w=800&q=80&auto=format&fit=crop"
-        : "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&q=80&auto=format&fit=crop";
+        ? "https://images.unsplash.com/photo-1552053831-71594a27632d?w=800&h=600&q=80&auto=format&fit=crop"
+        : "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&h=600&q=80&auto=format&fit=crop";
 
     private record UnsplashSearchResponse([property: JsonPropertyName("results")] List<UnsplashPhoto>? Results);
     private record UnsplashPhoto([property: JsonPropertyName("urls")] UnsplashUrls Urls);

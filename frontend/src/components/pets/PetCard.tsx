@@ -106,14 +106,15 @@ export default function PetCard({ pet }: Props) {
         },
       }}
     >
-      <CardMedia
-        component="img"
-        height={220}
-        image={mainPhoto}
-        alt={pet.nickname}
-        loading="lazy"
-        sx={{ objectFit: 'cover' }}
-      />
+      <Box sx={{ width: '100%', height: 220, overflow: 'hidden', flexShrink: 0 }}>
+        <Box
+          component="img"
+          src={mainPhoto}
+          alt={pet.nickname}
+          loading="lazy"
+          sx={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
+        />
+      </Box>
 
       <CardContent sx={{ flex: 1, pb: 1 }}>
         {/* Name + age + status */}
