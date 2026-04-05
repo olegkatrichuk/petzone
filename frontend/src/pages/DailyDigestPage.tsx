@@ -9,15 +9,35 @@ import Skeleton from '@mui/material/Skeleton'
 import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
+import CircularProgress from '@mui/material/CircularProgress'
 import AutoStoriesIcon from '@mui/icons-material/AutoStories'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import SearchIcon from '@mui/icons-material/Search'
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital'
+import HomeIcon from '@mui/icons-material/Home'
+import GroupIcon from '@mui/icons-material/Group'
+import LightbulbIcon from '@mui/icons-material/Lightbulb'
 import { useGetSystemNewsQuery } from '../services/newsApi'
 import { useLangNavigate } from '../hooks/useLangNavigate'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { SystemNewsPost } from '../types/systemNews.types'
 
 const CORAL = '#FF6B6B'
+
+async function translateText(text: string, targetLang: string): Promise<string> {
+  if (!text || targetLang === 'en') return text
+  try {
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${targetLang}`
+    const res = await fetch(url)
+    const data = await res.json()
+    const translated: string = data?.responseData?.translatedText
+    // MyMemory returns the original text if it can't translate
+    if (translated && translated !== text && !translated.includes('MYMEMORY WARNING')) {
+      return translated
+    }
+  } catch { /* fall through */ }
+  return text
+}
 
 function formatDate(iso: string, lang: string): string {
   return new Date(iso).toLocaleDateString(lang === 'uk' ? 'uk-UA' : lang, {
@@ -25,11 +45,36 @@ function formatDate(iso: string, lang: string): string {
   })
 }
 
-function NewsCard({ post, lang }: { post: SystemNewsPost; lang: string }) {
-  const [expanded, setExpanded] = useState(false)
-  const lines = post.content.split('\n')
-  const preview = lines.slice(0, 6).join('\n')
-  const hasMore = lines.length > 6
+function StatRow({ icon, label, value, color }: {
+  icon: React.ReactNode; label: string; value: number; color?: string
+}) {
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, py: 0.75 }}>
+      <Box sx={{ color: color ?? '#6B7280', display: 'flex', alignItems: 'center' }}>{icon}</Box>
+      <Typography variant="body2" color="text.secondary" sx={{ flex: 1 }}>{label}</Typography>
+      <Typography variant="body2" fontWeight={700} sx={{ color: color ?? '#1F2937', fontSize: '1rem' }}>
+        {value}
+      </Typography>
+    </Box>
+  )
+}
+
+function DigestCard({ post, lang }: { post: SystemNewsPost; lang: string }) {
+  const { t } = useTranslation()
+  const [translatedFact, setTranslatedFact] = useState<string | null>(null)
+  const [translating, setTranslating] = useState(false)
+
+  useEffect(() => {
+    if (lang === 'en') {
+      setTranslatedFact(post.factEn)
+      return
+    }
+    setTranslating(true)
+    translateText(post.factEn, lang).then((result) => {
+      setTranslatedFact(result)
+      setTranslating(false)
+    })
+  }, [post.factEn, lang])
 
   return (
     <Paper
@@ -42,9 +87,10 @@ function NewsCard({ post, lang }: { post: SystemNewsPost; lang: string }) {
         '&:hover': { boxShadow: '0 4px 16px rgba(0,0,0,0.08)' },
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 2, mb: 1.5 }}>
-        <Typography variant="h6" fontWeight={700} sx={{ lineHeight: 1.3 }}>
-          {post.title}
+      {/* Header */}
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, mb: 2 }}>
+        <Typography variant="h6" fontWeight={700}>
+          📊 {t('digest.cardTitle')}
         </Typography>
         <Chip
           icon={<CalendarTodayIcon sx={{ fontSize: '13px !important' }} />}
@@ -54,23 +100,55 @@ function NewsCard({ post, lang }: { post: SystemNewsPost; lang: string }) {
         />
       </Box>
 
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        sx={{ whiteSpace: 'pre-line', lineHeight: 1.8 }}
-      >
-        {expanded ? post.content : preview}
-      </Typography>
+      {/* Stats */}
+      <Box sx={{ mb: 2 }}>
+        <StatRow
+          icon={<SearchIcon sx={{ fontSize: 18 }} />}
+          label={t('digest.lookingForHome')}
+          value={post.lookingForHome}
+          color="#2563EB"
+        />
+        <StatRow
+          icon={<LocalHospitalIcon sx={{ fontSize: 18 }} />}
+          label={t('digest.needsHelp')}
+          value={post.needsHelp}
+          color="#D97706"
+        />
+        <StatRow
+          icon={<HomeIcon sx={{ fontSize: 18 }} />}
+          label={t('digest.foundHomeThisWeek')}
+          value={post.foundHomeThisWeek}
+          color="#059669"
+        />
+        <StatRow
+          icon={<GroupIcon sx={{ fontSize: 18 }} />}
+          label={t('digest.totalVolunteers')}
+          value={post.totalVolunteers}
+          color="#7C3AED"
+        />
+      </Box>
 
-      {hasMore && (
-        <Button
-          size="small"
-          onClick={() => setExpanded(!expanded)}
-          sx={{ mt: 1, textTransform: 'none', color: CORAL, fontWeight: 600, p: 0 }}
-        >
-          {expanded ? '↑ Згорнути' : '↓ Читати далі'}
-        </Button>
-      )}
+      <Divider sx={{ my: 2 }} />
+
+      {/* Animal fact */}
+      <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'flex-start' }}>
+        <LightbulbIcon sx={{ fontSize: 20, color: CORAL, flexShrink: 0, mt: 0.3 }} />
+        <Box>
+          <Typography variant="caption" fontWeight={700} color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
+            {t('digest.factDay')}
+          </Typography>
+          {translating ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <CircularProgress size={14} sx={{ color: CORAL }} />
+              <Typography variant="body2" color="text.secondary">{t('digest.translating')}</Typography>
+            </Box>
+          ) : (
+            <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic', lineHeight: 1.6 }}>
+              {translatedFact ?? post.factEn}
+            </Typography>
+          )}
+        </Box>
+      </Box>
     </Paper>
   )
 }
@@ -113,7 +191,7 @@ export default function DailyDigestPage() {
         {isLoading ? (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
             {Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={i} variant="rounded" height={160} sx={{ borderRadius: 3 }} />
+              <Skeleton key={i} variant="rounded" height={220} sx={{ borderRadius: 3 }} />
             ))}
           </Box>
         ) : posts.length === 0 ? (
@@ -126,7 +204,7 @@ export default function DailyDigestPage() {
         ) : (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
             {posts.map((post) => (
-              <NewsCard key={post.id} post={post} lang={i18n.language} />
+              <DigestCard key={post.id} post={post} lang={i18n.language} />
             ))}
           </Box>
         )}
@@ -135,7 +213,6 @@ export default function DailyDigestPage() {
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
             <Button
               variant="outlined"
-              endIcon={<ArrowForwardIcon />}
               onClick={() => setPage((p) => p + 1)}
               sx={{
                 borderColor: '#1e1b4b', color: '#1e1b4b',

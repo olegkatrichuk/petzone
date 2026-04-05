@@ -14,7 +14,6 @@ public class DailyContentService(
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        // Try to generate on startup in case today's digest is missing
         await GenerateDailyContentAsync(stoppingToken);
 
         while (!stoppingToken.IsCancellationRequested)
@@ -61,29 +60,15 @@ public class DailyContentService(
             var totalVolunteers = await db.Volunteers
                 .CountAsync(v => !v.IsDeleted, cancellationToken);
 
-            var fact = await FetchAnimalFactAsync();
+            var factEn = await FetchAnimalFactAsync();
 
-            var dateStr = today.ToString("dd.MM.yyyy");
-            var title = $"📊 Дайджест PetZone — {dateStr}";
-            var content = $"""
-                🐾 Сьогодні на платформі:
+            var post = SystemNewsPost.CreateDigest(
+                lookingForHome, needsHelp, foundHomeThisWeek, totalVolunteers, factEn);
 
-                🔍 Шукають дім: {lookingForHome} тваринок
-                🏥 Потребують допомоги: {needsHelp}
-                🏠 Знайшли дім цього тижня: {foundHomeThisWeek}
-                👥 Активних волонтерів: {totalVolunteers}
-
-                ---
-
-                💡 Факт дня:
-                {fact}
-                """;
-
-            var post = SystemNewsPost.Create(title, content.Trim(), "DailyDigest");
             db.SystemNewsPosts.Add(post);
             await db.SaveChangesAsync(cancellationToken);
 
-            logger.LogInformation("DailyContentService: digest created for {Date}", dateStr);
+            logger.LogInformation("DailyContentService: digest created for {Date}", today.ToString("dd.MM.yyyy"));
         }
         catch (Exception ex)
         {
@@ -106,7 +91,7 @@ public class DailyContentService(
     }
 
     private static string DefaultFact() =>
-        "Коти сплять близько 70% свого життя — це понад 13 годин на добу!";
+        "Cats sleep about 70% of their lives — that's more than 13 hours a day!";
 
     private record CatFactResponse([property: JsonPropertyName("fact")] string? Fact);
 }

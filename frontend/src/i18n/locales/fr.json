@@ -790,6 +790,13 @@
     "pageTitle": "Digest quotidien",
     "pageSubtitle": "Statistiques actuelles de la plateforme et faits intéressants sur les animaux — mis à jour chaque jour",
     "empty": "Pas encore de digest",
-    "emptyHint": "Le premier digest apparaîtra demain matin"
+    "emptyHint": "Le premier digest apparaîtra demain matin",
+    "cardTitle": "Digest PetZone",
+    "lookingForHome": "Cherchent un foyer",
+    "needsHelp": "Ont besoin d'aide",
+    "foundHomeThisWeek": "Ont trouvé un foyer cette semaine",
+    "totalVolunteers": "Bénévoles actifs",
+    "factDay": "Fait du jour",
+    "translating": "Traduction..."
   }
 }

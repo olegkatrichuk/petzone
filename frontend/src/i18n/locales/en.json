@@ -790,6 +790,13 @@
     "pageTitle": "Daily Digest",
     "pageSubtitle": "Up-to-date platform statistics and interesting animal facts — updated every day",
     "empty": "No digest yet",
-    "emptyHint": "The first digest will appear tomorrow morning"
+    "emptyHint": "The first digest will appear tomorrow morning",
+    "cardTitle": "PetZone Digest",
+    "lookingForHome": "Looking for home",
+    "needsHelp": "Needs help",
+    "foundHomeThisWeek": "Found home this week",
+    "totalVolunteers": "Active volunteers",
+    "factDay": "Fact of the day",
+    "translating": "Translating..."
   }
 }

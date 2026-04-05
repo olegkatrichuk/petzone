@@ -2,7 +2,10 @@ namespace PetZone.Volunteers.Contracts;
 
 public record SystemNewsPostDto(
     Guid Id,
-    string Title,
-    string Content,
     string Type,
-    DateTime PublishedAt);
+    DateTime PublishedAt,
+    int LookingForHome,
+    int NeedsHelp,
+    int FoundHomeThisWeek,
+    int TotalVolunteers,
+    string FactEn);

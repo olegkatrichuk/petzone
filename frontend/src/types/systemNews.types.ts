@@ -1,9 +1,12 @@
 export interface SystemNewsPost {
   id: string
-  title: string
-  content: string
   type: string
   publishedAt: string
+  lookingForHome: number
+  needsHelp: number
+  foundHomeThisWeek: number
+  totalVolunteers: number
+  factEn: string
 }
 
 export interface SystemNewsResponse {
