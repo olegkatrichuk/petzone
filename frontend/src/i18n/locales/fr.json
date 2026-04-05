@@ -165,7 +165,10 @@
       "city": "Ville",
       "vaccinated": "Vacciné",
       "castrated": "Castré"
-    }
+    },
+    "recentlyViewed": "Récemment consultés",
+    "clearRecent": "Effacer",
+    "share": "Partager"
   },
   "volunteerAnimals": {
     "title": "Animaux du bénévole",
@@ -288,7 +291,8 @@
     "city": "Ville",
     "saveToFavorites": "Ajouter aux favoris",
     "removeFromFavorites": "Retirer des favoris",
-    "photos": "Photos"
+    "photos": "Photos",
+    "similarPets": "Animaux similaires 🐾"
   },
   "volunteers": {
     "pageTitle": "Bénévoles 🐾",
@@ -744,6 +748,41 @@
       "revisionRequired": "Révision requise",
       "approved": "Approuvés",
       "rejected": "Rejetés"
-    }
+    },
+    "pageTitle": "Panneau d'administration",
+    "pageSubtitle": "Gestion des candidatures bénévoles",
+    "tabUnreviewed": "Nouvelles candidatures",
+    "tabMine": "Mes candidatures",
+    "takeOnReview": "Prendre en charge",
+    "approve": "Approuver",
+    "sendForRevision": "Envoyer pour révision",
+    "reject": "Rejeter",
+    "revisionDialogTitle": "Envoyer pour révision",
+    "rejectDialogTitle": "Rejeter la candidature",
+    "commentLabel": "Commentaire pour le candidat",
+    "commentRequired": "Veuillez saisir un commentaire",
+    "submitted": "Soumis",
+    "experience": "Expérience",
+    "years": "an.",
+    "motivation": "Motivation",
+    "filterByStatus": "Filtrer par statut",
+    "noUnreviewed": "Aucune nouvelle candidature — toutes examinées!",
+    "noRequests": "Aucune candidature dans cette catégorie",
+    "loadError": "Impossible de charger les candidatures",
+    "accessDenied": "Accès refusé. Rôle administrateur requis.",
+    "navLabel": "Panneau d'administration"
+  },
+  "chat": {
+    "title": "Chat avec l'administrateur",
+    "pollHint": "Les messages se mettent à jour toutes les 10 secondes",
+    "placeholder": "Écrire un message... (Entrée — envoyer)",
+    "empty": "Pas encore de messages. Soyez le premier à écrire!",
+    "closed": "Fermé",
+    "closedHint": "Cette conversation est fermée. Aucun nouveau message ne peut être envoyé.",
+    "edited": "modif.",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "notFound": "Conversation introuvable ou accès refusé.",
+    "openChat": "Ouvrir le chat"
   }
 }

@@ -517,7 +517,8 @@
       "revisionRequired": "Требуют правок",
       "approved": "Одобрено",
       "rejected": "Отклонено"
-    }
+    },
+    "motivation": "Мотивация"
   },
   "about": {
     "pageTitle": "О нас",

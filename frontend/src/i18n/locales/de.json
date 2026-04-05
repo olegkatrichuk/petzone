@@ -165,7 +165,10 @@
       "city": "Stadt",
       "vaccinated": "Geimpft",
       "castrated": "Kastriert"
-    }
+    },
+    "recentlyViewed": "Zuletzt angesehen",
+    "clearRecent": "Löschen",
+    "share": "Teilen"
   },
   "volunteerAnimals": {
     "title": "Tiere des Freiwilligen",
@@ -288,7 +291,8 @@
     "city": "Stadt",
     "saveToFavorites": "Zu Favoriten hinzufügen",
     "removeFromFavorites": "Aus Favoriten entfernen",
-    "photos": "Fotos"
+    "photos": "Fotos",
+    "similarPets": "Ähnliche Tiere 🐾"
   },
   "volunteers": {
     "pageTitle": "Freiwillige 🐾",
@@ -744,6 +748,41 @@
       "revisionRequired": "Überarbeitung nötig",
       "approved": "Genehmigt",
       "rejected": "Abgelehnt"
-    }
+    },
+    "pageTitle": "Admin-Panel",
+    "pageSubtitle": "Verwaltung von Freiwilligenbewerbungen",
+    "tabUnreviewed": "Neue Bewerbungen",
+    "tabMine": "Meine Bewerbungen",
+    "takeOnReview": "Zur Prüfung annehmen",
+    "approve": "Genehmigen",
+    "sendForRevision": "Zur Überarbeitung senden",
+    "reject": "Ablehnen",
+    "revisionDialogTitle": "Zur Überarbeitung senden",
+    "rejectDialogTitle": "Bewerbung ablehnen",
+    "commentLabel": "Kommentar für den Bewerber",
+    "commentRequired": "Bitte Kommentar eingeben",
+    "submitted": "Eingereicht",
+    "experience": "Erfahrung",
+    "years": "J.",
+    "motivation": "Motivation",
+    "filterByStatus": "Nach Status filtern",
+    "noUnreviewed": "Keine neuen Bewerbungen — alle geprüft!",
+    "noRequests": "Keine Bewerbungen in dieser Kategorie",
+    "loadError": "Bewerbungen konnten nicht geladen werden",
+    "accessDenied": "Zugriff verweigert. Administratorrolle erforderlich.",
+    "navLabel": "Admin-Panel"
+  },
+  "chat": {
+    "title": "Chat mit Administrator",
+    "pollHint": "Nachrichten werden alle 10 Sekunden aktualisiert",
+    "placeholder": "Nachricht schreiben... (Enter — senden)",
+    "empty": "Noch keine Nachrichten. Schreiben Sie als Erster!",
+    "closed": "Geschlossen",
+    "closedHint": "Dieses Gespräch ist geschlossen. Neue Nachrichten können nicht gesendet werden.",
+    "edited": "bearb.",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "notFound": "Gespräch nicht gefunden oder kein Zugriff.",
+    "openChat": "Chat öffnen"
   }
 }

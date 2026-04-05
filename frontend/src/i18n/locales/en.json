@@ -517,7 +517,8 @@
       "revisionRequired": "Needs Revision",
       "approved": "Approved",
       "rejected": "Rejected"
-    }
+    },
+    "motivation": "Motivation"
   },
   "about": {
     "pageTitle": "About Us",

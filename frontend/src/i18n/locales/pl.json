@@ -165,7 +165,10 @@
       "city": "Miasto",
       "vaccinated": "Zaszczepiony",
       "castrated": "Wykastrowany"
-    }
+    },
+    "recentlyViewed": "Ostatnio przeglądane",
+    "clearRecent": "Wyczyść",
+    "share": "Udostępnij"
   },
   "volunteerAnimals": {
     "title": "Zwierzęta wolontariusza",
@@ -288,7 +291,8 @@
     "city": "Miasto",
     "saveToFavorites": "Zapisz do ulubionych",
     "removeFromFavorites": "Usuń z ulubionych",
-    "photos": "Zdjęcia"
+    "photos": "Zdjęcia",
+    "similarPets": "Podobne zwierzęta 🐾"
   },
   "volunteers": {
     "pageTitle": "Wolontariusze 🐾",
@@ -744,6 +748,41 @@
       "revisionRequired": "Wymaga poprawek",
       "approved": "Zatwierdzone",
       "rejected": "Odrzucone"
-    }
+    },
+    "pageTitle": "Panel administracyjny",
+    "pageSubtitle": "Zarządzanie zgłoszeniami wolontariuszy",
+    "tabUnreviewed": "Nowe zgłoszenia",
+    "tabMine": "Moje zgłoszenia",
+    "takeOnReview": "Przyjmij do rozpatrzenia",
+    "approve": "Zatwierdź",
+    "sendForRevision": "Wyślij do poprawy",
+    "reject": "Odrzuć",
+    "revisionDialogTitle": "Wyślij do poprawy",
+    "rejectDialogTitle": "Odrzuć zgłoszenie",
+    "commentLabel": "Komentarz dla wnioskodawcy",
+    "commentRequired": "Wprowadź komentarz",
+    "submitted": "Przesłane",
+    "experience": "Doświadczenie",
+    "years": "l.",
+    "motivation": "Motywacja",
+    "filterByStatus": "Filtruj według statusu",
+    "noUnreviewed": "Brak nowych zgłoszeń — wszystkie rozpatrzone!",
+    "noRequests": "Brak zgłoszeń w tej kategorii",
+    "loadError": "Nie udało się załadować zgłoszeń",
+    "accessDenied": "Dostęp zabroniony. Wymagana rola Administratora.",
+    "navLabel": "Panel administracyjny"
+  },
+  "chat": {
+    "title": "Czat z administratorem",
+    "pollHint": "Wiadomości aktualizują się co 10 sekund",
+    "placeholder": "Napisz wiadomość... (Enter — wyślij)",
+    "empty": "Brak wiadomości. Napisz pierwszy!",
+    "closed": "Zamknięte",
+    "closedHint": "Ta rozmowa jest zamknięta. Nie można wysyłać nowych wiadomości.",
+    "edited": "edyt.",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "notFound": "Rozmowa nie znaleziona lub brak dostępu.",
+    "openChat": "Otwórz czat"
   }
 }
