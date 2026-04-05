@@ -40,6 +40,7 @@ public static class VolunteersSeeder
         var catPhotos = new Queue<string>(await FetchPhotos("cat kitten", 30, unsplashKey, logger));
 
         var volunteerDefs = GetVolunteerDefs();
+        var savedCount = 0;
 
         foreach (var vd in volunteerDefs)
         {
@@ -91,11 +92,22 @@ public static class VolunteersSeeder
                 volunteer.AddPet(pet);
             }
 
-            db.Volunteers.Add(volunteer);
+            try
+            {
+                db.Volunteers.Add(volunteer);
+                await db.SaveChangesAsync();
+                db.ChangeTracker.Clear();
+                savedCount++;
+            }
+            catch (Exception ex)
+            {
+                db.ChangeTracker.Clear();
+                logger.LogError(ex, "Failed to seed volunteer {FirstName} {LastName}. Inner: {Inner}",
+                    vd.FirstName, vd.LastName, ex.InnerException?.Message ?? ex.Message);
+            }
         }
 
-        await db.SaveChangesAsync();
-        logger.LogInformation("Volunteers and pets seeded successfully.");
+        logger.LogInformation("Volunteers seeded: {Count}/{Total}", savedCount, volunteerDefs.Count);
     }
 
     // ── Unsplash ──────────────────────────────────────────────────────────────

@@ -147,7 +147,8 @@ using (var scope = app.Services.CreateScope())
 
 await DataSeeder.SeedAsync(app.Services);
 await PetZone.Species.Infrastructure.SpeciesSeeder.SeedAsync(app.Services);
-await PetZone.Volunteers.Infrastructure.VolunteersSeeder.SeedAsync(app.Services);
+try { await PetZone.Volunteers.Infrastructure.VolunteersSeeder.SeedAsync(app.Services); }
+catch (Exception ex) { app.Logger.LogError(ex, "VolunteersSeeder failed: {Message}", ex.InnerException?.Message ?? ex.Message); }
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseSerilogRequestLogging();
