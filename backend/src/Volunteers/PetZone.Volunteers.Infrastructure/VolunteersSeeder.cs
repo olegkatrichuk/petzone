@@ -79,7 +79,8 @@ public static class VolunteersSeeder
                 var petResult = Pet.Create(
                     Guid.NewGuid(), pd.Nickname, pd.Description, pd.Color,
                     health.Value, address.Value, weight.Value, height.Value,
-                    ownerPhone.Value, pd.IsCastrated, pd.DateOfBirth,
+                    ownerPhone.Value, pd.IsCastrated,
+                    DateTime.SpecifyKind(pd.DateOfBirth, DateTimeKind.Utc),
                     pd.IsVaccinated, pd.Status, null, volunteer.Id, pd.AdoptionConditions, sb.Value);
 
                 if (petResult.IsFailure) continue;
@@ -102,8 +103,8 @@ public static class VolunteersSeeder
             catch (Exception ex)
             {
                 db.ChangeTracker.Clear();
-                logger.LogError(ex, "Failed to seed volunteer {FirstName} {LastName}. Inner: {Inner}",
-                    vd.FirstName, vd.LastName, ex.InnerException?.Message ?? ex.Message);
+                logger.LogError(ex, "Failed to seed volunteer {FirstName} {LastName}. Error: {Error}. Inner: {Inner}. Stack: {Stack}",
+                    vd.FirstName, vd.LastName, ex.Message, ex.InnerException?.Message, ex.InnerException?.StackTrace ?? ex.StackTrace);
             }
         }
 
