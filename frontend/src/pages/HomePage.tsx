@@ -10,6 +10,7 @@ import Button from '@mui/material/Button'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import Skeleton from '@mui/material/Skeleton'
+import Alert from '@mui/material/Alert'
 import PetsIcon from '@mui/icons-material/Pets'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism'
@@ -147,7 +148,7 @@ export default function HomePage() {
 
   const { data: petsData } = useGetPetsQuery({ page: 1, pageSize: 1 })
   const { data: volunteersData } = useGetVolunteersQuery({ page: 1, pageSize: 1 })
-  const { data: featuredPetsData, isLoading: featuredLoading } = useGetPetsQuery({ page: 1, pageSize: 6 })
+  const { data: featuredPetsData, isLoading: featuredLoading, isError: featuredError } = useGetPetsQuery({ page: 1, pageSize: 6 })
 
   // ── Structured data ─────────────────────────────────────
 
@@ -423,6 +424,10 @@ export default function HomePage() {
               {t('home.featured.subtitle')}
             </Typography>
           </motion.div>
+
+          {featuredError && (
+            <Alert severity="error" sx={{ mb: 3 }}>{t('errors.unknown')}</Alert>
+          )}
 
           {featuredLoading ? (
             <Grid container spacing={3}>

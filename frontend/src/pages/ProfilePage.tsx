@@ -21,6 +21,8 @@ import AssignmentIcon from '@mui/icons-material/Assignment'
 import CampaignIcon from '@mui/icons-material/Campaign'
 import StarIcon from '@mui/icons-material/Star'
 import LogoutIcon from '@mui/icons-material/Logout'
+import Alert from '@mui/material/Alert'
+import CircularProgress from '@mui/material/CircularProgress'
 import { useAuthStore } from '../store/authStore'
 import { useGetUserByIdQuery } from '../services/accountsApi'
 import { useFavoritesStore } from '../store/favoritesStore'
@@ -37,7 +39,7 @@ export default function ProfilePage() {
   const { t } = useTranslation()
   const navigate = useLangNavigate()
   const { user, logout } = useAuthStore()
-  const { data: userDto } = useGetUserByIdQuery(user?.id ?? '', { skip: !user })
+  const { data: userDto, isLoading: userLoading, isError: userError } = useGetUserByIdQuery(user?.id ?? '', { skip: !user })
   const { ids: favoriteIds } = useFavoritesStore()
 
   // Not logged in
@@ -76,10 +78,21 @@ export default function ProfilePage() {
     navigate('/login')
   }
 
+  if (userLoading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '40vh' }}>
+        <CircularProgress sx={{ color: CORAL }} />
+      </Box>
+    )
+  }
+
   return (
     <Box sx={{ bgcolor: '#FAFAFA', minHeight: '100%', py: 4 }}>
       <PageMeta title={t('profile.title')} description={t('profile.title')} path="/profile" noIndex />
       <Container maxWidth="sm">
+        {userError && (
+          <Alert severity="warning" sx={{ mb: 3 }}>{t('errors.unknown')}</Alert>
+        )}
         <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
           {t('profile.title')}
         </Typography>

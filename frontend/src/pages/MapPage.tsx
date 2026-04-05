@@ -10,6 +10,7 @@ import Chip from '@mui/material/Chip'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import CircularProgress from '@mui/material/CircularProgress'
+import Alert from '@mui/material/Alert'
 import PageMeta from '../components/meta/PageMeta'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import { useGetPetsQuery } from '../services/petsApi'
@@ -94,14 +95,15 @@ export default function MapPage() {
   const navigate = useLangNavigate()
   const [mode, setMode] = useState<Mode>('all')
 
-  const { data: petsData, isLoading: petsLoading } = useGetPetsQuery({
+  const { data: petsData, isLoading: petsLoading, isError: petsError } = useGetPetsQuery({
     page: 1,
     status: PetStatus.LookingForHome,
     pageSize: 100,
   })
-  const { data: listings = [], isLoading: listingsLoading } = useGetListingsQuery({ pageSize: 100 })
+  const { data: listings = [], isLoading: listingsLoading, isError: listingsError } = useGetListingsQuery({ pageSize: 100 })
 
   const isLoading = petsLoading || listingsLoading
+  const isError = petsError || listingsError
 
   const petMarkers = useMemo(() => {
     if (mode === 'listings') return []
@@ -144,6 +146,10 @@ export default function MapPage() {
             </ToggleButtonGroup>
           </Box>
         </Box>
+
+        {isError && (
+          <Alert severity="error" sx={{ mb: 2 }}>{t('errors.unknown')}</Alert>
+        )}
 
         {isLoading ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
