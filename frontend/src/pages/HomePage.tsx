@@ -2,7 +2,8 @@ import { useTranslation } from 'react-i18next'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
 import { motion } from 'framer-motion'
-import CountUp from 'react-countup'
+import { useRef } from 'react'
+import { useCountUp } from 'react-countup'
 import HeroCatAnimation from '../components/animations/HeroCatAnimation'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
@@ -58,6 +59,8 @@ const stepVariant = {
 // ── Stat cards ─────────────────────────────────────────────
 
 function AnimatedStatCard({ target, label, icon }: { target: number; label: string; icon: React.ReactNode }) {
+  const countRef = useRef<HTMLElement>(null)
+  useCountUp({ ref: countRef as React.RefObject<HTMLElement>, end: target, duration: 1.8, enableScrollSpy: true, scrollSpyOnce: true })
   return (
     <motion.div
       variants={fadeUp}
@@ -72,9 +75,7 @@ function AnimatedStatCard({ target, label, icon }: { target: number; label: stri
       >
         <Box sx={{ color: CORAL, mb: 1 }}>{icon}</Box>
         <Typography variant="h4" fontWeight="bold" sx={{ color: '#1F2937' }}>
-          {target > 0
-            ? <CountUp end={target} duration={1.8} enableScrollSpy scrollSpyOnce />
-            : '—'}
+          {target > 0 ? <span ref={countRef}>0</span> : '—'}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>{label}</Typography>
       </Paper>
