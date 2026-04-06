@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
+import CountUp from 'react-countup'
+import HeroCatAnimation from '../components/animations/HeroCatAnimation'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -24,9 +25,11 @@ const CORAL = '#FF6B6B'
 
 // ── Framer Motion variants ─────────────────────────────────
 
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
+
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
 }
 
 const fadeIn = {
@@ -41,48 +44,22 @@ const staggerContainer = {
 
 const cardVariant = {
   hidden: { opacity: 0, y: 40, scale: 0.97 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: EASE } },
 }
 
 const stepVariant = {
   hidden: { opacity: 0, y: 28 },
   visible: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { duration: 0.55, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.55, delay: i * 0.12, ease: EASE },
   }),
-}
-
-// ── Animated counter ───────────────────────────────────────
-
-function useCountUp(target: number, duration = 1600) {
-  const [count, setCount] = useState(0)
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-60px' })
-
-  useEffect(() => {
-    if (!inView || !target) return
-    let startTime: number | null = null
-    const step = (now: number) => {
-      if (!startTime) startTime = now
-      const elapsed = now - startTime
-      const progress = Math.min(elapsed / duration, 1)
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setCount(Math.floor(eased * target))
-      if (progress < 1) requestAnimationFrame(step)
-    }
-    requestAnimationFrame(step)
-  }, [inView, target, duration])
-
-  return { count, ref }
 }
 
 // ── Stat cards ─────────────────────────────────────────────
 
 function AnimatedStatCard({ target, label, icon }: { target: number; label: string; icon: React.ReactNode }) {
-  const { count, ref } = useCountUp(target)
   return (
     <motion.div
-      ref={ref as React.Ref<HTMLDivElement>}
       variants={fadeUp}
       initial="hidden"
       whileInView="visible"
@@ -95,7 +72,9 @@ function AnimatedStatCard({ target, label, icon }: { target: number; label: stri
       >
         <Box sx={{ color: CORAL, mb: 1 }}>{icon}</Box>
         <Typography variant="h4" fontWeight="bold" sx={{ color: '#1F2937' }}>
-          {target > 0 ? count : '—'}
+          {target > 0
+            ? <CountUp end={target} duration={1.8} enableScrollSpy scrollSpyOnce />
+            : '—'}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>{label}</Typography>
       </Paper>
@@ -216,93 +195,120 @@ export default function HomePage() {
         <FloatingDot size={16} top="80%"  left="20%"  delay={1}   opacity={0.18} />
         <FloatingDot size={12} top="10%"  right="25%" delay={3}   opacity={0.22} />
 
-        <Container maxWidth="md" sx={{ position: 'relative', textAlign: 'center' }}>
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: 'backOut' }}
-            style={{ display: 'inline-block', marginBottom: 24 }}
-          >
-            <Box sx={{
-              display: 'inline-flex', alignItems: 'center', gap: 1,
-              bgcolor: 'rgba(255,107,107,0.15)', border: '1px solid rgba(255,107,107,0.35)',
-              borderRadius: 5, px: 2, py: 0.75,
-            }}>
-              <PetsIcon sx={{ fontSize: 16, color: CORAL }} />
-              <Typography variant="caption" sx={{ color: CORAL, fontWeight: 600, letterSpacing: 0.8, textTransform: 'uppercase', fontSize: 11 }}>
-                {t('home.hero.badge')}
-              </Typography>
+        <Container maxWidth="lg" sx={{ position: 'relative' }}>
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: { xs: 0, md: 6 },
+            flexDirection: { xs: 'column', md: 'row' },
+          }}>
+            {/* ── Left: text ── */}
+            <Box sx={{ flex: 1, textAlign: { xs: 'center', md: 'left' }, maxWidth: { md: 560 } }}>
+              {/* Badge */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, ease: 'backOut' }}
+                style={{ display: 'inline-block', marginBottom: 24 }}
+              >
+                <Box sx={{
+                  display: 'inline-flex', alignItems: 'center', gap: 1,
+                  bgcolor: 'rgba(255,107,107,0.15)', border: '1px solid rgba(255,107,107,0.35)',
+                  borderRadius: 5, px: 2, py: 0.75,
+                }}>
+                  <PetsIcon sx={{ fontSize: 16, color: CORAL }} />
+                  <Typography variant="caption" sx={{ color: CORAL, fontWeight: 600, letterSpacing: 0.8, textTransform: 'uppercase', fontSize: 11 }}>
+                    {t('home.hero.badge')}
+                  </Typography>
+                </Box>
+              </motion.div>
+
+              {/* Headline */}
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.65, delay: 0.1, ease: EASE }}
+              >
+                <Typography
+                  component="h1"
+                  variant="h2"
+                  fontWeight="bold"
+                  sx={{ mb: 2.5, lineHeight: 1.15, fontSize: { xs: '2rem', sm: '2.6rem', md: '3rem' } }}
+                >
+                  {t('home.hero.title')}
+                </Typography>
+              </motion.div>
+
+              {/* Subtitle */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.65, delay: 0.22, ease: EASE }}
+              >
+                <Typography variant="h6" sx={{ mb: 1.5, opacity: 0.75, fontWeight: 400, lineHeight: 1.65, fontSize: { xs: '1rem', md: '1.1rem' } }}>
+                  {t('home.hero.subtitle')}
+                </Typography>
+                <Typography variant="body2" sx={{ mb: 5, opacity: 0.55, lineHeight: 1.6 }}>
+                  {t('home.hero.seoText')}
+                </Typography>
+              </motion.div>
+
+              {/* Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: 0.35, ease: EASE }}
+                style={{ display: 'flex', gap: 16, justifyContent: 'flex-start', flexWrap: 'wrap' }}
+              >
+                <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    startIcon={<SearchIcon />}
+                    onClick={() => navigate('/pets')}
+                    sx={{
+                      bgcolor: CORAL, '&:hover': { bgcolor: '#e55555', boxShadow: '0 6px 20px rgba(255,107,107,0.45)' },
+                      textTransform: 'none', fontWeight: 700, borderRadius: 3, px: 4, py: 1.5, fontSize: '1rem',
+                    }}
+                  >
+                    {t('home.hero.browsePets')}
+                  </Button>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
+                  <Button
+                    variant="outlined"
+                    size="large"
+                    startIcon={<VolunteerActivismIcon />}
+                    onClick={() => navigate('/register/volunteer')}
+                    sx={{
+                      color: 'white', borderColor: 'rgba(255,255,255,0.4)',
+                      textTransform: 'none', fontWeight: 600, borderRadius: 3, px: 4, py: 1.5, fontSize: '1rem',
+                      '&:hover': { borderColor: CORAL, color: CORAL, bgcolor: 'transparent' },
+                    }}
+                  >
+                    {t('home.hero.becomeVolunteer')}
+                  </Button>
+                </motion.div>
+              </motion.div>
             </Box>
-          </motion.div>
 
-          {/* Headline */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <Typography
-              component="h1"
-              variant="h2"
-              fontWeight="bold"
-              sx={{ mb: 2.5, lineHeight: 1.15, fontSize: { xs: '2rem', sm: '2.6rem', md: '3.2rem' } }}
+            {/* ── Right: Lottie animation ── */}
+            <motion.div
+              initial={{ opacity: 0, x: 40, scale: 0.92 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
+              style={{ flexShrink: 0 }}
             >
-              {t('home.hero.title')}
-            </Typography>
-          </motion.div>
-
-          {/* Subtitle */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <Typography variant="h6" sx={{ mb: 1.5, opacity: 0.75, fontWeight: 400, maxWidth: 580, mx: 'auto', lineHeight: 1.65, fontSize: { xs: '1rem', md: '1.1rem' } }}>
-              {t('home.hero.subtitle')}
-            </Typography>
-            <Typography variant="body2" sx={{ mb: 5, opacity: 0.55, maxWidth: 480, mx: 'auto', lineHeight: 1.6 }}>
-              {t('home.hero.seoText')}
-            </Typography>
-          </motion.div>
-
-          {/* Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}
-          >
-            <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
-              <Button
-                variant="contained"
-                size="large"
-                startIcon={<SearchIcon />}
-                onClick={() => navigate('/pets')}
-                sx={{
-                  bgcolor: CORAL, '&:hover': { bgcolor: '#e55555', boxShadow: '0 6px 20px rgba(255,107,107,0.45)' },
-                  textTransform: 'none', fontWeight: 700, borderRadius: 3, px: 4, py: 1.5, fontSize: '1rem',
-                }}
-              >
-                {t('home.hero.browsePets')}
-              </Button>
+              <Box sx={{
+                width: { xs: 220, sm: 280, md: 380 },
+                height: { xs: 220, sm: 280, md: 380 },
+                display: { xs: 'none', sm: 'block' },
+              }}>
+                <HeroCatAnimation />
+              </Box>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
-              <Button
-                variant="outlined"
-                size="large"
-                startIcon={<VolunteerActivismIcon />}
-                onClick={() => navigate('/register/volunteer')}
-                sx={{
-                  color: 'white', borderColor: 'rgba(255,255,255,0.4)',
-                  textTransform: 'none', fontWeight: 600, borderRadius: 3, px: 4, py: 1.5, fontSize: '1rem',
-                  '&:hover': { borderColor: CORAL, color: CORAL, bgcolor: 'transparent' },
-                }}
-              >
-                {t('home.hero.becomeVolunteer')}
-              </Button>
-            </motion.div>
-          </motion.div>
+          </Box>
         </Container>
       </Box>
 

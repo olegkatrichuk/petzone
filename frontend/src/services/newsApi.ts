@@ -33,7 +33,7 @@ export const newsApi = createApi({
 
     createNewsPost: builder.mutation<string, CreateNewsPostRequest>({
       query: (body) => ({ url: '/news', method: 'POST', data: body }),
-      invalidatesTags: (_result, _error, _arg, meta) => [{ type: 'News', id: meta?.arg as unknown as string }],
+      invalidatesTags: ['News'],
     }),
 
     updateNewsPost: builder.mutation<string, { id: string; body: UpdateNewsPostRequest }>({
