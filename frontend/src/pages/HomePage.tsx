@@ -353,8 +353,8 @@ export default function HomePage() {
       <Box component="section" sx={{ bgcolor: 'background.paper', py: 5, borderBottom: '1px solid divider' }}>
         <Container maxWidth="sm">
           <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', justifyContent: 'center' }}>
-            <AnimatedStatCard key={petsData?.totalCount ?? 'loading'} target={petsData?.totalCount ?? 0} label={t('home.stats.pets')} icon={<PetsIcon sx={{ fontSize: 32 }} />} />
-            <AnimatedStatCard key={volunteersData?.totalCount ?? 'loading'} target={volunteersData?.totalCount ?? 0} label={t('home.stats.volunteers')} icon={<VolunteerActivismIcon sx={{ fontSize: 32 }} />} />
+            <AnimatedStatCard key={`pets-${petsData?.totalCount ?? 'x'}`} target={petsData?.totalCount ?? 0} label={t('home.stats.pets')} icon={<PetsIcon sx={{ fontSize: 32 }} />} />
+            <AnimatedStatCard key={`vols-${volunteersData?.totalCount ?? 'x'}`} target={volunteersData?.totalCount ?? 0} label={t('home.stats.volunteers')} icon={<VolunteerActivismIcon sx={{ fontSize: 32 }} />} />
             <FreeCard label={t('home.stats.free')} icon={<FavoriteIcon sx={{ fontSize: 32 }} />} />
           </Box>
         </Container>
