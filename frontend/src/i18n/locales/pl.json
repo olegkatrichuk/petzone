@@ -798,5 +798,10 @@
     "totalVolunteers": "Aktywnych wolontariuszy",
     "factDay": "Fakt dnia",
     "translating": "Tłumaczenie..."
+  },
+  "ui": {
+    "darkMode": "Tryb ciemny",
+    "lightMode": "Tryb jasny",
+    "scrollToTop": "Na górę"
   }
 }

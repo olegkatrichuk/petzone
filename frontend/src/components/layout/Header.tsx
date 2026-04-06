@@ -21,7 +21,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useAuthStore } from '../../store/authStore'
+import { useThemeStore } from '../../store/themeStore'
 import LanguageSwitcher from '../ui/LanguageSwitcher'
+import DarkModeIcon from '@mui/icons-material/DarkMode'
+import LightModeIcon from '@mui/icons-material/LightMode'
 
 const NAV_ITEMS = [
   { labelKey: 'nav.home', path: '/' },
@@ -38,6 +41,7 @@ export default function Header() {
   const { lang } = useParams<{ lang: string }>()
   const { t } = useTranslation()
   const { accessToken, user } = useAuthStore()
+  const { mode, toggle: toggleTheme } = useThemeStore()
   const isAuthenticated = !!accessToken
   const isAdmin = user?.role === 'Admin'
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -104,6 +108,11 @@ export default function Header() {
 
           {/* Right side */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, ml: 'auto' }}>
+            <Tooltip title={t(mode === 'dark' ? 'ui.lightMode' : 'ui.darkMode')}>
+              <IconButton onClick={toggleTheme} sx={{ color: 'rgba(255,255,255,0.8)', '&:hover': { color: '#FF6B6B' } }}>
+                {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+              </IconButton>
+            </Tooltip>
             <LanguageSwitcher />
 
             {isAuthenticated && (

@@ -798,5 +798,10 @@
     "totalVolunteers": "Bénévoles actifs",
     "factDay": "Fait du jour",
     "translating": "Traduction..."
+  },
+  "ui": {
+    "darkMode": "Mode sombre",
+    "lightMode": "Mode clair",
+    "scrollToTop": "Haut de page"
   }
 }

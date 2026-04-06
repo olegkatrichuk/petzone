@@ -798,5 +798,10 @@
     "totalVolunteers": "Aktive Freiwillige",
     "factDay": "Fakt des Tages",
     "translating": "Übersetzen..."
+  },
+  "ui": {
+    "darkMode": "Dunkelmodus",
+    "lightMode": "Hellmodus",
+    "scrollToTop": "Nach oben"
   }
 }

@@ -22,6 +22,9 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import PhoneIcon from '@mui/icons-material/Phone'
 import EmailIcon from '@mui/icons-material/Email'
+import SearchIcon from '@mui/icons-material/Search'
+import InputAdornment from '@mui/material/InputAdornment'
+import TextField from '@mui/material/TextField'
 import { useGetPetsQuery, useGetPetByIdQuery } from '../services/petsApi'
 import { useGetListingsQuery } from '../services/listingsApi'
 import type { PetFilters, Pet } from '../types/pet'
@@ -248,6 +251,7 @@ export default function PetsPage() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [page, setPage] = useState(1)
   const [allItems, setAllItems] = useState<Pet[]>([])
+  const [searchInput, setSearchInput] = useState(() => new URLSearchParams(window.location.search).get('nickname') ?? '')
 
   const baseFilters = useMemo(() => paramsToFilters(searchParams), [searchParams])
 
@@ -258,6 +262,25 @@ export default function PetsPage() {
     setPage(1)
     setAllItems([])
   }, [filterKey])
+
+  // Sync search input when URL changes externally (e.g. filter reset)
+  useEffect(() => {
+    setSearchInput(baseFilters.nickname ?? '')
+  }, [baseFilters.nickname])
+
+  // Debounce: update URL nickname param 400ms after user stops typing
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const current = searchParams.get('nickname') ?? ''
+      if (searchInput === current) return
+      const newParams = filtersToParams(baseFilters)
+      if (searchInput) newParams.nickname = searchInput
+      else delete newParams.nickname
+      setSearchParams(newParams, { replace: true })
+    }, 400)
+    return () => clearTimeout(timer)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchInput])
 
   const filters: PetFilters = { ...baseFilters, page }
   const { data, isLoading, isFetching, isError, refetch } = useGetPetsQuery(filters)
@@ -330,6 +353,23 @@ export default function PetsPage() {
           </Box>
 
           <Box sx={{ flex: 1, minWidth: 0 }}>
+            <TextField
+              fullWidth
+              size="small"
+              placeholder={t('pets.searchByName')}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon sx={{ color: '#9CA3AF', fontSize: 20 }} />
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              sx={{ mb: 3, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+            />
             <PetsList pets={allItems} isLoading={isLoading} isFetching={false} />
 
             {/* Load more */}

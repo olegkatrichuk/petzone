@@ -798,5 +798,10 @@
     "totalVolunteers": "Active volunteers",
     "factDay": "Fact of the day",
     "translating": "Translating..."
+  },
+  "ui": {
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode",
+    "scrollToTop": "Back to top"
   }
 }

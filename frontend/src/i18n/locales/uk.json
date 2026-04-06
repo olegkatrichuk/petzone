@@ -798,5 +798,10 @@
     "totalVolunteers": "Активних волонтерів",
     "factDay": "Факт дня",
     "translating": "Перекладаємо..."
+  },
+  "ui": {
+    "darkMode": "Темна тема",
+    "lightMode": "Світла тема",
+    "scrollToTop": "На початок"
   }
 }
