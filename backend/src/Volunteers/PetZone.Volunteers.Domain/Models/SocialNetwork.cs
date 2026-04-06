@@ -18,7 +18,11 @@ public class SocialNetwork : ValueObject
         Link = link;
     }
 
-    private SocialNetwork() { } // Для EF Core
+    private SocialNetwork()
+    {
+        Name = null!;
+        Link = null!;
+    }
 
     public static Result<SocialNetwork, Error> Create(string name, string link)
     {

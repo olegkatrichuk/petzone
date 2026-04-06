@@ -15,8 +15,7 @@ namespace PetZone.IntegrationTests;
 
 public class IntegrationTestWebFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
-        .WithImage("postgres:17-alpine")
+    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder("postgres:17-alpine")
         .WithDatabase("petzone_test")
         .WithUsername("postgres")
         .WithPassword("postgres")

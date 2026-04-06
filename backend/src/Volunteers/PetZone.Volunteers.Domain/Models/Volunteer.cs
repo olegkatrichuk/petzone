@@ -51,7 +51,14 @@ namespace PetZone.Volunteers.Domain.Models
             Phone = phone;
         }
 
-        private Volunteer() { }
+        private Volunteer()
+        {
+            Name = null!;
+            Email = null!;
+            GeneralDescription = null!;
+            Experience = null!;
+            Phone = null!;
+        }
 
         public static Result<Volunteer, Error> Create(
             Guid id, FullName name, Email email, string generalDescription,

@@ -71,7 +71,18 @@ namespace PetZone.Volunteers.Domain.Models
             CreatedAt = DateTime.UtcNow;
         }
 
-        private Pet() { }
+        private Pet()
+        {
+            Nickname = null!;
+            SpeciesBreedInfo = null!;
+            GeneralDescription = null!;
+            Color = null!;
+            Health = null!;
+            Location = null!;
+            Weight = null!;
+            Height = null!;
+            OwnerPhone = null!;
+        }
 
         public static Result<Pet, Error> Create(
             Guid id, string nickname, string generalDescription, string color,

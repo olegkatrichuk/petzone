@@ -100,4 +100,18 @@
     <priority>0.6</priority>
   </url>
 
+  <!-- Daily Digest -->
+  <url>
+    <loc>https://getpetzone.com/uk/digest</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getpetzone.com/uk/digest"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://getpetzone.com/ru/digest"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getpetzone.com/en/digest"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getpetzone.com/pl/digest"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getpetzone.com/de/digest"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getpetzone.com/fr/digest"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getpetzone.com/uk/digest"/>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>

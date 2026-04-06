@@ -84,7 +84,7 @@ public class MinioProvider(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to get presigned URL for {FileName}", fileName, bucketName);
+            logger.LogError(ex, "Failed to get presigned URL for {FileName}", fileName);
             return Error.Failure("minio.presigned_failed", $"Не удалось получить ссылку на файл {fileName}.");
         }
     }
