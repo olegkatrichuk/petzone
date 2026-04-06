@@ -52,7 +52,7 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#FAFAFA', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 4 }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 4 }}>
       <PageMeta title={t('auth.forgotPassword')} description={t('auth.forgotPassword')} path="/forgot-password" noIndex />
       <Container maxWidth="xs">
         <Button startIcon={<ArrowBackIcon />} onClick={() => navigate('/login')}

@@ -45,7 +45,7 @@ export default function FaqPage() {
   }
 
   return (
-    <Box sx={{ bgcolor: '#FAFAFA' }}>
+    <Box sx={{ bgcolor: 'background.default' }}>
       <PageMeta title={t('faq.pageTitle')} description={t('faq.metaDesc')} path="/faq" />
 
       {/* Hero */}
@@ -132,7 +132,7 @@ export default function FaqPage() {
           sx={{
             mt: 7,
             textAlign: 'center',
-            bgcolor: 'white',
+            bgcolor: 'background.paper',
             border: '1px solid #E5E7EB',
             borderRadius: 4,
             p: { xs: 3, md: 5 },

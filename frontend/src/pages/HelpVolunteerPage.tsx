@@ -40,7 +40,7 @@ function CopyField({ value }: { value: string }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        bgcolor: '#F9FAFB',
+        bgcolor: 'background.default',
         border: '1px solid #E5E7EB',
         borderRadius: 2,
         px: 2,
@@ -93,7 +93,7 @@ export default function HelpVolunteerPage() {
   const fullName = [volunteer.lastName, volunteer.firstName].filter(Boolean).join(' ')
 
   return (
-    <Box sx={{ bgcolor: '#FAFAFA', minHeight: '100%', py: 4 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
       <PageMeta title={t('help.title')} description={t('help.subtitle')} path={`/help/${volunteerId}`} />
       <Container maxWidth="sm">
         <Button

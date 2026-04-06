@@ -203,7 +203,7 @@ function ApplicantInfo({ userId, createdDate }: { userId: string; createdDate: s
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-      <Box sx={{ width: 40, height: 40, borderRadius: 2, bgcolor: '#F3F4F6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Box sx={{ width: 40, height: 40, borderRadius: 2, bgcolor: 'action.hover', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <PersonIcon sx={{ color: '#6B7280' }} />
       </Box>
       <Box>
@@ -261,7 +261,7 @@ function RequestCard({ request, showTakeOnReview = false }: RequestCardProps) {
 
       {/* Motivation */}
       {request.volunteerInfo.motivation && (
-        <Box sx={{ mb: 2, bgcolor: '#F9FAFB', borderRadius: 2, p: 2 }}>
+        <Box sx={{ mb: 2, bgcolor: 'background.default', borderRadius: 2, p: 2 }}>
           <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', letterSpacing: 0.5, display: 'block', mb: 0.75 }}>
             {t('admin.motivation')}
           </Typography>
@@ -591,7 +591,7 @@ function UsersTab() {
         <Box sx={{ overflowX: 'auto' }}>
           <Table size="small" sx={{ minWidth: 600 }}>
             <TableHead>
-              <TableRow sx={{ '& th': { fontWeight: 700, color: '#374151', bgcolor: '#F9FAFB', borderBottom: '2px solid #E5E7EB' } }}>
+              <TableRow sx={{ '& th': { fontWeight: 700, color: '#374151', bgcolor: 'background.default', borderBottom: '2px solid #E5E7EB' } }}>
                 <TableCell>{t('admin.users.name')}</TableCell>
                 <TableCell>{t('admin.users.email')}</TableCell>
                 <TableCell>{t('admin.users.role')}</TableCell>
@@ -812,7 +812,7 @@ function SpeciesTab() {
         {species.map((sp) => (
           <Paper key={sp.id} elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, overflow: 'hidden' }}>
             <Box
-              sx={{ display: 'flex', alignItems: 'center', px: 2, py: 1.5, cursor: 'pointer', '&:hover': { bgcolor: '#FAFAFA' } }}
+              sx={{ display: 'flex', alignItems: 'center', px: 2, py: 1.5, cursor: 'pointer', '&:hover': { bgcolor: 'background.default' } }}
               onClick={() => setExpanded(expanded === sp.id ? null : sp.id)}
             >
               <PetsIcon sx={{ fontSize: 18, color: CORAL, mr: 1.5 }} />
@@ -820,7 +820,7 @@ function SpeciesTab() {
               <Chip
                 label={t('admin.species.breedsCount', { count: sp.breedsCount })}
                 size="small"
-                sx={{ bgcolor: '#F3F4F6', color: '#6B7280', fontSize: 11, mr: 1.5 }}
+                sx={{ bgcolor: 'action.hover', color: '#6B7280', fontSize: 11, mr: 1.5 }}
               />
               <IconButton
                 size="small"

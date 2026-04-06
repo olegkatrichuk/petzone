@@ -204,7 +204,7 @@ export default function DiscussionPage() {
   )
 
   return (
-    <Box sx={{ bgcolor: '#F3F4F6', minHeight: 'calc(100vh - 120px)', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ bgcolor: 'action.hover', minHeight: 'calc(100vh - 120px)', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
       <Paper elevation={0} sx={{ borderBottom: '1px solid #E5E7EB', borderRadius: 0, position: 'sticky', top: 0, zIndex: 10 }}>
         <Container maxWidth="md">
@@ -223,7 +223,7 @@ export default function DiscussionPage() {
                 icon={<LockIcon sx={{ fontSize: '14px !important' }} />}
                 label={t('chat.closed')}
                 size="small"
-                sx={{ bgcolor: '#F3F4F6', color: '#6B7280', border: '1px solid #E5E7EB' }}
+                sx={{ bgcolor: 'action.hover', color: '#6B7280', border: '1px solid #E5E7EB' }}
               />
             )}
           </Box>
@@ -273,7 +273,7 @@ export default function DiscussionPage() {
                 fullWidth
                 size="small"
                 sx={{
-                  '& .MuiOutlinedInput-root': { borderRadius: 3, bgcolor: 'white' },
+                  '& .MuiOutlinedInput-root': { borderRadius: 3, bgcolor: 'background.paper' },
                   '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: CORAL },
                 }}
               />

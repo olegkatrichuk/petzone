@@ -113,7 +113,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#FAFAFA', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 4 }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 4 }}>
       <PageMeta title={t('pages.register.title')} description={t('pages.register.title')} path="/register" noIndex />
       <Container maxWidth="xs">
         <Button

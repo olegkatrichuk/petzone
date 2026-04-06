@@ -121,7 +121,7 @@ export default function MapPage() {
   }, [listings, mode])
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#FAFAFA' }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <PageMeta title={t('map.pageTitle')} description={t('map.pageTitle')} path="/map" />
 
       <Container maxWidth="xl" sx={{ pt: 3, pb: 2 }}>

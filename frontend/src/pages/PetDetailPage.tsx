@@ -91,7 +91,7 @@ export default function PetDetailPage() {
   const statusCfg = STATUS_COLORS[pet.status]
 
   return (
-    <Box sx={{ bgcolor: '#FAFAFA', minHeight: '100%', py: 4 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
       <PageMeta
         title={pet.nickname}
         description={pet.generalDescription ?? t('pets.pageTitle')}
@@ -318,7 +318,7 @@ export default function PetDetailPage() {
 
       {/* ── SIMILAR PETS ───────────────────────────────── */}
       {(similarLoading || similarPets.length > 0) && (
-        <Box sx={{ bgcolor: 'white', borderTop: '1px solid #E5E7EB', py: 5, mt: 2 }}>
+        <Box sx={{ bgcolor: 'background.paper', borderTop: '1px solid #E5E7EB', py: 5, mt: 2 }}>
           <Container maxWidth="lg">
             <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
               {t('petDetail.similarPets')}

@@ -61,7 +61,7 @@ function ListingPhoto({ fileName, canDelete, onDelete }: {
 
   if (!url) return (
     <Box sx={{
-      width: '100%', aspectRatio: '4/3', bgcolor: '#F3F4F6',
+      width: '100%', aspectRatio: '4/3', bgcolor: 'action.hover',
       borderRadius: 2, display: 'flex', alignItems: 'center', justifyContent: 'center',
     }}>
       <CircularProgress size={24} sx={{ color: CORAL }} />
@@ -182,7 +182,7 @@ export default function ListingDetailPage() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#FAFAFA', py: 4 }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 4 }}>
       <PageMeta
         title={listing.title}
         description={listing.description}
@@ -275,8 +275,8 @@ export default function ListingDetailPage() {
           </Box>
 
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 2 }}>
-            <Chip label={ageLabel} size="small" sx={{ bgcolor: '#F3F4F6' }} />
-            <Chip label={listing.color} size="small" sx={{ bgcolor: '#F3F4F6' }} />
+            <Chip label={ageLabel} size="small" sx={{ bgcolor: 'action.hover' }} />
+            <Chip label={listing.color} size="small" sx={{ bgcolor: 'action.hover' }} />
             {listing.vaccinated && <Chip label={t('pets.vaccinated')} size="small" sx={{ bgcolor: '#D1FAE5', color: '#059669' }} />}
             {listing.castrated && <Chip label={t('pets.castrated')} size="small" sx={{ bgcolor: '#DBEAFE', color: '#2563EB' }} />}
           </Box>

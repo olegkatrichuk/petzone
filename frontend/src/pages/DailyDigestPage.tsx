@@ -96,7 +96,7 @@ function DigestCard({ post, lang }: { post: SystemNewsPost; lang: string }) {
           icon={<CalendarTodayIcon sx={{ fontSize: '13px !important' }} />}
           label={formatDate(post.publishedAt, lang)}
           size="small"
-          sx={{ bgcolor: '#F3F4F6', flexShrink: 0, fontSize: 11 }}
+          sx={{ bgcolor: 'action.hover', flexShrink: 0, fontSize: 11 }}
         />
       </Box>
 
@@ -165,7 +165,7 @@ export default function DailyDigestPage() {
   const hasMore = posts.length + (page - 1) * PAGE_SIZE < (data?.totalCount ?? 0)
 
   return (
-    <Box sx={{ bgcolor: '#FAFAFA', minHeight: '100%', py: 4 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
       <PageMeta
         title={t('digest.pageTitle')}
         description={t('digest.pageSubtitle')}

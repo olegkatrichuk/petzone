@@ -35,7 +35,7 @@ export default function ConfirmEmailPage() {
   }, [userId, token])
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#FAFAFA', display: 'flex', alignItems: 'center', justifyContent: 'center', py: 4 }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', display: 'flex', alignItems: 'center', justifyContent: 'center', py: 4 }}>
       <PageMeta title={t('auth.confirmEmail')} description={t('auth.confirmEmail')} path="/confirm-email" noIndex />
       <Container maxWidth="xs">
         <Paper elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 4, p: 5, textAlign: 'center' }}>

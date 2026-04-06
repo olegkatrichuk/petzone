@@ -124,7 +124,7 @@ export default function EditListingPage() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#FAFAFA', py: 4 }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 4 }}>
       <PageMeta title={t('listings.editTitle') || 'Редагувати оголошення'} description={listing.title} path={`/listings/${listingId}/edit`} noIndex />
       <Container maxWidth="sm">
         <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(`/listings/${listingId}`)}

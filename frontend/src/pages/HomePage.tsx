@@ -71,10 +71,10 @@ function AnimatedStatCard({ target, label, icon }: { target: number; label: stri
     >
       <Paper
         elevation={0}
-        sx={{ p: { xs: 2, sm: 3 }, textAlign: 'center', border: '1px solid #E5E7EB', borderRadius: 3 }}
+        sx={{ p: { xs: 2, sm: 3 }, textAlign: 'center', border: '1px solid', borderColor: 'divider', borderRadius: 3 }}
       >
         <Box sx={{ color: CORAL, mb: 1 }}>{icon}</Box>
-        <Typography variant="h4" fontWeight="bold" sx={{ color: '#1F2937' }}>
+        <Typography variant="h4" fontWeight="bold" color="text.primary">
           {target > 0 ? <span ref={countRef}>0</span> : '—'}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>{label}</Typography>
@@ -350,18 +350,18 @@ export default function HomePage() {
       </Box>
 
       {/* ── Stats ─────────────────────────────────────────── */}
-      <Box component="section" sx={{ bgcolor: 'white', py: 5, borderBottom: '1px solid #E5E7EB' }}>
+      <Box component="section" sx={{ bgcolor: 'background.paper', py: 5, borderBottom: '1px solid divider' }}>
         <Container maxWidth="sm">
           <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', justifyContent: 'center' }}>
-            <AnimatedStatCard target={petsData?.totalCount ?? 0} label={t('home.stats.pets')} icon={<PetsIcon sx={{ fontSize: 32 }} />} />
-            <AnimatedStatCard target={volunteersData?.totalCount ?? 0} label={t('home.stats.volunteers')} icon={<VolunteerActivismIcon sx={{ fontSize: 32 }} />} />
+            <AnimatedStatCard key={petsData?.totalCount ?? 'loading'} target={petsData?.totalCount ?? 0} label={t('home.stats.pets')} icon={<PetsIcon sx={{ fontSize: 32 }} />} />
+            <AnimatedStatCard key={volunteersData?.totalCount ?? 'loading'} target={volunteersData?.totalCount ?? 0} label={t('home.stats.volunteers')} icon={<VolunteerActivismIcon sx={{ fontSize: 32 }} />} />
             <FreeCard label={t('home.stats.free')} icon={<FavoriteIcon sx={{ fontSize: 32 }} />} />
           </Box>
         </Container>
       </Box>
 
       {/* ── How it works ──────────────────────────────────── */}
-      <Box component="section" sx={{ bgcolor: '#FAFAFA', py: { xs: 7, md: 10 } }}>
+      <Box component="section" sx={{ bgcolor: 'background.default', py: { xs: 7, md: 10 } }}>
         <Container maxWidth="md">
           <motion.div
             variants={fadeUp}
@@ -415,7 +415,7 @@ export default function HomePage() {
       </Box>
 
       {/* ── Featured Pets ─────────────────────────────────── */}
-      <Box component="section" sx={{ bgcolor: 'white', py: { xs: 6, md: 9 } }}>
+      <Box component="section" sx={{ bgcolor: 'background.paper', py: { xs: 6, md: 9 } }}>
         <Container maxWidth="lg">
           <motion.div
             variants={fadeUp}
@@ -490,7 +490,7 @@ export default function HomePage() {
       </Box>
 
       {/* ── Trust strip ───────────────────────────────────── */}
-      <Box sx={{ bgcolor: '#F9FAFB', borderTop: '1px solid #E5E7EB', borderBottom: '1px solid #E5E7EB', py: 3 }}>
+      <Box sx={{ bgcolor: 'background.default', borderTop: '1px solid', borderBottom: '1px solid', borderColor: 'divider', py: 3 }}>
         <Container maxWidth="md">
           <motion.div
             variants={staggerContainer}

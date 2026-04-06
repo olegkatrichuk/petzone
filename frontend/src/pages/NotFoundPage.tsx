@@ -16,7 +16,7 @@ export default function NotFoundPage() {
   const navigate = useLangNavigate()
 
   return (
-    <Box sx={{ minHeight: '70vh', display: 'flex', alignItems: 'center', bgcolor: '#FAFAFA' }}>
+    <Box sx={{ minHeight: '70vh', display: 'flex', alignItems: 'center', bgcolor: 'background.default' }}>
       <PageMeta title={t('notFound.title')} description={t('notFound.subtitle')} path="/404" />
       <Container maxWidth="sm" sx={{ textAlign: 'center', py: 8 }}>
         {/* Big 404 */}

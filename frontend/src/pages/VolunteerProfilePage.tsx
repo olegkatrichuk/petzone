@@ -331,7 +331,7 @@ function PetCarousel({ pets }: PetCarouselProps) {
           size="small"
           sx={{
             position: 'absolute', left: -18, top: '40%', transform: 'translateY(-50%)', zIndex: 2,
-            bgcolor: 'white', boxShadow: 2,
+            bgcolor: 'background.paper', boxShadow: 2,
             '&:hover': { bgcolor: '#FFF0F0', color: CORAL },
           }}
         >
@@ -363,7 +363,7 @@ function PetCarousel({ pets }: PetCarouselProps) {
           size="small"
           sx={{
             position: 'absolute', right: -18, top: '40%', transform: 'translateY(-50%)', zIndex: 2,
-            bgcolor: 'white', boxShadow: 2,
+            bgcolor: 'background.paper', boxShadow: 2,
             '&:hover': { bgcolor: '#FFF0F0', color: CORAL },
           }}
         >
@@ -471,7 +471,7 @@ export default function VolunteerProfilePage() {
   }
 
   return (
-    <Box sx={{ bgcolor: '#FAFAFA', minHeight: '100%', py: 4 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
       <PageMeta title={fullName} description={volunteer.generalDescription ?? t('volunteers.pageTitle')} path={`/volunteers/${volunteerId}`} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
       <Container maxWidth="xl">

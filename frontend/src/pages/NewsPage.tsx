@@ -95,7 +95,7 @@ export default function NewsPage() {
     new Date(dateStr).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
 
   return (
-    <Box sx={{ bgcolor: '#FAFAFA', minHeight: '100%', py: 4 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
       <PageMeta title={t('news.title')} description={t('news.title')} path={`/news/${volunteerId}`} />
       <Container maxWidth="md">
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>

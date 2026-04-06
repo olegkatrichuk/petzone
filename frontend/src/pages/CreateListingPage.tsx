@@ -160,7 +160,7 @@ export default function CreateListingPage() {
 
   if (!user) {
     return (
-      <Box sx={{ minHeight: '100vh', bgcolor: '#FAFAFA', py: 8 }}>
+      <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 8 }}>
         <Container maxWidth="sm" sx={{ textAlign: 'center' }}>
           <Typography variant="h6" sx={{ mb: 2 }}>{t('listings.loginRequired')}</Typography>
           <Button component={Link} to="/login" variant="contained"
@@ -173,7 +173,7 @@ export default function CreateListingPage() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#FAFAFA', py: 4 }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 4 }}>
       <PageMeta title={t('listings.createTitle')} description={t('listings.createTitle')} path="/listings/create" noIndex />
       <Container maxWidth="sm">
         <Button startIcon={<ArrowBackIcon />} onClick={() => navigate('/listings')}
@@ -263,7 +263,7 @@ export default function CreateListingPage() {
               {selectedPhotos.length > 0 && (
                 <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1.5, mb: 1.5 }}>
                   {selectedPhotos.map((photo, index) => (
-                    <Box key={index} sx={{ position: 'relative', aspectRatio: '1', borderRadius: 2, overflow: 'hidden', bgcolor: '#F3F4F6' }}>
+                    <Box key={index} sx={{ position: 'relative', aspectRatio: '1', borderRadius: 2, overflow: 'hidden', bgcolor: 'action.hover' }}>
                       <Box
                         component="img"
                         src={photo.preview}

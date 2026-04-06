@@ -61,7 +61,7 @@ function MyListingCard({ listing, onDeleted }: { listing: AdoptionListing; onDel
   }
 
   return (
-    <Box sx={{ border: '1px solid #E5E7EB', borderRadius: 3, p: 3, bgcolor: '#fff' }}>
+    <Box sx={{ border: '1px solid #E5E7EB', borderRadius: 3, p: 3, bgcolor: 'background.paper' }}>
       <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1, mb: 1.5 }}>
         <Typography
           variant="subtitle1" fontWeight={700} sx={{ cursor: 'pointer', '&:hover': { color: CORAL } }}
@@ -85,8 +85,8 @@ function MyListingCard({ listing, onDeleted }: { listing: AdoptionListing; onDel
       </Box>
 
       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 1.5 }}>
-        <Chip label={ageLabel} size="small" sx={{ bgcolor: '#F3F4F6' }} />
-        <Chip label={listing.color} size="small" sx={{ bgcolor: '#F3F4F6' }} />
+        <Chip label={ageLabel} size="small" sx={{ bgcolor: 'action.hover' }} />
+        <Chip label={listing.color} size="small" sx={{ bgcolor: 'action.hover' }} />
         {listing.vaccinated && <Chip label={t('pets.vaccinated')} size="small" sx={{ bgcolor: '#D1FAE5', color: '#059669' }} />}
         {listing.castrated && <Chip label={t('pets.castrated')} size="small" sx={{ bgcolor: '#DBEAFE', color: '#2563EB' }} />}
       </Box>
@@ -163,7 +163,7 @@ export default function MyListingsPage() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#FAFAFA', py: 4 }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 4 }}>
       <PageMeta title={t('listings.myListings')} description={t('listings.myListings')} path="/my-listings" noIndex />
       <Container maxWidth="sm">
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>

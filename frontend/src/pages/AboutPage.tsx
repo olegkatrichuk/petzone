@@ -60,7 +60,7 @@ export default function AboutPage() {
   }
 
   return (
-    <Box sx={{ bgcolor: '#FAFAFA' }}>
+    <Box sx={{ bgcolor: 'background.default' }}>
       <PageMeta
         title={t('about.pageTitle')}
         description={t('about.metaDesc')}
@@ -152,7 +152,7 @@ export default function AboutPage() {
       </Container>
 
       {/* ── VALUES ────────────────────────────────────────── */}
-      <Box sx={{ bgcolor: 'white', py: { xs: 6, md: 10 } }}>
+      <Box sx={{ bgcolor: 'background.paper', py: { xs: 6, md: 10 } }}>
         <Container maxWidth="lg">
           <Typography
             variant="h4"
@@ -230,7 +230,7 @@ export default function AboutPage() {
             size="large"
             onClick={() => navigate('/register/volunteer')}
             sx={{
-              bgcolor: 'white',
+              bgcolor: 'background.paper',
               color: CORAL,
               fontWeight: 700,
               px: 4,

@@ -87,7 +87,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <Box sx={{ bgcolor: '#FAFAFA', minHeight: '100%', py: 4 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
       <PageMeta title={t('profile.title')} description={t('profile.title')} path="/profile" noIndex />
       <Container maxWidth="sm">
         {userError && (

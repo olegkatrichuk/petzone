@@ -114,7 +114,7 @@ function SocialNetworksTab({ volunteerId, initial }: { volunteerId: string; init
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       {fields.map((field, i) => (
-        <Box key={field.id} sx={{ display: 'flex', gap: 1, alignItems: 'flex-start', bgcolor: '#F9FAFB', border: '1px solid #E5E7EB', borderRadius: 2, p: 1.5 }}>
+        <Box key={field.id} sx={{ display: 'flex', gap: 1, alignItems: 'flex-start', bgcolor: 'background.default', border: '1px solid #E5E7EB', borderRadius: 2, p: 1.5 }}>
           <TextField {...register(`socialNetworks.${i}.name`)} label={t('editVolunteer.linkName')} size="small" sx={{ flex: 1, ...fieldSx }} />
           <TextField {...register(`socialNetworks.${i}.link`)} label={t('editVolunteer.linkUrl')} size="small" sx={{ flex: 2, ...fieldSx }} />
           <IconButton onClick={() => remove(i)} size="small" sx={{ mt: 0.5, color: '#6B7280' }}><DeleteIcon /></IconButton>
@@ -164,7 +164,7 @@ function RequisitesTab({ volunteerId, initial }: { volunteerId: string; initial:
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       {fields.map((field, i) => (
-        <Box key={field.id} sx={{ display: 'flex', gap: 1, alignItems: 'flex-start', bgcolor: '#F9FAFB', border: '1px solid #E5E7EB', borderRadius: 2, p: 1.5 }}>
+        <Box key={field.id} sx={{ display: 'flex', gap: 1, alignItems: 'flex-start', bgcolor: 'background.default', border: '1px solid #E5E7EB', borderRadius: 2, p: 1.5 }}>
           <TextField {...register(`requisites.${i}.name`)} label={t('editVolunteer.requisiteName')} size="small" sx={{ flex: 1, ...fieldSx }} />
           <TextField {...register(`requisites.${i}.description`)} label={t('editVolunteer.requisiteDescription')} size="small" sx={{ flex: 2, ...fieldSx }} />
           <IconButton onClick={() => remove(i)} size="small" sx={{ mt: 0.5, color: '#6B7280' }}><DeleteIcon /></IconButton>
@@ -239,7 +239,7 @@ export default function EditVolunteerProfilePage() {
   }
 
   return (
-    <Box sx={{ bgcolor: '#FAFAFA', minHeight: '100%', py: 4 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
       <PageMeta title={t('editVolunteer.title')} description={t('editVolunteer.title')} path={`/edit-profile/volunteer/${volunteerId}`} noIndex />
       <Container maxWidth="md">
         <Button

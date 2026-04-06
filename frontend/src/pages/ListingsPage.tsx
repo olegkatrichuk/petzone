@@ -56,7 +56,7 @@ function PhotoThumb({ fileName }: { fileName: string }) {
   }, [visible, fileName])
 
   return (
-    <Box ref={containerRef} sx={{ height: 180, borderRadius: 2, overflow: 'hidden', bgcolor: '#F3F4F6' }}>
+    <Box ref={containerRef} sx={{ height: 180, borderRadius: 2, overflow: 'hidden', bgcolor: 'action.hover' }}>
       {url
         ? <Box component="img" src={url} alt="" loading="lazy" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         : visible
@@ -82,7 +82,7 @@ function ListingCard({ listing }: { listing: AdoptionListing }) {
     <Box
       onClick={() => navigate(`/listings/${listing.id}`)}
       sx={{
-        bgcolor: '#fff',
+        bgcolor: 'background.paper',
         border: '1px solid #E5E7EB',
         borderRadius: 3,
         p: 2.5,
@@ -127,8 +127,8 @@ function ListingCard({ listing }: { listing: AdoptionListing }) {
 
       {/* Tags */}
       <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap' }}>
-        <Chip label={ageLabel} size="small" sx={{ bgcolor: '#F3F4F6', fontSize: 12 }} />
-        <Chip label={listing.color} size="small" sx={{ bgcolor: '#F3F4F6', fontSize: 12 }} />
+        <Chip label={ageLabel} size="small" sx={{ bgcolor: 'action.hover', fontSize: 12 }} />
+        <Chip label={listing.color} size="small" sx={{ bgcolor: 'action.hover', fontSize: 12 }} />
         {listing.vaccinated && (
           <Chip label={t('pets.vaccinated')} size="small" sx={{ bgcolor: '#D1FAE5', color: '#059669', fontSize: 12 }} />
         )}
@@ -223,7 +223,7 @@ export default function ListingsPage() {
   }, [searchParams, setSearchParams])
 
   return (
-    <Box sx={{ bgcolor: '#FAFAFA', minHeight: '100%', py: 4 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
       <PageMeta
         title={t('listings.pageTitle')}
         description={t('listings.pageDescription')}
@@ -295,7 +295,7 @@ export default function ListingsPage() {
                 </InputAdornment>
               ),
             }}
-            sx={{ minWidth: 200, bgcolor: 'white', borderRadius: 2 }}
+            sx={{ minWidth: 200, bgcolor: 'background.paper', borderRadius: 2 }}
           />
           <Button
             variant="outlined"

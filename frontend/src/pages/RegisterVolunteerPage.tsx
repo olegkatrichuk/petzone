@@ -111,7 +111,7 @@ export default function RegisterVolunteerPage() {
   // Auth guard — must be logged in to submit a volunteer request
   if (!user) {
     return (
-      <Box sx={{ minHeight: '100vh', bgcolor: '#FAFAFA', py: 8 }}>
+      <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 8 }}>
         <Container maxWidth="sm" sx={{ textAlign: 'center' }}>
           <Typography variant="h6" sx={{ mb: 2 }}>
             {t('volunteerRequest.loginRequiredText')}
@@ -137,7 +137,7 @@ export default function RegisterVolunteerPage() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#FAFAFA', py: 4 }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 4 }}>
       <PageMeta title={t('volunteerRequest.tabVolunteer')} description={t('volunteerRequest.infoText')} path="/register/volunteer" noIndex />
       <Container maxWidth="sm">
         <Button
@@ -175,7 +175,7 @@ export default function RegisterVolunteerPage() {
           sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}
         >
           {/* Applicant info (read-only) */}
-          <Box sx={{ bgcolor: '#F9FAFB', border: '1px solid #E5E7EB', borderRadius: 2, p: 2 }}>
+          <Box sx={{ bgcolor: 'background.default', border: '1px solid #E5E7EB', borderRadius: 2, p: 2 }}>
             <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', letterSpacing: 0.5, display: 'block', mb: 0.5 }}>
               {t('volunteerRequest.applicantInfo')}
             </Typography>

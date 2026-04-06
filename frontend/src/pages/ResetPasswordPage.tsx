@@ -65,7 +65,7 @@ export default function ResetPasswordPage() {
 
   if (!userId || !token) {
     return (
-      <Box sx={{ minHeight: '100vh', bgcolor: '#FAFAFA', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Container maxWidth="xs" sx={{ textAlign: 'center' }}>
           <Alert severity="error">{t('auth.resetLinkInvalid')}</Alert>
           <Button component={Link} to="/forgot-password" sx={{ mt: 2, color: CORAL, textTransform: 'none' }}>
@@ -77,7 +77,7 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#FAFAFA', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 4 }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 4 }}>
       <PageMeta title={t('auth.resetPassword')} description={t('auth.resetPassword')} path="/reset-password" noIndex />
       <Container maxWidth="xs">
         <Paper elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 4, p: 4 }}>

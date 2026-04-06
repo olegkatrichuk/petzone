@@ -50,7 +50,7 @@ function ListingCard({ listing }: { listing: AdoptionListing }) {
     <Box
       onClick={() => navigate(`/listings/${listing.id}`)}
       sx={{
-        bgcolor: '#fff',
+        bgcolor: 'background.paper',
         border: '1px solid #E5E7EB',
         borderRadius: 3,
         p: 2.5,
@@ -71,7 +71,7 @@ function ListingCard({ listing }: { listing: AdoptionListing }) {
               icon={<PhotoCameraIcon sx={{ fontSize: '14px !important' }} />}
               label={listing.photos.length}
               size="small"
-              sx={{ bgcolor: '#F3F4F6', fontSize: 11, height: 22 }}
+              sx={{ bgcolor: 'action.hover', fontSize: 11, height: 22 }}
             />
           )}
           <Chip
@@ -83,8 +83,8 @@ function ListingCard({ listing }: { listing: AdoptionListing }) {
       </Box>
 
       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-        <Chip label={ageLabel} size="small" sx={{ bgcolor: '#F3F4F6' }} />
-        <Chip label={listing.color} size="small" sx={{ bgcolor: '#F3F4F6' }} />
+        <Chip label={ageLabel} size="small" sx={{ bgcolor: 'action.hover' }} />
+        <Chip label={listing.color} size="small" sx={{ bgcolor: 'action.hover' }} />
         {listing.vaccinated && <Chip label={t('pets.vaccinated')} size="small" sx={{ bgcolor: '#D1FAE5', color: '#059669' }} />}
         {listing.castrated && <Chip label={t('pets.castrated')} size="small" sx={{ bgcolor: '#DBEAFE', color: '#2563EB' }} />}
       </Box>
@@ -304,7 +304,7 @@ export default function PetsPage() {
   }, [setSearchParams])
 
   return (
-    <Box sx={{ bgcolor: '#FAFAFA', minHeight: '100%', py: 4 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
       <PageMeta title={t('pets.pageTitle')} description={t('pets.pageTitle')} path="/pets" />
       <Container maxWidth="xl">
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 4 }}>
