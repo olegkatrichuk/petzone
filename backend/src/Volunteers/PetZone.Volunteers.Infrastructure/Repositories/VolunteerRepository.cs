@@ -17,7 +17,7 @@ public class VolunteerRepository(VolunteersDbContext dbContext) : IVolunteerRepo
     {
         return await dbContext.Volunteers
             .Include(v => v.Pets)
-            .FirstOrDefaultAsync(v => v.Id == id, cancellationToken);
+            .FirstOrDefaultAsync(v => v.Id == id && !v.IsDeleted, cancellationToken);
     }
 
     public async Task<Guid> SaveAsync(Volunteer volunteer, CancellationToken cancellationToken = default)

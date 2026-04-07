@@ -93,10 +93,19 @@ public class DiscussionsController : ControllerBase
         [FromServices] GetDiscussionHandler handler,
         CancellationToken cancellationToken)
     {
+        var userId = GetUserId();
+        if (userId is null) return Unauthorized();
+
         var query = new GetDiscussionQuery(discussionId);
         var result = await handler.Handle(query, cancellationToken);
-        return result.IsSuccess ? this.ToOkResponse(result.Value) : result.Error.ToResponse();
+        if (result.IsFailure) return result.Error.ToResponse();
+
+        var isParticipant = result.Value.Users.Contains(userId.Value);
+        if (!isParticipant && !User.IsInRole("Admin")) return Forbid();
+
+        return this.ToOkResponse(result.Value);
     }
+
     // GET /discussions/by-relation/{relationId}
     [HttpGet("by-relation/{relationId:guid}")]
     public async Task<IActionResult> GetByRelationId(
@@ -104,9 +113,17 @@ public class DiscussionsController : ControllerBase
         [FromServices] GetDiscussionByRelationIdHandler handler,
         CancellationToken cancellationToken)
     {
+        var userId = GetUserId();
+        if (userId is null) return Unauthorized();
+
         var query = new GetDiscussionByRelationIdQuery(relationId);
         var result = await handler.Handle(query, cancellationToken);
-        return result.IsSuccess ? this.ToOkResponse(result.Value) : result.Error.ToResponse();
+        if (result.IsFailure) return result.Error.ToResponse();
+
+        var isParticipant = result.Value.Users.Contains(userId.Value);
+        if (!isParticipant && !User.IsInRole("Admin")) return Forbid();
+
+        return this.ToOkResponse(result.Value);
     }
 }
 

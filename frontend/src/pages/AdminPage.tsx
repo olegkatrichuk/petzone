@@ -86,12 +86,12 @@ const PAGE_SIZE = 10
 
 // ── Status chip ────────────────────────────────────────────
 
-const STATUS_CFG: Record<VolunteerRequestStatus, { label: string; bg: string; color: string }> = {
-  [VolunteerRequestStatus.Submitted]:       { label: 'Надіслано',           bg: '#EFF6FF', color: '#2563EB' },
-  [VolunteerRequestStatus.OnReview]:        { label: 'На розгляді',          bg: '#FEF9C3', color: '#CA8A04' },
-  [VolunteerRequestStatus.RevisionRequired]:{ label: 'Потрібні зміни',       bg: '#FFF7ED', color: '#EA580C' },
-  [VolunteerRequestStatus.Rejected]:        { label: 'Відхилено',            bg: '#FEF2F2', color: '#DC2626' },
-  [VolunteerRequestStatus.Approved]:        { label: 'Схвалено',             bg: '#F0FDF4', color: '#16A34A' },
+const STATUS_CFG: Record<VolunteerRequestStatus, { i18nKey: string; bg: string; color: string }> = {
+  [VolunteerRequestStatus.Submitted]:       { i18nKey: 'applications.status.Submitted',       bg: '#EFF6FF', color: '#2563EB' },
+  [VolunteerRequestStatus.OnReview]:        { i18nKey: 'applications.status.OnReview',        bg: '#FEF9C3', color: '#CA8A04' },
+  [VolunteerRequestStatus.RevisionRequired]:{ i18nKey: 'applications.status.RevisionRequired',bg: '#FFF7ED', color: '#EA580C' },
+  [VolunteerRequestStatus.Rejected]:        { i18nKey: 'applications.status.Rejected',        bg: '#FEF2F2', color: '#DC2626' },
+  [VolunteerRequestStatus.Approved]:        { i18nKey: 'applications.status.Approved',        bg: '#F0FDF4', color: '#16A34A' },
 }
 
 // ── Stats panel ────────────────────────────────────────────
@@ -123,10 +123,11 @@ function StatsPanel({ stats }: { stats: VolunteerRequestStats }) {
 }
 
 function StatusChip({ status }: { status: VolunteerRequestStatus }) {
+  const { t } = useTranslation()
   const cfg = STATUS_CFG[status]
   return (
     <Chip
-      label={cfg.label}
+      label={t(cfg.i18nKey)}
       size="small"
       sx={{ bgcolor: cfg.bg, color: cfg.color, fontWeight: 600, fontSize: 12 }}
     />
@@ -503,7 +504,7 @@ function MyRequestsTab() {
           onChange={(e) => handleStatusChange(e.target.value as VolunteerRequestStatus)}
         >
           {ADMIN_STATUS_OPTIONS.map((s) => (
-            <MenuItem key={s} value={s}>{STATUS_CFG[s].label}</MenuItem>
+            <MenuItem key={s} value={s}>{t(STATUS_CFG[s].i18nKey)}</MenuItem>
           ))}
         </Select>
       </FormControl>
