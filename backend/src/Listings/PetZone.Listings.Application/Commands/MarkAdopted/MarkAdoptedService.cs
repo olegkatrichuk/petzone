@@ -1,6 +1,5 @@
 using CSharpFunctionalExtensions;
 using MassTransit;
-using Microsoft.Extensions.Logging;
 using PetZone.Listings.Application.Events;
 using PetZone.Listings.Domain;
 using PetZone.SharedKernel;
@@ -9,8 +8,8 @@ namespace PetZone.Listings.Application.Commands.MarkAdopted;
 
 public class MarkAdoptedService(
     IListingRepository repository,
-    IPublishEndpoint publishEndpoint,
-    ILogger<MarkAdoptedService> logger)
+    IListingsUnitOfWork unitOfWork,
+    IPublishEndpoint publishEndpoint)
 {
     public async Task<UnitResult<ErrorList>> Handle(
         MarkAdoptedCommand command,
@@ -27,23 +26,14 @@ public class MarkAdoptedService(
             return (ErrorList)Error.Validation("listing.already_adopted", "Оголошення вже позначено як 'Знайшов дім'");
 
         listing.MarkAdopted();
-        await repository.SaveAsync(listing, ct);
+        repository.Save(listing);
+        await unitOfWork.SaveChangesAsync(ct);
 
-        _ = Task.Run(async () =>
-        {
-            try
-            {
-                await publishEndpoint.Publish(new ListingAdoptedEvent(
-                    listing.Id,
-                    listing.UserEmail,
-                    listing.UserName,
-                    listing.Title));
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Failed to publish ListingAdoptedEvent for listing {ListingId}", listing.Id);
-            }
-        });
+        await publishEndpoint.Publish(new ListingAdoptedEvent(
+            listing.Id,
+            listing.UserEmail,
+            listing.UserName,
+            listing.Title), ct);
 
         return UnitResult.Success<ErrorList>();
     }

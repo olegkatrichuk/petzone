@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using PetZone.Framework.Files;
+using PetZone.Listings.Application;
 using PetZone.Listings.Application.Commands.RemoveListingPhoto;
 using PetZone.Listings.Domain;
 using PetZone.SharedKernel;
@@ -8,6 +9,7 @@ namespace PetZone.Listings.Infrastructure.Services;
 
 public class RemoveListingPhotoService(
     IListingRepository repository,
+    IListingsUnitOfWork unitOfWork,
     IFilesProvider filesProvider)
 {
     private const string BucketName = "petzone";
@@ -27,7 +29,8 @@ public class RemoveListingPhotoService(
         if (removeResult.IsFailure)
             return (ErrorList)removeResult.Error;
 
-        await repository.SaveAsync(listing, ct);
+        repository.Save(listing);
+        await unitOfWork.SaveChangesAsync(ct);
 
         await filesProvider.DeleteFile(BucketName, command.FileName, ct);
 

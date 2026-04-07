@@ -1,11 +1,12 @@
 using CSharpFunctionalExtensions;
+using PetZone.Listings.Application;
 using PetZone.Listings.Application.Commands.AddListingPhoto;
 using PetZone.Listings.Domain;
 using PetZone.SharedKernel;
 
 namespace PetZone.Listings.Infrastructure.Services;
 
-public class AddListingPhotoService(IListingRepository repository)
+public class AddListingPhotoService(IListingRepository repository, IListingsUnitOfWork unitOfWork)
 {
     public async Task<UnitResult<ErrorList>> Handle(
         AddListingPhotoCommand command,
@@ -22,7 +23,8 @@ public class AddListingPhotoService(IListingRepository repository)
         if (result.IsFailure)
             return (ErrorList)result.Error;
 
-        await repository.SaveAsync(listing, ct);
+        repository.Save(listing);
+        await unitOfWork.SaveChangesAsync(ct);
         return UnitResult.Success<ErrorList>();
     }
 }

@@ -11,18 +11,15 @@ public class ListingRepository(ListingsDbContext dbContext) : IListingRepository
     public async Task AddAsync(AdoptionListing listing, CancellationToken ct = default)
     {
         await dbContext.Listings.AddAsync(listing, ct);
-        await dbContext.SaveChangesAsync(ct);
     }
 
-    public async Task SaveAsync(AdoptionListing listing, CancellationToken ct = default)
+    public void Save(AdoptionListing listing)
     {
         dbContext.Listings.Update(listing);
-        await dbContext.SaveChangesAsync(ct);
     }
 
-    public async Task DeleteAsync(AdoptionListing listing, CancellationToken ct = default)
+    public void Delete(AdoptionListing listing)
     {
         dbContext.Listings.Remove(listing);
-        await dbContext.SaveChangesAsync(ct);
     }
 }

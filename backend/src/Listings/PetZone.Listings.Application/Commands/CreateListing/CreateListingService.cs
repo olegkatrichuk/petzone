@@ -1,6 +1,5 @@
 using CSharpFunctionalExtensions;
 using MassTransit;
-using Microsoft.Extensions.Logging;
 using PetZone.Listings.Application.Events;
 using PetZone.Listings.Domain;
 using PetZone.SharedKernel;
@@ -9,8 +8,8 @@ namespace PetZone.Listings.Application.Commands.CreateListing;
 
 public class CreateListingService(
     IListingRepository repository,
-    IPublishEndpoint publishEndpoint,
-    ILogger<CreateListingService> logger)
+    IListingsUnitOfWork unitOfWork,
+    IPublishEndpoint publishEndpoint)
 {
     public async Task<Result<Guid, ErrorList>> Handle(
         CreateListingCommand command,
@@ -26,23 +25,14 @@ public class CreateListingService(
             return result.Error;
 
         await repository.AddAsync(result.Value, ct);
+        await unitOfWork.SaveChangesAsync(ct);
 
-        _ = Task.Run(async () =>
-        {
-            try
-            {
-                await publishEndpoint.Publish(new ListingCreatedEvent(
-                    result.Value.Id,
-                    command.UserEmail,
-                    command.UserName,
-                    command.Title,
-                    command.City));
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Failed to publish ListingCreatedEvent for listing {ListingId}", result.Value.Id);
-            }
-        });
+        await publishEndpoint.Publish(new ListingCreatedEvent(
+            result.Value.Id,
+            command.UserEmail,
+            command.UserName,
+            command.Title,
+            command.City), ct);
 
         return result.Value.Id;
     }

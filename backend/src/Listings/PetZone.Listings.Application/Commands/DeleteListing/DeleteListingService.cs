@@ -4,7 +4,7 @@ using PetZone.SharedKernel;
 
 namespace PetZone.Listings.Application.Commands.DeleteListing;
 
-public class DeleteListingService(IListingRepository repository)
+public class DeleteListingService(IListingRepository repository, IListingsUnitOfWork unitOfWork)
 {
     public async Task<UnitResult<ErrorList>> Handle(
         DeleteListingCommand command,
@@ -17,7 +17,8 @@ public class DeleteListingService(IListingRepository repository)
         if (listing.UserId != command.RequestingUserId)
             return (ErrorList)Error.Forbidden("listing.forbidden", "Немає прав для видалення цього оголошення");
 
-        await repository.DeleteAsync(listing, ct);
+        repository.Delete(listing);
+        await unitOfWork.SaveChangesAsync(ct);
         return UnitResult.Success<ErrorList>();
     }
 }

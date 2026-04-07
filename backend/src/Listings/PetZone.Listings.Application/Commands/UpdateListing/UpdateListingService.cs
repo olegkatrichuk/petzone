@@ -4,7 +4,7 @@ using PetZone.SharedKernel;
 
 namespace PetZone.Listings.Application.Commands.UpdateListing;
 
-public class UpdateListingService(IListingRepository repository)
+public class UpdateListingService(IListingRepository repository, IListingsUnitOfWork unitOfWork)
 {
     public async Task<UnitResult<ErrorList>> Handle(
         UpdateListingCommand command,
@@ -28,7 +28,8 @@ public class UpdateListingService(IListingRepository repository)
         if (result.IsFailure)
             return (ErrorList)result.Error;
 
-        await repository.SaveAsync(listing, ct);
+        repository.Save(listing);
+        await unitOfWork.SaveChangesAsync(ct);
         return UnitResult.Success<ErrorList>();
     }
 }

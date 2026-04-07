@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PetZone.Listings.Application;
 using PetZone.Listings.Application.Commands.CreateListing;
 using PetZone.Listings.Application.Commands.DeleteListing;
 using PetZone.Listings.Application.Commands.MarkAdopted;
@@ -22,6 +23,7 @@ public static class DependencyInjection
             options.UseNpgsql(configuration.GetConnectionString("Database")));
 
         services.AddScoped<IListingRepository, ListingRepository>();
+        services.AddScoped<IListingsUnitOfWork, ListingsUnitOfWork>();
 
         services.AddScoped<CreateListingService>();
         services.AddScoped<UpdateListingService>();
