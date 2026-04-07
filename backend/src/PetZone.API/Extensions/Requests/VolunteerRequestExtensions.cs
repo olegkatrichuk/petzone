@@ -5,8 +5,8 @@ namespace PetZone.API.Extensions.Requests;
 
 public static class VolunteerRequestExtensions
 {
-    public static CreateVolunteerCommand ToCommand(this CreateVolunteerRequest request)
-        => new(request);
+    public static CreateVolunteerCommand ToCommand(this CreateVolunteerRequest request, Guid userId)
+        => new(request, userId);
 
     public static UpdateVolunteerMainInfoCommand ToCommand(
         this UpdateVolunteerMainInfoRequest request, Guid volunteerId)

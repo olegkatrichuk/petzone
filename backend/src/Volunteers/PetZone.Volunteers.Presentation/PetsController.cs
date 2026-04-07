@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PetZone.Accounts.Infrastructure.Authorization;
 using PetZone.Volunteers.Application.Commands;
+using PetZone.Volunteers.Application.Repositories;
 using PetZone.Volunteers.Application.Volunteers;
 using PetZone.Volunteers.Contracts;
 using PetZone.Volunteers.Presentation.Extensions;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Webp;
+using System.Security.Claims;
 using PetPhotoDto = PetZone.Volunteers.Application.Commands.PetPhotoDto;
 
 namespace PetZone.Volunteers.Presentation;
@@ -26,10 +28,28 @@ public class PetsController(
     UploadPetPhotosService uploadPetPhotosService,
     DeletePetPhotosService deletePetPhotosService,
     MovePetService movePetService,
+    IVolunteerRepository volunteerRepository,
     ILogger<PetsController> logger) : ControllerBase
 {
     private static readonly string[] AllowedExtensions = [".jpg", ".jpeg", ".png", ".webp"];
     private const long MaxFileSize = 5 * 1024 * 1024; // 5MB
+
+    private Guid? GetUserId()
+    {
+        var claim = User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("sub");
+        if (claim is null) return null;
+        return Guid.TryParse(claim.Value, out var id) ? id : null;
+    }
+
+    /// <summary>Returns true if the requesting user owns the volunteer profile or is Admin.</summary>
+    private async Task<bool> IsOwnerOrAdminAsync(Guid volunteerId, CancellationToken ct)
+    {
+        if (User.IsInRole("Admin")) return true;
+        var userId = GetUserId();
+        if (userId is null) return false;
+        var volunteer = await volunteerRepository.GetByIdAsync(volunteerId, ct);
+        return volunteer is not null && volunteer.UserId == userId.Value;
+    }
 
     [Authorize(Policy = Permissions.Volunteers.Create)]
     [HttpPost]
@@ -53,6 +73,7 @@ public class PetsController(
         [FromForm] IFormFileCollection files,
         CancellationToken cancellationToken)
     {
+        if (!await IsOwnerOrAdminAsync(volunteerId, cancellationToken)) return Forbid();
         logger.LogInformation("Uploading {Count} photos for pet {PetId}", files.Count, petId);
 
         foreach (var file in files)
@@ -92,6 +113,7 @@ public class PetsController(
         [FromBody] IEnumerable<string> filePaths,
         CancellationToken cancellationToken)
     {
+        if (!await IsOwnerOrAdminAsync(volunteerId, cancellationToken)) return Forbid();
         logger.LogInformation("Deleting photos for pet {PetId}", petId);
         var command = new DeletePetPhotosCommand(volunteerId, petId, filePaths);
         var result = await deletePetPhotosService.Handle(command, cancellationToken);
@@ -108,6 +130,7 @@ public class PetsController(
         [FromBody] MovePetRequest request,
         CancellationToken cancellationToken)
     {
+        if (!await IsOwnerOrAdminAsync(volunteerId, cancellationToken)) return Forbid();
         logger.LogInformation("Moving pet {PetId} to position {Position}", petId, request.NewPosition);
         var result = await movePetService.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
         if (result.IsFailure)
@@ -136,6 +159,7 @@ public class PetsController(
         [FromBody] UpdatePetRequest request,
         CancellationToken cancellationToken)
     {
+        if (!await IsOwnerOrAdminAsync(volunteerId, cancellationToken)) return Forbid();
         logger.LogInformation("Updating pet {PetId}", petId);
         var result = await updatePetService.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
         if (result.IsFailure)
@@ -151,6 +175,7 @@ public class PetsController(
         [FromBody] UpdatePetStatusRequest request,
         CancellationToken cancellationToken)
     {
+        if (!await IsOwnerOrAdminAsync(volunteerId, cancellationToken)) return Forbid();
         logger.LogInformation("Updating status for pet {PetId}", petId);
         var result = await updatePetStatusService.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
         if (result.IsFailure)
@@ -194,6 +219,7 @@ public class PetsController(
         [FromBody] SetMainPhotoRequest request,
         CancellationToken cancellationToken)
     {
+        if (!await IsOwnerOrAdminAsync(volunteerId, cancellationToken)) return Forbid();
         logger.LogInformation("Setting main photo for pet {PetId}", petId);
         var result = await setMainPhotoService.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
         if (result.IsFailure)

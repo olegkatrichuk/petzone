@@ -51,7 +51,7 @@ public static class VolunteersSeeder
 
             if (name.IsFailure || email.IsFailure || exp.IsFailure || phone.IsFailure) continue;
 
-            var volunteerResult = Volunteer.Create(Guid.NewGuid(), name.Value, email.Value, vd.Description, exp.Value, phone.Value);
+            var volunteerResult = Volunteer.Create(Guid.NewGuid(), Guid.Empty, name.Value, email.Value, vd.Description, exp.Value, phone.Value);
             if (volunteerResult.IsFailure) continue;
 
             var volunteer = volunteerResult.Value;

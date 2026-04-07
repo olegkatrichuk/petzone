@@ -37,7 +37,7 @@ public class CreateVolunteerService(
         var phone = PhoneNumber.Create(req.Phone).Value;
 
         var volunteerResult = Volunteer.Create(
-            Guid.NewGuid(), fullName, email,
+            Guid.NewGuid(), command.UserId, fullName, email,
             req.GeneralDescription, experience, phone);
 
         if (volunteerResult.IsFailure)

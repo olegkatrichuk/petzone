@@ -11,6 +11,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.ToTable("Volunteers");
 
         builder.HasKey(v => v.Id);
+        builder.Property(v => v.UserId).IsRequired();
         builder.Property(v => v.IsDeleted).IsRequired();
         builder.Property(v => v.DeletionDate).IsRequired(false);
 

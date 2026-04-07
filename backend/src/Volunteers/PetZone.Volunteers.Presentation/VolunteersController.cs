@@ -32,14 +32,24 @@ public class VolunteersController(
     private static readonly string[] AllowedExtensions = [".jpg", ".jpeg", ".png", ".webp"];
     private const long MaxFileSize = 5 * 1024 * 1024;
     
+    private Guid? GetUserId()
+    {
+        var claim = User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("sub");
+        if (claim is null) return null;
+        return Guid.TryParse(claim.Value, out var id) ? id : null;
+    }
+
     [Authorize(Policy = Permissions.Volunteers.Create)]
     [HttpPost]
     public async Task<ActionResult> Create(
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken)
     {
+        var userId = GetUserId();
+        if (userId is null) return Unauthorized();
+
         logger.LogInformation("Creating volunteer. Email: {Email}", request.Email);
-        var result = await createVolunteerService.Handle(request.ToCommand(), cancellationToken);
+        var result = await createVolunteerService.Handle(request.ToCommand(userId.Value), cancellationToken);
         if (result.IsFailure)
         {
             logger.LogWarning("Failed to create volunteer with {Count} errors", result.Error.Errors.Count);

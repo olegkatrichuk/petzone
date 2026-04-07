@@ -9,6 +9,7 @@ namespace PetZone.Volunteers.Domain.Models
 
         public const int MaxPhotoPathLength = 500;
 
+        public Guid UserId { get; private set; }
         public FullName Name { get; private set; }
         public Email Email { get; private set; }
         public string GeneralDescription { get; private set; }
@@ -40,10 +41,11 @@ namespace PetZone.Volunteers.Domain.Models
         }
 
         private Volunteer(
-            Guid id, FullName name, Email email, string generalDescription,
+            Guid id, Guid userId, FullName name, Email email, string generalDescription,
             Experience experience, PhoneNumber phone)
             : base(id)
         {
+            UserId = userId;
             Name = name;
             Email = email;
             GeneralDescription = generalDescription;
@@ -61,7 +63,7 @@ namespace PetZone.Volunteers.Domain.Models
         }
 
         public static Result<Volunteer, Error> Create(
-            Guid id, FullName name, Email email, string generalDescription,
+            Guid id, Guid userId, FullName name, Email email, string generalDescription,
             Experience experience, PhoneNumber phone)
         {
             if (string.IsNullOrWhiteSpace(generalDescription))
@@ -71,7 +73,7 @@ namespace PetZone.Volunteers.Domain.Models
                 return Error.Validation("volunteer.description_too_long",
                     $"Описание не должно превышать {MaxGeneralDescriptionLength} символов.");
 
-            return new Volunteer(id, name, email, generalDescription.Trim(), experience, phone);
+            return new Volunteer(id, userId, name, email, generalDescription.Trim(), experience, phone);
         }
 
         public void UpdatePhoto(string? photoPath) => PhotoPath = photoPath;

@@ -16,7 +16,7 @@ public class VolunteerPetPositionTests
         var experience = Experience.Create(3).Value;
         var phone = PhoneNumber.Create("+380991234567").Value;
 
-        return Volunteer.Create(Guid.NewGuid(), name, email,
+        return Volunteer.Create(Guid.NewGuid(), Guid.NewGuid(), name, email,
             "Test volunteer description", experience, phone).Value;
     }
 
