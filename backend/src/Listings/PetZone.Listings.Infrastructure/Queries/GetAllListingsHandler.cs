@@ -7,7 +7,7 @@ namespace PetZone.Listings.Infrastructure.Queries;
 
 public class GetAllListingsHandler(ListingsDbContext dbContext)
 {
-    public async Task<IReadOnlyList<ListingDto>> Handle(
+    public async Task<PagedListingsResult> Handle(
         GetAllListingsQuery query,
         CancellationToken ct = default)
     {
@@ -21,13 +21,15 @@ public class GetAllListingsHandler(ListingsDbContext dbContext)
         if (!string.IsNullOrWhiteSpace(query.City))
             q = q.Where(l => l.City.ToLower().Contains(query.City.ToLower()));
 
+        var totalCount = await q.CountAsync(ct);
+
         var items = await q
             .OrderByDescending(l => l.CreatedAt)
             .Skip((query.Page - 1) * query.PageSize)
             .Take(query.PageSize)
             .ToListAsync(ct);
 
-        return items.Select(ToDto).ToList();
+        return new PagedListingsResult(items.Select(ToDto).ToList(), totalCount, query.Page, query.PageSize);
     }
 
     private static ListingDto ToDto(AdoptionListing l) => new(

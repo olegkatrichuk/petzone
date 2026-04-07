@@ -100,7 +100,8 @@ export default function MapPage() {
     status: PetStatus.LookingForHome,
     pageSize: 100,
   })
-  const { data: listings = [], isLoading: listingsLoading, isError: listingsError } = useGetListingsQuery({ pageSize: 100 })
+  const { data: listingsData, isLoading: listingsLoading, isError: listingsError } = useGetListingsQuery({ pageSize: 100 })
+  const listings = listingsData?.items ?? []
 
   const isLoading = petsLoading || listingsLoading
   const isError = petsError || listingsError

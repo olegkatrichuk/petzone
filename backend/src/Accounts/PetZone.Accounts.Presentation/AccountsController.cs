@@ -62,6 +62,7 @@ public class AccountsController(
         return this.ToOkResponse(new LoginResponse(result.Value.AccessToken));
     }
 
+    [EnableRateLimiting("auth")]
     [HttpPost("refresh")]
     public async Task<ActionResult> Refresh(CancellationToken cancellationToken)
     {

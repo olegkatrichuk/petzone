@@ -36,3 +36,10 @@ export interface CreateListingPayload {
 }
 
 export interface UpdateListingPayload extends CreateListingPayload {}
+
+export interface PagedListingsResult {
+  items: AdoptionListing[]
+  totalCount: number
+  page: number
+  pageSize: number
+}

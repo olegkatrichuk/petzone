@@ -122,10 +122,11 @@ function ListingCard({ listing }: { listing: AdoptionListing }) {
 function ListingsTeaser({ speciesId }: { speciesId?: string }) {
   const { t } = useTranslation()
   const navigate = useLangNavigate()
-  const { data: listings = [], isLoading } = useGetListingsQuery(
+  const { data: listingsData, isLoading } = useGetListingsQuery(
     { speciesId, pageSize: 3 },
     { skip: false }
   )
+  const listings = listingsData?.items ?? []
 
   if (isLoading || listings.length === 0) return null
 

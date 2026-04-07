@@ -1,13 +1,13 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { axiosBaseQuery } from './baseQuery'
-import type { AdoptionListing, CreateListingPayload, UpdateListingPayload } from '../types/listing'
+import type { AdoptionListing, CreateListingPayload, UpdateListingPayload, PagedListingsResult } from '../types/listing'
 
 export const listingsApi = createApi({
   reducerPath: 'listingsApi',
   baseQuery: axiosBaseQuery(),
   tagTypes: ['Listing'],
   endpoints: (builder) => ({
-    getListings: builder.query<AdoptionListing[], { speciesId?: string; city?: string; page?: number; pageSize?: number }>({
+    getListings: builder.query<PagedListingsResult, { speciesId?: string; city?: string; page?: number; pageSize?: number }>({
       query: (params) => ({ url: '/listings', params }),
       providesTags: [{ type: 'Listing', id: 'LIST' }],
     }),
@@ -17,7 +17,7 @@ export const listingsApi = createApi({
       providesTags: (_r, _e, id) => [{ type: 'Listing', id }],
     }),
 
-    getMyListings: builder.query<AdoptionListing[], { page?: number; pageSize?: number }>({
+    getMyListings: builder.query<PagedListingsResult, { page?: number; pageSize?: number }>({
       query: (params) => ({ url: '/listings/my', params }),
       providesTags: [{ type: 'Listing', id: 'MY' }],
     }),

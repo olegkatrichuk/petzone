@@ -146,7 +146,8 @@ export default function MyListingsPage() {
   const { t } = useTranslation()
   const navigate = useLangNavigate()
   const { user } = useAuthStore()
-  const { data: listings = [], isLoading, refetch } = useGetMyListingsQuery({})
+  const { data: myListingsData, isLoading, refetch } = useGetMyListingsQuery({})
+  const listings = myListingsData?.items ?? []
 
   if (!user) {
     return (

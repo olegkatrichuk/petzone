@@ -186,9 +186,10 @@ export default function ListingsPage() {
   const city = searchParams.get('city') ?? undefined
   const [cityInput, setCityInput] = useState(city ?? '')
 
-  const { data: listings = [], isLoading, isFetching } = useGetListingsQuery(
+  const { data: listingsData, isLoading, isFetching } = useGetListingsQuery(
     { speciesId, city, page, pageSize: PAGE_SIZE },
   )
+  const listings = listingsData?.items ?? []
 
   const locale = i18n.language?.slice(0, 2) || 'uk'
   const { data: speciesList = [] } = useGetSpeciesQuery(locale)
@@ -206,7 +207,7 @@ export default function ListingsPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listings])
 
-  const hasMore = listings.length === PAGE_SIZE
+  const hasMore = (listingsData?.totalCount ?? 0) > page * PAGE_SIZE
 
   const applyCity = useCallback(() => {
     const p = new URLSearchParams(searchParams)

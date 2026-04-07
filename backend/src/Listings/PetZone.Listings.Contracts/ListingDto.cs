@@ -1,5 +1,7 @@
 namespace PetZone.Listings.Contracts;
 
+public record PagedListingsResult(IReadOnlyList<ListingDto> Items, int TotalCount, int Page, int PageSize);
+
 public record ListingDto(
     Guid Id,
     Guid UserId,
