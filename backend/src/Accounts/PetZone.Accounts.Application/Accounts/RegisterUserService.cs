@@ -60,21 +60,11 @@ public class RegisterUserService(
             await participantAccountRepository.AddAsync(participantAccount, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            _ = Task.Run(async () =>
-            {
-                try
-                {
-                    await publishEndpoint.Publish(new UserRegisteredEvent(
-                        user.Id,
-                        user.Email!,
-                        user.FirstName,
-                        user.LastName));
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "Failed to publish UserRegisteredEvent for {Email}", user.Email);
-                }
-            });
+            await publishEndpoint.Publish(new UserRegisteredEvent(
+                user.Id,
+                user.Email!,
+                user.FirstName,
+                user.LastName), cancellationToken);
 
             logger.LogInformation("User {Email} registered successfully", command.Request.Email);
             return user.Id;

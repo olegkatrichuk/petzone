@@ -28,21 +28,11 @@ public class ForgotPasswordService(
 
         var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
-        _ = Task.Run(async () =>
-        {
-            try
-            {
-                await publishEndpoint.Publish(new ForgotPasswordEvent(
-                    user.Id,
-                    user.Email!,
-                    user.FirstName,
-                    token));
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Failed to publish ForgotPasswordEvent for {Email}", email);
-            }
-        });
+        await publishEndpoint.Publish(new ForgotPasswordEvent(
+            user.Id,
+            user.Email!,
+            user.FirstName,
+            token), cancellationToken);
 
         return true;
     }

@@ -4,53 +4,77 @@ namespace PetZone.Volunteers.Application.Volunteers;
 
 public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerCommand>
 {
-    [Obsolete("Obsolete")]
     public CreateVolunteerValidator()
     {
-        // FullName — делегируем валидацию фабричному методу Domain
         RuleFor(c => c.Request.FirstName)
-            .MustBeValueObject(fn => FullName.Create(fn, "placeholder"));
+            .NotEmpty()
+                .WithErrorCode("fullname.firstname_is_empty")
+                .WithMessage("Имя обязательно.")
+            .MaximumLength(FullName.MAX_FIRST_NAME_LENGTH)
+                .WithErrorCode("fullname.firstname_too_long")
+                .WithMessage($"Имя не должно превышать {FullName.MAX_FIRST_NAME_LENGTH} символов.");
 
         RuleFor(c => c.Request.LastName)
-            .MustBeValueObject(ln => FullName.Create("placeholder", ln));
+            .NotEmpty()
+                .WithErrorCode("fullname.lastname_is_empty")
+                .WithMessage("Фамилия обязательна.")
+            .MaximumLength(FullName.MAX_LAST_NAME_LENGTH)
+                .WithErrorCode("fullname.lastname_too_long")
+                .WithMessage($"Фамилия не должна превышать {FullName.MAX_LAST_NAME_LENGTH} символов.");
 
         RuleFor(c => c.Request.Email)
-            .MustBeValueObject(Email.Create);
+            .NotEmpty()
+                .WithErrorCode("email.is_empty")
+                .WithMessage("Email не может быть пустым.")
+            .MaximumLength(Email.MAX_LENGTH)
+                .WithErrorCode("email.too_long")
+                .WithMessage($"Email не должен превышать {Email.MAX_LENGTH} символов.")
+            .Must(e => e.Contains('@'))
+                .WithErrorCode("email.is_invalid")
+                .WithMessage("Некорректный формат Email.");
 
         RuleFor(c => c.Request.Phone)
-            .MustBeValueObject(PhoneNumber.Create);
+            .NotEmpty()
+                .WithErrorCode("phone.is_empty")
+                .WithMessage("Номер телефона не может быть пустым.")
+            .MaximumLength(PhoneNumber.MAX_LENGTH)
+                .WithErrorCode("phone.too_long")
+                .WithMessage($"Номер телефона не должен превышать {PhoneNumber.MAX_LENGTH} символов.");
 
         RuleFor(c => c.Request.ExperienceYears)
-            .MustBeValueObject(Experience.Create);
+            .GreaterThanOrEqualTo(Experience.MIN_YEARS)
+                .WithErrorCode("experience.too_small")
+                .WithMessage($"Опыт не может быть меньше {Experience.MIN_YEARS} лет.")
+            .LessThanOrEqualTo(Experience.MAX_YEARS)
+                .WithErrorCode("experience.too_large")
+                .WithMessage($"Опыт не может превышать {Experience.MAX_YEARS} лет.");
 
-        // Не-VO свойство — используем WithError, чтобы вернуть доменную ошибку
         RuleFor(c => c.Request.GeneralDescription)
             .NotEmpty()
-            .WithError(Error.Validation("volunteer.description_is_empty", "Описание обязательно."))
+                .WithErrorCode("volunteer.description_is_empty")
+                .WithMessage("Описание обязательно.")
             .MaximumLength(Volunteer.MaxGeneralDescriptionLength)
-            .WithError(Error.Validation(
-                "volunteer.description_too_long",
-                $"Описание не должно превышать {Volunteer.MaxGeneralDescriptionLength} символов."));
+                .WithErrorCode("volunteer.description_too_long")
+                .WithMessage($"Описание не должно превышать {Volunteer.MaxGeneralDescriptionLength} символов.");
 
-        // Коллекции — не-VO свойства, используем WithError
         RuleForEach(c => c.Request.SocialNetworks)
             .ChildRules(sn =>
             {
                 sn.RuleFor(x => x.Name)
                     .NotEmpty()
-                    .WithError(Error.Validation("social_network.name_is_empty", "Название соцсети обязательно."))
+                        .WithErrorCode("social_network.name_is_empty")
+                        .WithMessage("Название соцсети обязательно.")
                     .MaximumLength(SocialNetwork.MAX_NAME_LENGTH)
-                    .WithError(Error.Validation(
-                        "social_network.name_too_long",
-                        $"Название соцсети не должно превышать {SocialNetwork.MAX_NAME_LENGTH} символов."));
+                        .WithErrorCode("social_network.name_too_long")
+                        .WithMessage($"Название соцсети не должно превышать {SocialNetwork.MAX_NAME_LENGTH} символов.");
 
                 sn.RuleFor(x => x.Link)
                     .NotEmpty()
-                    .WithError(Error.Validation("social_network.link_is_empty", "Ссылка соцсети обязательна."))
+                        .WithErrorCode("social_network.link_is_empty")
+                        .WithMessage("Ссылка соцсети обязательна.")
                     .MaximumLength(SocialNetwork.MAX_LINK_LENGTH)
-                    .WithError(Error.Validation(
-                        "social_network.link_too_long",
-                        $"Ссылка соцсети не должна превышать {SocialNetwork.MAX_LINK_LENGTH} символов."));
+                        .WithErrorCode("social_network.link_too_long")
+                        .WithMessage($"Ссылка соцсети не должна превышать {SocialNetwork.MAX_LINK_LENGTH} символов.");
             });
 
         RuleForEach(c => c.Request.Requisites)
@@ -58,11 +82,13 @@ public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerCommand
             {
                 r.RuleFor(x => x.Name)
                     .NotEmpty()
-                    .WithError(Error.Validation("requisite.name_is_empty", "Название реквизита обязательно."));
+                        .WithErrorCode("requisite.name_is_empty")
+                        .WithMessage("Название реквизита обязательно.");
 
                 r.RuleFor(x => x.Description)
                     .NotEmpty()
-                    .WithError(Error.Validation("requisite.description_is_empty", "Описание реквизита обязательно."));
+                        .WithErrorCode("requisite.description_is_empty")
+                        .WithMessage("Описание реквизита обязательно.");
             });
     }
 }
