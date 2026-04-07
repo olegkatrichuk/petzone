@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using FluentValidation;
 using MassTransit;
 using PetZone.Listings.Application.Events;
 using PetZone.Listings.Domain;
@@ -9,12 +10,22 @@ namespace PetZone.Listings.Application.Commands.CreateListing;
 public class CreateListingService(
     IListingRepository repository,
     IListingsUnitOfWork unitOfWork,
-    IPublishEndpoint publishEndpoint)
+    IPublishEndpoint publishEndpoint,
+    IValidator<CreateListingCommand> validator)
 {
     public async Task<Result<Guid, ErrorList>> Handle(
         CreateListingCommand command,
         CancellationToken ct = default)
     {
+        var validationResult = await validator.ValidateAsync(command, ct);
+        if (!validationResult.IsValid)
+        {
+            var errors = validationResult.Errors
+                .Select(e => Error.Validation(e.ErrorCode, e.ErrorMessage))
+                .ToList();
+            return new ErrorList(errors);
+        }
+
         var result = AdoptionListing.Create(
             command.UserId, command.UserName, command.UserEmail, command.UserPhone, command.ContactEmail,
             command.Title, command.Description, command.SpeciesId, command.BreedId,

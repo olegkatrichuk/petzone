@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using FluentValidation;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using PetZone.SharedKernel;
@@ -11,12 +12,22 @@ public class SendForRevisionHandler(
     IVolunteerRequestRepository repository,
     IVolunteerRequestsUnitOfWork unitOfWork,
     IPublishEndpoint publishEndpoint,
+    IValidator<SendForRevisionCommand> validator,
     ILogger<SendForRevisionHandler> logger)
 {
     public async Task<Result<Guid, ErrorList>> Handle(
         SendForRevisionCommand command,
         CancellationToken cancellationToken = default)
     {
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            var errors = validationResult.Errors
+                .Select(e => Error.Validation(e.ErrorCode, e.ErrorMessage))
+                .ToList();
+            return new ErrorList(errors);
+        }
+
         var request = await repository.GetByIdAsync(command.RequestId, cancellationToken);
         if (request is null)
             return (ErrorList)Error.NotFound("volunteer_request.not_found",
@@ -32,21 +43,11 @@ public class SendForRevisionHandler(
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        _ = Task.Run(async () =>
-        {
-            try
-            {
-                await publishEndpoint.Publish(new VolunteerRequestStatusChangedEvent(
-                    UserId: request.UserId,
-                    RequestId: request.Id,
-                    Status: "RevisionRequired",
-                    Comment: command.Comment));
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Failed to publish VolunteerRequestStatusChangedEvent for {RequestId}", request.Id);
-            }
-        });
+        await publishEndpoint.Publish(new VolunteerRequestStatusChangedEvent(
+            UserId: request.UserId,
+            RequestId: request.Id,
+            Status: "RevisionRequired",
+            Comment: command.Comment), cancellationToken);
 
         logger.LogInformation("Volunteer request {RequestId} sent for revision", command.RequestId);
 

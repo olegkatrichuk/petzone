@@ -44,21 +44,11 @@ public class ApproveVolunteerRequestHandler(
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        _ = Task.Run(async () =>
-        {
-            try
-            {
-                await publishEndpoint.Publish(new VolunteerRequestStatusChangedEvent(
-                    UserId: request.UserId,
-                    RequestId: request.Id,
-                    Status: "Approved",
-                    Comment: null));
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Failed to publish VolunteerRequestStatusChangedEvent for {RequestId}", request.Id);
-            }
-        });
+        await publishEndpoint.Publish(new VolunteerRequestStatusChangedEvent(
+            UserId: request.UserId,
+            RequestId: request.Id,
+            Status: "Approved",
+            Comment: null), cancellationToken);
 
         logger.LogInformation("Volunteer request {RequestId} approved", command.RequestId);
 

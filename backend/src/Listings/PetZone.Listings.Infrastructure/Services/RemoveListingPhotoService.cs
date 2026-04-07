@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using FluentValidation;
 using PetZone.Framework.Files;
 using PetZone.Listings.Application;
 using PetZone.Listings.Application.Commands.RemoveListingPhoto;
@@ -10,6 +11,7 @@ namespace PetZone.Listings.Infrastructure.Services;
 public class RemoveListingPhotoService(
     IListingRepository repository,
     IListingsUnitOfWork unitOfWork,
+    IValidator<RemoveListingPhotoCommand> validator,
     IFilesProvider filesProvider)
 {
     private const string BucketName = "petzone";
@@ -18,6 +20,15 @@ public class RemoveListingPhotoService(
         RemoveListingPhotoCommand command,
         CancellationToken ct = default)
     {
+        var validationResult = await validator.ValidateAsync(command, ct);
+        if (!validationResult.IsValid)
+        {
+            var errors = validationResult.Errors
+                .Select(e => Error.Validation(e.ErrorCode, e.ErrorMessage))
+                .ToList();
+            return new ErrorList(errors);
+        }
+
         var listing = await repository.GetByIdAsync(command.ListingId, ct);
         if (listing is null)
             return (ErrorList)Error.NotFound("listing.not_found", "Оголошення не знайдено");

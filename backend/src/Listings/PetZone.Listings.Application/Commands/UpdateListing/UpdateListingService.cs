@@ -1,15 +1,28 @@
 using CSharpFunctionalExtensions;
+using FluentValidation;
 using PetZone.Listings.Domain;
 using PetZone.SharedKernel;
 
 namespace PetZone.Listings.Application.Commands.UpdateListing;
 
-public class UpdateListingService(IListingRepository repository, IListingsUnitOfWork unitOfWork)
+public class UpdateListingService(
+    IListingRepository repository,
+    IListingsUnitOfWork unitOfWork,
+    IValidator<UpdateListingCommand> validator)
 {
     public async Task<UnitResult<ErrorList>> Handle(
         UpdateListingCommand command,
         CancellationToken ct = default)
     {
+        var validationResult = await validator.ValidateAsync(command, ct);
+        if (!validationResult.IsValid)
+        {
+            var errors = validationResult.Errors
+                .Select(e => Error.Validation(e.ErrorCode, e.ErrorMessage))
+                .ToList();
+            return new ErrorList(errors);
+        }
+
         var listing = await repository.GetByIdAsync(command.ListingId, ct);
         if (listing is null)
             return (ErrorList)Error.NotFound("listing.not_found", "Оголошення не знайдено");

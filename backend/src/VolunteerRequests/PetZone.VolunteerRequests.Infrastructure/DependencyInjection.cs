@@ -1,3 +1,4 @@
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -38,6 +39,9 @@ public static class DependencyInjection
         services.AddScoped<IVolunteerRequestsUnitOfWork, VolunteerRequestsUnitOfWork>();
         services.AddScoped<IVolunteerRequestRepository, VolunteerRequestRepository>();
         services.AddScoped<IRejectedUserRepository, RejectedUserRepository>();
+
+        // Validators
+        services.AddValidatorsFromAssembly(typeof(CreateVolunteerRequestHandler).Assembly);
 
         // MediatR
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(

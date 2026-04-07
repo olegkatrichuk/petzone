@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetZone.SharedKernel;
 using PetZone.VolunteerRequests.Application.Repositories;
@@ -10,12 +11,22 @@ public class CreateVolunteerRequestHandler(
     IVolunteerRequestRepository repository,
     IRejectedUserRepository rejectedUserRepository,
     IVolunteerRequestsUnitOfWork unitOfWork,
+    IValidator<CreateVolunteerRequestCommand> validator,
     ILogger<CreateVolunteerRequestHandler> logger)
 {
     public async Task<Result<Guid, ErrorList>> Handle(
         CreateVolunteerRequestCommand command,
         CancellationToken cancellationToken = default)
     {
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            var errors = validationResult.Errors
+                .Select(e => Error.Validation(e.ErrorCode, e.ErrorMessage))
+                .ToList();
+            return new ErrorList(errors);
+        }
+
         var rejectedUser = await rejectedUserRepository
             .GetByUserIdAsync(command.UserId, cancellationToken);
 
