@@ -4,5 +4,6 @@ public record UserRegisteredEvent(
     Guid UserId,
     string Email,
     string FirstName,
-    string LastName
+    string LastName,
+    string ConfirmationToken
 );
