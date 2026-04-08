@@ -226,7 +226,9 @@ function DigestCard({ post, lang }: { post: SystemNewsPost; lang: string }) {
 
 export default function DailyDigestPage() {
   const { t, i18n } = useTranslation()
-  const { data: post, isLoading, isError } = useGetTodayDigestQuery()
+  const { data: post, isLoading, isError, error } = useGetTodayDigestQuery()
+  const isNotFound = isError && (error as { status?: number })?.status === 404
+  const isRealError = isError && !isNotFound
 
   return (
     <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
@@ -248,7 +250,7 @@ export default function DailyDigestPage() {
 
         <Divider sx={{ mb: 4 }} />
 
-        {isError && <Alert severity="error">{t('errors.unknown')}</Alert>}
+        {isRealError && <Alert severity="error">{t('errors.unknown')}</Alert>}
 
         {isLoading ? (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -262,14 +264,14 @@ export default function DailyDigestPage() {
           </Box>
         ) : post ? (
           <DigestCard post={post} lang={i18n.language} />
-        ) : (
+        ) : !isRealError ? (
           <Box sx={{ textAlign: 'center', py: 10 }}>
             <Typography variant="h6" color="text.secondary">{t('digest.empty')}</Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
               {t('digest.emptyHint')}
             </Typography>
           </Box>
-        )}
+        ) : null}
       </Container>
     </Box>
   )
