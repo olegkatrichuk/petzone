@@ -65,6 +65,7 @@ public class DailyContentService(
 
             // Top city
             var topCity = await db.Pets
+                .AsNoTracking()
                 .Where(p => !p.IsDeleted)
                 .GroupBy(p => p.Location.City)
                 .OrderByDescending(g => g.Count())
@@ -73,6 +74,7 @@ public class DailyContentService(
 
             // Featured pet of the day (random pet with photo)
             var petsWithPhotos = await db.Pets
+                .AsNoTracking()
                 .Where(p => !p.IsDeleted && p.Status == HelpStatus.LookingForHome && p.Photos.Any())
                 .Select(p => new
                 {
@@ -127,6 +129,7 @@ public class DailyContentService(
         VolunteersDbContext db, SpeciesDbContext speciesDb, CancellationToken ct)
     {
         var topBreedIds = await db.Pets
+            .AsNoTracking()
             .Where(p => !p.IsDeleted)
             .GroupBy(p => p.SpeciesBreedInfo.BreedId)
             .OrderByDescending(g => g.Count())
