@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace PetZone.Volunteers.Infrastructure.RescueGroups;
@@ -37,12 +38,22 @@ public record RgAnimalRelationships(
     [property: JsonPropertyName("species")] RgRelationship? Species,
     [property: JsonPropertyName("locations")] RgRelationship? Locations);
 
+// data can be object, array, or null depending on relationship cardinality
 public record RgRelationship(
-    [property: JsonPropertyName("data")] RgRelationshipData? Data);
-
-public record RgRelationshipData(
-    [property: JsonPropertyName("id")] string Id,
-    [property: JsonPropertyName("type")] string Type);
+    [property: JsonPropertyName("data")] JsonElement? Data)
+{
+    public string? GetFirstId()
+    {
+        if (Data is null) return null;
+        return Data.Value.ValueKind switch
+        {
+            JsonValueKind.Object => Data.Value.TryGetProperty("id", out var id) ? id.GetString() : null,
+            JsonValueKind.Array when Data.Value.GetArrayLength() > 0
+                => Data.Value[0].TryGetProperty("id", out var id) ? id.GetString() : null,
+            _ => null
+        };
+    }
+}
 
 public record RgIncluded(
     [property: JsonPropertyName("id")] string Id,

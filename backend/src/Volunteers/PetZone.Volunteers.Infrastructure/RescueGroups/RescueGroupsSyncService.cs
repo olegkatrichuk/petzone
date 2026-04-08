@@ -168,8 +168,9 @@ public class RescueGroupsSyncService(
 
         // Resolve species
         var speciesName = "Other";
-        if (animal.Relationships?.Species?.Data is { } speciesRef &&
-            includedMap.TryGetValue(("species", speciesRef.Id), out var speciesIncluded) &&
+        var speciesRefId = animal.Relationships?.Species?.GetFirstId();
+        if (speciesRefId is not null &&
+            includedMap.TryGetValue(("species", speciesRefId), out var speciesIncluded) &&
             speciesIncluded.Attributes?.Singular is { } singular)
         {
             speciesName = SpeciesMap.GetValueOrDefault(singular, "Other");
@@ -199,8 +200,9 @@ public class RescueGroupsSyncService(
 
         // Location
         var city = "Unknown";
-        if (animal.Relationships?.Locations?.Data is { } locRef &&
-            includedMap.TryGetValue(("locations", locRef.Id), out var locIncluded))
+        var locRefId = animal.Relationships?.Locations?.GetFirstId();
+        if (locRefId is not null &&
+            includedMap.TryGetValue(("locations", locRefId), out var locIncluded))
         {
             city = locIncluded.Attributes?.City ?? city;
         }
