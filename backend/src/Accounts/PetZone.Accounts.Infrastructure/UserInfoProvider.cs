@@ -10,6 +10,6 @@ public class UserInfoProvider(UserManager<User> userManager) : IUserInfoProvider
     {
         var user = await userManager.FindByIdAsync(userId.ToString());
         if (user is null) return null;
-        return new UserBasicInfo(user.Email!, user.FirstName, user.LastName);
+        return new UserBasicInfo(user.Email!, user.FirstName, user.LastName, user.PhoneNumber);
     }
 }

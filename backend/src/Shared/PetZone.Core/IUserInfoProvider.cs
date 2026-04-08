@@ -1,6 +1,6 @@
 namespace PetZone.Core;
 
-public record UserBasicInfo(string Email, string FirstName, string LastName);
+public record UserBasicInfo(string Email, string FirstName, string LastName, string? Phone = null);
 
 public interface IUserInfoProvider
 {

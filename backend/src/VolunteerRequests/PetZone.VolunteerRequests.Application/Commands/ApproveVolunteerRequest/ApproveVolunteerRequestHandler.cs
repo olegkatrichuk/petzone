@@ -1,6 +1,5 @@
 using CSharpFunctionalExtensions;
 using MassTransit;
-using MediatR;
 using Microsoft.Extensions.Logging;
 using PetZone.Core;
 using PetZone.SharedKernel;
@@ -9,13 +8,10 @@ using PetZone.VolunteerRequests.Application.Repositories;
 
 namespace PetZone.VolunteerRequests.Application.Commands.ApproveVolunteerRequest;
 
-public record CreateVolunteerAccountCommand(Guid UserId, Domain.VolunteerInfo VolunteerInfo)
-    : IRequest<Result<Guid, Error>>;
-
 public class ApproveVolunteerRequestHandler(
     IVolunteerRequestRepository repository,
     IVolunteerRequestsUnitOfWork unitOfWork,
-    IMediator mediator,
+    IVolunteerAccountService volunteerAccountService,
     IPublishEndpoint publishEndpoint,
     IUserInfoProvider userInfoProvider,
     ILogger<ApproveVolunteerRequestHandler> logger)
@@ -33,9 +29,20 @@ public class ApproveVolunteerRequestHandler(
             return (ErrorList)Error.Forbidden("volunteer_request.forbidden",
                 "Only assigned admin can approve request.");
 
-        var accountResult = await mediator.Send(
-            new CreateVolunteerAccountCommand(request.UserId, request.VolunteerInfo),
-            cancellationToken);
+        var userInfo = await userInfoProvider.GetAsync(request.UserId, cancellationToken);
+        if (userInfo is null)
+            return (ErrorList)Error.NotFound("user.not_found",
+                $"User {request.UserId} not found.");
+
+        var accountResult = await volunteerAccountService.CreateAsync(
+            userId: request.UserId,
+            firstName: userInfo.FirstName,
+            lastName: userInfo.LastName,
+            email: userInfo.Email,
+            phone: userInfo.Phone,
+            experienceYears: request.VolunteerInfo.Experience,
+            description: request.VolunteerInfo.Motivation,
+            cancellationToken: cancellationToken);
 
         if (accountResult.IsFailure)
             return (ErrorList)accountResult.Error;
@@ -46,16 +53,14 @@ public class ApproveVolunteerRequestHandler(
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        var userInfo = await userInfoProvider.GetAsync(request.UserId, cancellationToken);
-
         await publishEndpoint.Publish(new VolunteerRequestStatusChangedEvent(
             UserId: request.UserId,
             RequestId: request.Id,
             Status: "Approved",
             Comment: null,
-            Email: userInfo?.Email ?? string.Empty,
-            FirstName: userInfo?.FirstName ?? string.Empty,
-            LastName: userInfo?.LastName ?? string.Empty), cancellationToken);
+            Email: userInfo.Email,
+            FirstName: userInfo.FirstName,
+            LastName: userInfo.LastName), cancellationToken);
 
         logger.LogInformation("Volunteer request {RequestId} approved", command.RequestId);
 

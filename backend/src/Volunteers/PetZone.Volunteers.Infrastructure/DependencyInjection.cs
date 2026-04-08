@@ -36,6 +36,9 @@ public static class DependencyInjection
         // Cross-domain checker
         services.AddScoped<IPetSpeciesChecker, PetSpeciesChecker>();
 
+        // Cross-module services
+        services.AddScoped<IVolunteerAccountService, VolunteerAccountService>();
+
         // Minio
         var minioOptions = configuration.GetSection(MinioOptions.SectionName).Get<MinioOptions>()!;
         services.AddMinio(configureClient => configureClient
