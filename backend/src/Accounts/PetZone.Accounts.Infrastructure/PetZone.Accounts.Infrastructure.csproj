@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PetZone.Accounts.Application\PetZone.Accounts.Application.csproj" />
     <ProjectReference Include="..\..\Shared\PetZone.Framework\PetZone.Framework.csproj" />
+    <ProjectReference Include="..\..\Shared\PetZone.Core\PetZone.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
