@@ -60,11 +60,14 @@ public class RegisterUserService(
             await participantAccountRepository.AddAsync(participantAccount, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
+            var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
             await publishEndpoint.Publish(new UserRegisteredEvent(
                 user.Id,
                 user.Email!,
                 user.FirstName,
-                user.LastName), cancellationToken);
+                user.LastName,
+                confirmationToken), cancellationToken);
 
             logger.LogInformation("User {Email} registered successfully", command.Request.Email);
             return user.Id;

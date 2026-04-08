@@ -4,6 +4,7 @@ using MassTransit;
 using Microsoft.Extensions.Logging;
 using PetZone.SharedKernel;
 using PetZone.VolunteerRequests.Application.Events;
+using PetZone.Core;
 using PetZone.VolunteerRequests.Application.Repositories;
 using PetZone.VolunteerRequests.Domain;
 
@@ -14,6 +15,7 @@ public class RejectVolunteerRequestHandler(
     IRejectedUserRepository rejectedUserRepository,
     IVolunteerRequestsUnitOfWork unitOfWork,
     IPublishEndpoint publishEndpoint,
+    IUserInfoProvider userInfoProvider,
     IValidator<RejectVolunteerRequestCommand> validator,
     ILogger<RejectVolunteerRequestHandler> logger)
 {
@@ -47,11 +49,16 @@ public class RejectVolunteerRequestHandler(
         await rejectedUserRepository.AddAsync(rejectedUser, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
+        var userInfo = await userInfoProvider.GetAsync(request.UserId, cancellationToken);
+
         await publishEndpoint.Publish(new VolunteerRequestStatusChangedEvent(
             UserId: request.UserId,
             RequestId: request.Id,
             Status: "Rejected",
-            Comment: command.Comment), cancellationToken);
+            Comment: command.Comment,
+            Email: userInfo?.Email ?? string.Empty,
+            FirstName: userInfo?.FirstName ?? string.Empty,
+            LastName: userInfo?.LastName ?? string.Empty), cancellationToken);
 
         logger.LogInformation("Volunteer request {RequestId} rejected", command.RequestId);
 

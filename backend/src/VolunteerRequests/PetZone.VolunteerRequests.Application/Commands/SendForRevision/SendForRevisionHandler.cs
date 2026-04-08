@@ -2,6 +2,7 @@ using CSharpFunctionalExtensions;
 using FluentValidation;
 using MassTransit;
 using Microsoft.Extensions.Logging;
+using PetZone.Core;
 using PetZone.SharedKernel;
 using PetZone.VolunteerRequests.Application.Events;
 using PetZone.VolunteerRequests.Application.Repositories;
@@ -12,6 +13,7 @@ public class SendForRevisionHandler(
     IVolunteerRequestRepository repository,
     IVolunteerRequestsUnitOfWork unitOfWork,
     IPublishEndpoint publishEndpoint,
+    IUserInfoProvider userInfoProvider,
     IValidator<SendForRevisionCommand> validator,
     ILogger<SendForRevisionHandler> logger)
 {
@@ -43,11 +45,16 @@ public class SendForRevisionHandler(
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
+        var userInfo = await userInfoProvider.GetAsync(request.UserId, cancellationToken);
+
         await publishEndpoint.Publish(new VolunteerRequestStatusChangedEvent(
             UserId: request.UserId,
             RequestId: request.Id,
             Status: "RevisionRequired",
-            Comment: command.Comment), cancellationToken);
+            Comment: command.Comment,
+            Email: userInfo?.Email ?? string.Empty,
+            FirstName: userInfo?.FirstName ?? string.Empty,
+            LastName: userInfo?.LastName ?? string.Empty), cancellationToken);
 
         logger.LogInformation("Volunteer request {RequestId} sent for revision", command.RequestId);
 

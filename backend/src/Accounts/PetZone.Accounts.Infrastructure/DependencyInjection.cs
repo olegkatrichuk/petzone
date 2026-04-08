@@ -71,6 +71,7 @@ public static class DependencyInjection
 
         // Repositories & UnitOfWork
         services.AddScoped<IAccountsUnitOfWork, AccountsUnitOfWork>();
+        services.AddScoped<IUserInfoProvider, UserInfoProvider>();
         services.AddScoped<IParticipantAccountRepository, ParticipantAccountRepository>();
         services.AddScoped<IRefreshSessionRepository, RedisRefreshSessionRepository>();
 

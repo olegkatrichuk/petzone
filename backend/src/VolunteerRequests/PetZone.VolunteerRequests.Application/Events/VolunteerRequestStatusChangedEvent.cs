@@ -4,5 +4,8 @@ public record VolunteerRequestStatusChangedEvent(
     Guid UserId,
     Guid RequestId,
     string Status,
-    string? Comment
+    string? Comment,
+    string Email,
+    string FirstName,
+    string LastName
 );

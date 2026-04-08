@@ -8,7 +8,6 @@ namespace NotificationService.Infrastructure.Consumers;
 
 public class UserRegisteredConsumer(
     IEmailSender emailSender,
-    IHttpClientFactory httpClientFactory,
     IConfiguration configuration,
     ILogger<UserRegisteredConsumer> logger)
     : IConsumer<UserRegisteredEvent>
@@ -21,24 +20,9 @@ public class UserRegisteredConsumer(
 
         try
         {
-            var client = httpClientFactory.CreateClient("AccountsApi");
-
-            var response = await client.GetAsync(
-                $"accounts/{message.UserId}/confirmation-token");
-
-            response.EnsureSuccessStatusCode();
-
-            var token = await response.Content.ReadAsStringAsync();
-
-            if (string.IsNullOrEmpty(token))
-            {
-                logger.LogError("Failed to get confirmation token for user {UserId}", message.UserId);
-                return;
-            }
-
-            var encodedToken = Uri.EscapeDataString(token);
-            var publicApiUrl = configuration["SiteUrl"] ?? "https://getpetzone.com";
-            var confirmationLink = $"{publicApiUrl}/confirm-email?userId={message.UserId}&token={encodedToken}";
+            var encodedToken = Uri.EscapeDataString(message.ConfirmationToken);
+            var siteUrl = configuration["SiteUrl"] ?? "https://getpetzone.com";
+            var confirmationLink = $"{siteUrl}/confirm-email?userId={message.UserId}&token={encodedToken}";
 
             var body = $"""
                 <h2>Ласкаво просимо до PetZone, {message.FirstName}!</h2>
