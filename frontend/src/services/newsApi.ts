@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { axiosBaseQuery } from './baseQuery'
-import type { SystemNewsResponse } from '../types/systemNews.types'
+import type { SystemNewsPost, SystemNewsResponse } from '../types/systemNews.types'
 
 export interface NewsPostDto {
   id: string
@@ -52,6 +52,10 @@ export const newsApi = createApi({
       }),
       providesTags: ['News'],
     }),
+    getTodayDigest: builder.query<SystemNewsPost, void>({
+      query: () => ({ url: '/news/system/today' }),
+      providesTags: ['News'],
+    }),
   }),
 })
 
@@ -61,4 +65,5 @@ export const {
   useUpdateNewsPostMutation,
   useDeleteNewsPostMutation,
   useGetSystemNewsQuery,
+  useGetTodayDigestQuery,
 } = newsApi

@@ -17,6 +17,13 @@ public class SystemNewsPostConfiguration : IEntityTypeConfiguration<SystemNewsPo
         builder.Property(p => p.FoundHomeThisWeek).IsRequired();
         builder.Property(p => p.TotalVolunteers).IsRequired();
         builder.Property(p => p.FactEn).HasMaxLength(1000).IsRequired();
+        builder.Property(p => p.TopBreedsJson).HasMaxLength(500).IsRequired();
+        builder.Property(p => p.TopCity).HasMaxLength(100);
+        builder.Property(p => p.FeaturedPetNickname).HasMaxLength(100);
+        builder.Property(p => p.FeaturedPetPhotoUrl).HasMaxLength(500);
+        builder.Property(p => p.FeaturedPetDescription).HasMaxLength(500);
+        builder.Property(p => p.FeaturedPetBreed).HasMaxLength(100);
+        builder.Property(p => p.FeaturedPetCity).HasMaxLength(100);
         builder.HasIndex(p => p.PublishedAt);
     }
 }

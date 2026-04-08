@@ -8,4 +8,11 @@ public record SystemNewsPostDto(
     int NeedsHelp,
     int FoundHomeThisWeek,
     int TotalVolunteers,
-    string FactEn);
+    string FactEn,
+    string TopBreedsJson,
+    string? TopCity,
+    string? FeaturedPetNickname,
+    string? FeaturedPetPhotoUrl,
+    string? FeaturedPetDescription,
+    string? FeaturedPetBreed,
+    string? FeaturedPetCity);
