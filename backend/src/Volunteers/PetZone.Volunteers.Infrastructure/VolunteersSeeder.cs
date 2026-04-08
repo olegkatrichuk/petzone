@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,11 +36,13 @@ public static class VolunteersSeeder
             return;
         }
 
+        var volunteerDefs = TryLoadFromJson(logger) ?? GetVolunteerDefs();
+
+        // Unsplash fallback photos (used only for hardcoded defs without photo_url)
         var unsplashKey = config["Unsplash:AccessKey"] ?? "";
         var dogPhotos = new Queue<string>(await FetchPhotos("dog puppy", 30, unsplashKey, logger));
         var catPhotos = new Queue<string>(await FetchPhotos("cat kitten", 30, unsplashKey, logger));
 
-        var volunteerDefs = GetVolunteerDefs();
         var savedCount = 0;
 
         foreach (var vd in volunteerDefs)
@@ -63,12 +66,21 @@ public static class VolunteersSeeder
                     ?? speciesEntity.Breeds.FirstOrDefault(b => b.Translations.GetValueOrDefault("en") == "Mixed breed")
                     ?? speciesEntity.Breeds.First();
 
-                var photoQueue = pd.IsDog ? dogPhotos : catPhotos;
-                var photoUrl = photoQueue.Count > 0 ? photoQueue.Dequeue() : FallbackPhoto(pd.IsDog);
+                // Use photo from JSON if available, otherwise Unsplash queue
+                string photoUrl;
+                if (!string.IsNullOrEmpty(pd.PhotoUrl))
+                {
+                    photoUrl = pd.PhotoUrl;
+                }
+                else
+                {
+                    var queue = pd.IsDog ? dogPhotos : catPhotos;
+                    photoUrl = queue.Count > 0 ? queue.Dequeue() : FallbackPhoto(pd.IsDog);
+                }
 
                 var sb = SpeciesBreed.Create(speciesEntity.Id, breed.Id);
                 var health = HealthInfo.Create(pd.HealthDesc);
-                var address = Address.Create(pd.City, pd.Street);
+                var address = Address.Create(pd.City, pd.Street ?? "");
                 var weight = Weight.Create(pd.Weight);
                 var height = Height.Create(pd.Height);
                 var ownerPhone = PhoneNumber.Create(vd.Phone);
@@ -103,13 +115,77 @@ public static class VolunteersSeeder
             catch (Exception ex)
             {
                 db.ChangeTracker.Clear();
-                logger.LogError(ex, "Failed to seed volunteer {FirstName} {LastName}. Error: {Error}. Inner: {Inner}. Stack: {Stack}",
-                    vd.FirstName, vd.LastName, ex.Message, ex.InnerException?.Message, ex.InnerException?.StackTrace ?? ex.StackTrace);
+                logger.LogError(ex, "Failed to seed volunteer {FirstName} {LastName}: {Error}",
+                    vd.FirstName, vd.LastName, ex.InnerException?.Message ?? ex.Message);
             }
         }
 
         logger.LogInformation("Volunteers seeded: {Count}/{Total}", savedCount, volunteerDefs.Count);
     }
+
+    private static List<VolunteerDef>? TryLoadFromJson(ILogger logger)
+    {
+        var jsonPath = Path.Combine(AppContext.BaseDirectory, "seed_data.json");
+        if (!File.Exists(jsonPath))
+            return null;
+
+        try
+        {
+            var json = File.ReadAllText(jsonPath);
+            var root = JsonSerializer.Deserialize<JsonSeedRoot>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+
+            if (root?.Volunteers is not { Count: > 0 } vols)
+                return null;
+
+            var defs = vols
+                .Where(v => v.Pets.Count > 0)
+                .Select(v => new VolunteerDef(
+                    v.FirstName, v.LastName, v.Patronymic ?? "Іванівна",
+                    v.Email, v.Phone, v.Years, v.Description,
+                    v.Pets.Select(p => new PetDef(
+                        p.IsDog, p.BreedEn ?? "Mixed breed",
+                        p.Nickname, p.Color ?? "різнокольоровий",
+                        p.Weight, p.Height, p.City, p.Street,
+                        p.HealthDesc ?? "Оглянутий ветеринаром.",
+                        p.Description, p.AdoptionConditions,
+                        p.IsCastrated, p.IsVaccinated,
+                        DateTime.TryParse(p.DateOfBirth, out var dob) ? dob : DateTime.UtcNow.AddYears(-2),
+                        p.Status switch
+                        {
+                            "FoundHome" => HelpStatus.FoundHome,
+                            "NeedsHelp" => HelpStatus.NeedsHelp,
+                            _ => HelpStatus.LookingForHome,
+                        },
+                        p.PhotoUrl))
+                    .ToList()))
+                .ToList();
+
+            logger.LogInformation("Loading {Count} volunteers from seed_data.json", defs.Count);
+            return defs;
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "Failed to load seed_data.json, using hardcoded data");
+            return null;
+        }
+    }
+
+    private record JsonSeedRoot(List<JsonVolunteer>? Volunteers);
+
+    private record JsonVolunteer(
+        string FirstName, string LastName, string? Patronymic,
+        string Email, string Phone, int Years, string Description,
+        List<JsonPet> Pets);
+
+    private record JsonPet(
+        bool IsDog, string? BreedEn, string Nickname, string? Color,
+        double Weight, double Height, string City, string? Street,
+        string? HealthDesc, string Description, string? AdoptionConditions,
+        bool IsCastrated, bool IsVaccinated, string DateOfBirth,
+        string Status = "LookingForHome", string? PhotoUrl = null);
 
     // ── Unsplash ──────────────────────────────────────────────────────────────
 
@@ -327,7 +403,8 @@ public static class VolunteersSeeder
 
     private record PetDef(
         bool IsDog, string BreedEn, string Nickname, string Color,
-        double Weight, double Height, string City, string Street,
+        double Weight, double Height, string City, string? Street,
         string HealthDesc, string Description, string? AdoptionConditions,
-        bool IsCastrated, bool IsVaccinated, DateTime DateOfBirth, HelpStatus Status);
+        bool IsCastrated, bool IsVaccinated, DateTime DateOfBirth, HelpStatus Status,
+        string? PhotoUrl = null);
 }

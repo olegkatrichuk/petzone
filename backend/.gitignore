@@ -490,3 +490,4 @@ appsettings.Development.json
 # Claude Code
 CLAUDE.md
 .claude/
+!**/Properties/launchSettings.json

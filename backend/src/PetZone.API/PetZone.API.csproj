@@ -52,6 +52,7 @@
       <Content Include="..\..\.dockerignore" Condition="Exists('..\..\.dockerignore')">
         <Link>.dockerignore</Link>
       </Content>
+      <Content Include="seed_data.json" Condition="Exists('seed_data.json')" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
 </Project>
