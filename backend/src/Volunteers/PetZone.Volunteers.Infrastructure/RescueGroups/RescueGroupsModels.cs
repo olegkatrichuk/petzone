@@ -28,7 +28,7 @@ public record RgAnimalAttributes(
     [property: JsonPropertyName("color")] string? Color,
     [property: JsonPropertyName("descriptionText")] string? DescriptionText,
     [property: JsonPropertyName("pictureThumbnailUrl")] string? PictureThumbnailUrl,
-    [property: JsonPropertyName("sizeCurrent")] string? SizeCurrent,
+    [property: JsonPropertyName("sizeCurrent")] double? SizeCurrent,
     [property: JsonPropertyName("isNeutered")] bool? IsNeutered,
     [property: JsonPropertyName("isMicrochipped")] bool? IsMicrochipped,
     [property: JsonPropertyName("isVaccinated")] bool? IsVaccinated);

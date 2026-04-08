@@ -36,13 +36,14 @@ public class RescueGroupsSyncService(
         ["turtle"] = "Turtle",
     };
 
-    private static readonly Dictionary<string, double[]> SizeToWeightHeight = new(StringComparer.OrdinalIgnoreCase)
+    // sizeCurrent from RescueGroups is weight in pounds
+    private static double[] SizeCurrentToWeightHeight(double? sizeLbs)
     {
-        ["Small"]  = [3,  20],
-        ["Medium"] = [10, 40],
-        ["Large"]  = [25, 60],
-        ["XLarge"] = [40, 80],
-    };
+        var kg = (sizeLbs ?? 10) * 0.453592;
+        kg = Math.Max(0.5, kg);
+        var height = kg switch { < 5 => 20.0, < 15 => 40.0, < 30 => 60.0, _ => 80.0 };
+        return [Math.Round(kg, 1), height];
+    }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -207,9 +208,8 @@ public class RescueGroupsSyncService(
         var address = Address.Create(city, "-");
         if (address.IsFailure) return null;
 
-        // Size → weight/height
-        var sizeKey = attrs.SizeCurrent ?? "Medium";
-        var dims = SizeToWeightHeight.GetValueOrDefault(sizeKey) ?? [5, 30];
+        // Size → weight/height (sizeCurrent is weight in lbs)
+        var dims = SizeCurrentToWeightHeight(attrs.SizeCurrent);
         var weight = Weight.Create(dims[0]);
         var height = Height.Create(dims[1]);
         if (weight.IsFailure || height.IsFailure) return null;
