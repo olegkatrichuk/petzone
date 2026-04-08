@@ -12,6 +12,8 @@ using PetZone.Volunteers.Infrastructure.Options;
 using PetZone.Volunteers.Infrastructure.Queries;
 using PetZone.Volunteers.Application.Repositories;
 using PetZone.Volunteers.Infrastructure.Repositories;
+using Microsoft.Extensions.Options;
+using PetZone.Volunteers.Infrastructure.RescueGroups;
 
 namespace PetZone.Volunteers.Infrastructure;
 
@@ -69,6 +71,16 @@ public static class DependencyInjection
         services.AddHostedService<MinioCleanupService>();
         services.AddHostedService<SoftDeleteCleanupService>();
         services.AddHostedService<DailyContentService>();
+
+        // RescueGroups integration
+        services.Configure<RescueGroupsOptions>(configuration.GetSection(RescueGroupsOptions.SectionName));
+        services.AddHttpClient("RescueGroups", (sp, client) =>
+        {
+            var opts = sp.GetRequiredService<IOptions<RescueGroupsOptions>>().Value;
+            client.BaseAddress = new Uri(opts.BaseUrl);
+            client.DefaultRequestHeaders.Add("Authorization", opts.ApiKey);
+        });
+        services.AddHostedService<RescueGroupsSyncService>();
 
         return services;
     }

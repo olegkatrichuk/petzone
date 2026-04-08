@@ -37,6 +37,7 @@ namespace PetZone.Volunteers.Domain.Models
         public string? MicrochipNumber { get; private set; }
         public Guid? VolunteerId { get; private set; }
         public int Position { get; private set; }
+        public string? ExternalId { get; private set; }
 
         private readonly List<Requisite> _requisites = new();
         public IReadOnlyList<Requisite> Requisites => _requisites.AsReadOnly();
@@ -256,5 +257,7 @@ namespace PetZone.Volunteers.Domain.Models
         }
 
         internal void SetPosition(int position) => Position = position;
+
+        public void SetExternalId(string externalId) => ExternalId = externalId;
     }
 }
