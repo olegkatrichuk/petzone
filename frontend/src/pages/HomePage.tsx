@@ -75,7 +75,7 @@ function AnimatedStatCard({ target, label, icon }: { target: number; label: stri
       >
         <Box sx={{ color: CORAL, mb: 1 }}>{icon}</Box>
         <Typography variant="h4" fontWeight="bold" color="text.primary">
-          {target > 0 ? <span ref={countRef}>0</span> : '—'}
+          <span ref={countRef}>0</span>
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>{label}</Typography>
       </Paper>
