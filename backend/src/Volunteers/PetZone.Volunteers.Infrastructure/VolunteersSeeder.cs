@@ -80,7 +80,7 @@ public static class VolunteersSeeder
 
                 var sb = SpeciesBreed.Create(speciesEntity.Id, breed.Id);
                 var health = HealthInfo.Create(pd.HealthDesc);
-                var address = Address.Create(pd.City, pd.Street ?? "");
+                var address = Address.Create(pd.City, pd.Street);
                 var weight = Weight.Create(pd.Weight);
                 var height = Height.Create(pd.Height);
                 var ownerPhone = PhoneNumber.Create(vd.Phone);

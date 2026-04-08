@@ -13,10 +13,10 @@ public class Address : ValueObject
 
     // Свойства только для чтения
     public string City { get; }
-    public string Street { get; }
+    public string? Street { get; }
 
     // 2. ПРИВАТНЫЙ КОНСТРУКТОР (без всяких throw!)
-    private Address(string city, string street)
+    private Address(string city, string? street)
     {
         City = city;
         Street = street;
@@ -25,7 +25,7 @@ public class Address : ValueObject
     private Address() { } // Для EF Core
 
     // 3. ФАБРИЧНЫЙ МЕТОД С РУЧНОЙ ВАЛИДАЦИЕЙ
-    public static Result<Address, Error> Create(string city, string street)
+    public static Result<Address, Error> Create(string city, string? street = null)
     {
         // --- ВАЛИДАЦИЯ ГОРОДА ---
         if (string.IsNullOrWhiteSpace(city))
@@ -38,19 +38,13 @@ public class Address : ValueObject
             return Error.Validation("address.city_too_long", $"Название города не должно превышать {MAX_CITY_LENGTH} символов.");
         }
 
-        // --- ВАЛИДАЦИЯ УЛИЦЫ ---
-        if (string.IsNullOrWhiteSpace(street))
-        {
-            return Error.Validation("address.street_is_empty", "Название улицы не может быть пустым.");
-        }
-
-        if (street.Length > MAX_STREET_LENGTH)
+        // --- ВАЛИДАЦИЯ УЛИЦЫ (необязательная) ---
+        if (!string.IsNullOrWhiteSpace(street) && street.Length > MAX_STREET_LENGTH)
         {
             return Error.Validation("address.street_too_long", $"Название улицы не должно превышать {MAX_STREET_LENGTH} символов.");
         }
 
-        // Если всё отлично — возвращаем новый объект
-        return new Address(city, street);
+        return new Address(city, string.IsNullOrWhiteSpace(street) ? null : street);
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
