@@ -24,7 +24,6 @@ export default function Footer() {
   const NAV_LINKS = [
     { labelKey: 'nav.home', path: '/' },
     { labelKey: 'nav.pets', path: '/pets' },
-    { labelKey: 'nav.listings', path: '/listings' },
     { labelKey: 'nav.volunteers', path: '/volunteers' },
     { labelKey: 'nav.about', path: '/about' },
     { labelKey: 'nav.faq', path: '/faq' },

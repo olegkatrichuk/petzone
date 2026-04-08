@@ -152,7 +152,7 @@ export default function CreateListingPage() {
         }
       }
 
-      navigate(`/listings/${result.id}`)
+      navigate('/pets')
     } catch (err) {
       setToast(getApiError(err, t))
     }
@@ -176,7 +176,7 @@ export default function CreateListingPage() {
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 4 }}>
       <PageMeta title={t('listings.createTitle')} description={t('listings.createTitle')} path="/listings/create" noIndex />
       <Container maxWidth="sm">
-        <Button startIcon={<ArrowBackIcon />} onClick={() => navigate('/listings')}
+        <Button startIcon={<ArrowBackIcon />} onClick={() => navigate('/pets')}
           sx={{ mb: 3, color: '#6B7280', textTransform: 'none' }}>
           {t('common.back')}
         </Button>

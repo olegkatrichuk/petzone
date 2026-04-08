@@ -9,154 +9,26 @@ import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import Drawer from '@mui/material/Drawer'
-import Chip from '@mui/material/Chip'
 import Tooltip from '@mui/material/Tooltip'
 import CircularProgress from '@mui/material/CircularProgress'
-import Divider from '@mui/material/Divider'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import CloseIcon from '@mui/icons-material/Close'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
-import PhoneIcon from '@mui/icons-material/Phone'
-import EmailIcon from '@mui/icons-material/Email'
+import AddIcon from '@mui/icons-material/Add'
 import SearchIcon from '@mui/icons-material/Search'
 import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
 import { useGetPetsQuery, useGetPetByIdQuery } from '../services/petsApi'
-import { useGetListingsQuery } from '../services/listingsApi'
 import type { PetFilters, Pet } from '../types/pet'
-import type { AdoptionListing } from '../types/listing'
 import PetFiltersPanel from '../components/pets/PetFilters'
 import PetsList from '../components/pets/PetsList'
 import PetCard from '../components/pets/PetCard'
 import { useRecentlyViewedStore } from '../store/recentlyViewedStore'
 import { useLangNavigate } from '../hooks/useLangNavigate'
+import { useAuthStore } from '../store/authStore'
 
 const CORAL = '#FF6B6B'
-
-function ListingCard({ listing }: { listing: AdoptionListing }) {
-  const { t } = useTranslation()
-  const navigate = useLangNavigate()
-  const ageLabel = listing.ageMonths < 1
-    ? t('pets.ageLessThanMonth')
-    : listing.ageMonths < 12
-      ? `${listing.ageMonths} ${t('pets.ageMonths')}`
-      : `${Math.floor(listing.ageMonths / 12)} ${t('pets.ageYears')}`
-
-  return (
-    <Box
-      onClick={() => navigate(`/listings/${listing.id}`)}
-      sx={{
-        bgcolor: 'background.paper',
-        border: '1px solid #E5E7EB',
-        borderRadius: 3,
-        p: 2.5,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 1,
-        cursor: 'pointer',
-        transition: 'box-shadow 0.2s',
-        '&:hover': { boxShadow: '0 4px 16px rgba(0,0,0,0.10)' },
-      }}>
-      <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
-        <Typography variant="subtitle1" fontWeight={700} sx={{ lineHeight: 1.3 }}>
-          {listing.title}
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center', flexShrink: 0 }}>
-          {listing.photos.length > 0 && (
-            <Chip
-              icon={<PhotoCameraIcon sx={{ fontSize: '14px !important' }} />}
-              label={listing.photos.length}
-              size="small"
-              sx={{ bgcolor: 'action.hover', fontSize: 11, height: 22 }}
-            />
-          )}
-          <Chip
-            label={t('listings.ownerBadge')}
-            size="small"
-            sx={{ bgcolor: '#FFF0F0', color: CORAL, fontWeight: 600, fontSize: 11 }}
-          />
-        </Box>
-      </Box>
-
-      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-        <Chip label={ageLabel} size="small" sx={{ bgcolor: 'action.hover' }} />
-        <Chip label={listing.color} size="small" sx={{ bgcolor: 'action.hover' }} />
-        {listing.vaccinated && <Chip label={t('pets.vaccinated')} size="small" sx={{ bgcolor: '#D1FAE5', color: '#059669' }} />}
-        {listing.castrated && <Chip label={t('pets.castrated')} size="small" sx={{ bgcolor: '#DBEAFE', color: '#2563EB' }} />}
-      </Box>
-
-      <Typography variant="body2" color="text.secondary" sx={{
-        display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
-      }}>
-        {listing.description}
-      </Typography>
-
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: '#6B7280' }}>
-        <LocationOnIcon sx={{ fontSize: 16 }} />
-        <Typography variant="caption">{listing.city}</Typography>
-      </Box>
-
-      <Divider />
-
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-        <Typography variant="caption" color="text.secondary" fontWeight={600}>{listing.userName}</Typography>
-        {listing.userPhone && (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: '#374151' }}>
-            <PhoneIcon sx={{ fontSize: 14 }} />
-            <Typography variant="caption">{listing.userPhone}</Typography>
-          </Box>
-        )}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: '#374151' }}>
-          <EmailIcon sx={{ fontSize: 14 }} />
-          <Typography variant="caption">{listing.userEmail}</Typography>
-        </Box>
-      </Box>
-    </Box>
-  )
-}
-
-function ListingsTeaser({ speciesId }: { speciesId?: string }) {
-  const { t } = useTranslation()
-  const navigate = useLangNavigate()
-  const { data: listingsData, isLoading } = useGetListingsQuery(
-    { speciesId, pageSize: 3 },
-    { skip: false }
-  )
-  const listings = listingsData?.items ?? []
-
-  if (isLoading || listings.length === 0) return null
-
-  return (
-    <Box sx={{ mt: 6 }}>
-      <Divider sx={{ mb: 4 }} />
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
-        <Box>
-          <Typography variant="h5" fontWeight="bold" sx={{ color: '#1F2937' }}>
-            {t('listings.sectionTitle')}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-            {t('listings.sectionSubtitle')}
-          </Typography>
-        </Box>
-        <Button
-          variant="outlined"
-          endIcon={<ArrowForwardIcon />}
-          onClick={() => navigate('/listings')}
-          sx={{ borderColor: CORAL, color: CORAL, textTransform: 'none', fontWeight: 600, borderRadius: 2, flexShrink: 0 }}
-        >
-          {t('listings.showAll')}
-        </Button>
-      </Box>
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }, gap: 2 }}>
-        {listings.map((l) => <ListingCard key={l.id} listing={l} />)}
-      </Box>
-    </Box>
-  )
-}
 
 // Loads one pet and renders it in the recently viewed strip
 function RecentPetCard({ petId }: { petId: string }) {
@@ -248,6 +120,8 @@ function filtersToParams(filters: Omit<PetFilters, 'page'>): Record<string, stri
 
 export default function PetsPage() {
   const { t } = useTranslation()
+  const navigate = useLangNavigate()
+  const { accessToken } = useAuthStore()
   const [searchParams, setSearchParams] = useSearchParams()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [page, setPage] = useState(1)
@@ -312,23 +186,41 @@ export default function PetsPage() {
           <Typography variant="h4" fontWeight="bold" sx={{ color: '#1F2937' }}>
             {t('pets.pageTitle')}
           </Typography>
-          {/* Filter button — mobile only */}
-          <Button
-            variant="outlined"
-            startIcon={<FilterAltIcon />}
-            onClick={() => setDrawerOpen(true)}
-            sx={{
-              display: { xs: 'flex', lg: 'none' },
-              borderColor: '#1e1b4b',
-              color: '#1e1b4b',
-              textTransform: 'none',
-              fontWeight: 600,
-              borderRadius: 2,
-              '&:hover': { bgcolor: '#f0f0ff', borderColor: '#1e1b4b' },
-            }}
-          >
-            {t('pets.filters')}
-          </Button>
+          <Box sx={{ display: 'flex', gap: 1.5 }}>
+            {accessToken && (
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={() => navigate('/listings/create')}
+                sx={{
+                  bgcolor: CORAL,
+                  '&:hover': { bgcolor: '#e55555' },
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  borderRadius: 2,
+                }}
+              >
+                {t('listings.addPet')}
+              </Button>
+            )}
+            {/* Filter button — mobile only */}
+            <Button
+              variant="outlined"
+              startIcon={<FilterAltIcon />}
+              onClick={() => setDrawerOpen(true)}
+              sx={{
+                display: { xs: 'flex', lg: 'none' },
+                borderColor: '#1e1b4b',
+                color: '#1e1b4b',
+                textTransform: 'none',
+                fontWeight: 600,
+                borderRadius: 2,
+                '&:hover': { bgcolor: '#f0f0ff', borderColor: '#1e1b4b' },
+              }}
+            >
+              {t('pets.filters')}
+            </Button>
+          </Box>
         </Box>
 
         {isError && (
@@ -403,7 +295,6 @@ export default function PetsPage() {
           </Box>
         </Box>
 
-        <ListingsTeaser speciesId={baseFilters.speciesId} />
       </Container>
 
       {/* Mobile filters drawer */}
