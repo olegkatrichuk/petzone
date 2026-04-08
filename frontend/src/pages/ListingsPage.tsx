@@ -23,6 +23,7 @@ import { api } from '../lib/axios'
 import type { AdoptionListing } from '../types/listing'
 import { useAuthStore } from '../store/authStore'
 import { useLangNavigate } from '../hooks/useLangNavigate'
+import Pagination from '../components/ui/Pagination'
 
 const CORAL = '#FF6B6B'
 const PAGE_SIZE = 12
@@ -180,7 +181,6 @@ export default function ListingsPage() {
   const { user } = useAuthStore()
   const [searchParams, setSearchParams] = useSearchParams()
   const [page, setPage] = useState(1)
-  const [allListings, setAllListings] = useState<AdoptionListing[]>([])
 
   const speciesId = searchParams.get('speciesId') ?? undefined
   const city = searchParams.get('city') ?? undefined
@@ -190,24 +190,15 @@ export default function ListingsPage() {
     { speciesId, city, page, pageSize: PAGE_SIZE },
   )
   const listings = listingsData?.items ?? []
+  const totalCount = listingsData?.totalCount ?? 0
 
   const locale = i18n.language?.slice(0, 2) || 'uk'
   const { data: speciesList = [] } = useGetSpeciesQuery(locale)
 
-  // Reset on filter change
+  // Reset to page 1 on filter change
   useEffect(() => {
     setPage(1)
-    setAllListings([])
   }, [speciesId, city])
-
-  // Accumulate pages
-  useEffect(() => {
-    if (!listings.length && page === 1) { setAllListings([]); return }
-    setAllListings((prev) => page === 1 ? [...listings] : [...prev, ...listings])
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listings])
-
-  const hasMore = (listingsData?.totalCount ?? 0) > page * PAGE_SIZE
 
   const applyCity = useCallback(() => {
     const p = new URLSearchParams(searchParams)
@@ -317,11 +308,11 @@ export default function ListingsPage() {
         </Box>
 
         {/* Grid */}
-        {isLoading ? (
+        {isLoading || isFetching ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
             <CircularProgress sx={{ color: CORAL }} />
           </Box>
-        ) : allListings.length === 0 ? (
+        ) : listings.length === 0 ? (
           <Box sx={{ textAlign: 'center', py: 10 }}>
             <Typography variant="h6" color="text.secondary" gutterBottom>
               {t('listings.empty')}
@@ -345,34 +336,23 @@ export default function ListingsPage() {
               gap: 2.5,
             }}
           >
-            {allListings.map((l) => (
+            {listings.map((l) => (
               <ListingCard key={l.id} listing={l} />
             ))}
           </Box>
         )}
 
-        {/* Load more */}
-        {!isLoading && allListings.length > 0 && (
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
-            {hasMore ? (
-              <Button
-                variant="outlined"
-                onClick={() => setPage((p) => p + 1)}
-                disabled={isFetching}
-                startIcon={isFetching ? <CircularProgress size={16} sx={{ color: 'inherit' }} /> : undefined}
-                sx={{
-                  borderColor: '#1e1b4b', color: '#1e1b4b', textTransform: 'none',
-                  fontWeight: 600, borderRadius: 2, px: 5, py: 1,
-                  '&:hover': { bgcolor: '#f0f0ff', borderColor: '#1e1b4b' },
-                }}
-              >
-                {isFetching ? t('pets.loading') : t('pets.loadMore')}
-              </Button>
-            ) : (
-              <Typography variant="body2" color="text.secondary">{t('pets.allLoaded')}</Typography>
-            )}
-          </Box>
+        {/* Pagination */}
+        {totalCount > PAGE_SIZE && (
+          <Pagination
+            page={page}
+            pageSize={PAGE_SIZE}
+            totalCount={totalCount}
+            onChange={(p) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
+            ofLabel={t('volunteers.of')}
+          />
         )}
+
       </Container>
     </Box>
   )
