@@ -88,13 +88,21 @@ public class RescueGroupsSyncService(
 
         for (var page = 1; page <= _opts.MaxPages; page++)
         {
-            var url = $"animals/search/available?page[number]={page}&page[size]={_opts.PageSize}" +
+            var url = $"animals/search/available?limit={_opts.PageSize}&page={page}" +
                       "&include=species,locations";
 
             RgApiResponse? response;
             try
             {
-                response = await client.GetFromJsonAsync<RgApiResponse>(url, JsonOpts, ct);
+                var httpResponse = await client.GetAsync(url, ct);
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    var body = await httpResponse.Content.ReadAsStringAsync(ct);
+                    logger.LogError("RescueGroups API returned {Status} for page {Page}: {Body}",
+                        (int)httpResponse.StatusCode, page, body[..Math.Min(500, body.Length)]);
+                    break;
+                }
+                response = await httpResponse.Content.ReadFromJsonAsync<RgApiResponse>(JsonOpts, ct);
             }
             catch (Exception ex)
             {
