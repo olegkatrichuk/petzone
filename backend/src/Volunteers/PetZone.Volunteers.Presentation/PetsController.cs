@@ -51,13 +51,14 @@ public class PetsController(
         return volunteer is not null && volunteer.UserId == userId.Value;
     }
 
-    [Authorize(Policy = Permissions.Volunteers.Create)]
+    [Authorize(Policy = Permissions.Pets.Create)]
     [HttpPost]
     public async Task<ActionResult> Create(
         [FromRoute] Guid volunteerId,
         [FromBody] CreatePetRequest request,
         CancellationToken cancellationToken)
     {
+        if (!await IsOwnerOrAdminAsync(volunteerId, cancellationToken)) return Forbid();
         logger.LogInformation("Creating pet for volunteer {VolunteerId}", volunteerId);
         var result = await createPetService.Handle(request.ToCommand(volunteerId), cancellationToken);
         if (result.IsFailure)
