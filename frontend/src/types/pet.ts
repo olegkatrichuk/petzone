@@ -51,6 +51,7 @@ export interface PetFilters {
   status?: number
   sortBy?: string
   sortDescending?: boolean
+  source?: 'local' | 'imported'
 }
 
 export type { PaginatedResponse } from './api'

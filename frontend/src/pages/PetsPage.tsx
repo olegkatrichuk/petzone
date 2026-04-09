@@ -27,6 +27,7 @@ import PetCard from '../components/pets/PetCard'
 import { useRecentlyViewedStore } from '../store/recentlyViewedStore'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import { useAuthStore } from '../store/authStore'
+import { useGeoSource } from '../hooks/useGeoSource'
 
 const CORAL = '#FF6B6B'
 
@@ -128,6 +129,7 @@ export default function PetsPage() {
   const [allItems, setAllItems] = useState<Pet[]>([])
   const [searchInput, setSearchInput] = useState(() => new URLSearchParams(window.location.search).get('nickname') ?? '')
 
+  const geoSource = useGeoSource()
   const baseFilters = useMemo(() => paramsToFilters(searchParams), [searchParams])
 
   // Stringify of filters for detecting changes (reset page when filters change)
@@ -157,7 +159,7 @@ export default function PetsPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchInput])
 
-  const filters: PetFilters = { ...baseFilters, page }
+  const filters: PetFilters = { ...baseFilters, page, source: geoSource }
   const { data, isLoading, isFetching, isError, refetch } = useGetPetsQuery(filters)
 
   // Accumulate items across pages

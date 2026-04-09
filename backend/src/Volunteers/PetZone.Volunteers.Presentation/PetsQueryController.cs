@@ -32,6 +32,7 @@ public class PetsQueryController(
         [FromQuery] int? status = null,
         [FromQuery] string? sortBy = null,
         [FromQuery] bool sortDescending = false,
+        [FromQuery] string? source = null,
         CancellationToken cancellationToken = default)
     {
         logger.LogInformation("Getting pets with filters. Page: {Page}", page);
@@ -39,7 +40,7 @@ public class PetsQueryController(
         var query = new GetPetsQuery(
             page, pageSize, volunteerId, nickname, color, city,
             speciesId, breedId, minAge, maxAge, minWeight, maxWeight,
-            isCastrated, isVaccinated, status, sortBy, sortDescending);
+            isCastrated, isVaccinated, status, sortBy, sortDescending, source);
 
         var result = await getPetsHandler.Handle(query, cancellationToken);
 

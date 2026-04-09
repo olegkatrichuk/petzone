@@ -22,4 +22,7 @@ public record GetPetsQuery(
 
     // Сортировка
     string? SortBy,
-    bool SortDescending = false);
+    bool SortDescending = false,
+
+    // Джерело: "local" (без ExternalId), "imported" (з ExternalId), null = всі
+    string? Source = null);

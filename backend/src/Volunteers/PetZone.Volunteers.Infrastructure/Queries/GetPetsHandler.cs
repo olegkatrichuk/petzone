@@ -69,6 +69,11 @@ public class GetPetsHandler(
         if (query.Status.HasValue)
             petsQuery = petsQuery.Where(x => (int)x.Pet.Status == query.Status.Value);
 
+        if (query.Source == "local")
+            petsQuery = petsQuery.Where(x => x.Pet.ExternalId == null);
+        else if (query.Source == "imported")
+            petsQuery = petsQuery.Where(x => x.Pet.ExternalId != null);
+
         petsQuery = query.SortBy?.ToLower() switch
         {
             "nickname" => query.SortDescending
