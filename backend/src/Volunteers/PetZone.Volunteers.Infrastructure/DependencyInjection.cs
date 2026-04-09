@@ -14,6 +14,7 @@ using PetZone.Volunteers.Application.Repositories;
 using PetZone.Volunteers.Infrastructure.Repositories;
 using Microsoft.Extensions.Options;
 using PetZone.Volunteers.Infrastructure.RescueGroups;
+using PetZone.Volunteers.Infrastructure.UkrainianShelters;
 
 namespace PetZone.Volunteers.Infrastructure;
 
@@ -81,6 +82,19 @@ public static class DependencyInjection
             client.DefaultRequestHeaders.Add("Authorization", opts.ApiKey);
         });
         services.AddHostedService<RescueGroupsSyncService>();
+
+        // Ukrainian shelter scrapers
+        services.AddHttpClient("lkplev", client =>
+        {
+            client.BaseAddress = new Uri("https://lkplev.com");
+            client.DefaultRequestHeaders.Add("User-Agent", "PetZone/1.0");
+        });
+        services.AddHttpClient("animalsCity", client =>
+        {
+            client.DefaultRequestHeaders.Add("User-Agent", "PetZone/1.0");
+        });
+        services.AddHostedService<LkplevSyncService>();
+        services.AddHostedService<AnimalsCitySyncService>();
 
         return services;
     }
