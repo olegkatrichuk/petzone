@@ -138,7 +138,7 @@ public class LkplevSyncService(
         DateTime dob;
         var bdMatch = BirthdateRx.Match(block);
         dob = bdMatch.Success && DateTime.TryParse(bdMatch.Groups[1].Value, out var parsed)
-            ? parsed
+            ? DateTime.SpecifyKind(parsed, DateTimeKind.Utc)
             : DateTime.UtcNow.AddYears(-2);
 
         // Size → weight / height estimate
