@@ -22,11 +22,6 @@ public class LkplevSyncService(
     private const string BaseUrl    = "https://lkplev.com";
     private const string City       = "Lviv";
 
-    // Regex patterns (DOTALL so . crosses newlines)
-    private static readonly Regex AnimalBlockRx = new(
-        @"<div class=""animal"">(.*?)</div>\s*</div>\s*</div>",
-        RegexOptions.Singleline | RegexOptions.Compiled);
-
     private static readonly Regex NameRx        = new(@"<h3[^>]*>([^<]+)</h3>",       RegexOptions.Compiled);
     private static readonly Regex IdRx          = new(@"href=""/detail/view/(\d+)""",  RegexOptions.Compiled);
     private static readonly Regex PhotoRx       = new(@"<img\s+src=""([^""]+)""",      RegexOptions.Compiled);
@@ -76,15 +71,15 @@ public class LkplevSyncService(
         }
 
         var client  = httpClientFactory.CreateClient("lkplev");
-        var html    = await client.GetStringAsync(ListingUrl, ct);
-        var blocks  = AnimalBlockRx.Matches(html);
+        var html   = await client.GetStringAsync(ListingUrl, ct);
+        // Split by animal card opener — each chunk after index 0 is one animal block
+        var blocks = html.Split("""<div class="animal">""", StringSplitOptions.RemoveEmptyEntries);
 
         var imported = 0;
         var skipped  = 0;
 
-        foreach (Match block in blocks)
+        foreach (var content in blocks.Skip(1))
         {
-            var content = block.Value;
             try
             {
                 var idMatch = IdRx.Match(content);
