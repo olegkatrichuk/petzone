@@ -239,8 +239,6 @@ export default function PetsPage() {
           </Alert>
         )}
 
-        <RecentlyViewedSection />
-
         <Box sx={{ display: 'flex', gap: 4, alignItems: 'flex-start' }}>
           {/* Desktop sidebar filters */}
           <Box sx={{ width: 280, flexShrink: 0, display: { xs: 'none', lg: 'block' } }}>
@@ -296,6 +294,8 @@ export default function PetsPage() {
             )}
           </Box>
         </Box>
+
+        <RecentlyViewedSection />
 
       </Container>
 

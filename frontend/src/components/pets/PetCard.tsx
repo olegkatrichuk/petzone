@@ -105,7 +105,7 @@ export default function PetCard({ pet }: Props) {
         },
       }}
     >
-      <Box sx={{ width: '100%', height: 220, overflow: 'hidden', flexShrink: 0 }}>
+      <Box sx={{ width: '100%', height: 160, overflow: 'hidden', flexShrink: 0 }}>
         <Box
           component="img"
           src={mainPhoto}
@@ -161,35 +161,6 @@ export default function PetCard({ pet }: Props) {
             </Typography>
           </Box>
         </Box>
-
-        {/* Weight + Height */}
-        <Box sx={{ display: 'flex', gap: 2, mb: 1.5 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <ScaleIcon sx={{ fontSize: 16, color: '#9CA3AF' }} />
-            <Typography variant="body2" color="text.secondary">{pet.weight} {t('pets.kg')}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <HeightIcon sx={{ fontSize: 16, color: '#9CA3AF' }} />
-            <Typography variant="body2" color="text.secondary">{pet.height} {t('pets.cm')}</Typography>
-          </Box>
-        </Box>
-
-        {/* Description preview */}
-        {pet.generalDescription && (
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{
-              overflow: 'hidden',
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              mb: 1.5,
-            }}
-          >
-            {pet.generalDescription}
-          </Typography>
-        )}
 
         <Divider sx={{ mb: 1.5 }} />
 
