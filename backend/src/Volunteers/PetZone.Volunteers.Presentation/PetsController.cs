@@ -10,6 +10,7 @@ using PetZone.Volunteers.Contracts;
 using PetZone.Volunteers.Presentation.Extensions;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Webp;
+using SixLabors.ImageSharp.Processing;
 using System.Security.Claims;
 using PetPhotoDto = PetZone.Volunteers.Application.Commands.PetPhotoDto;
 
@@ -139,10 +140,23 @@ public class PetsController(
         return this.ToOkResponse(result.Value);
     }
 
+    private const int MaxImageDimension = 4000;
+
     private static async Task<Stream> ConvertToWebpAsync(IFormFile file)
     {
         using var inputStream = file.OpenReadStream();
         using var image = await Image.LoadAsync(inputStream);
+
+        // Downscale to stay within limits while preserving aspect ratio
+        if (image.Width > MaxImageDimension || image.Height > MaxImageDimension)
+        {
+            var ratio = Math.Min(
+                (double)MaxImageDimension / image.Width,
+                (double)MaxImageDimension / image.Height);
+            image.Mutate(ctx => ctx.Resize(
+                (int)(image.Width * ratio),
+                (int)(image.Height * ratio)));
+        }
 
         var outputStream = new MemoryStream();
         var encoder = new WebpEncoder { Quality = 80 };

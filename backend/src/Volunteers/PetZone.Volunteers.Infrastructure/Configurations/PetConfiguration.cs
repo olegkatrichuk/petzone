@@ -28,6 +28,12 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.ExternalId).HasMaxLength(50).IsRequired(false);
         builder.HasIndex(p => p.ExternalId).IsUnique().HasFilter("external_id IS NOT NULL");
         builder.Property(p => p.IsDeleted).IsRequired();
+
+        // Performance indexes for common filter/join patterns
+        builder.HasIndex(p => p.VolunteerId);
+        builder.HasIndex(p => p.IsDeleted);
+        builder.HasIndex(p => new { p.VolunteerId, p.IsDeleted });
+        builder.HasIndex(p => p.Status);
         builder.Property(p => p.DeletionDate).IsRequired(false);
 
         builder.ComplexProperty(p => p.SpeciesBreedInfo, sb =>

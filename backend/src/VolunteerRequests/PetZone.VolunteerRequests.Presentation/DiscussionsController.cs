@@ -35,7 +35,10 @@ public class DiscussionsController : ControllerBase
         var userId = GetUserId();
         if (userId is null) return Unauthorized();
 
-        var command = new AddMessageCommand(userId.Value, discussionId, dto.Text);
+        if (string.IsNullOrWhiteSpace(dto.Text) || dto.Text.Length > 2000)
+            return BadRequest("Message text must be between 1 and 2000 characters.");
+
+        var command = new AddMessageCommand(userId.Value, discussionId, dto.Text.Trim());
         var result = await handler.Handle(command, cancellationToken);
         return result.IsSuccess ? this.ToOkResponse(result.Value) : result.Error.ToResponse();
     }
@@ -68,7 +71,10 @@ public class DiscussionsController : ControllerBase
         var userId = GetUserId();
         if (userId is null) return Unauthorized();
 
-        var command = new EditMessageCommand(userId.Value, discussionId, messageId, dto.NewText);
+        if (string.IsNullOrWhiteSpace(dto.NewText) || dto.NewText.Length > 2000)
+            return BadRequest("Message text must be between 1 and 2000 characters.");
+
+        var command = new EditMessageCommand(userId.Value, discussionId, messageId, dto.NewText.Trim());
         var result = await handler.Handle(command, cancellationToken);
         return result.IsSuccess ? this.ToOkResponse(result.Value) : result.Error.ToResponse();
     }

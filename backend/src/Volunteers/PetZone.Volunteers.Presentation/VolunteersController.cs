@@ -11,6 +11,7 @@ using PetZone.Volunteers.Presentation.Extensions;
 using PetZone.Accounts.Infrastructure.Authorization;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Webp;
+using SixLabors.ImageSharp.Processing;
 using System.Security.Claims;
 
 namespace PetZone.Volunteers.Presentation;
@@ -134,6 +135,9 @@ public class VolunteersController(
         [FromQuery] int pageSize = 10,
         CancellationToken cancellationToken = default)
     {
+        if (page < 1) page = 1;
+        if (pageSize < 1 || pageSize > 100) pageSize = Math.Clamp(pageSize, 1, 100);
+
         logger.LogInformation("Getting volunteers. Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
         var query = new GetVolunteersQuery(page, pageSize);
@@ -164,6 +168,14 @@ public class VolunteersController(
 
         using var inputStream = file.OpenReadStream();
         using var image = await Image.LoadAsync(inputStream, cancellationToken);
+
+        const int maxDim = 4000;
+        if (image.Width > maxDim || image.Height > maxDim)
+        {
+            var ratio = Math.Min((double)maxDim / image.Width, (double)maxDim / image.Height);
+            image.Mutate(ctx => ctx.Resize((int)(image.Width * ratio), (int)(image.Height * ratio)));
+        }
+
         var outputStream = new MemoryStream();
         await image.SaveAsync(outputStream, new WebpEncoder { Quality = 85 }, cancellationToken);
         outputStream.Position = 0;

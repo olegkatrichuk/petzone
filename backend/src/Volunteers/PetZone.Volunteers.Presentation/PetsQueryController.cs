@@ -35,6 +35,9 @@ public class PetsQueryController(
         [FromQuery] string? source = null,
         CancellationToken cancellationToken = default)
     {
+        if (page < 1) page = 1;
+        if (pageSize < 1 || pageSize > 100) pageSize = Math.Clamp(pageSize, 1, 100);
+
         logger.LogInformation("Getting pets with filters. Page: {Page}", page);
 
         var query = new GetPetsQuery(
