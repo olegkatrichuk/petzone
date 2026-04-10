@@ -21,7 +21,6 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useGetPetsQuery } from '../services/petsApi'
 import { useGetVolunteersQuery } from '../services/volunteersApi'
 import PetCard from '../components/pets/PetCard'
-import { useGeoSource } from '../hooks/useGeoSource'
 
 const CORAL = '#FF6B6B'
 
@@ -127,14 +126,13 @@ export default function HomePage() {
   const { t } = useTranslation()
   const navigate = useLangNavigate()
 
-  const geoSource = useGeoSource()
-  // Random page so featured pets differ on every visit
-  const [featuredPage] = useState(() => Math.floor(Math.random() * 10) + 1)
+  // Random page so featured pets differ on every visit (all sources mixed)
+  const [featuredPage] = useState(() => Math.floor(Math.random() * 20) + 1)
 
   const { data: petsData } = useGetPetsQuery({ page: 1, pageSize: 1 }, { refetchOnMountOrArgChange: true })
   const { data: volunteersData } = useGetVolunteersQuery({ page: 1, pageSize: 1 }, { refetchOnMountOrArgChange: true })
   const { data: featuredPetsData, isLoading: featuredLoading, isError: featuredError } = useGetPetsQuery(
-    { page: featuredPage, pageSize: 6, source: geoSource },
+    { page: featuredPage, pageSize: 6 },
     { refetchOnMountOrArgChange: true }
   )
 
