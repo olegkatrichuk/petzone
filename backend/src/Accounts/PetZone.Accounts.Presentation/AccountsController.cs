@@ -145,6 +145,7 @@ public class AccountsController(
         return result.IsSuccess ? Ok() : result.Error.ToResponse();
     }
 
+    [Authorize]
     [HttpPost("logout")]
     public async Task<ActionResult> Logout(CancellationToken cancellationToken)
     {

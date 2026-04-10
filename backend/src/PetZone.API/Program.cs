@@ -168,6 +168,15 @@ catch (Exception ex) { app.Logger.LogError(ex, "VolunteersSeeder failed: {Messag
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseSerilogRequestLogging();
 
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+    context.Response.Headers.Append("X-Frame-Options", "DENY");
+    context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+    context.Response.Headers.Append("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+    await next();
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

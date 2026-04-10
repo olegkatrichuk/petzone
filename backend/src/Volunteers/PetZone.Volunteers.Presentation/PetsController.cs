@@ -205,6 +205,7 @@ public class PetsController(
         [FromRoute] Guid petId,
         CancellationToken cancellationToken)
     {
+        if (!await IsOwnerOrAdminAsync(volunteerId, cancellationToken)) return Forbid();
         logger.LogInformation("Soft deleting pet {PetId}", petId);
         var result = await deletePetService.Handle(new DeletePetCommand(volunteerId, petId), cancellationToken);
         if (result.IsFailure)
@@ -219,6 +220,7 @@ public class PetsController(
         [FromRoute] Guid petId,
         CancellationToken cancellationToken)
     {
+        if (!await IsOwnerOrAdminAsync(volunteerId, cancellationToken)) return Forbid();
         logger.LogInformation("Hard deleting pet {PetId}", petId);
         var result = await hardDeletePetService.Handle(new HardDeletePetCommand(volunteerId, petId), cancellationToken);
         if (result.IsFailure)

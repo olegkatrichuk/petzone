@@ -51,6 +51,16 @@ export default function PetDetailPage() {
 
   const { data: pet, isLoading, isError } = useGetPetByIdQuery(petId ?? '', { skip: !petId })
 
+  // All hooks must be called unconditionally — before any early returns
+  const addViewed = useRecentlyViewedStore((s) => s.add)
+
+  const { data: similarData, isLoading: similarLoading } = useGetPetsQuery(
+    { page: 1, pageSize: 5, speciesId: pet?.speciesId ?? '', status: PetStatus.LookingForHome },
+    { skip: !pet?.speciesId },
+  )
+
+  useEffect(() => { if (pet) addViewed(pet.id) }, [pet, addViewed])
+
   if (isLoading) {
     return <PetDetailSkeleton />
   }
@@ -70,17 +80,6 @@ export default function PetDetailPage() {
     )
   }
 
-  // Track recently viewed
-  const addViewed = useRecentlyViewedStore((s) => s.add)
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => { if (pet) addViewed(pet.id) }, [pet?.id])
-
-  // Similar pets — same species, LookingForHome, max 5 (we'll exclude current)
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { data: similarData, isLoading: similarLoading } = useGetPetsQuery(
-    { page: 1, pageSize: 5, speciesId: pet.speciesId, status: PetStatus.LookingForHome },
-    { skip: !pet.speciesId },
-  )
   const similarPets = (similarData?.items ?? []).filter((p) => p.id !== pet.id).slice(0, 4)
 
   const photos = pet.photos.length > 0 ? pet.photos : []
