@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
+using PetZone.Core;
 using PetZone.SharedKernel;
 using PetZone.Species.Application.Commands;
 using PetZone.Species.Domain;
@@ -10,6 +11,7 @@ namespace PetZone.Species.Infrastructure.Queries;
 public class CreateBreedService(
     SpeciesDbContext dbContext,
     SpeciesRepository speciesRepository,
+    ICacheService cache,
     ILogger<CreateBreedService> logger)
 {
     public async Task<Result<Guid, ErrorList>> Handle(
@@ -31,6 +33,9 @@ public class CreateBreedService(
             return (ErrorList)addResult.Error;
 
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        await cache.RemoveByPrefixAsync($"species:{command.SpeciesId}", cancellationToken);
+        await cache.RemoveByPrefixAsync("species:all", cancellationToken);
 
         logger.LogInformation("Breed {BreedId} created for species {SpeciesId}",
             breedResult.Value.Id, command.SpeciesId);

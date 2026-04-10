@@ -1,6 +1,7 @@
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PetZone.Core;
 using PetZone.SharedKernel;
 using PetZone.Species.Application;
 using PetZone.Species.Application.Commands;
@@ -10,6 +11,7 @@ namespace PetZone.Species.Infrastructure.Queries;
 public class DeleteSpeciesService(
     SpeciesDbContext dbContext,
     IPetSpeciesChecker petSpeciesChecker,
+    ICacheService cache,
     ILogger<DeleteSpeciesService> logger)
 {
     public async Task<Result<Guid, ErrorList>> Handle(
@@ -33,6 +35,9 @@ public class DeleteSpeciesService(
 
         dbContext.Species.Remove(species);
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        await cache.RemoveByPrefixAsync("species:all", cancellationToken);
+        await cache.RemoveByPrefixAsync($"species:{command.SpeciesId}", cancellationToken);
 
         logger.LogInformation("Species {SpeciesId} deleted", command.SpeciesId);
 

@@ -1,6 +1,7 @@
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PetZone.Core;
 using PetZone.SharedKernel;
 using PetZone.Species.Application.Commands;
 using SpeciesEntity = PetZone.Species.Domain.Species;
@@ -9,6 +10,7 @@ namespace PetZone.Species.Infrastructure.Queries;
 
 public class CreateSpeciesService(
     SpeciesDbContext dbContext,
+    ICacheService cache,
     ILogger<CreateSpeciesService> logger)
 {
     public async Task<Result<Guid, ErrorList>> Handle(
@@ -32,6 +34,8 @@ public class CreateSpeciesService(
 
         dbContext.Species.Add(species);
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        await cache.RemoveByPrefixAsync("species:all", cancellationToken);
 
         logger.LogInformation("Species {SpeciesId} created", species.Id);
         return species.Id;
