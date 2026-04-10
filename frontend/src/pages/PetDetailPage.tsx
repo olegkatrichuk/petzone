@@ -23,6 +23,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn'
 import ScaleIcon from '@mui/icons-material/Scale'
 import HeightIcon from '@mui/icons-material/Height'
 import PersonIcon from '@mui/icons-material/Person'
+import PhoneIcon from '@mui/icons-material/Phone'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import StarIcon from '@mui/icons-material/Star'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
@@ -294,6 +296,48 @@ export default function PetDetailPage() {
               )}
 
               <Divider />
+
+              {/* Contact info */}
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                {/* Phone — show only if it's a real number */}
+                {pet.ownerPhone && pet.ownerPhone !== '0000000000' && (
+                  <Button
+                    startIcon={<PhoneIcon />}
+                    variant="contained"
+                    component="a"
+                    href={`tel:${pet.ownerPhone}`}
+                    sx={{
+                      bgcolor: CORAL,
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      '&:hover': { bgcolor: '#e55555' },
+                    }}
+                  >
+                    {pet.ownerPhone}
+                  </Button>
+                )}
+
+                {/* OLX link — show for imported OLX listings */}
+                {pet.externalUrl && (
+                  <Button
+                    startIcon={<OpenInNewIcon />}
+                    variant="outlined"
+                    component="a"
+                    href={pet.externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      borderColor: '#1890ff',
+                      color: '#1890ff',
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      '&:hover': { borderColor: '#096dd9', bgcolor: '#E6F4FF' },
+                    }}
+                  >
+                    {t('petDetail.viewOnOlx')}
+                  </Button>
+                )}
+              </Box>
 
               {/* Volunteer link */}
               <Button

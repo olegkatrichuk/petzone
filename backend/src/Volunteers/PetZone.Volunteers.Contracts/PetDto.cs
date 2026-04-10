@@ -20,6 +20,8 @@ public record PetDto(
     Guid BreedId,
     int Position,
     bool IsDeleted,
-    IReadOnlyList<PetPhotoDto> Photos);
+    IReadOnlyList<PetPhotoDto> Photos,
+    string? OwnerPhone,
+    string? ExternalUrl);
 
 public record PetPhotoDto(string FilePath, bool IsMain);

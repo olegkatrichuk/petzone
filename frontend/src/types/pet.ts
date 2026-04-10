@@ -31,6 +31,8 @@ export interface Pet {
   position: number
   isDeleted: boolean
   photos: PetPhoto[]
+  ownerPhone?: string
+  externalUrl?: string
 }
 
 export interface PetFilters {

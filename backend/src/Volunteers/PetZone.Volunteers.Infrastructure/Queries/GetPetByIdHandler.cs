@@ -55,7 +55,9 @@ public class GetPetByIdHandler(
                 BreedId = x.Pet.SpeciesBreedInfo.BreedId,
                 x.Pet.Position,
                 x.Pet.IsDeleted,
-                x.Pet.Photos
+                x.Pet.Photos,
+                OwnerPhone = x.Pet.OwnerPhone.Value,
+                x.Pet.ExternalUrl
             })
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -85,7 +87,9 @@ public class GetPetByIdHandler(
             rawPet.Photos
                 .OrderByDescending(p => p.IsMain)
                 .Select(p => new PetPhotoDto(p.FilePath, p.IsMain))
-                .ToList());
+                .ToList(),
+            rawPet.OwnerPhone,
+            rawPet.ExternalUrl);
 
         await cacheService.SetAsync($"pet:{query.PetId}", pet, CacheOptions, cancellationToken);
 

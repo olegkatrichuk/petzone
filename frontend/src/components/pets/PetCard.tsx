@@ -22,8 +22,6 @@ import CompareArrowsIcon from '@mui/icons-material/CompareArrows'
 import VaccinesIcon from '@mui/icons-material/Vaccines'
 import ContentCutIcon from '@mui/icons-material/ContentCut'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
-import ScaleIcon from '@mui/icons-material/Scale'
-import HeightIcon from '@mui/icons-material/Height'
 import PersonIcon from '@mui/icons-material/Person'
 import type { Pet, PetStatus } from '../../types/pet'
 

@@ -11,7 +11,7 @@ namespace PetZone.Volunteers.Infrastructure.UkrainianShelters;
 
 /// <summary>
 /// Syncs free animal adoption ads from OLX.ua (category 1520).
-/// API: https://www.olx.ua/api/v1/offers/?category_id=1520&amp;sort_by=created_at:desc
+/// API: https://www.olx.ua/api/v1/offers/?category_id=1520&sort_by=created_at:desc
 /// </summary>
 public class OlxSyncService(
     IServiceProvider serviceProvider,
@@ -19,10 +19,10 @@ public class OlxSyncService(
     ILogger<OlxSyncService> logger) : BackgroundService
 {
     private static readonly Guid SystemVolunteerId = new("dd000000-0000-0000-0000-000000000001");
-    private const string ApiUrl    = "https://www.olx.ua/api/v1/offers/";
-    private const int CategoryId   = 1520; // free pet adoption on OLX UA
-    private const int PageLimit    = 20;
-    private const int MaxPages     = 5;   // 100 offers max per sync
+    private const string ApiUrl  = "https://www.olx.ua/api/v1/offers/";
+    private const int CategoryId = 1520; // free pet adoption on OLX UA
+    private const int PageLimit  = 20;
+    private const int MaxPages   = 5;   // 100 offers max per sync
 
     private static readonly Regex HtmlRx  = new(@"<[^>]+>",  RegexOptions.Compiled);
     private static readonly Regex SpaceRx = new(@"\s{2,}",   RegexOptions.Compiled);
@@ -44,9 +44,9 @@ public class OlxSyncService(
     {
         logger.LogInformation("Starting OLX sync");
 
-        using var scope    = serviceProvider.CreateScope();
-        var db             = scope.ServiceProvider.GetRequiredService<VolunteersDbContext>();
-        var speciesDb      = scope.ServiceProvider.GetRequiredService<SpeciesDbContext>();
+        using var scope     = serviceProvider.CreateScope();
+        var db              = scope.ServiceProvider.GetRequiredService<VolunteersDbContext>();
+        var speciesDb       = scope.ServiceProvider.GetRequiredService<SpeciesDbContext>();
         var systemVolunteer = await EnsureSystemVolunteerAsync(db, ct);
 
         var allSpecies = await speciesDb.Species.Include(s => s.Breeds).AsNoTracking().ToListAsync(ct);
@@ -88,7 +88,11 @@ public class OlxSyncService(
                         continue;
                     }
 
-                    var pet = MapToPet(offer, externalId, catSpecies, dogSpecies, systemVolunteer.Id);
+                    var listingUrl = offer.TryGetProperty("url", out var urlEl)
+                        ? urlEl.GetString()
+                        : null;
+
+                    var pet = MapToPet(offer, externalId, listingUrl, catSpecies, dogSpecies, systemVolunteer.Id);
                     if (pet is null) continue;
 
                     db.Pets.Add(pet);
@@ -111,6 +115,7 @@ public class OlxSyncService(
     private Pet? MapToPet(
         JsonElement offer,
         string externalId,
+        string? listingUrl,
         PetZone.Species.Domain.Species catSpecies,
         PetZone.Species.Domain.Species? dogSpecies,
         Guid volunteerId)
@@ -217,6 +222,9 @@ public class OlxSyncService(
         if (pet.IsFailure) return null;
 
         pet.Value.SetExternalId(externalId);
+
+        if (!string.IsNullOrWhiteSpace(listingUrl))
+            pet.Value.SetExternalUrl(listingUrl);
 
         if (!string.IsNullOrWhiteSpace(photoUrl))
         {

@@ -38,6 +38,7 @@ namespace PetZone.Volunteers.Domain.Models
         public Guid? VolunteerId { get; private set; }
         public int Position { get; private set; }
         public string? ExternalId { get; private set; }
+        public string? ExternalUrl { get; private set; }
 
         private readonly List<Requisite> _requisites = new();
         public IReadOnlyList<Requisite> Requisites => _requisites.AsReadOnly();
@@ -259,5 +260,7 @@ namespace PetZone.Volunteers.Domain.Models
         internal void SetPosition(int position) => Position = position;
 
         public void SetExternalId(string externalId) => ExternalId = externalId;
+
+        public void SetExternalUrl(string url) => ExternalUrl = url;
     }
 }

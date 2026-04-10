@@ -133,7 +133,9 @@ public class GetPetsHandler(
                 BreedId = x.Pet.SpeciesBreedInfo.BreedId,
                 x.Pet.Position,
                 x.Pet.IsDeleted,
-                x.Pet.Photos
+                x.Pet.Photos,
+                OwnerPhone = x.Pet.OwnerPhone.Value,
+                x.Pet.ExternalUrl
             })
             .ToListAsync(cancellationToken);
 
@@ -160,7 +162,9 @@ public class GetPetsHandler(
             x.Photos
                 .OrderByDescending(p => p.IsMain)
                 .Select(p => new PetPhotoDto(p.FilePath, p.IsMain))
-                .ToList()))
+                .ToList(),
+            x.OwnerPhone,
+            x.ExternalUrl))
             .ToList();
 
         return new PagedList<PetDto>(petDtos, totalCount, query.Page, query.PageSize);
