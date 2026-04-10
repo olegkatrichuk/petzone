@@ -67,11 +67,11 @@ function AnimatedStatCard({ target, label, icon }: { target: number; label: stri
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-40px' }}
-      style={{ flex: 1, minWidth: 100 }}
+      style={{ flex: 1, minWidth: 160, display: 'flex' }}
     >
       <Paper
         elevation={0}
-        sx={{ p: { xs: 2, sm: 3 }, textAlign: 'center', border: '1px solid', borderColor: 'divider', borderRadius: 3 }}
+        sx={{ p: { xs: 2, sm: 3 }, textAlign: 'center', border: '1px solid', borderColor: 'divider', borderRadius: 3, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
       >
         <Box sx={{ color: CORAL, mb: 1 }}>{icon}</Box>
         <Typography variant="h4" fontWeight="bold" color="text.primary">
@@ -90,9 +90,9 @@ function FreeCard({ label, icon }: { label: string; icon: React.ReactNode }) {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-40px' }}
-      style={{ flex: 1, minWidth: 100 }}
+      style={{ flex: 1, minWidth: 160, display: 'flex' }}
     >
-      <Paper elevation={0} sx={{ p: { xs: 2, sm: 3 }, textAlign: 'center', border: '1px solid #E5E7EB', borderRadius: 3 }}>
+      <Paper elevation={0} sx={{ p: { xs: 2, sm: 3 }, textAlign: 'center', border: '1px solid #E5E7EB', borderRadius: 3, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <Box sx={{ color: CORAL, mb: 1 }}>{icon}</Box>
         <Typography variant="h4" fontWeight="bold" sx={{ color: '#1F2937' }}>100%</Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>{label}</Typography>
@@ -126,9 +126,9 @@ export default function HomePage() {
   const { t } = useTranslation()
   const navigate = useLangNavigate()
 
-  const { data: petsData } = useGetPetsQuery({ page: 1, pageSize: 1 })
-  const { data: volunteersData } = useGetVolunteersQuery({ page: 1, pageSize: 1 })
-  const { data: featuredPetsData, isLoading: featuredLoading, isError: featuredError } = useGetPetsQuery({ page: 1, pageSize: 6 })
+  const { data: petsData } = useGetPetsQuery({ page: 1, pageSize: 1 }, { refetchOnMountOrArgChange: true })
+  const { data: volunteersData } = useGetVolunteersQuery({ page: 1, pageSize: 1 }, { refetchOnMountOrArgChange: true })
+  const { data: featuredPetsData, isLoading: featuredLoading, isError: featuredError } = useGetPetsQuery({ page: 1, pageSize: 6 }, { refetchOnMountOrArgChange: true })
 
   // ── Structured data ─────────────────────────────────────
 
@@ -352,7 +352,7 @@ export default function HomePage() {
       {/* ── Stats ─────────────────────────────────────────── */}
       <Box component="section" sx={{ bgcolor: 'background.paper', py: 5, borderBottom: '1px solid divider' }}>
         <Container maxWidth="sm">
-          <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', justifyContent: 'center' }}>
+          <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', justifyContent: 'center', alignItems: 'stretch' }}>
             <AnimatedStatCard key={`pets-${petsData?.totalCount ?? 'x'}`} target={petsData?.totalCount ?? 0} label={t('home.stats.pets')} icon={<PetsIcon sx={{ fontSize: 32 }} />} />
             <AnimatedStatCard key={`vols-${volunteersData?.totalCount ?? 'x'}`} target={volunteersData?.totalCount ?? 0} label={t('home.stats.volunteers')} icon={<VolunteerActivismIcon sx={{ fontSize: 32 }} />} />
             <FreeCard label={t('home.stats.free')} icon={<FavoriteIcon sx={{ fontSize: 32 }} />} />
