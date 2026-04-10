@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
 import { motion } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useCountUp } from 'react-countup'
 import HeroCatAnimation from '../components/animations/HeroCatAnimation'
 import Box from '@mui/material/Box'
@@ -21,6 +21,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useGetPetsQuery } from '../services/petsApi'
 import { useGetVolunteersQuery } from '../services/volunteersApi'
 import PetCard from '../components/pets/PetCard'
+import { useGeoSource } from '../hooks/useGeoSource'
 
 const CORAL = '#FF6B6B'
 
@@ -126,9 +127,16 @@ export default function HomePage() {
   const { t } = useTranslation()
   const navigate = useLangNavigate()
 
+  const geoSource = useGeoSource()
+  // Random page so featured pets differ on every visit
+  const [featuredPage] = useState(() => Math.floor(Math.random() * 10) + 1)
+
   const { data: petsData } = useGetPetsQuery({ page: 1, pageSize: 1 }, { refetchOnMountOrArgChange: true })
   const { data: volunteersData } = useGetVolunteersQuery({ page: 1, pageSize: 1 }, { refetchOnMountOrArgChange: true })
-  const { data: featuredPetsData, isLoading: featuredLoading, isError: featuredError } = useGetPetsQuery({ page: 1, pageSize: 6 }, { refetchOnMountOrArgChange: true })
+  const { data: featuredPetsData, isLoading: featuredLoading, isError: featuredError } = useGetPetsQuery(
+    { page: featuredPage, pageSize: 6, source: geoSource },
+    { refetchOnMountOrArgChange: true }
+  )
 
   // ── Structured data ─────────────────────────────────────
 
