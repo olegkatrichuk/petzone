@@ -93,8 +93,14 @@ public static class DependencyInjection
         {
             client.DefaultRequestHeaders.Add("User-Agent", "PetZone/1.0");
         });
+        services.AddHttpClient("olx", client =>
+        {
+            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0");
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+        });
         services.AddHostedService<LkplevSyncService>();
         services.AddHostedService<AnimalsCitySyncService>();
+        services.AddHostedService<OlxSyncService>();
 
         return services;
     }

@@ -24,12 +24,16 @@ public class SitemapController(
             .Select(l => new { l.Id, l.CreatedAt })
             .ToListAsync(ct);
 
-        var volunteerData = await volunteersDb.Volunteers
-            .Select(v => new { v.Id, Pets = v.Pets.Select(p => new { p.Id, p.CreatedAt }) })
+        var volunteerIds = await volunteersDb.Volunteers
+            .Where(v => !v.IsDeleted)
+            .Select(v => v.Id)
             .ToListAsync(ct);
 
-        var volunteerIds = volunteerData.Select(v => v.Id).ToList();
-        var petIds = volunteerData.SelectMany(v => v.Pets).ToList();
+        var petIds = await volunteersDb.Volunteers
+            .Where(v => !v.IsDeleted)
+            .SelectMany(v => v.Pets.Where(p => !p.IsDeleted))
+            .Select(p => new { p.Id, p.CreatedAt })
+            .ToListAsync(ct);
 
         var xml = new System.Text.StringBuilder();
         xml.AppendLine("""<?xml version="1.0" encoding="UTF-8"?>""");

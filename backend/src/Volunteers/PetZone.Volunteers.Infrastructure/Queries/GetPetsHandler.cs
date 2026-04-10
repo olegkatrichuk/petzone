@@ -75,12 +75,14 @@ public class GetPetsHandler(
             petsQuery = petsQuery.Where(x =>
                 x.Pet.ExternalId == null ||
                 x.Pet.ExternalId.StartsWith("lkplev:") ||
-                x.Pet.ExternalId.StartsWith("kharkiv:"));
+                x.Pet.ExternalId.StartsWith("kharkiv:") ||
+                x.Pet.ExternalId.StartsWith("olx:"));
         else if (query.Source == "imported")
             petsQuery = petsQuery.Where(x =>
                 x.Pet.ExternalId != null &&
                 !x.Pet.ExternalId.StartsWith("lkplev:") &&
-                !x.Pet.ExternalId.StartsWith("kharkiv:"));
+                !x.Pet.ExternalId.StartsWith("kharkiv:") &&
+                !x.Pet.ExternalId.StartsWith("olx:"));
 
         petsQuery = query.SortBy?.ToLower() switch
         {
