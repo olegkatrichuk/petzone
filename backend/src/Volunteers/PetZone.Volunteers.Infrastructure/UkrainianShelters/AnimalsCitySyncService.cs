@@ -122,6 +122,8 @@ public class AnimalsCitySyncService(
                     if (pet is null) continue;
 
                     pet.SetExternalId(externalId);
+                    if (!string.IsNullOrWhiteSpace(post.Link))
+                        pet.SetExternalUrl(post.Link);
                     db.Pets.Add(pet);
                     imported++;
                 }

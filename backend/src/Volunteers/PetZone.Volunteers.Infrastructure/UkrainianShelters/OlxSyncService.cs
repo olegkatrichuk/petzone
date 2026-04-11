@@ -157,9 +157,15 @@ public class OlxSyncService(
             }
         }
 
-        // Species: dog or cat
-        var isDog   = animalType.Contains("Собак") || animalType.Contains("Цуценят");
-        var species = isDog && dogSpecies is not null ? dogSpecies : catSpecies;
+        // Species: dog or cat (match on animalType label from OLX params)
+        var isDog = animalType.Contains("Собак", StringComparison.OrdinalIgnoreCase)
+                 || animalType.Contains("Цуценят", StringComparison.OrdinalIgnoreCase)
+                 || animalType.Contains("собак", StringComparison.OrdinalIgnoreCase);
+
+        // Fall back to cat only when we know it's not a dog (or dog species doesn't exist)
+        var species = isDog && dogSpecies is not null && dogSpecies.Id != catSpecies.Id
+            ? dogSpecies
+            : catSpecies;
 
         // Health hints from description
         var searchText   = (title + " " + desc).ToLowerInvariant();

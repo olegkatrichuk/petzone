@@ -33,10 +33,23 @@ import { PetStatus } from '../types/pet'
 import PetCard from '../components/pets/PetCard'
 import Skeleton from '@mui/material/Skeleton'
 import AppBreadcrumbs from '../components/ui/AppBreadcrumbs'
+import PetsIcon from '@mui/icons-material/Pets'
 import { useRecentlyViewedStore } from '../store/recentlyViewedStore'
 import ShareButton from '../components/ui/ShareButton'
 
 const CORAL = '#FF6B6B'
+
+function getSourceName(url: string): string {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, '')
+    if (host.includes('olx.'))           return 'OLX'
+    if (host.includes('lkplev'))         return 'ЛКП Лев (Львів)'
+    if (host.includes('animals-city'))   return 'animals-city.org (Харків)'
+    return host
+  } catch {
+    return 'джерело'
+  }
+}
 
 const STATUS_COLORS: Record<PetStatus, { bg: string; text: string; labelKey: string }> = {
   [PetStatus.NeedsHelp]: { bg: '#FEF3C7', text: '#D97706', labelKey: 'pets.status.needsHelp' },
@@ -86,8 +99,7 @@ export default function PetDetailPage() {
 
   const photos = pet.photos.length > 0 ? pet.photos : []
   const mainPhotoFirst = [...photos].sort((a, b) => (b.isMain ? 1 : 0) - (a.isMain ? 1 : 0))
-  const displayPhoto =
-    mainPhotoFirst[activePhoto]?.filePath ?? 'https://placehold.co/800x500?text=Photo'
+  const displayPhoto = mainPhotoFirst[activePhoto]?.filePath ?? null
 
   const statusCfg = STATUS_COLORS[pet.status]
 
@@ -125,13 +137,31 @@ export default function PetDetailPage() {
               sx={{ border: '1px solid #E5E7EB', borderRadius: 3, overflow: 'hidden' }}
             >
               {/* Main photo */}
-              <Box
-                component="img"
-                src={displayPhoto}
-                alt={pet.nickname}
-                loading="lazy"
-                sx={{ width: '100%', height: { xs: 240, sm: 340, md: 420 }, objectFit: 'cover', display: 'block' }}
-              />
+              {displayPhoto ? (
+                <Box
+                  component="img"
+                  src={displayPhoto}
+                  alt={pet.nickname}
+                  loading="lazy"
+                  sx={{ width: '100%', height: { xs: 240, sm: 340, md: 420 }, objectFit: 'cover', display: 'block' }}
+                />
+              ) : (
+                <Box
+                  sx={{
+                    width: '100%',
+                    height: { xs: 240, sm: 340, md: 420 },
+                    bgcolor: '#F3F4F6',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 1,
+                  }}
+                >
+                  <PetsIcon sx={{ fontSize: 72, color: '#D1D5DB' }} />
+                  <Typography variant="body2" sx={{ color: '#9CA3AF' }}>Фото відсутнє</Typography>
+                </Box>
+              )}
 
               {/* Thumbnail strip */}
               {mainPhotoFirst.length > 1 && (
@@ -317,7 +347,7 @@ export default function PetDetailPage() {
                   </Button>
                 )}
 
-                {/* OLX link — show for imported OLX listings */}
+                {/* External source link (OLX, lkplev.com, animals-city.org, etc.) */}
                 {pet.externalUrl && (
                   <Button
                     startIcon={<OpenInNewIcon />}
@@ -334,7 +364,7 @@ export default function PetDetailPage() {
                       '&:hover': { borderColor: '#096dd9', bgcolor: '#E6F4FF' },
                     }}
                   >
-                    {t('petDetail.viewOnOlx')}
+                    {t('petDetail.viewOnSource', { source: getSourceName(pet.externalUrl) })}
                   </Button>
                 )}
               </Box>

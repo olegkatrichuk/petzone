@@ -85,7 +85,9 @@ public class LkplevSyncService(
                 var idMatch = IdRx.Match(content);
                 if (!idMatch.Success) continue;
 
-                var externalId = $"lkplev:{idMatch.Groups[1].Value}";
+                var animalNumericId = idMatch.Groups[1].Value;
+                var externalId      = $"lkplev:{animalNumericId}";
+                var externalUrl     = $"{BaseUrl}/detail/view/{animalNumericId}";
 
                 if (await db.Pets.AnyAsync(p => p.ExternalId == externalId, ct))
                 {
@@ -98,6 +100,7 @@ public class LkplevSyncService(
                     continue;
 
                 pet.SetExternalId(externalId);
+                pet.SetExternalUrl(externalUrl);
                 db.Pets.Add(pet);
                 imported++;
             }

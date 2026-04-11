@@ -294,7 +294,8 @@
     "removeFromFavorites": "Aus Favoriten entfernen",
     "photos": "Fotos",
     "similarPets": "Ähnliche Tiere 🐾",
-    "viewOnOlx": "Inserat auf OLX ansehen"
+    "viewOnOlx": "Inserat auf OLX ansehen",
+    "viewOnSource": "Auf {{source}} ansehen"
   },
   "volunteers": {
     "pageTitle": "Freiwillige 🐾",

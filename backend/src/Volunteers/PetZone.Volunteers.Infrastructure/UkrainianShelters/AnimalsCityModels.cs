@@ -5,6 +5,7 @@ namespace PetZone.Volunteers.Infrastructure.UkrainianShelters;
 public record AcPost(
     [property: JsonPropertyName("id")]             int Id,
     [property: JsonPropertyName("title")]          AcTitle Title,
+    [property: JsonPropertyName("link")]           string? Link,
     [property: JsonPropertyName("featured_media")] int FeaturedMedia,
     [property: JsonPropertyName("_embedded")]      AcEmbedded? Embedded);
 

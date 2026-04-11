@@ -294,7 +294,8 @@
     "removeFromFavorites": "Remove from favorites",
     "photos": "Photos",
     "similarPets": "Similar Pets 🐾",
-    "viewOnOlx": "View listing on OLX"
+    "viewOnOlx": "View listing on OLX",
+    "viewOnSource": "View on {{source}}"
   },
   "volunteers": {
     "pageTitle": "Volunteers 🐾",

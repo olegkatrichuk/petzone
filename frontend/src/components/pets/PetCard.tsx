@@ -23,6 +23,7 @@ import VaccinesIcon from '@mui/icons-material/Vaccines'
 import ContentCutIcon from '@mui/icons-material/ContentCut'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import PersonIcon from '@mui/icons-material/Person'
+import PetsIcon from '@mui/icons-material/Pets'
 import type { Pet, PetStatus } from '../../types/pet'
 
 const CORAL = '#FF6B6B'
@@ -82,7 +83,7 @@ export default function PetCard({ pet }: Props) {
   const mainPhoto =
     pet.photos.find((p) => p.isMain)?.filePath ??
     pet.photos[0]?.filePath ??
-    'https://placehold.co/400x280?text=Photo'
+    null
 
   const statusCfg = STATUS_COLORS[pet.status]
 
@@ -104,13 +105,31 @@ export default function PetCard({ pet }: Props) {
       }}
     >
       <Box sx={{ width: '100%', height: 160, overflow: 'hidden', flexShrink: 0 }}>
-        <Box
-          component="img"
-          src={mainPhoto}
-          alt={pet.nickname}
-          loading="lazy"
-          sx={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
-        />
+        {mainPhoto ? (
+          <Box
+            component="img"
+            src={mainPhoto}
+            alt={pet.nickname}
+            loading="lazy"
+            sx={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
+          />
+        ) : (
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%',
+              bgcolor: '#F3F4F6',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 0.5,
+            }}
+          >
+            <PetsIcon sx={{ fontSize: 44, color: '#D1D5DB' }} />
+            <Typography variant="caption" sx={{ color: '#9CA3AF' }}>Фото відсутнє</Typography>
+          </Box>
+        )}
       </Box>
 
       <CardContent sx={{ flex: 1, pb: 1 }}>

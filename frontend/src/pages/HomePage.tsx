@@ -126,8 +126,8 @@ export default function HomePage() {
   const { t } = useTranslation()
   const navigate = useLangNavigate()
 
-  // Random page so featured pets differ on every visit (all sources mixed)
-  const [featuredPage] = useState(() => Math.floor(Math.random() * 20) + 1)
+  // Random page so featured pets differ on every visit (pages 1–5, ~30+ pets needed)
+  const [featuredPage] = useState(() => Math.floor(Math.random() * 5) + 1)
 
   const { data: petsData } = useGetPetsQuery({ page: 1, pageSize: 1 }, { refetchOnMountOrArgChange: true })
   const { data: volunteersData } = useGetVolunteersQuery({ page: 1, pageSize: 1 }, { refetchOnMountOrArgChange: true })

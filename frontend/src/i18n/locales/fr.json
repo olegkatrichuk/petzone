@@ -294,7 +294,8 @@
     "removeFromFavorites": "Retirer des favoris",
     "photos": "Photos",
     "similarPets": "Animaux similaires 🐾",
-    "viewOnOlx": "Voir l'annonce sur OLX"
+    "viewOnOlx": "Voir l'annonce sur OLX",
+    "viewOnSource": "Voir sur {{source}}"
   },
   "volunteers": {
     "pageTitle": "Bénévoles 🐾",
