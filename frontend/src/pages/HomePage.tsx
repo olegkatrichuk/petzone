@@ -132,7 +132,7 @@ export default function HomePage() {
   const { data: petsData } = useGetPetsQuery({ page: 1, pageSize: 1 }, { refetchOnMountOrArgChange: true })
   const { data: volunteersData } = useGetVolunteersQuery({ page: 1, pageSize: 1 }, { refetchOnMountOrArgChange: true })
   const { data: featuredPetsData, isLoading: featuredLoading, isError: featuredError } = useGetPetsQuery(
-    { page: featuredPage, pageSize: 6, source: 'local' },
+    { page: featuredPage, pageSize: 6, source: 'local', sortBy: 'id' },
     { refetchOnMountOrArgChange: true }
   )
 

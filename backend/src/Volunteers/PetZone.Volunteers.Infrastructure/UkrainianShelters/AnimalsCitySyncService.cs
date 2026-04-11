@@ -112,8 +112,11 @@ public class AnimalsCitySyncService(
                 {
                     var externalId = $"kharkiv:{post.Id}";
 
-                    if (await db.Pets.AnyAsync(p => p.ExternalId == externalId, ct))
+                    var existing = await db.Pets.FirstOrDefaultAsync(p => p.ExternalId == externalId, ct);
+                    if (existing is not null)
                     {
+                        if (existing.ExternalUrl is null && !string.IsNullOrWhiteSpace(post.Link))
+                            existing.SetExternalUrl(post.Link);
                         skipped++;
                         continue;
                     }

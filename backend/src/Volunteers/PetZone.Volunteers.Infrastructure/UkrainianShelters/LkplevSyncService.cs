@@ -89,8 +89,11 @@ public class LkplevSyncService(
                 var externalId      = $"lkplev:{animalNumericId}";
                 var externalUrl     = $"{BaseUrl}/detail/view/{animalNumericId}";
 
-                if (await db.Pets.AnyAsync(p => p.ExternalId == externalId, ct))
+                var existing = await db.Pets.FirstOrDefaultAsync(p => p.ExternalId == externalId, ct);
+                if (existing is not null)
                 {
+                    if (existing.ExternalUrl is null)
+                        existing.SetExternalUrl(externalUrl);
                     skipped++;
                     continue;
                 }

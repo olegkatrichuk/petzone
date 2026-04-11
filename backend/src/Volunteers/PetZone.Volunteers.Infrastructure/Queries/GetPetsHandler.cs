@@ -104,6 +104,10 @@ public class GetPetsHandler(
             "status" => query.SortDescending
                 ? petsQuery.OrderByDescending(x => x.Pet.Status)
                 : petsQuery.OrderBy(x => x.Pet.Status),
+            // "id" — sorts by GUID to pseudo-randomly interleave pets from all sources
+            "id" => query.SortDescending
+                ? petsQuery.OrderByDescending(x => x.Pet.Id)
+                : petsQuery.OrderBy(x => x.Pet.Id),
             _ => petsQuery.OrderBy(x => x.Pet.Position)
         };
 

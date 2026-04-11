@@ -82,15 +82,18 @@ public class OlxSyncService(
                     var id         = offer.GetProperty("id").GetInt64();
                     var externalId = $"olx:{id}";
 
-                    if (await db.Pets.AnyAsync(p => p.ExternalId == externalId, ct))
-                    {
-                        skipped++;
-                        continue;
-                    }
-
                     var listingUrl = offer.TryGetProperty("url", out var urlEl)
                         ? urlEl.GetString()
                         : null;
+
+                    var existing = await db.Pets.FirstOrDefaultAsync(p => p.ExternalId == externalId, ct);
+                    if (existing is not null)
+                    {
+                        if (existing.ExternalUrl is null && listingUrl is not null)
+                            existing.SetExternalUrl(listingUrl);
+                        skipped++;
+                        continue;
+                    }
 
                     var pet = MapToPet(offer, externalId, listingUrl, catSpecies, dogSpecies, systemVolunteer.Id);
                     if (pet is null) continue;
