@@ -127,7 +127,7 @@ export default function PetCard({ pet }: Props) {
             }}
           >
             <PetsIcon sx={{ fontSize: 44, color: '#D1D5DB' }} />
-            <Typography variant="caption" sx={{ color: '#9CA3AF' }}>Фото відсутнє</Typography>
+            <Typography variant="caption" sx={{ color: '#9CA3AF' }}>{t('pets.noPhoto')}</Typography>
           </Box>
         )}
       </Box>

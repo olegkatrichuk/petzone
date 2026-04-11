@@ -85,6 +85,7 @@
     "notFoundHint": "Спробуйте змінити фільтри пошуку",
     "loadError": "Не вдалося завантажити список тварин. Спробуйте пізніше.",
     "details": "Докладніше",
+    "noPhoto": "Фото відсутнє",
     "saveToFavorites": "Зберегти в обране",
     "removeFromFavorites": "Видалити з обраного",
     "vaccinated": "Вакцинований",
@@ -295,7 +296,8 @@
     "photos": "Фото",
     "similarPets": "Схожі тваринки 🐾",
     "viewOnOlx": "Переглянути оголошення на OLX",
-    "viewOnSource": "Переглянути на {{source}}"
+    "viewOnSource": "Переглянути на {{source}}",
+    "unknownSource": "джерело"
   },
   "volunteers": {
     "pageTitle": "Волонтери 🐾",
@@ -800,6 +802,7 @@
     "foundHomeThisWeek": "Знайшли дім цього тижня",
     "totalVolunteers": "Активних волонтерів",
     "factDay": "Факт дня",
+    "featuredPet": "Тварина дня",
     "translating": "Перекладаємо..."
   },
   "ui": {

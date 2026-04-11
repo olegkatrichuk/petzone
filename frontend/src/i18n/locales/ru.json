@@ -85,6 +85,7 @@
     "notFoundHint": "Попробуйте изменить фильтры поиска",
     "loadError": "Не удалось загрузить список животных. Попробуйте позже.",
     "details": "Подробнее",
+    "noPhoto": "Фото отсутствует",
     "saveToFavorites": "Сохранить в избранное",
     "removeFromFavorites": "Убрать из избранного",
     "vaccinated": "Вакцинирован",
@@ -295,7 +296,8 @@
     "photos": "Фото",
     "similarPets": "Похожие питомцы 🐾",
     "viewOnOlx": "Смотреть объявление на OLX",
-    "viewOnSource": "Смотреть на {{source}}"
+    "viewOnSource": "Смотреть на {{source}}",
+    "unknownSource": "источник"
   },
   "volunteers": {
     "pageTitle": "Волонтёры 🐾",
@@ -800,6 +802,7 @@
     "foundHomeThisWeek": "Нашли дом за эту неделю",
     "totalVolunteers": "Активных волонтёров",
     "factDay": "Факт дня",
+    "featuredPet": "Животное дня",
     "translating": "Переводим..."
   },
   "ui": {

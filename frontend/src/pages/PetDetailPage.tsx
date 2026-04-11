@@ -39,7 +39,7 @@ import ShareButton from '../components/ui/ShareButton'
 
 const CORAL = '#FF6B6B'
 
-function getSourceName(url: string): string {
+function getSourceName(url: string, fallback: string): string {
   try {
     const host = new URL(url).hostname.replace(/^www\./, '')
     if (host.includes('olx.'))           return 'OLX'
@@ -47,7 +47,7 @@ function getSourceName(url: string): string {
     if (host.includes('animals-city'))   return 'animals-city.org (Харків)'
     return host
   } catch {
-    return 'джерело'
+    return fallback
   }
 }
 
@@ -159,7 +159,7 @@ export default function PetDetailPage() {
                   }}
                 >
                   <PetsIcon sx={{ fontSize: 72, color: '#D1D5DB' }} />
-                  <Typography variant="body2" sx={{ color: '#9CA3AF' }}>Фото відсутнє</Typography>
+                  <Typography variant="body2" sx={{ color: '#9CA3AF' }}>{t('pets.noPhoto')}</Typography>
                 </Box>
               )}
 
@@ -364,7 +364,7 @@ export default function PetDetailPage() {
                       '&:hover': { borderColor: '#096dd9', bgcolor: '#E6F4FF' },
                     }}
                   >
-                    {t('petDetail.viewOnSource', { source: getSourceName(pet.externalUrl) })}
+                    {t('petDetail.viewOnSource', { source: getSourceName(pet.externalUrl, t('petDetail.unknownSource')) })}
                   </Button>
                 )}
               </Box>

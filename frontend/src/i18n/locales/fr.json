@@ -85,6 +85,7 @@
     "notFoundHint": "Essayez de modifier les filtres de recherche",
     "loadError": "Impossible de charger la liste des animaux. Veuillez réessayer plus tard.",
     "details": "Détails",
+    "noPhoto": "Pas de photo",
     "saveToFavorites": "Ajouter aux favoris",
     "removeFromFavorites": "Retirer des favoris",
     "vaccinated": "Vacciné",
@@ -295,7 +296,8 @@
     "photos": "Photos",
     "similarPets": "Animaux similaires 🐾",
     "viewOnOlx": "Voir l'annonce sur OLX",
-    "viewOnSource": "Voir sur {{source}}"
+    "viewOnSource": "Voir sur {{source}}",
+    "unknownSource": "source"
   },
   "volunteers": {
     "pageTitle": "Bénévoles 🐾",
@@ -800,6 +802,7 @@
     "foundHomeThisWeek": "Ont trouvé un foyer cette semaine",
     "totalVolunteers": "Bénévoles actifs",
     "factDay": "Fait du jour",
+    "featuredPet": "Animal du jour",
     "translating": "Traduction..."
   },
   "ui": {

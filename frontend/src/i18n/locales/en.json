@@ -85,6 +85,7 @@
     "notFoundHint": "Try changing your search filters",
     "loadError": "Failed to load animals. Please try again later.",
     "details": "Details",
+    "noPhoto": "No photo",
     "saveToFavorites": "Save to favorites",
     "removeFromFavorites": "Remove from favorites",
     "vaccinated": "Vaccinated",
@@ -295,7 +296,8 @@
     "photos": "Photos",
     "similarPets": "Similar Pets 🐾",
     "viewOnOlx": "View listing on OLX",
-    "viewOnSource": "View on {{source}}"
+    "viewOnSource": "View on {{source}}",
+    "unknownSource": "source"
   },
   "volunteers": {
     "pageTitle": "Volunteers 🐾",
@@ -800,6 +802,7 @@
     "foundHomeThisWeek": "Found home this week",
     "totalVolunteers": "Active volunteers",
     "factDay": "Fact of the day",
+    "featuredPet": "Pet of the day",
     "translating": "Translating..."
   },
   "ui": {

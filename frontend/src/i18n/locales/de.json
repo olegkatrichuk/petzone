@@ -85,6 +85,7 @@
     "notFoundHint": "Versuche, die Suchfilter zu ändern",
     "loadError": "Die Tierliste konnte nicht geladen werden. Bitte versuche es später erneut.",
     "details": "Details",
+    "noPhoto": "Kein Foto",
     "saveToFavorites": "Zu Favoriten hinzufügen",
     "removeFromFavorites": "Aus Favoriten entfernen",
     "vaccinated": "Geimpft",
@@ -295,7 +296,8 @@
     "photos": "Fotos",
     "similarPets": "Ähnliche Tiere 🐾",
     "viewOnOlx": "Inserat auf OLX ansehen",
-    "viewOnSource": "Auf {{source}} ansehen"
+    "viewOnSource": "Auf {{source}} ansehen",
+    "unknownSource": "Quelle"
   },
   "volunteers": {
     "pageTitle": "Freiwillige 🐾",
@@ -800,6 +802,7 @@
     "foundHomeThisWeek": "Diese Woche ein Zuhause gefunden",
     "totalVolunteers": "Aktive Freiwillige",
     "factDay": "Fakt des Tages",
+    "featuredPet": "Tier des Tages",
     "translating": "Übersetzen..."
   },
   "ui": {

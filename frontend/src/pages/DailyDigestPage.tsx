@@ -156,7 +156,7 @@ function DigestCard({ post, lang }: { post: SystemNewsPost; lang: string }) {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 3, pt: 3, pb: 1.5 }}>
             <PetsIcon sx={{ fontSize: 20, color: BLUE }} />
             <Typography variant="subtitle2" fontWeight={700}>
-              {t('digest.featuredPet', 'Тварина дня')}
+              {t('digest.featuredPet')}
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 0 }}>

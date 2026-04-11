@@ -85,6 +85,7 @@
     "notFoundHint": "Spróbuj zmienić filtry wyszukiwania",
     "loadError": "Nie udało się załadować listy zwierząt. Spróbuj ponownie później.",
     "details": "Szczegóły",
+    "noPhoto": "Brak zdjęcia",
     "saveToFavorites": "Zapisz do ulubionych",
     "removeFromFavorites": "Usuń z ulubionych",
     "vaccinated": "Zaszczepiony",
@@ -295,7 +296,8 @@
     "photos": "Zdjęcia",
     "similarPets": "Podobne zwierzęta 🐾",
     "viewOnOlx": "Zobacz ogłoszenie na OLX",
-    "viewOnSource": "Zobacz na {{source}}"
+    "viewOnSource": "Zobacz na {{source}}",
+    "unknownSource": "źródło"
   },
   "volunteers": {
     "pageTitle": "Wolontariusze 🐾",
@@ -800,6 +802,7 @@
     "foundHomeThisWeek": "Znalazły dom w tym tygodniu",
     "totalVolunteers": "Aktywnych wolontariuszy",
     "factDay": "Fakt dnia",
+    "featuredPet": "Zwierzę dnia",
     "translating": "Tłumaczenie..."
   },
   "ui": {
