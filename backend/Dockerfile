@@ -1,11 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0.103 AS build
 WORKDIR /app
 
-COPY *.slnx .
 COPY src/ src/
-COPY tests/ tests/
 
-RUN dotnet restore
+RUN dotnet restore src/PetZone.API/PetZone.API.csproj
 
 RUN dotnet publish src/PetZone.API/PetZone.API.csproj \
     -c Release \
