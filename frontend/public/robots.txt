@@ -9,5 +9,6 @@ Disallow: /*/favorites
 Disallow: /*/volunteer-applications
 Disallow: /*/edit-profile
 Disallow: /*/listings/create
+Disallow: /*/discussion
 
 Sitemap: https://getpetzone.com/sitemap.xml
