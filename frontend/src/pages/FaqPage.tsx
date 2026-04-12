@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
 import Box from '@mui/material/Box'
@@ -40,6 +41,19 @@ export default function FaqPage() {
 
   const filtered = activeCategory === 'all' ? questions : questions.filter((q) => q.category === activeCategory)
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: questions.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.a,
+      },
+    })),
+  }
+
   const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false)
   }
@@ -47,6 +61,9 @@ export default function FaqPage() {
   return (
     <Box sx={{ bgcolor: 'background.default' }}>
       <PageMeta title={t('faq.pageTitle')} description={t('faq.metaDesc')} path="/faq" />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+      </Helmet>
 
       {/* Hero */}
       <Box
