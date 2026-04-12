@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLangNavigate } from '../hooks/useLangNavigate'
+import PageMeta from '../components/meta/PageMeta'
 import { useAuthStore } from '../store/authStore'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
@@ -205,6 +206,7 @@ export default function DiscussionPage() {
 
   return (
     <Box sx={{ bgcolor: 'action.hover', minHeight: 'calc(100vh - 120px)', display: 'flex', flexDirection: 'column' }}>
+      <PageMeta title={t('chat.title')} description="" path={`/discussion/${discussionId}`} noIndex />
       {/* Header */}
       <Paper elevation={0} sx={{ borderBottom: '1px solid #E5E7EB', borderRadius: 0, position: 'sticky', top: 0, zIndex: 10 }}>
         <Container maxWidth="md">

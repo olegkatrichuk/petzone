@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
 import { useTranslation } from 'react-i18next'
@@ -122,6 +123,17 @@ export default function PetDetailPage() {
         identifier: pet.id,
         locationCreated: { '@type': 'Place', name: pet.city },
       }) }} />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: t('nav.home'), item: 'https://getpetzone.com/uk' },
+            { '@type': 'ListItem', position: 2, name: t('nav.pets'), item: 'https://getpetzone.com/uk/pets' },
+            { '@type': 'ListItem', position: 3, name: pet.nickname },
+          ],
+        })}</script>
+      </Helmet>
       <Container maxWidth="lg">
         <AppBreadcrumbs items={[
           { label: t('nav.home'), path: '/' },

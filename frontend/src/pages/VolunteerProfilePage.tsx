@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useParams, Link, useLocation } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
 import { useTranslation } from 'react-i18next'
@@ -474,6 +475,17 @@ export default function VolunteerProfilePage() {
     <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
       <PageMeta title={fullName} description={volunteer.generalDescription ?? t('volunteers.pageTitle')} path={`/volunteers/${volunteerId}`} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: t('nav.home'), item: 'https://getpetzone.com/uk' },
+            { '@type': 'ListItem', position: 2, name: t('nav.volunteers'), item: 'https://getpetzone.com/uk/volunteers' },
+            { '@type': 'ListItem', position: 3, name: fullName },
+          ],
+        })}</script>
+      </Helmet>
       <Container maxWidth="xl">
         <AppBreadcrumbs items={[
           { label: t('nav.home'), path: '/' },
