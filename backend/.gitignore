@@ -482,7 +482,6 @@ $RECYCLE.BIN/
 *.swp
 .DS_Store
 .idea/
-compose.yaml
 .env
 appsettings.Development.json
 **/launchSettings.json
