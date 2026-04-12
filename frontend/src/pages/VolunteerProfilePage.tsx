@@ -68,7 +68,7 @@ function VolunteerSidebar({ volunteerId, isOwner }: SidebarProps) {
   const ownerItems = [
     { label: t('volunteerProfile.myProfile'), to: `/volunteers/${volunteerId}`, icon: <PersonIcon fontSize="small" /> },
     { label: t('volunteerProfile.myAnimals'), to: `/animals/${volunteerId}`, icon: <PetsIcon fontSize="small" /> },
-    { label: t('volunteerProfile.addAnimal'), to: '/add-animal', icon: <AddCircleOutlineIcon fontSize="small" /> },
+    { label: t('volunteerProfile.addAnimal'), to: `/animals/${volunteerId}/add`, icon: <AddCircleOutlineIcon fontSize="small" /> },
     { label: t('volunteerProfile.myNews'), to: `/news/${volunteerId}`, icon: <ArticleIcon fontSize="small" /> },
     { label: t('volunteerProfile.myApplications'), to: '/volunteer-applications', icon: <AssignmentIcon fontSize="small" /> },
   ]

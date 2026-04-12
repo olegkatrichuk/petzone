@@ -809,5 +809,25 @@
     "darkMode": "Темна тема",
     "lightMode": "Світла тема",
     "scrollToTop": "На початок"
+  },
+  "addAnimal": {
+    "pageTitle": "Додати тварину",
+    "nickname": "Ім'я тварини",
+    "generalDescription": "Загальний опис",
+    "healthDescription": "Стан здоров'я",
+    "dietOrAllergies": "Дієта / алергії (необов'язково)",
+    "street": "Вулиця",
+    "weight": "Вага (кг)",
+    "height": "Зріст (см)",
+    "ownerPhone": "Телефон волонтера",
+    "dateOfBirth": "Дата народження",
+    "microchipNumber": "Номер мікрочіпа (необов'язково)",
+    "adoptionConditions": "Умови передачі (необов'язково)",
+    "submit": "Додати тварину",
+    "success": "Тварину успішно додано!",
+    "backToAnimals": "← Мої тварини",
+    "photosSection": "Фотографії",
+    "photoHint": "До 5 фото, макс 5 МБ кожне (JPG, PNG, WebP)",
+    "status": "Статус тварини"
   }
 }

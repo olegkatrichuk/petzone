@@ -809,5 +809,25 @@
     "darkMode": "Тёмная тема",
     "lightMode": "Светлая тема",
     "scrollToTop": "Наверх"
+  },
+  "addAnimal": {
+    "pageTitle": "Добавить животное",
+    "nickname": "Имя животного",
+    "generalDescription": "Общее описание",
+    "healthDescription": "Состояние здоровья",
+    "dietOrAllergies": "Диета / аллергии (необязательно)",
+    "street": "Улица",
+    "weight": "Вес (кг)",
+    "height": "Рост (см)",
+    "ownerPhone": "Телефон волонтёра",
+    "dateOfBirth": "Дата рождения",
+    "microchipNumber": "Номер микрочипа (необязательно)",
+    "adoptionConditions": "Условия передачи (необязательно)",
+    "submit": "Добавить животное",
+    "success": "Животное успешно добавлено!",
+    "backToAnimals": "← Мои животные",
+    "photosSection": "Фотографии",
+    "photoHint": "До 5 фото, макс. 5 МБ каждое (JPG, PNG, WebP)",
+    "status": "Статус животного"
   }
 }

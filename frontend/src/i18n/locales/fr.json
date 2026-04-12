@@ -809,5 +809,25 @@
     "darkMode": "Mode sombre",
     "lightMode": "Mode clair",
     "scrollToTop": "Haut de page"
+  },
+  "addAnimal": {
+    "pageTitle": "Ajouter un animal",
+    "nickname": "Nom de l'animal",
+    "generalDescription": "Description générale",
+    "healthDescription": "État de santé",
+    "dietOrAllergies": "Régime / allergies (optionnel)",
+    "street": "Rue",
+    "weight": "Poids (kg)",
+    "height": "Taille (cm)",
+    "ownerPhone": "Téléphone du bénévole",
+    "dateOfBirth": "Date de naissance",
+    "microchipNumber": "Numéro de puce (optionnel)",
+    "adoptionConditions": "Conditions d'adoption (optionnel)",
+    "submit": "Ajouter un animal",
+    "success": "Animal ajouté avec succès!",
+    "backToAnimals": "← Mes animaux",
+    "photosSection": "Photos",
+    "photoHint": "Jusqu'à 5 photos, max 5 Mo (JPG, PNG, WebP)",
+    "status": "Statut de l'animal"
   }
 }

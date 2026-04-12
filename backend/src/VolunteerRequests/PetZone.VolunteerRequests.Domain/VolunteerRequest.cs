@@ -70,6 +70,16 @@ public class VolunteerRequest
         Status = VolunteerRequestStatus.Approved;
         return UnitResult.Success<Error>();
     }
+
+    public UnitResult<Error> AutoApprove()
+    {
+        if (Status != VolunteerRequestStatus.Submitted)
+            return Error.Conflict("volunteer_request.invalid_status",
+                $"Cannot auto-approve from status {Status}.");
+
+        Status = VolunteerRequestStatus.Approved;
+        return UnitResult.Success<Error>();
+    }
     public UnitResult<Error> Reject(string rejectionComment)
     {
         if (Status != VolunteerRequestStatus.OnReview)

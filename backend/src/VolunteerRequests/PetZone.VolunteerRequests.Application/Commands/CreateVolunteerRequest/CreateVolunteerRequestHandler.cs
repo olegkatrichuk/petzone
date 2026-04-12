@@ -1,7 +1,10 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using MassTransit;
 using Microsoft.Extensions.Logging;
+using PetZone.Core;
 using PetZone.SharedKernel;
+using PetZone.VolunteerRequests.Application.Events;
 using PetZone.VolunteerRequests.Application.Repositories;
 using PetZone.VolunteerRequests.Domain;
 
@@ -11,6 +14,9 @@ public class CreateVolunteerRequestHandler(
     IVolunteerRequestRepository repository,
     IRejectedUserRepository rejectedUserRepository,
     IVolunteerRequestsUnitOfWork unitOfWork,
+    IVolunteerAccountService volunteerAccountService,
+    IUserInfoProvider userInfoProvider,
+    IPublishEndpoint publishEndpoint,
     IValidator<CreateVolunteerRequestCommand> validator,
     ILogger<CreateVolunteerRequestHandler> logger)
 {
@@ -45,11 +51,43 @@ public class CreateVolunteerRequestHandler(
         if (requestResult.IsFailure)
             return (ErrorList)requestResult.Error;
 
-        await repository.AddAsync(requestResult.Value, cancellationToken);
+        var request = requestResult.Value;
+
+        var userInfo = await userInfoProvider.GetAsync(command.UserId, cancellationToken);
+        if (userInfo is null)
+            return (ErrorList)Error.NotFound("user.not_found", $"User {command.UserId} not found.");
+
+        var accountResult = await volunteerAccountService.CreateAsync(
+            userId: command.UserId,
+            firstName: userInfo.FirstName,
+            lastName: userInfo.LastName,
+            email: userInfo.Email,
+            phone: userInfo.Phone,
+            experienceYears: command.VolunteerInfo.Experience,
+            description: command.VolunteerInfo.Motivation,
+            cancellationToken: cancellationToken);
+
+        if (accountResult.IsFailure)
+            return (ErrorList)accountResult.Error;
+
+        var autoApproveResult = request.AutoApprove();
+        if (autoApproveResult.IsFailure)
+            return (ErrorList)autoApproveResult.Error;
+
+        await repository.AddAsync(request, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        logger.LogInformation("Volunteer request created for user {UserId}", command.UserId);
+        await publishEndpoint.Publish(new VolunteerRequestStatusChangedEvent(
+            UserId: request.UserId,
+            RequestId: request.Id,
+            Status: "Approved",
+            Comment: null,
+            Email: userInfo.Email,
+            FirstName: userInfo.FirstName,
+            LastName: userInfo.LastName), cancellationToken);
 
-        return requestResult.Value.Id;
+        logger.LogInformation("Volunteer request auto-approved for user {UserId}", command.UserId);
+
+        return request.Id;
     }
 }

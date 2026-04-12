@@ -809,5 +809,25 @@
     "darkMode": "Dark mode",
     "lightMode": "Light mode",
     "scrollToTop": "Back to top"
+  },
+  "addAnimal": {
+    "pageTitle": "Add animal",
+    "nickname": "Animal name",
+    "generalDescription": "General description",
+    "healthDescription": "Health condition",
+    "dietOrAllergies": "Diet / allergies (optional)",
+    "street": "Street",
+    "weight": "Weight (kg)",
+    "height": "Height (cm)",
+    "ownerPhone": "Volunteer phone",
+    "dateOfBirth": "Date of birth",
+    "microchipNumber": "Microchip number (optional)",
+    "adoptionConditions": "Adoption conditions (optional)",
+    "submit": "Add animal",
+    "success": "Animal added successfully!",
+    "backToAnimals": "← My animals",
+    "photosSection": "Photos",
+    "photoHint": "Up to 5 photos, max 5 MB each (JPG, PNG, WebP)",
+    "status": "Animal status"
   }
 }
