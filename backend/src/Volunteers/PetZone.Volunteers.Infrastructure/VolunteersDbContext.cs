@@ -10,6 +10,7 @@ public class VolunteersDbContext(DbContextOptions<VolunteersDbContext> options) 
     public DbSet<Pet> Pets { get; set; }
     public DbSet<NewsPost> NewsPosts { get; set; }
     public DbSet<SystemNewsPost> SystemNewsPosts { get; set; }
+    public DbSet<AdoptionApplication> AdoptionApplications { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

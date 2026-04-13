@@ -43,4 +43,11 @@ public static class Permissions
         public const string Read = "users.read";
         public const string Ban = "users.ban";
     }
+
+    public static class Adoptions
+    {
+        public const string Create = "adoptions.create";
+        public const string Read = "adoptions.read";
+        public const string UpdateStatus = "adoptions.update-status";
+    }
 }

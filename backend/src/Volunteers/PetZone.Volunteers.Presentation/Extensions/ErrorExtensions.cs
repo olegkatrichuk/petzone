@@ -36,6 +36,7 @@ public static class ErrorExtensions
         ErrorType.Validation => StatusCodes.Status400BadRequest,
         ErrorType.NotFound   => StatusCodes.Status404NotFound,
         ErrorType.Conflict   => StatusCodes.Status409Conflict,
+        ErrorType.Forbidden  => StatusCodes.Status403Forbidden,
         ErrorType.Failure    => StatusCodes.Status500InternalServerError,
         _                    => StatusCodes.Status500InternalServerError
     };
