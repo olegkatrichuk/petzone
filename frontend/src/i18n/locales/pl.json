@@ -719,7 +719,8 @@
     "lookingForHomeSubtitle": "Zwierzęta tego wolontariusza szukają kochającej rodziny",
     "needsHelpTitle": "Potrzebują pomocy 🆘",
     "needsHelpSubtitle": "Zwierzęta, które nie mogą jeszcze szukać domu — potrzebują wsparcia",
-    "avatarModalTitle": "Zmień awatar"
+    "avatarModalTitle": "Zmień awatar",
+    "adoptionApplications": "Wnioski o adopcję"
   },
   "admin": {
     "tabUsers": "Użytkownicy",
@@ -829,5 +830,33 @@
     "photosSection": "Zdjęcia",
     "photoHint": "Do 5 zdjęć, maks. 5 MB każde (JPG, PNG, WebP)",
     "status": "Status zwierzęcia"
+  },
+  "adoption": {
+    "adoptBtn": "Chcę adoptować",
+    "adoptModal": {
+      "title": "Wniosek o adopcję",
+      "nameLabel": "Twoje imię",
+      "phoneLabe": "Telefon",
+      "messageLabel": "Wiadomość (opcjonalnie)",
+      "messagePlaceholder": "Opowiedz o sobie...",
+      "submit": "Wyślij wniosek",
+      "success": "Wniosek wysłany! Wolontariusz skontaktuje się z tobą.",
+      "alreadyApplied": "Złożyłeś już wniosek na to zwierzę"
+    },
+    "myApplications": {
+      "title": "Moje wnioski",
+      "empty": "Nie masz jeszcze wniosków",
+      "pending": "Oczekujący",
+      "approved": "Zatwierdzony",
+      "rejected": "Odrzucony"
+    },
+    "volunteerApplications": {
+      "title": "Wnioski o adopcję",
+      "empty": "Brak wniosków",
+      "approve": "Zatwierdź",
+      "reject": "Odrzuć",
+      "phone": "Telefon",
+      "message": "Wiadomość"
+    }
   }
 }

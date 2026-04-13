@@ -789,7 +789,8 @@
     "lookingForHomeSubtitle": "Животные этого волонтёра в поисках любящей семьи",
     "needsHelpTitle": "Нуждаются в помощи 🆘",
     "needsHelpSubtitle": "Животные, которым пока нельзя искать дом — им нужна поддержка",
-    "avatarModalTitle": "Изменить аватар"
+    "avatarModalTitle": "Изменить аватар",
+    "adoptionApplications": "Заявки на усыновление"
   },
   "digest": {
     "pageTitle": "Ежедневный дайджест",
@@ -829,5 +830,33 @@
     "photosSection": "Фотографии",
     "photoHint": "До 5 фото, макс. 5 МБ каждое (JPG, PNG, WebP)",
     "status": "Статус животного"
+  },
+  "adoption": {
+    "adoptBtn": "Хочу усыновить",
+    "adoptModal": {
+      "title": "Заявка на усыновление",
+      "nameLabel": "Ваше имя",
+      "phoneLabe": "Телефон",
+      "messageLabel": "Сообщение (необязательно)",
+      "messagePlaceholder": "Расскажите о себе...",
+      "submit": "Отправить заявку",
+      "success": "Заявка отправлена! Волонтёр свяжется с вами.",
+      "alreadyApplied": "Вы уже подали заявку на это животное"
+    },
+    "myApplications": {
+      "title": "Мои заявки",
+      "empty": "У вас пока нет заявок",
+      "pending": "На рассмотрении",
+      "approved": "Одобрено",
+      "rejected": "Отклонено"
+    },
+    "volunteerApplications": {
+      "title": "Заявки на усыновление",
+      "empty": "Заявок пока нет",
+      "approve": "Одобрить",
+      "reject": "Отклонить",
+      "phone": "Телефон",
+      "message": "Сообщение"
+    }
   }
 }

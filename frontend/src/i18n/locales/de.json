@@ -719,7 +719,8 @@
     "lookingForHomeSubtitle": "Tiere dieses Freiwilligen suchen eine liebevolle Familie",
     "needsHelpTitle": "Brauchen Hilfe 🆘",
     "needsHelpSubtitle": "Tiere, die noch kein neues Zuhause finden können — sie brauchen Unterstützung",
-    "avatarModalTitle": "Avatar ändern"
+    "avatarModalTitle": "Avatar ändern",
+    "adoptionApplications": "Adoptionsanträge"
   },
   "admin": {
     "tabUsers": "Benutzer",
@@ -829,5 +830,33 @@
     "photosSection": "Fotos",
     "photoHint": "Bis zu 5 Fotos, max. 5 MB (JPG, PNG, WebP)",
     "status": "Tierstatus"
+  },
+  "adoption": {
+    "adoptBtn": "Ich möchte adoptieren",
+    "adoptModal": {
+      "title": "Adoptionsantrag",
+      "nameLabel": "Ihr Name",
+      "phoneLabe": "Telefon",
+      "messageLabel": "Nachricht (optional)",
+      "messagePlaceholder": "Erzählen Sie von sich...",
+      "submit": "Antrag senden",
+      "success": "Antrag gesendet! Der Freiwillige wird sich bei Ihnen melden.",
+      "alreadyApplied": "Sie haben bereits einen Antrag für dieses Tier gestellt"
+    },
+    "myApplications": {
+      "title": "Meine Anträge",
+      "empty": "Sie haben noch keine Anträge",
+      "pending": "Ausstehend",
+      "approved": "Genehmigt",
+      "rejected": "Abgelehnt"
+    },
+    "volunteerApplications": {
+      "title": "Adoptionsanträge",
+      "empty": "Noch keine Anträge",
+      "approve": "Genehmigen",
+      "reject": "Ablehnen",
+      "phone": "Telefon",
+      "message": "Nachricht"
+    }
   }
 }

@@ -789,7 +789,8 @@
     "lookingForHomeSubtitle": "Animals of this volunteer looking for a loving family",
     "needsHelpTitle": "Needs help 🆘",
     "needsHelpSubtitle": "Animals that currently can't be rehomed — they need support",
-    "avatarModalTitle": "Edit avatar"
+    "avatarModalTitle": "Edit avatar",
+    "adoptionApplications": "Adoption applications"
   },
   "digest": {
     "pageTitle": "Daily Digest",
@@ -829,5 +830,33 @@
     "photosSection": "Photos",
     "photoHint": "Up to 5 photos, max 5 MB each (JPG, PNG, WebP)",
     "status": "Animal status"
+  },
+  "adoption": {
+    "adoptBtn": "I want to adopt",
+    "adoptModal": {
+      "title": "Adoption Application",
+      "nameLabel": "Your name",
+      "phoneLabe": "Phone",
+      "messageLabel": "Message (optional)",
+      "messagePlaceholder": "Tell us about yourself...",
+      "submit": "Submit application",
+      "success": "Application sent! The volunteer will contact you.",
+      "alreadyApplied": "You have already applied for this pet"
+    },
+    "myApplications": {
+      "title": "My applications",
+      "empty": "You have no applications yet",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "volunteerApplications": {
+      "title": "Adoption applications",
+      "empty": "No applications yet",
+      "approve": "Approve",
+      "reject": "Reject",
+      "phone": "Phone",
+      "message": "Message"
+    }
   }
 }

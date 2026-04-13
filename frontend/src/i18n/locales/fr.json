@@ -719,7 +719,8 @@
     "lookingForHomeSubtitle": "Animaux de ce bénévole cherchant une famille aimante",
     "needsHelpTitle": "Ont besoin d'aide 🆘",
     "needsHelpSubtitle": "Animaux qui ne peuvent pas encore être adoptés — ils ont besoin de soutien",
-    "avatarModalTitle": "Modifier l'avatar"
+    "avatarModalTitle": "Modifier l'avatar",
+    "adoptionApplications": "Demandes d adoption"
   },
   "admin": {
     "tabUsers": "Utilisateurs",
@@ -829,5 +830,33 @@
     "photosSection": "Photos",
     "photoHint": "Jusqu'à 5 photos, max 5 Mo (JPG, PNG, WebP)",
     "status": "Statut de l'animal"
+  },
+  "adoption": {
+    "adoptBtn": "Je veux adopter",
+    "adoptModal": {
+      "title": "Demande d adoption",
+      "nameLabel": "Votre nom",
+      "phoneLabe": "Téléphone",
+      "messageLabel": "Message (facultatif)",
+      "messagePlaceholder": "Parlez-nous de vous...",
+      "submit": "Envoyer la demande",
+      "success": "Demande envoyée ! Le bénévole vous contactera.",
+      "alreadyApplied": "Vous avez déjà postulé pour cet animal"
+    },
+    "myApplications": {
+      "title": "Mes demandes",
+      "empty": "Vous n avez pas encore de demandes",
+      "pending": "En attente",
+      "approved": "Approuvé",
+      "rejected": "Rejeté"
+    },
+    "volunteerApplications": {
+      "title": "Demandes d adoption",
+      "empty": "Aucune demande",
+      "approve": "Approuver",
+      "reject": "Rejeter",
+      "phone": "Téléphone",
+      "message": "Message"
+    }
   }
 }

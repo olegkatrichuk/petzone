@@ -789,7 +789,8 @@
     "lookingForHomeSubtitle": "Тварини цього волонтера в пошуках люблячої родини",
     "needsHelpTitle": "Потребують допомоги 🆘",
     "needsHelpSubtitle": "Тварини, яким поки що не можна шукати дім — їм потрібна підтримка",
-    "avatarModalTitle": "Змінити аватар"
+    "avatarModalTitle": "Змінити аватар",
+    "adoptionApplications": "Заявки на усиновлення"
   },
   "digest": {
     "pageTitle": "Щоденний дайджест",
@@ -829,5 +830,33 @@
     "photosSection": "Фотографії",
     "photoHint": "До 5 фото, макс 5 МБ кожне (JPG, PNG, WebP)",
     "status": "Статус тварини"
+  },
+  "adoption": {
+    "adoptBtn": "Хочу усиновити",
+    "adoptModal": {
+      "title": "Заявка на усиновлення",
+      "nameLabel": "Ваше ім'я",
+      "phoneLabe": "Телефон",
+      "messageLabel": "Повідомлення (необов'язково)",
+      "messagePlaceholder": "Розкажіть про себе...",
+      "submit": "Надіслати заявку",
+      "success": "Заявку надіслано! Волонтер зв'яжеться з вами.",
+      "alreadyApplied": "Ви вже подали заявку на цю тварину"
+    },
+    "myApplications": {
+      "title": "Мої заявки",
+      "empty": "У вас поки немає заявок",
+      "pending": "На розгляді",
+      "approved": "Схвалено",
+      "rejected": "Відхилено"
+    },
+    "volunteerApplications": {
+      "title": "Заявки на усиновлення",
+      "empty": "Заявок поки немає",
+      "approve": "Схвалити",
+      "reject": "Відхилити",
+      "phone": "Телефон",
+      "message": "Повідомлення"
+    }
   }
 }

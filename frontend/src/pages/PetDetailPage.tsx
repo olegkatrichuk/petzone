@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useLangNavigate } from '../hooks/useLangNavigate'
@@ -37,6 +37,14 @@ import AppBreadcrumbs from '../components/ui/AppBreadcrumbs'
 import PetsIcon from '@mui/icons-material/Pets'
 import { useRecentlyViewedStore } from '../store/recentlyViewedStore'
 import ShareButton from '../components/ui/ShareButton'
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import DialogActions from '@mui/material/DialogActions'
+import TextField from '@mui/material/TextField'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import { useAuthStore } from '../store/authStore'
+import { useSubmitApplicationMutation } from '../services/adoptionApi'
 
 const CORAL = '#FF6B6B'
 
@@ -66,6 +74,13 @@ export default function PetDetailPage() {
   const [activePhoto, setActivePhoto] = useState(0)
 
   const { data: pet, isLoading, isError } = useGetPetByIdQuery(petId ?? '', { skip: !petId })
+  const user = useAuthStore((s) => s.user)
+  const [adoptOpen, setAdoptOpen] = useState(false)
+  const [adoptName, setAdoptName] = useState(user ? `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() : '')
+  const [adoptPhone, setAdoptPhone] = useState('')
+  const [adoptMessage, setAdoptMessage] = useState('')
+  const [submitApplication, { isLoading: isSubmitting }] = useSubmitApplicationMutation()
+  const adoptSubmittedRef = useRef(false)
 
   // All hooks must be called unconditionally — before any early returns
   const addViewed = useRecentlyViewedStore((s) => s.add)
@@ -359,6 +374,23 @@ export default function PetDetailPage() {
                   </Button>
                 )}
 
+                {/* Adopt button — only for logged-in non-volunteer users */}
+                {user && pet.status !== 2 && !pet.externalUrl && (
+                  <Button
+                    startIcon={<FavoriteIcon />}
+                    variant="contained"
+                    onClick={() => setAdoptOpen(true)}
+                    sx={{
+                      bgcolor: '#10B981',
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      '&:hover': { bgcolor: '#059669' },
+                    }}
+                  >
+                    {t('adoption.adoptBtn')}
+                  </Button>
+                )}
+
                 {/* External source link (OLX, lkplev.com, animals-city.org, etc.) */}
                 {pet.externalUrl && (
                   <Button
@@ -400,6 +432,63 @@ export default function PetDetailPage() {
           </Grid>
         </Grid>
       </Container>
+
+      {/* ── ADOPT MODAL ───────────────────────────────── */}
+      <Dialog open={adoptOpen} onClose={() => setAdoptOpen(false)} maxWidth="sm" fullWidth>
+        <DialogTitle fontWeight="bold">{t('adoption.adoptModal.title')}</DialogTitle>
+        <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: '16px !important' }}>
+          <TextField
+            label={t('adoption.adoptModal.nameLabel')}
+            value={adoptName}
+            onChange={(e) => setAdoptName(e.target.value)}
+            fullWidth required
+          />
+          <TextField
+            label={t('adoption.adoptModal.phoneLabe')}
+            value={adoptPhone}
+            onChange={(e) => setAdoptPhone(e.target.value)}
+            fullWidth required
+          />
+          <TextField
+            label={t('adoption.adoptModal.messageLabel')}
+            placeholder={t('adoption.adoptModal.messagePlaceholder')}
+            value={adoptMessage}
+            onChange={(e) => setAdoptMessage(e.target.value)}
+            multiline rows={3} fullWidth
+          />
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 3, gap: 1 }}>
+          <Button onClick={() => setAdoptOpen(false)} sx={{ color: '#6B7280', textTransform: 'none' }}>
+            {t('common.cancel')}
+          </Button>
+          <Button
+            variant="contained"
+            disabled={isSubmitting || !adoptName.trim() || !adoptPhone.trim() || adoptSubmittedRef.current}
+            onClick={async () => {
+              if (!pet?.volunteerId) return
+              try {
+                await submitApplication({
+                  petId: pet.id,
+                  volunteerId: pet.volunteerId,
+                  data: { applicantName: adoptName.trim(), applicantPhone: adoptPhone.trim(), message: adoptMessage || undefined },
+                }).unwrap()
+                adoptSubmittedRef.current = true
+                setAdoptOpen(false)
+                toast.success(t('adoption.adoptModal.success'))
+              } catch (err: unknown) {
+                const e = err as { data?: { errorInfo?: Array<{ errorCode?: string }> } }
+                if (e?.data?.errorInfo?.[0]?.errorCode === 'adoption.already_applied')
+                  toast.error(t('adoption.adoptModal.alreadyApplied'))
+                else
+                  toast.error(t('common.error'))
+              }
+            }}
+            sx={{ bgcolor: '#10B981', textTransform: 'none', fontWeight: 600, '&:hover': { bgcolor: '#059669' } }}
+          >
+            {t('adoption.adoptModal.submit')}
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {/* ── SIMILAR PETS ───────────────────────────────── */}
       {(similarLoading || similarPets.length > 0) && (
