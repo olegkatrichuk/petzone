@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import MarkerClusterGroup from 'react-leaflet-cluster'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import Box from '@mui/material/Box'
@@ -168,43 +169,45 @@ export default function MapPage() {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
 
-              {petMarkers.map(({ pet, coords }) => (
-                <Marker key={pet.id} position={coords} icon={petIcon}>
-                  <Popup>
-                    <Box sx={{ minWidth: 160 }}>
-                      <Typography variant="subtitle2" fontWeight={700}>{pet.nickname}</Typography>
-                      <Typography variant="caption" color="text.secondary">{pet.city}</Typography>
-                      <br />
-                      <Box
-                        component="a"
-                        onClick={() => navigate(`/pets/${pet.id}`)}
-                        sx={{ color: '#2563EB', cursor: 'pointer', fontSize: 13 }}
-                      >
-                        {t('pets.details')}
+              <MarkerClusterGroup chunkedLoading>
+                {petMarkers.map(({ pet, coords }) => (
+                  <Marker key={pet.id} position={coords} icon={petIcon}>
+                    <Popup>
+                      <Box sx={{ minWidth: 160 }}>
+                        <Typography variant="subtitle2" fontWeight={700}>{pet.nickname}</Typography>
+                        <Typography variant="caption" color="text.secondary">{pet.city}</Typography>
+                        <br />
+                        <Box
+                          component="a"
+                          onClick={() => navigate(`/pets/${pet.id}`)}
+                          sx={{ color: '#2563EB', cursor: 'pointer', fontSize: 13 }}
+                        >
+                          {t('pets.details')}
+                        </Box>
                       </Box>
-                    </Box>
-                  </Popup>
-                </Marker>
-              ))}
+                    </Popup>
+                  </Marker>
+                ))}
 
-              {listingMarkers.map(({ listing, coords }) => (
-                <Marker key={listing.id} position={coords} icon={listingIcon}>
-                  <Popup>
-                    <Box sx={{ minWidth: 160 }}>
-                      <Typography variant="subtitle2" fontWeight={700}>{listing.title}</Typography>
-                      <Typography variant="caption" color="text.secondary">{listing.city}</Typography>
-                      <br />
-                      <Box
-                        component="a"
-                        onClick={() => navigate(`/listings/${listing.id}`)}
-                        sx={{ color: '#DC2626', cursor: 'pointer', fontSize: 13 }}
-                      >
-                        {t('pets.details')}
+                {listingMarkers.map(({ listing, coords }) => (
+                  <Marker key={listing.id} position={coords} icon={listingIcon}>
+                    <Popup>
+                      <Box sx={{ minWidth: 160 }}>
+                        <Typography variant="subtitle2" fontWeight={700}>{listing.title}</Typography>
+                        <Typography variant="caption" color="text.secondary">{listing.city}</Typography>
+                        <br />
+                        <Box
+                          component="a"
+                          onClick={() => navigate(`/listings/${listing.id}`)}
+                          sx={{ color: '#DC2626', cursor: 'pointer', fontSize: 13 }}
+                        >
+                          {t('pets.details')}
+                        </Box>
                       </Box>
-                    </Box>
-                  </Popup>
-                </Marker>
-              ))}
+                    </Popup>
+                  </Marker>
+                ))}
+              </MarkerClusterGroup>
             </MapContainer>
           </Box>
         )}
