@@ -65,6 +65,12 @@ public class OlxSyncService(
         var imported = 0;
         var skipped  = 0;
 
+        // Load all existing OLX external IDs upfront — avoids N+1 queries inside the loop
+        var existingIds = await db.Pets
+            .Where(p => p.ExternalId != null && p.ExternalId.StartsWith("olx:"))
+            .Select(p => p.ExternalId!)
+            .ToHashSetAsync(ct);
+
         for (var page = 0; page < MaxPages; page++)
         {
             var url = $"{ApiUrl}?offset={page * PageLimit}&limit={PageLimit}" +
@@ -86,11 +92,8 @@ public class OlxSyncService(
                         ? urlEl.GetString()
                         : null;
 
-                    var existing = await db.Pets.FirstOrDefaultAsync(p => p.ExternalId == externalId, ct);
-                    if (existing is not null)
+                    if (existingIds.Contains(externalId))
                     {
-                        if (existing.ExternalUrl is null && listingUrl is not null)
-                            existing.SetExternalUrl(listingUrl);
                         skipped++;
                         continue;
                     }
@@ -99,6 +102,7 @@ public class OlxSyncService(
                     if (pet is null) continue;
 
                     db.Pets.Add(pet);
+                    existingIds.Add(externalId);
                     imported++;
                 }
                 catch (Exception ex)

@@ -714,6 +714,7 @@
     "clickToChangePhoto": "Kliknij, aby zmienić zdjęcie",
     "experience": "Doświadczenie: {{years}} l.",
     "foundHome": "Znalazły dom: {{count}}",
+    "activePets": "Aktualnie pod opieką: {{count}}",
     "contacts": "Kontakty",
     "socialNetworks": "Media społecznościowe",
     "notFound": "Wolontariusz nie znaleziony lub wystąpił błąd.",

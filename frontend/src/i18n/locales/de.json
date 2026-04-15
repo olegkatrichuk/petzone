@@ -714,6 +714,7 @@
     "clickToChangePhoto": "Klicken, um Foto zu ändern",
     "experience": "Erfahrung: {{years}} J.",
     "foundHome": "Zuhause gefunden: {{count}}",
+    "activePets": "Derzeit in Pflege: {{count}}",
     "contacts": "Kontakte",
     "socialNetworks": "Soziale Netzwerke",
     "notFound": "Freiwilliger nicht gefunden oder ein Fehler ist aufgetreten.",

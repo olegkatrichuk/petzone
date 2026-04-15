@@ -784,6 +784,7 @@
     "clickToChangePhoto": "Натисніть, щоб змінити фото",
     "experience": "Досвід: {{years}} р.",
     "foundHome": "Знайшли дім: {{count}}",
+    "activePets": "Зараз під опікою: {{count}}",
     "contacts": "Контакти",
     "socialNetworks": "Соціальні мережі",
     "notFound": "Волонтера не знайдено або сталася помилка при завантаженні.",

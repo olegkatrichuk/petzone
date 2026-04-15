@@ -87,6 +87,12 @@ public class RescueGroupsSyncService(
         var imported = 0;
         var skipped = 0;
 
+        // Load all existing RescueGroups external IDs upfront — avoids N+1 queries inside the loop
+        var existingIds = await db.Pets
+            .Where(p => p.ExternalId != null && p.ExternalId.StartsWith("rg:"))
+            .Select(p => p.ExternalId!)
+            .ToHashSetAsync(ct);
+
         for (var page = 1; page <= _opts.MaxPages; page++)
         {
             var url = $"animals/search/available?limit={_opts.PageSize}&page={page}" +
@@ -123,7 +129,7 @@ public class RescueGroupsSyncService(
                 {
                     var externalId = $"rg:{animal.Id}";
 
-                    if (await db.Pets.AnyAsync(p => p.ExternalId == externalId, ct))
+                    if (existingIds.Contains(externalId))
                     {
                         skipped++;
                         continue;
@@ -135,6 +141,7 @@ public class RescueGroupsSyncService(
 
                     pet.SetExternalId(externalId);
                     db.Pets.Add(pet);
+                    existingIds.Add(externalId);
                     imported++;
                 }
                 catch (Exception ex)

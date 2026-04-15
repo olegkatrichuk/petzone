@@ -714,6 +714,7 @@
     "clickToChangePhoto": "Cliquez pour changer la photo",
     "experience": "Expérience : {{years}} an(s)",
     "foundHome": "Foyer trouvé : {{count}}",
+    "activePets": "Actuellement en soin : {{count}}",
     "contacts": "Contacts",
     "socialNetworks": "Réseaux sociaux",
     "notFound": "Bénévole introuvable ou une erreur s'est produite.",

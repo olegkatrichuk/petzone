@@ -784,6 +784,7 @@
     "clickToChangePhoto": "Click to change photo",
     "experience": "Experience: {{years}} yr.",
     "foundHome": "Found home: {{count}}",
+    "activePets": "Currently caring: {{count}}",
     "contacts": "Contacts",
     "socialNetworks": "Social networks",
     "notFound": "Volunteer not found or an error occurred.",

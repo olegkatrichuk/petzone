@@ -78,6 +78,12 @@ public class LkplevSyncService(
         var imported = 0;
         var skipped  = 0;
 
+        // Load all existing lkplev external IDs upfront — avoids N+1 queries inside the loop
+        var existingIds = await db.Pets
+            .Where(p => p.ExternalId != null && p.ExternalId.StartsWith("lkplev:"))
+            .Select(p => p.ExternalId!)
+            .ToHashSetAsync(ct);
+
         foreach (var content in blocks.Skip(1))
         {
             try
@@ -89,11 +95,8 @@ public class LkplevSyncService(
                 var externalId      = $"lkplev:{animalNumericId}";
                 var externalUrl     = $"{BaseUrl}/detail/view/{animalNumericId}";
 
-                var existing = await db.Pets.FirstOrDefaultAsync(p => p.ExternalId == externalId, ct);
-                if (existing is not null)
+                if (existingIds.Contains(externalId))
                 {
-                    if (existing.ExternalUrl is null)
-                        existing.SetExternalUrl(externalUrl);
                     skipped++;
                     continue;
                 }
@@ -105,6 +108,7 @@ public class LkplevSyncService(
                 pet.SetExternalId(externalId);
                 pet.SetExternalUrl(externalUrl);
                 db.Pets.Add(pet);
+                existingIds.Add(externalId);
                 imported++;
             }
             catch (Exception ex)

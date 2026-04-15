@@ -585,6 +585,17 @@ export default function VolunteerProfilePage() {
                       size="small"
                       sx={{ borderColor: '#E5E7EB', color: '#374151' }}
                     />
+                    {!lookingLoading && !needsHelpLoading && (
+                      <Chip
+                        icon={<PetsIcon sx={{ fontSize: '16px !important' }} />}
+                        label={t('volunteerProfile.activePets', {
+                          count: (lookingPets?.totalCount ?? 0) + (needsHelpPets?.totalCount ?? 0),
+                        })}
+                        variant="outlined"
+                        size="small"
+                        sx={{ borderColor: '#E5E7EB', color: '#374151' }}
+                      />
+                    )}
                     {volunteer.petsCount != null && (
                       <Chip
                         icon={<HomeIcon sx={{ fontSize: '16px !important' }} />}

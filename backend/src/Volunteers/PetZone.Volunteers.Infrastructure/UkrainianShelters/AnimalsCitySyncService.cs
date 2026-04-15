@@ -74,6 +74,12 @@ public class AnimalsCitySyncService(
         var imported = 0;
         var skipped  = 0;
 
+        // Load all existing Kharkiv external IDs upfront — avoids N+1 queries inside the loop
+        var existingIds = await db.Pets
+            .Where(p => p.ExternalId != null && p.ExternalId.StartsWith("kharkiv:"))
+            .Select(p => p.ExternalId!)
+            .ToHashSetAsync(ct);
+
         for (var page = 1; ; page++)
         {
             var url = $"{BaseUrl}/index.php?rest_route=/wp/v2/posts" +
@@ -112,11 +118,8 @@ public class AnimalsCitySyncService(
                 {
                     var externalId = $"kharkiv:{post.Id}";
 
-                    var existing = await db.Pets.FirstOrDefaultAsync(p => p.ExternalId == externalId, ct);
-                    if (existing is not null)
+                    if (existingIds.Contains(externalId))
                     {
-                        if (existing.ExternalUrl is null && !string.IsNullOrWhiteSpace(post.Link))
-                            existing.SetExternalUrl(post.Link);
                         skipped++;
                         continue;
                     }
@@ -128,6 +131,7 @@ public class AnimalsCitySyncService(
                     if (!string.IsNullOrWhiteSpace(post.Link))
                         pet.SetExternalUrl(post.Link);
                     db.Pets.Add(pet);
+                    existingIds.Add(externalId);
                     imported++;
                 }
                 catch (Exception ex)

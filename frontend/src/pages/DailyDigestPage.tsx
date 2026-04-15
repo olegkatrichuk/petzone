@@ -9,7 +9,6 @@ import Skeleton from '@mui/material/Skeleton'
 import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
-import CircularProgress from '@mui/material/CircularProgress'
 import AutoStoriesIcon from '@mui/icons-material/AutoStories'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import SearchIcon from '@mui/icons-material/Search'
@@ -67,17 +66,16 @@ function StatRow({ icon, label, value, color }: {
 function DigestCard({ post, lang }: { post: SystemNewsPost; lang: string }) {
   const { t } = useTranslation()
   const navigate = useLangNavigate()
-  const [translatedFact, setTranslatedFact] = useState<string | null>(null)
-  const [translating, setTranslating] = useState(false)
+  const [translatedFact, setTranslatedFact] = useState<string>(post.factEn)
 
   const topBreeds: TopBreed[] = (() => {
     try { return JSON.parse(post.topBreedsJson) } catch { return [] }
   })()
 
   useEffect(() => {
-    if (lang === 'en') { setTranslatedFact(post.factEn); return }
-    setTranslating(true)
-    translateText(post.factEn, lang).then((r) => { setTranslatedFact(r); setTranslating(false) })
+    setTranslatedFact(post.factEn) // show immediately in English
+    if (lang === 'en') return
+    translateText(post.factEn, lang).then((r) => setTranslatedFact(r))
   }, [post.factEn, lang])
 
   return (
@@ -206,16 +204,9 @@ function DigestCard({ post, lang }: { post: SystemNewsPost; lang: string }) {
             <Typography variant="caption" fontWeight={700} color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
               {t('digest.factDay')}
             </Typography>
-            {translating ? (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <CircularProgress size={14} sx={{ color: CORAL }} />
-                <Typography variant="body2" color="text.secondary">{t('digest.translating')}</Typography>
-              </Box>
-            ) : (
-              <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic', lineHeight: 1.6 }}>
-                {translatedFact ?? post.factEn}
-              </Typography>
-            )}
+            <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic', lineHeight: 1.6 }}>
+              {translatedFact}
+            </Typography>
           </Box>
         </Box>
       </Paper>
