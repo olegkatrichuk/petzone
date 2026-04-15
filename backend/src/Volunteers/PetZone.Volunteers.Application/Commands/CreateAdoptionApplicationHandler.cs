@@ -37,6 +37,7 @@ public class CreateAdoptionApplicationHandler(
             command.VolunteerId,
             command.ApplicantUserId,
             command.ApplicantName,
+            command.ApplicantEmail,
             command.ApplicantPhone,
             command.Message);
 

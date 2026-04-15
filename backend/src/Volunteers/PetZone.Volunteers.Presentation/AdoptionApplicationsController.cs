@@ -26,6 +26,11 @@ public class AdoptionApplicationsController(
         return Guid.TryParse(claim.Value, out var id) ? id : null;
     }
 
+    private string GetUserEmail() =>
+        User.FindFirst(ClaimTypes.Email)?.Value
+        ?? User.FindFirst("email")?.Value
+        ?? string.Empty;
+
     /// <summary>Submit an adoption application for a pet.</summary>
     [Authorize(Policy = Permissions.Adoptions.Create)]
     [HttpPost("pets/{petId:guid}/volunteers/{volunteerId:guid}")]
@@ -43,6 +48,7 @@ public class AdoptionApplicationsController(
             VolunteerId: volunteerId,
             ApplicantUserId: userId.Value,
             ApplicantName: request.ApplicantName,
+            ApplicantEmail: GetUserEmail(),
             ApplicantPhone: request.ApplicantPhone,
             Message: request.Message);
 

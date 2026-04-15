@@ -17,6 +17,7 @@ public class AdoptionApplication
     public Guid VolunteerId { get; private set; }
     public Guid ApplicantUserId { get; private set; }
     public string ApplicantName { get; private set; } = null!;
+    public string ApplicantEmail { get; private set; } = null!;
     public string ApplicantPhone { get; private set; } = null!;
     public string? Message { get; private set; }
     public AdoptionApplicationStatus Status { get; private set; }
@@ -29,6 +30,7 @@ public class AdoptionApplication
         Guid volunteerId,
         Guid applicantUserId,
         string applicantName,
+        string applicantEmail,
         string applicantPhone,
         string? message)
     {
@@ -48,6 +50,7 @@ public class AdoptionApplication
             VolunteerId = volunteerId,
             ApplicantUserId = applicantUserId,
             ApplicantName = applicantName,
+            ApplicantEmail = applicantEmail,
             ApplicantPhone = applicantPhone,
             Message = message,
             Status = AdoptionApplicationStatus.Pending,

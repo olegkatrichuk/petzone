@@ -5,5 +5,6 @@ public record CreateAdoptionApplicationCommand(
     Guid VolunteerId,
     Guid ApplicantUserId,
     string ApplicantName,
+    string ApplicantEmail,
     string ApplicantPhone,
     string? Message);
