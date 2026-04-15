@@ -10,7 +10,7 @@ import Button from '@mui/material/Button'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Grid from '@mui/material/Grid'
-import CircularProgress from '@mui/material/CircularProgress'
+import Skeleton from '@mui/material/Skeleton'
 import Alert from '@mui/material/Alert'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useGetPetsQuery } from '../services/petsApi'
@@ -74,9 +74,23 @@ export default function VolunteerAnimalsPage() {
       </Tabs>
 
       {isLoading && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
-          <CircularProgress sx={{ color: CORAL }} />
-        </Box>
+        <Grid container spacing={3}>
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={i}>
+              <Box sx={{ border: '1px solid #E5E7EB', borderRadius: 3, overflow: 'hidden' }}>
+                <Skeleton variant="rectangular" height={200} />
+                <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  <Skeleton width="60%" height={22} />
+                  <Skeleton width="40%" height={16} />
+                  <Box sx={{ display: 'flex', gap: 0.75, mt: 0.5 }}>
+                    <Skeleton width={55} height={24} sx={{ borderRadius: 8 }} />
+                    <Skeleton width={70} height={24} sx={{ borderRadius: 8 }} />
+                  </Box>
+                </Box>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
       )}
 
       {isError && (

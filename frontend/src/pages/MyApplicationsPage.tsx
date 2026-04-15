@@ -12,6 +12,7 @@ import Paper from '@mui/material/Paper'
 import Chip from '@mui/material/Chip'
 import Divider from '@mui/material/Divider'
 import CircularProgress from '@mui/material/CircularProgress'
+import Skeleton from '@mui/material/Skeleton'
 import Alert from '@mui/material/Alert'
 import TextField from '@mui/material/TextField'
 import Collapse from '@mui/material/Collapse'
@@ -271,8 +272,20 @@ export default function MyApplicationsPage() {
       </Box>
 
       {isLoading && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
-          <CircularProgress sx={{ color: CORAL }} />
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Box key={i} sx={{ border: '1px solid #E5E7EB', borderRadius: 3, p: 3 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5 }}>
+                <Box>
+                  <Skeleton width={200} height={22} sx={{ mb: 0.5 }} />
+                  <Skeleton width={140} height={16} />
+                </Box>
+                <Skeleton width={80} height={28} sx={{ borderRadius: 8 }} />
+              </Box>
+              <Skeleton width="80%" height={16} sx={{ mb: 0.5 }} />
+              <Skeleton width="60%" height={16} />
+            </Box>
+          ))}
         </Box>
       )}
 

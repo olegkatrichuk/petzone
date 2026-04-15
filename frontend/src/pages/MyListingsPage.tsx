@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import Divider from '@mui/material/Divider'
-import CircularProgress from '@mui/material/CircularProgress'
+import Skeleton from '@mui/material/Skeleton'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogActions from '@mui/material/DialogActions'
@@ -180,8 +180,26 @@ export default function MyListingsPage() {
         </Box>
 
         {isLoading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
-            <CircularProgress sx={{ color: CORAL }} />
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Divider sx={{ mb: 1 }} />
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Box key={i} sx={{ border: '1px solid #E5E7EB', borderRadius: 3, p: 3 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1.5 }}>
+                  <Skeleton width="55%" height={22} />
+                  <Skeleton width={70} height={24} sx={{ borderRadius: 8 }} />
+                </Box>
+                <Box sx={{ display: 'flex', gap: 1, mb: 1.5 }}>
+                  <Skeleton width={60} height={24} sx={{ borderRadius: 8 }} />
+                  <Skeleton width={70} height={24} sx={{ borderRadius: 8 }} />
+                </Box>
+                <Skeleton width="30%" height={16} sx={{ mb: 2 }} />
+                <Box sx={{ display: 'flex', gap: 1.5 }}>
+                  <Skeleton width={90} height={32} sx={{ borderRadius: 2 }} />
+                  <Skeleton width={110} height={32} sx={{ borderRadius: 2 }} />
+                  <Skeleton width={80} height={32} sx={{ borderRadius: 2 }} />
+                </Box>
+              </Box>
+            ))}
           </Box>
         ) : listings.length === 0 ? (
           <Box sx={{ textAlign: 'center', py: 8 }}>

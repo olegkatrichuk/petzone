@@ -7,6 +7,7 @@ import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import CircularProgress from '@mui/material/CircularProgress'
+import Skeleton from '@mui/material/Skeleton'
 import Chip from '@mui/material/Chip'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -348,8 +349,21 @@ export default function ListingsPage() {
 
         {/* Grid */}
         {isLoading || isFetching ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
-            <CircularProgress sx={{ color: CORAL }} />
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' }, gap: 2.5 }}>
+            {Array.from({ length: 8 }).map((_, i) => (
+              <Box key={i} sx={{ border: '1px solid #E5E7EB', borderRadius: 3, p: 2.5, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                <Skeleton variant="rectangular" height={180} sx={{ borderRadius: 2 }} />
+                <Skeleton width="70%" height={22} />
+                <Box sx={{ display: 'flex', gap: 0.75 }}>
+                  <Skeleton width={60} height={24} sx={{ borderRadius: 8 }} />
+                  <Skeleton width={50} height={24} sx={{ borderRadius: 8 }} />
+                  <Skeleton width={80} height={24} sx={{ borderRadius: 8 }} />
+                </Box>
+                <Skeleton width="90%" height={16} />
+                <Skeleton width="60%" height={16} />
+                <Skeleton width="40%" height={14} />
+              </Box>
+            ))}
           </Box>
         ) : listings.length === 0 ? (
           <Box sx={{ textAlign: 'center', py: 10 }}>
