@@ -17,7 +17,7 @@ export default function NotFoundPage() {
 
   return (
     <Box sx={{ minHeight: '70vh', display: 'flex', alignItems: 'center', bgcolor: 'background.default' }}>
-      <PageMeta title={t('notFound.title')} description={t('notFound.subtitle')} path="/404" />
+      <PageMeta title={t('notFound.title')} description={t('notFound.subtitle')} path="/404" noIndex={true} />
       <Container maxWidth="sm" sx={{ textAlign: 'center', py: 8 }}>
         {/* Big 404 */}
         <Box sx={{ position: 'relative', display: 'inline-block', mb: 2 }}>

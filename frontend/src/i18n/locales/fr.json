@@ -77,6 +77,7 @@
     "passwordMismatch": "Les mots de passe ne correspondent pas"
   },
   "pets": {
+    "metaDesc": "Trouvez un chien, un chat ou un autre animal à adopter en Ukraine. Des centaines d'annonces de bénévoles.",
     "pageTitle": "Trouvez votre compagnon 🐾",
     "filters": "Filtres",
     "apply": "Appliquer",
@@ -301,6 +302,7 @@
     "unknownSource": "source"
   },
   "volunteers": {
+    "metaDesc": "Bénévoles et défenseurs des animaux d'Ukraine — parcourez les profils, contactez directement.",
     "pageTitle": "Bénévoles 🐾",
     "searchByName": "Rechercher par nom",
     "experience": "Expérience : {{years}} an(s)",

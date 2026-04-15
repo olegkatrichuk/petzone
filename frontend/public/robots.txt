@@ -13,7 +13,8 @@ Disallow: /*/listings/create
 Disallow: /*/discussion
 Disallow: /*/adoption-applications
 
-# Block query parameter URLs (filters generate duplicate content)
-Disallow: /*?*
+# Block known duplicate/session query params only
+Disallow: /*?lang=*
+Disallow: /*?page=*&page=*
 
 Sitemap: https://getpetzone.com/sitemap.xml

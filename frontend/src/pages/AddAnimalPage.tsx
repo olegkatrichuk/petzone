@@ -311,7 +311,7 @@ export default function AddAnimalPage() {
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, mb: 1.5 }}>
                 {selectedPhotos.map((p, i) => (
                   <Box key={i} sx={{ position: 'relative', width: 90, height: 90 }}>
-                    <Box component="img" src={p.preview} alt=""
+                    <Box component="img" src={p.preview} alt={`Фото ${i + 1}`}
                       sx={{ width: 90, height: 90, objectFit: 'cover', borderRadius: 2, border: '1px solid #E5E7EB' }} />
                     <IconButton size="small" onClick={() => handleRemovePhoto(i)}
                       sx={{ position: 'absolute', top: -8, right: -8, bgcolor: 'white', border: '1px solid #E5E7EB',

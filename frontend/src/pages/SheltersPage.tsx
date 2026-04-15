@@ -285,6 +285,22 @@ export default function SheltersPage() {
         description={t('shelters.metaDesc')}
         path="/shelters"
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: t('nav.home'), item: 'https://getpetzone.com/uk' },
+          { '@type': 'ListItem', position: 2, name: t('shelters.pageTitle'), item: 'https://getpetzone.com/uk/shelters' },
+        ],
+      }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: t('shelters.pageTitle'),
+        description: t('shelters.metaDesc'),
+        numberOfItems: allShelters.length,
+        url: 'https://getpetzone.com/uk/shelters',
+      }) }} />
 
       {/* ── HERO ─────────────────────────────────────────────── */}
       <Box

@@ -182,7 +182,15 @@ export default function PetsPage() {
 
   return (
     <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
-      <PageMeta title={t('pets.pageTitle')} description={t('pets.pageTitle')} path="/pets" />
+      <PageMeta title={t('pets.pageTitle')} description={t('pets.metaDesc')} path="/pets" />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: t('nav.home'), item: 'https://getpetzone.com/uk' },
+          { '@type': 'ListItem', position: 2, name: t('pets.pageTitle'), item: 'https://getpetzone.com/uk/pets' },
+        ],
+      }) }} />
       <Container maxWidth="xl">
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 4 }}>
           <Typography variant="h1" fontSize="2rem" fontWeight="bold" sx={{ color: '#1F2937' }}>

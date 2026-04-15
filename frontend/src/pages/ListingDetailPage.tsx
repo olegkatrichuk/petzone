@@ -44,10 +44,11 @@ function getPhotoUrl(fileName: string) {
   return `${MINIO_BASE}/${encodeURIComponent(fileName)}/url`
 }
 
-function ListingPhoto({ fileName, canDelete, onDelete }: {
+function ListingPhoto({ fileName, canDelete, onDelete, alt }: {
   fileName: string
   canDelete: boolean
   onDelete: (name: string) => void
+  alt?: string
 }) {
   const [url, setUrl] = useState<string | null>(null)
 
@@ -71,7 +72,7 @@ function ListingPhoto({ fileName, canDelete, onDelete }: {
 
   return (
     <Box sx={{ position: 'relative', borderRadius: 2, overflow: 'hidden', aspectRatio: '4/3' }}>
-      <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+      <img src={url} alt={alt ?? fileName} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
       {canDelete && (
         <IconButton
           size="small"
@@ -229,10 +230,11 @@ export default function ListingDetailPage() {
                   gridTemplateColumns: listing.photos.length === 1 ? '1fr' : 'repeat(2, 1fr)',
                   gap: 1, mb: isOwner ? 1.5 : 0,
                 }}>
-                  {listing.photos.map((photo) => (
+                  {listing.photos.map((photo, i) => (
                     <ListingPhoto
                       key={photo}
                       fileName={photo}
+                      alt={`${listing.title} — фото ${i + 1}`}
                       canDelete={isOwner && listing.status === 'Active'}
                       onDelete={handleRemovePhoto}
                     />

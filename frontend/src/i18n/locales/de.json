@@ -77,6 +77,7 @@
     "passwordMismatch": "Passwörter stimmen nicht überein"
   },
   "pets": {
+    "metaDesc": "Finde einen Hund, eine Katze oder ein anderes Tier zur Adoption in der Ukraine. Hunderte von Anzeigen von Freiwilligen.",
     "pageTitle": "Finde dein Haustier 🐾",
     "filters": "Filter",
     "apply": "Anwenden",
@@ -301,6 +302,7 @@
     "unknownSource": "Quelle"
   },
   "volunteers": {
+    "metaDesc": "Tierfreiwillige und Tierschützer der Ukraine — Profile durchsuchen, direkt kontaktieren.",
     "pageTitle": "Freiwillige 🐾",
     "searchByName": "Nach Name suchen",
     "experience": "Erfahrung: {{years}} J.",

@@ -59,7 +59,7 @@ function PhotoThumb({ fileName }: { fileName: string }) {
   return (
     <Box ref={containerRef} sx={{ height: 180, borderRadius: 2, overflow: 'hidden', bgcolor: 'action.hover' }}>
       {url
-        ? <Box component="img" src={url} alt="" loading="lazy" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        ? <Box component="img" src={url} alt={fileName} loading="lazy" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         : visible
           ? <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CircularProgress size={24} sx={{ color: CORAL }} /></Box>
           : null
@@ -221,6 +221,14 @@ export default function ListingsPage() {
         description={t('listings.pageDescription')}
         path="/listings"
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: t('nav.home'), item: 'https://getpetzone.com/uk' },
+          { '@type': 'ListItem', position: 2, name: t('listings.pageTitle'), item: 'https://getpetzone.com/uk/listings' },
+        ],
+      }) }} />
       <Container maxWidth="xl">
 
         {/* Header */}

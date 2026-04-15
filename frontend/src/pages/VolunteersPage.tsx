@@ -51,7 +51,22 @@ export default function VolunteersPage() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <PageMeta title={t('volunteers.pageTitle')} description={t('volunteers.pageTitle')} path="/volunteers" />
+      <PageMeta title={t('volunteers.pageTitle')} description={t('volunteers.metaDesc')} path="/volunteers" />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: t('nav.home'), item: 'https://getpetzone.com/uk' },
+          { '@type': 'ListItem', position: 2, name: t('volunteers.pageTitle'), item: 'https://getpetzone.com/uk/volunteers' },
+        ],
+      }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: 'PetZone',
+        url: 'https://getpetzone.com',
+        description: t('volunteers.metaDesc'),
+      }) }} />
       {/* Header */}
       <Box sx={{ mb: 4 }}>
         <Typography variant="h1" fontSize="2rem" fontWeight="bold" sx={{ mb: 0.5 }}>
