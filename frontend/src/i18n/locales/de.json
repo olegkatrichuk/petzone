@@ -691,7 +691,8 @@
     "pageTitle": "Ein Zuhause für Tiere finden",
     "pageDescription": "Besitzer suchen eine neue liebevolle Familie für ihre Haustiere",
     "allSpecies": "Alle Arten",
-    "cityFilter": "Nach Stadt suchen",
+    "searchFilter": "Nach Name oder Beschreibung suchen",
+    "cityFilter": "Stadt",
     "applyFilter": "Suchen",
     "clearFilter": "Zurücksetzen",
     "showAll": "Alle anzeigen"

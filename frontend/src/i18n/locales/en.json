@@ -761,7 +761,8 @@
     "pageTitle": "Finding a Home for Pets",
     "pageDescription": "Owners looking for a new loving family for their pets",
     "allSpecies": "All species",
-    "cityFilter": "Search by city",
+    "searchFilter": "Search by name or description",
+    "cityFilter": "City",
     "applyFilter": "Search",
     "clearFilter": "Clear",
     "showAll": "See all"

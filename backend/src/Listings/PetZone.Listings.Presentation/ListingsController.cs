@@ -41,12 +41,13 @@ public class ListingsController(
     public async Task<ActionResult> GetAll(
         [FromQuery] Guid? speciesId = null,
         [FromQuery] string? city = null,
+        [FromQuery] string? search = null,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 20,
         CancellationToken ct = default)
     {
         var result = await getAllListingsHandler.Handle(
-            new GetAllListingsQuery(speciesId, city, page, pageSize), ct);
+            new GetAllListingsQuery(speciesId, city, search, page, pageSize), ct);
         return this.ToOkResponse(result);
     }
 

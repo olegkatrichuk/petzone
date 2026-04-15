@@ -761,7 +761,8 @@
     "pageTitle": "Пошук дому для тварин",
     "pageDescription": "Власники шукають нову люблячу родину для своїх улюбленців",
     "allSpecies": "Всі види",
-    "cityFilter": "Пошук за містом",
+    "searchFilter": "Пошук за назвою або описом",
+    "cityFilter": "Місто",
     "applyFilter": "Знайти",
     "clearFilter": "Скинути",
     "showAll": "Дивитись всі"

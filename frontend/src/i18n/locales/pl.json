@@ -691,7 +691,8 @@
     "pageTitle": "Szukanie domu dla zwierząt",
     "pageDescription": "Właściciele szukają nowej kochającej rodziny dla swoich zwierząt",
     "allSpecies": "Wszystkie gatunki",
-    "cityFilter": "Szukaj po mieście",
+    "searchFilter": "Szukaj po nazwie lub opisie",
+    "cityFilter": "Miasto",
     "applyFilter": "Szukaj",
     "clearFilter": "Wyczyść",
     "showAll": "Zobacz wszystkie"

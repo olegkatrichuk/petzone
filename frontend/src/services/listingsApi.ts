@@ -7,7 +7,7 @@ export const listingsApi = createApi({
   baseQuery: axiosBaseQuery(),
   tagTypes: ['Listing'],
   endpoints: (builder) => ({
-    getListings: builder.query<PagedListingsResult, { speciesId?: string; city?: string; page?: number; pageSize?: number }>({
+    getListings: builder.query<PagedListingsResult, { speciesId?: string; city?: string; search?: string; page?: number; pageSize?: number }>({
       query: (params) => ({ url: '/listings', params }),
       providesTags: [{ type: 'Listing', id: 'LIST' }],
     }),

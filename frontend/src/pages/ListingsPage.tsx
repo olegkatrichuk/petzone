@@ -185,9 +185,24 @@ export default function ListingsPage() {
   const speciesId = searchParams.get('speciesId') ?? undefined
   const city = searchParams.get('city') ?? undefined
   const [cityInput, setCityInput] = useState(city ?? '')
+  const [searchInput, setSearchInput] = useState(searchParams.get('search') ?? '')
+
+  // Debounce search input → URL param (400ms)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const p = new URLSearchParams(searchParams)
+      if (searchInput.trim()) p.set('search', searchInput.trim())
+      else p.delete('search')
+      setSearchParams(p, { replace: true })
+    }, 400)
+    return () => clearTimeout(timer)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchInput])
+
+  const search = searchParams.get('search') ?? undefined
 
   const { data: listingsData, isLoading, isFetching } = useGetListingsQuery(
-    { speciesId, city, page, pageSize: PAGE_SIZE },
+    { speciesId, city, search, page, pageSize: PAGE_SIZE },
   )
   const listings = listingsData?.items ?? []
   const totalCount = listingsData?.totalCount ?? 0
@@ -198,7 +213,7 @@ export default function ListingsPage() {
   // Reset to page 1 on filter change
   useEffect(() => {
     setPage(1)
-  }, [speciesId, city])
+  }, [speciesId, city, search])
 
   const applyCity = useCallback(() => {
     const p = new URLSearchParams(searchParams)
@@ -281,6 +296,22 @@ export default function ListingsPage() {
             ))}
           </Box>
 
+          {/* Title/description search */}
+          <TextField
+            size="small"
+            placeholder={t('listings.searchFilter')}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon sx={{ fontSize: 18, color: '#9CA3AF' }} />
+                </InputAdornment>
+              ),
+            }}
+            sx={{ minWidth: 220, bgcolor: 'background.paper', borderRadius: 2 }}
+          />
+
           {/* City search */}
           <TextField
             size="small"
@@ -291,11 +322,11 @@ export default function ListingsPage() {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon sx={{ fontSize: 18, color: '#9CA3AF' }} />
+                  <LocationOnIcon sx={{ fontSize: 18, color: '#9CA3AF' }} />
                 </InputAdornment>
               ),
             }}
-            sx={{ minWidth: 200, bgcolor: 'background.paper', borderRadius: 2 }}
+            sx={{ minWidth: 180, bgcolor: 'background.paper', borderRadius: 2 }}
           />
           <Button
             variant="outlined"
@@ -304,10 +335,10 @@ export default function ListingsPage() {
           >
             {t('listings.applyFilter')}
           </Button>
-          {(speciesId || city) && (
+          {(speciesId || city || search) && (
             <Button
               variant="text"
-              onClick={() => { setCityInput(''); setSearchParams({}, { replace: true }) }}
+              onClick={() => { setCityInput(''); setSearchInput(''); setSearchParams({}, { replace: true }) }}
               sx={{ textTransform: 'none', color: '#9CA3AF' }}
             >
               {t('listings.clearFilter')}

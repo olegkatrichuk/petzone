@@ -761,7 +761,8 @@
     "pageTitle": "Поиск дома для животных",
     "pageDescription": "Хозяева ищут новую любящую семью для своих питомцев",
     "allSpecies": "Все виды",
-    "cityFilter": "Поиск по городу",
+    "searchFilter": "Поиск по названию или описанию",
+    "cityFilter": "Город",
     "applyFilter": "Найти",
     "clearFilter": "Сбросить",
     "showAll": "Смотреть все"

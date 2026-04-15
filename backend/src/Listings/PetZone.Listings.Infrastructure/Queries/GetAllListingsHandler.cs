@@ -21,6 +21,12 @@ public class GetAllListingsHandler(ListingsDbContext dbContext)
         if (!string.IsNullOrWhiteSpace(query.City))
             q = q.Where(l => l.City.ToLower().Contains(query.City.ToLower()));
 
+        if (!string.IsNullOrWhiteSpace(query.Search))
+        {
+            var s = query.Search.ToLower();
+            q = q.Where(l => l.Title.ToLower().Contains(s) || l.Description.ToLower().Contains(s));
+        }
+
         var totalCount = await q.CountAsync(ct);
 
         var items = await q

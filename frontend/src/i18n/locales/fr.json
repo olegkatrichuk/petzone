@@ -691,7 +691,8 @@
     "pageTitle": "Trouver un foyer pour les animaux",
     "pageDescription": "Les propriétaires recherchent une nouvelle famille aimante pour leurs animaux",
     "allSpecies": "Toutes espèces",
-    "cityFilter": "Recherche par ville",
+    "searchFilter": "Rechercher par nom ou description",
+    "cityFilter": "Ville",
     "applyFilter": "Chercher",
     "clearFilter": "Effacer",
     "showAll": "Voir tout"
