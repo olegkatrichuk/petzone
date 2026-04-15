@@ -23,7 +23,7 @@ export default function PageMeta({ title, description, path = '', image, type = 
   const canonicalUrl = `${SITE_URL}/${currentLang}${path}`
   const ogImage = image
     ? (image.startsWith('http') ? image : `${SITE_URL}${image}`)
-    : `${SITE_URL}/og-default.svg`
+    : `${SITE_URL}/og-default.png`
 
   return (
     <Helmet>
@@ -50,6 +50,7 @@ export default function PageMeta({ title, description, path = '', image, type = 
 
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@getpetzone" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />

@@ -267,7 +267,7 @@ export default function ListingDetailPage() {
           )}
 
           <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1, mb: 2 }}>
-            <Typography variant="h5" fontWeight="bold">{listing.title}</Typography>
+            <Typography variant="h1" fontSize="1.5rem" fontWeight="bold">{listing.title}</Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0 }}>
               <ShareButton title={listing.title} text={listing.description} />
               <Chip

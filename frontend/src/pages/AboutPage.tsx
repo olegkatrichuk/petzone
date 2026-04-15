@@ -98,7 +98,7 @@ export default function AboutPage() {
           </Box>
 
           <Typography
-            variant="h3"
+            variant="h1"
             fontWeight="bold"
             sx={{ mb: 2.5, fontSize: { xs: '2rem', md: '3rem' }, lineHeight: 1.2 }}
           >

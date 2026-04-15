@@ -185,7 +185,7 @@ export default function PetsPage() {
       <PageMeta title={t('pets.pageTitle')} description={t('pets.pageTitle')} path="/pets" />
       <Container maxWidth="xl">
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 4 }}>
-          <Typography variant="h4" fontWeight="bold" sx={{ color: '#1F2937' }}>
+          <Typography variant="h1" fontSize="2rem" fontWeight="bold" sx={{ color: '#1F2937' }}>
             {t('pets.pageTitle')}
           </Typography>
           <Box sx={{ display: 'flex', gap: 1.5 }}>

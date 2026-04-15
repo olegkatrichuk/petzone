@@ -226,7 +226,7 @@ export default function ListingsPage() {
         {/* Header */}
         <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 4, flexWrap: 'wrap', gap: 2 }}>
           <Box>
-            <Typography variant="h4" fontWeight="bold" sx={{ color: '#1F2937' }}>
+            <Typography variant="h1" fontSize="2rem" fontWeight="bold" sx={{ color: '#1F2937' }}>
               {t('listings.pageTitle')}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>

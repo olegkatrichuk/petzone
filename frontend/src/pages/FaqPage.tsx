@@ -81,7 +81,7 @@ export default function FaqPage() {
               {t('faq.badge')}
             </Typography>
           </Box>
-          <Typography variant="h3" fontWeight="bold" sx={{ mb: 2, fontSize: { xs: '1.8rem', md: '2.8rem' } }}>
+          <Typography variant="h1" fontWeight="bold" sx={{ mb: 2, fontSize: { xs: '1.8rem', md: '2.8rem' } }}>
             {t('faq.pageTitle')}
           </Typography>
           <Typography variant="h6" sx={{ opacity: 0.8, fontWeight: 400, fontSize: { xs: '1rem', md: '1.1rem' } }}>

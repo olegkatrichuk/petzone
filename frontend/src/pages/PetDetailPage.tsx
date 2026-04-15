@@ -207,7 +207,7 @@ export default function PetDetailPage() {
                       key={photo.filePath}
                       component="img"
                       src={photo.filePath}
-                      alt={`${t('petDetail.photos')} ${i + 1}`}
+                      alt={`${pet.nickname} — ${t('petDetail.photos')} ${i + 1}`}
                       loading="lazy"
                       onClick={() => setActivePhoto(i)}
                       sx={{
@@ -236,7 +236,7 @@ export default function PetDetailPage() {
               {/* Name + status + favorite */}
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box>
-                  <Typography variant="h4" fontWeight="bold" sx={{ lineHeight: 1.2 }}>
+                  <Typography variant="h1" fontSize="1.75rem" fontWeight="bold" sx={{ lineHeight: 1.2 }}>
                     {pet.nickname}
                   </Typography>
                   <Chip

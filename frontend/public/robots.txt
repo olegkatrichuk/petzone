@@ -5,10 +5,15 @@ Allow: /
 Disallow: /*/admin
 Disallow: /*/profile
 Disallow: /*/my-listings
+Disallow: /*/my-adoptions
 Disallow: /*/favorites
 Disallow: /*/volunteer-applications
 Disallow: /*/edit-profile
 Disallow: /*/listings/create
 Disallow: /*/discussion
+Disallow: /*/adoption-applications
+
+# Block query parameter URLs (filters generate duplicate content)
+Disallow: /*?*
 
 Sitemap: https://getpetzone.com/sitemap.xml

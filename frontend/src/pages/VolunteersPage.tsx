@@ -54,7 +54,7 @@ export default function VolunteersPage() {
       <PageMeta title={t('volunteers.pageTitle')} description={t('volunteers.pageTitle')} path="/volunteers" />
       {/* Header */}
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" fontWeight="bold" sx={{ mb: 0.5 }}>
+        <Typography variant="h1" fontSize="2rem" fontWeight="bold" sx={{ mb: 0.5 }}>
           {t('volunteers.pageTitle')}
         </Typography>
       </Box>
