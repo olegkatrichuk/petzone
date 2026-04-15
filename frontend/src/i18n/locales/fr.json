@@ -16,7 +16,8 @@
     "favorites": "Favoris",
     "register": "S'inscrire",
     "listings": "Annonces",
-    "digest": "Digest"
+    "digest": "Digest",
+    "shelters": "Refuges"
   },
   "auth": {
     "email": "Email",
@@ -857,6 +858,37 @@
       "reject": "Rejeter",
       "phone": "Téléphone",
       "message": "Message"
+    }
+  },
+  "shelters": {
+    "pageTitle": "Refuges et organisations de protection animale",
+    "metaDesc": "Répertoire des refuges et organisations de protection animale en Ukraine",
+    "badge": "Protection animale Ukraine",
+    "hero": {
+      "title": "Refuges et organisations de protection animale",
+      "subtitle": "Plus de 230 organisations de protection animale de toute l'Ukraine sauvent, soignent et replacent chaque jour des animaux errants."
+    },
+    "stats": {
+      "orgs": "organisations",
+      "cities": "villes",
+      "source": "Happy Paw"
+    },
+    "searchPlaceholder": "Rechercher par nom ou ville…",
+    "clearSearch": "Effacer",
+    "notFound": "Rien trouvé",
+    "notFoundHint": "Essayez de modifier votre recherche",
+    "viewOnHappyPaw": "Page sur Happy Paw",
+    "attribution": "Données fournies par le partenaire",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "website": "Site web",
+    "phone": "Téléphone",
+    "email": "Email",
+    "of": "sur",
+    "cta": {
+      "title": "Votre organisation n'est pas listée ?",
+      "subtitle": "Inscrivez-vous comme bénévole ou refuge sur PetZone.",
+      "btn": "Devenir bénévole"
     }
   }
 }

@@ -30,6 +30,7 @@ const NAV_ITEMS = [
   { labelKey: 'nav.home', path: '/' },
   { labelKey: 'nav.pets', path: '/pets' },
   { labelKey: 'nav.volunteers', path: '/volunteers' },
+  { labelKey: 'nav.shelters', path: '/shelters' },
   { labelKey: 'nav.digest', path: '/digest' },
   { labelKey: 'nav.about', path: '/about' },
 ]

@@ -25,6 +25,7 @@ export default function Footer() {
     { labelKey: 'nav.home', path: '/' },
     { labelKey: 'nav.pets', path: '/pets' },
     { labelKey: 'nav.volunteers', path: '/volunteers' },
+    { labelKey: 'nav.shelters', path: '/shelters' },
     { labelKey: 'nav.about', path: '/about' },
     { labelKey: 'nav.faq', path: '/faq' },
     { labelKey: 'nav.profile', path: '/profile' },

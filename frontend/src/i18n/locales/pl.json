@@ -16,7 +16,8 @@
     "favorites": "Ulubione",
     "register": "Rejestracja",
     "listings": "Ogłoszenia",
-    "digest": "Digest"
+    "digest": "Digest",
+    "shelters": "Schroniska"
   },
   "auth": {
     "email": "Email",
@@ -857,6 +858,37 @@
       "reject": "Odrzuć",
       "phone": "Telefon",
       "message": "Wiadomość"
+    }
+  },
+  "shelters": {
+    "pageTitle": "Schroniska i organizacje ochrony zwierząt",
+    "metaDesc": "Katalog schronisk i organizacji ochrony zwierząt na Ukrainie",
+    "badge": "Ochrona zwierząt Ukraina",
+    "hero": {
+      "title": "Schroniska i organizacje ochrony zwierząt",
+      "subtitle": "Ponad 230 organizacji ochrony zwierząt z całej Ukrainy ratuje codziennie bezdomne zwierzęta."
+    },
+    "stats": {
+      "orgs": "organizacji",
+      "cities": "miast",
+      "source": "Happy Paw"
+    },
+    "searchPlaceholder": "Szukaj po nazwie lub mieście…",
+    "clearSearch": "Wyczyść",
+    "notFound": "Nic nie znaleziono",
+    "notFoundHint": "Spróbuj zmienić zapytanie",
+    "viewOnHappyPaw": "Strona na Happy Paw",
+    "attribution": "Dane dostarczone przez partnera",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "website": "Strona internetowa",
+    "phone": "Telefon",
+    "email": "Email",
+    "of": "z",
+    "cta": {
+      "title": "Twojej organizacji tu nie ma?",
+      "subtitle": "Zarejestruj się jako wolontariusz lub schronisko na PetZone.",
+      "btn": "Zostań wolontariuszem"
     }
   }
 }

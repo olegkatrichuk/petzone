@@ -16,7 +16,8 @@
     "favorites": "Favoriten",
     "register": "Registrieren",
     "listings": "Anzeigen",
-    "digest": "Digest"
+    "digest": "Digest",
+    "shelters": "Tierheime"
   },
   "auth": {
     "email": "E-Mail",
@@ -857,6 +858,37 @@
       "reject": "Ablehnen",
       "phone": "Telefon",
       "message": "Nachricht"
+    }
+  },
+  "shelters": {
+    "pageTitle": "Tierheime & Tierschutzorganisationen",
+    "metaDesc": "Verzeichnis der Tierheime und Tierschutzorganisationen in der Ukraine",
+    "badge": "Tierschutz Ukraine",
+    "hero": {
+      "title": "Tierheime & Tierschutzorganisationen",
+      "subtitle": "Über 230 Tierschutzorganisationen aus der ganzen Ukraine retten täglich obdachlose Tiere."
+    },
+    "stats": {
+      "orgs": "Organisationen",
+      "cities": "Städte",
+      "source": "Happy Paw"
+    },
+    "searchPlaceholder": "Suche nach Name oder Stadt…",
+    "clearSearch": "Löschen",
+    "notFound": "Nichts gefunden",
+    "notFoundHint": "Versuchen Sie eine andere Suche",
+    "viewOnHappyPaw": "Seite auf Happy Paw",
+    "attribution": "Daten vom Partner bereitgestellt",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "website": "Webseite",
+    "phone": "Telefon",
+    "email": "E-Mail",
+    "of": "von",
+    "cta": {
+      "title": "Ihre Organisation noch nicht dabei?",
+      "subtitle": "Registrieren Sie sich als Freiwilliger oder Tierheim auf PetZone.",
+      "btn": "Freiwilliger werden"
     }
   }
 }

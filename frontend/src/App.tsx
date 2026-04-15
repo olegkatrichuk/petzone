@@ -40,6 +40,7 @@ const ConfirmEmailPage = lazy(() => import('./pages/ConfirmEmailPage'))
 const AddAnimalPage = lazy(() => import('./pages/AddAnimalPage'))
 const MyAdoptionApplicationsPage = lazy(() => import('./pages/MyAdoptionApplicationsPage'))
 const VolunteerAdoptionApplicationsPage = lazy(() => import('./pages/VolunteerAdoptionApplicationsPage'))
+const SheltersPage = lazy(() => import('./pages/SheltersPage'))
 
 function PageLoader() {
   return (
@@ -92,6 +93,7 @@ function App() {
         <Route path="listings/:listingId" element={<Suspense fallback={<PageLoader />}><ListingDetailPage /></Suspense>} />
         <Route path="listings/:listingId/edit" element={<Suspense fallback={<PageLoader />}><EditListingPage /></Suspense>} />
         <Route path="my-listings" element={<Suspense fallback={<PageLoader />}><MyListingsPage /></Suspense>} />
+        <Route path="shelters" element={<Suspense fallback={<PageLoader />}><SheltersPage /></Suspense>} />
         <Route path="map" element={<Suspense fallback={<PageLoader />}><MapPage /></Suspense>} />
         <Route path="forgot-password" element={<Suspense fallback={<PageLoader />}><ForgotPasswordPage /></Suspense>} />
         <Route path="reset-password" element={<Suspense fallback={<PageLoader />}><ResetPasswordPage /></Suspense>} />

@@ -16,7 +16,8 @@
     "favorites": "Favorites",
     "register": "Register",
     "listings": "Listings",
-    "digest": "Digest"
+    "digest": "Digest",
+    "shelters": "Shelters"
   },
   "auth": {
     "email": "Email",
@@ -857,6 +858,37 @@
       "reject": "Reject",
       "phone": "Phone",
       "message": "Message"
+    }
+  },
+  "shelters": {
+    "pageTitle": "Shelters & Animal Organizations",
+    "metaDesc": "Directory of animal shelters and protection organizations across Ukraine — contacts, social media, addresses",
+    "badge": "Animal Protection Ukraine",
+    "hero": {
+      "title": "Shelters & Animal Organizations",
+      "subtitle": "Over 230 animal protection organizations from all corners of Ukraine. Every day they rescue, treat and rehome stray animals."
+    },
+    "stats": {
+      "orgs": "organizations",
+      "cities": "cities",
+      "source": "Happy Paw"
+    },
+    "searchPlaceholder": "Search by name or city…",
+    "clearSearch": "Clear",
+    "notFound": "Nothing found",
+    "notFoundHint": "Try changing your query or clearing the filter",
+    "viewOnHappyPaw": "Page on Happy Paw",
+    "attribution": "Data provided by partner",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "website": "Website",
+    "phone": "Phone",
+    "email": "Email",
+    "of": "of",
+    "cta": {
+      "title": "Your organization not listed?",
+      "subtitle": "Register as a volunteer or shelter on PetZone and share stories about your animals.",
+      "btn": "Become a volunteer"
     }
   }
 }
