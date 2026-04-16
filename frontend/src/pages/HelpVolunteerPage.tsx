@@ -94,7 +94,7 @@ export default function HelpVolunteerPage() {
 
   return (
     <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
-      <PageMeta title={t('help.title')} description={t('help.subtitle')} path={`/help/${volunteerId}`} />
+      <PageMeta title={t('help.title')} description={t('help.subtitle')} path={`/help/${volunteerId}`} noIndex />
       <Container maxWidth="sm">
         <Button
           startIcon={<ArrowBackIcon />}

@@ -546,4 +546,140 @@
     <changefreq>monthly</changefreq><priority>0.7</priority>
   </url>
 
+  <!-- ══════════════════════════════════════════ SHELTERS ══ -->
+  <url>
+    <loc>https://getpetzone.com/uk/shelters</loc>
+    <xhtml:link rel="alternate" hreflang="uk"        href="https://getpetzone.com/uk/shelters"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://getpetzone.com/en/shelters"/>
+    <xhtml:link rel="alternate" hreflang="pl"        href="https://getpetzone.com/pl/shelters"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://getpetzone.com/de/shelters"/>
+    <xhtml:link rel="alternate" hreflang="fr"        href="https://getpetzone.com/fr/shelters"/>
+    <xhtml:link rel="alternate" hreflang="ru"        href="https://getpetzone.com/ru/shelters"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getpetzone.com/uk/shelters"/>
+    <changefreq>weekly</changefreq><priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://getpetzone.com/en/shelters</loc>
+    <xhtml:link rel="alternate" hreflang="uk"        href="https://getpetzone.com/uk/shelters"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://getpetzone.com/en/shelters"/>
+    <xhtml:link rel="alternate" hreflang="pl"        href="https://getpetzone.com/pl/shelters"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://getpetzone.com/de/shelters"/>
+    <xhtml:link rel="alternate" hreflang="fr"        href="https://getpetzone.com/fr/shelters"/>
+    <xhtml:link rel="alternate" hreflang="ru"        href="https://getpetzone.com/ru/shelters"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getpetzone.com/uk/shelters"/>
+    <changefreq>weekly</changefreq><priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://getpetzone.com/pl/shelters</loc>
+    <xhtml:link rel="alternate" hreflang="uk"        href="https://getpetzone.com/uk/shelters"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://getpetzone.com/en/shelters"/>
+    <xhtml:link rel="alternate" hreflang="pl"        href="https://getpetzone.com/pl/shelters"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://getpetzone.com/de/shelters"/>
+    <xhtml:link rel="alternate" hreflang="fr"        href="https://getpetzone.com/fr/shelters"/>
+    <xhtml:link rel="alternate" hreflang="ru"        href="https://getpetzone.com/ru/shelters"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getpetzone.com/uk/shelters"/>
+    <changefreq>weekly</changefreq><priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://getpetzone.com/de/shelters</loc>
+    <xhtml:link rel="alternate" hreflang="uk"        href="https://getpetzone.com/uk/shelters"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://getpetzone.com/en/shelters"/>
+    <xhtml:link rel="alternate" hreflang="pl"        href="https://getpetzone.com/pl/shelters"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://getpetzone.com/de/shelters"/>
+    <xhtml:link rel="alternate" hreflang="fr"        href="https://getpetzone.com/fr/shelters"/>
+    <xhtml:link rel="alternate" hreflang="ru"        href="https://getpetzone.com/ru/shelters"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getpetzone.com/uk/shelters"/>
+    <changefreq>weekly</changefreq><priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://getpetzone.com/fr/shelters</loc>
+    <xhtml:link rel="alternate" hreflang="uk"        href="https://getpetzone.com/uk/shelters"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://getpetzone.com/en/shelters"/>
+    <xhtml:link rel="alternate" hreflang="pl"        href="https://getpetzone.com/pl/shelters"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://getpetzone.com/de/shelters"/>
+    <xhtml:link rel="alternate" hreflang="fr"        href="https://getpetzone.com/fr/shelters"/>
+    <xhtml:link rel="alternate" hreflang="ru"        href="https://getpetzone.com/ru/shelters"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getpetzone.com/uk/shelters"/>
+    <changefreq>weekly</changefreq><priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://getpetzone.com/ru/shelters</loc>
+    <xhtml:link rel="alternate" hreflang="uk"        href="https://getpetzone.com/uk/shelters"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://getpetzone.com/en/shelters"/>
+    <xhtml:link rel="alternate" hreflang="pl"        href="https://getpetzone.com/pl/shelters"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://getpetzone.com/de/shelters"/>
+    <xhtml:link rel="alternate" hreflang="fr"        href="https://getpetzone.com/fr/shelters"/>
+    <xhtml:link rel="alternate" hreflang="ru"        href="https://getpetzone.com/ru/shelters"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getpetzone.com/uk/shelters"/>
+    <changefreq>weekly</changefreq><priority>0.7</priority>
+  </url>
+
+  <!-- ══════════════════════════════════════════════ MAP ══ -->
+  <url>
+    <loc>https://getpetzone.com/uk/map</loc>
+    <xhtml:link rel="alternate" hreflang="uk"        href="https://getpetzone.com/uk/map"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://getpetzone.com/en/map"/>
+    <xhtml:link rel="alternate" hreflang="pl"        href="https://getpetzone.com/pl/map"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://getpetzone.com/de/map"/>
+    <xhtml:link rel="alternate" hreflang="fr"        href="https://getpetzone.com/fr/map"/>
+    <xhtml:link rel="alternate" hreflang="ru"        href="https://getpetzone.com/ru/map"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getpetzone.com/uk/map"/>
+    <changefreq>daily</changefreq><priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://getpetzone.com/en/map</loc>
+    <xhtml:link rel="alternate" hreflang="uk"        href="https://getpetzone.com/uk/map"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://getpetzone.com/en/map"/>
+    <xhtml:link rel="alternate" hreflang="pl"        href="https://getpetzone.com/pl/map"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://getpetzone.com/de/map"/>
+    <xhtml:link rel="alternate" hreflang="fr"        href="https://getpetzone.com/fr/map"/>
+    <xhtml:link rel="alternate" hreflang="ru"        href="https://getpetzone.com/ru/map"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getpetzone.com/uk/map"/>
+    <changefreq>daily</changefreq><priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://getpetzone.com/pl/map</loc>
+    <xhtml:link rel="alternate" hreflang="uk"        href="https://getpetzone.com/uk/map"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://getpetzone.com/en/map"/>
+    <xhtml:link rel="alternate" hreflang="pl"        href="https://getpetzone.com/pl/map"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://getpetzone.com/de/map"/>
+    <xhtml:link rel="alternate" hreflang="fr"        href="https://getpetzone.com/fr/map"/>
+    <xhtml:link rel="alternate" hreflang="ru"        href="https://getpetzone.com/ru/map"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getpetzone.com/uk/map"/>
+    <changefreq>daily</changefreq><priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://getpetzone.com/de/map</loc>
+    <xhtml:link rel="alternate" hreflang="uk"        href="https://getpetzone.com/uk/map"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://getpetzone.com/en/map"/>
+    <xhtml:link rel="alternate" hreflang="pl"        href="https://getpetzone.com/pl/map"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://getpetzone.com/de/map"/>
+    <xhtml:link rel="alternate" hreflang="fr"        href="https://getpetzone.com/fr/map"/>
+    <xhtml:link rel="alternate" hreflang="ru"        href="https://getpetzone.com/ru/map"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getpetzone.com/uk/map"/>
+    <changefreq>daily</changefreq><priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://getpetzone.com/fr/map</loc>
+    <xhtml:link rel="alternate" hreflang="uk"        href="https://getpetzone.com/uk/map"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://getpetzone.com/en/map"/>
+    <xhtml:link rel="alternate" hreflang="pl"        href="https://getpetzone.com/pl/map"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://getpetzone.com/de/map"/>
+    <xhtml:link rel="alternate" hreflang="fr"        href="https://getpetzone.com/fr/map"/>
+    <xhtml:link rel="alternate" hreflang="ru"        href="https://getpetzone.com/ru/map"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getpetzone.com/uk/map"/>
+    <changefreq>daily</changefreq><priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://getpetzone.com/ru/map</loc>
+    <xhtml:link rel="alternate" hreflang="uk"        href="https://getpetzone.com/uk/map"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://getpetzone.com/en/map"/>
+    <xhtml:link rel="alternate" hreflang="pl"        href="https://getpetzone.com/pl/map"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://getpetzone.com/de/map"/>
+    <xhtml:link rel="alternate" hreflang="fr"        href="https://getpetzone.com/fr/map"/>
+    <xhtml:link rel="alternate" hreflang="ru"        href="https://getpetzone.com/ru/map"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getpetzone.com/uk/map"/>
+    <changefreq>daily</changefreq><priority>0.6</priority>
+  </url>
+
 </urlset>

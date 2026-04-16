@@ -138,7 +138,7 @@ export default function RegisterVolunteerPage() {
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 4 }}>
-      <PageMeta title={t('volunteerRequest.tabVolunteer')} description={t('volunteerRequest.infoText')} path="/register/volunteer" noIndex />
+      <PageMeta title={t('volunteerRequest.tabVolunteer')} description={t('volunteerRequest.infoText')} path="/register/volunteer" />
       <Container maxWidth="sm">
         <Button
           startIcon={<ArrowBackIcon />}
