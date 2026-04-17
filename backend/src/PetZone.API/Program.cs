@@ -135,6 +135,15 @@ builder.Services.AddRateLimiter(options =>
         opt.QueueLimit = 0;
         opt.AutoReplenishment = true;
     });
+
+    // file-upload: 20 uploads per minute per IP
+    options.AddFixedWindowLimiter("file-upload", opt =>
+    {
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.PermitLimit = 20;
+        opt.QueueLimit = 0;
+        opt.AutoReplenishment = true;
+    });
 });
 
 var dbConnectionString = builder.Configuration.GetConnectionString("Database")!;
@@ -174,6 +183,9 @@ app.Use(async (context, next) =>
     context.Response.Headers.Append("X-Frame-Options", "DENY");
     context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
     context.Response.Headers.Append("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+    context.Response.Headers.Append("X-XSS-Protection", "1; mode=block");
+    if (!app.Environment.IsDevelopment())
+        context.Response.Headers.Append("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
     await next();
 });
 

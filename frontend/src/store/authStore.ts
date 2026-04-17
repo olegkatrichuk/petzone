@@ -53,7 +53,9 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'auth',
-      partialize: (state) => ({ accessToken: state.accessToken, user: state.user }),
+      // accessToken stays in memory only — localStorage is XSS-accessible.
+      // Refresh token in httpOnly cookie handles silent re-auth after page reload.
+      partialize: (state) => ({ user: state.user }),
     }
   )
 )

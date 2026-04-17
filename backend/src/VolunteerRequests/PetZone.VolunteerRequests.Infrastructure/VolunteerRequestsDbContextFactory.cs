@@ -9,7 +9,9 @@ public class VolunteerRequestsDbContextFactory
     public VolunteerRequestsDbContext CreateDbContext(string[] args)
     {
         var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__Database")
-            ?? "Host=localhost;Port=5434;Database=petzone_db;Username=petzone;Password=changeme";
+            ?? throw new InvalidOperationException(
+                "ConnectionStrings__Database environment variable is required for migrations. " +
+                "Set it before running 'dotnet ef' commands.");
 
         var optionsBuilder = new DbContextOptionsBuilder<VolunteerRequestsDbContext>();
         optionsBuilder.UseNpgsql(connectionString,
