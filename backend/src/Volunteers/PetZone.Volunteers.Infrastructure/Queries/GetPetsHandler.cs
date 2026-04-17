@@ -28,15 +28,15 @@ public class GetPetsHandler(
 
         if (!string.IsNullOrWhiteSpace(query.Nickname))
             petsQuery = petsQuery.Where(x =>
-                x.Pet.Nickname.ToLower().Contains(query.Nickname.ToLower()));
+                EF.Functions.ILike(x.Pet.Nickname, $"%{query.Nickname}%"));
 
         if (!string.IsNullOrWhiteSpace(query.Color))
             petsQuery = petsQuery.Where(x =>
-                x.Pet.Color.ToLower().Contains(query.Color.ToLower()));
+                EF.Functions.ILike(x.Pet.Color, $"%{query.Color}%"));
 
         if (!string.IsNullOrWhiteSpace(query.City))
             petsQuery = petsQuery.Where(x =>
-                x.Pet.Location.City.ToLower().Contains(query.City.ToLower()));
+                EF.Functions.ILike(x.Pet.Location.City, $"%{query.City}%"));
 
         if (query.SpeciesId.HasValue)
             petsQuery = petsQuery.Where(x =>

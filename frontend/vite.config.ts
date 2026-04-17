@@ -44,13 +44,13 @@ export default defineConfig({
         runtimeCaching: [
           {
             // API responses — network first, fallback to cache
-            urlPattern: ({ url }) => url.pathname.startsWith('/pets') || url.pathname.startsWith('/volunteers'),
+            urlPattern: ({ url }) => url.pathname.startsWith('/api/'),
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-cache',
               networkTimeoutSeconds: 5,
               expiration: {
-                maxEntries: 100,
+                maxEntries: 200,
                 maxAgeSeconds: 60 * 60, // 1 hour
               },
               cacheableResponse: { statuses: [0, 200] },
