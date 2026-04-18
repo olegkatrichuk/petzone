@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetZone.Listings.Domain;
 using PetZone.Listings.Infrastructure;
+using PetZone.Volunteers.Domain.Models;
 using PetZone.Volunteers.Infrastructure;
 
 namespace PetZone.API.Controllers;
@@ -31,7 +32,7 @@ public class SitemapController(
 
         var petIds = await volunteersDb.Volunteers
             .Where(v => !v.IsDeleted)
-            .SelectMany(v => v.Pets.Where(p => !p.IsDeleted))
+            .SelectMany(v => v.Pets.Where(p => !p.IsDeleted && p.Status == HelpStatus.LookingForHome))
             .Select(p => new { p.Id, p.CreatedAt })
             .ToListAsync(ct);
 
