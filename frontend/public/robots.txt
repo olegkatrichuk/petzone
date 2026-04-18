@@ -13,8 +13,4 @@ Disallow: /*/listings/create
 Disallow: /*/discussion
 Disallow: /*/adoption-applications
 
-# Block known duplicate/session query params only
-Disallow: /*?lang=*
-Disallow: /*?page=*&page=*
-
 Sitemap: https://getpetzone.com/sitemap.xml

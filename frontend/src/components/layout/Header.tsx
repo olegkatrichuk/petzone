@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useParams, Link as RouterLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useLangNavigate } from '../../hooks/useLangNavigate'
 import { DEFAULT_LANG } from '../../lib/langUtils'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
@@ -29,6 +28,7 @@ import LightModeIcon from '@mui/icons-material/LightMode'
 const NAV_ITEMS = [
   { labelKey: 'nav.home', path: '/' },
   { labelKey: 'nav.pets', path: '/pets' },
+  { labelKey: 'nav.listings', path: '/listings' },
   { labelKey: 'nav.volunteers', path: '/volunteers' },
   { labelKey: 'nav.shelters', path: '/shelters' },
   { labelKey: 'nav.digest', path: '/digest' },
@@ -36,7 +36,6 @@ const NAV_ITEMS = [
 ]
 
 export default function Header() {
-  const navigate = useLangNavigate()
   const location = useLocation()
   const { lang } = useParams<{ lang: string }>()
   const { t } = useTranslation()
@@ -58,8 +57,9 @@ export default function Header() {
         <Toolbar sx={{ justifyContent: 'space-between', minHeight: { xs: 56, sm: 64 } }}>
           {/* Logo */}
           <Box
-            sx={{ display: 'flex', alignItems: 'center', gap: 1, cursor: 'pointer', flexShrink: 0 }}
-            onClick={() => navigate('/')}
+            component={RouterLink}
+            to={prefix}
+            sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0, textDecoration: 'none' }}
           >
             <PetsIcon sx={{ fontSize: 28, color: '#FF6B6B' }} />
             <Typography variant="h6" fontWeight="bold" letterSpacing={1} sx={{ color: 'white' }}>
@@ -72,7 +72,8 @@ export default function Header() {
             {NAV_ITEMS.map((item) => (
               <Button
                 key={item.path}
-                onClick={() => navigate(item.path)}
+                component={RouterLink}
+                to={item.path === '/' ? prefix : `${prefix}${item.path}`}
                 sx={{
                   color: isActive(item.path) ? '#FF6B6B' : 'rgba(255,255,255,0.75)',
                   fontWeight: isActive(item.path) ? 700 : 400,
@@ -89,7 +90,8 @@ export default function Header() {
             ))}
             {isAdmin && (
               <Button
-                onClick={() => navigate('/admin')}
+                component={RouterLink}
+                to={`${prefix}/admin`}
                 sx={{
                   color: isActive('/admin') ? '#FF6B6B' : 'rgba(255,255,255,0.75)',
                   fontWeight: isActive('/admin') ? 700 : 400,
@@ -117,23 +119,24 @@ export default function Header() {
 
             {isAuthenticated && (
               <Tooltip title={t('nav.favorites')}>
-                <IconButton sx={{ color: 'rgba(255,255,255,0.8)', '&:hover': { color: '#FF6B6B' } }} onClick={() => navigate('/favorites')}>
+                <IconButton component={RouterLink} to={`${prefix}/favorites`} sx={{ color: 'rgba(255,255,255,0.8)', '&:hover': { color: '#FF6B6B' } }}>
                   <FavoriteIcon />
                 </IconButton>
               </Tooltip>
             )}
 
             <Tooltip title={isAuthenticated ? t('nav.profile') : t('nav.login')}>
-              <IconButton sx={{ color: 'rgba(255,255,255,0.8)', '&:hover': { color: '#FF6B6B' } }} onClick={() => navigate(isAuthenticated ? '/profile' : '/login')}>
+              <IconButton component={RouterLink} to={isAuthenticated ? `${prefix}/profile` : `${prefix}/login`} sx={{ color: 'rgba(255,255,255,0.8)', '&:hover': { color: '#FF6B6B' } }}>
                 <AccountCircleIcon />
               </IconButton>
             </Tooltip>
 
             {!isAuthenticated && (
               <Button
+                component={RouterLink}
+                to={`${prefix}/login`}
                 variant="outlined"
                 size="small"
-                onClick={() => navigate('/login')}
                 sx={{
                   display: { xs: 'none', sm: 'flex' },
                   color: 'white',
@@ -170,8 +173,10 @@ export default function Header() {
             {NAV_ITEMS.map((item) => (
               <ListItem key={item.path} disablePadding>
                 <ListItemButton
+                  component={RouterLink}
+                  to={item.path === '/' ? prefix : `${prefix}${item.path}`}
                   selected={isActive(item.path)}
-                  onClick={() => { navigate(item.path); setDrawerOpen(false) }}
+                  onClick={() => setDrawerOpen(false)}
                   sx={{ '&.Mui-selected': { color: '#FF6B6B', bgcolor: '#FFF0F0' } }}
                 >
                   <ListItemText primary={t(item.labelKey)} />
@@ -181,8 +186,10 @@ export default function Header() {
             {isAdmin && (
               <ListItem disablePadding>
                 <ListItemButton
+                  component={RouterLink}
+                  to={`${prefix}/admin`}
                   selected={isActive('/admin')}
-                  onClick={() => { navigate('/admin'); setDrawerOpen(false) }}
+                  onClick={() => setDrawerOpen(false)}
                   sx={{ '&.Mui-selected': { color: '#FF6B6B', bgcolor: '#FFF0F0' } }}
                 >
                   <ListItemText primary={t('admin.navLabel')} />
@@ -195,19 +202,19 @@ export default function Header() {
             {isAuthenticated ? (
               <>
                 <ListItem disablePadding>
-                  <ListItemButton onClick={() => { navigate('/favorites'); setDrawerOpen(false) }}>
+                  <ListItemButton component={RouterLink} to={`${prefix}/favorites`} onClick={() => setDrawerOpen(false)}>
                     <ListItemText primary={t('nav.favorites')} />
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                  <ListItemButton onClick={() => { navigate('/profile'); setDrawerOpen(false) }}>
+                  <ListItemButton component={RouterLink} to={`${prefix}/profile`} onClick={() => setDrawerOpen(false)}>
                     <ListItemText primary={t('nav.profile')} />
                   </ListItemButton>
                 </ListItem>
               </>
             ) : (
               <ListItem disablePadding>
-                <ListItemButton onClick={() => { navigate('/login'); setDrawerOpen(false) }}>
+                <ListItemButton component={RouterLink} to={`${prefix}/login`} onClick={() => setDrawerOpen(false)}>
                   <ListItemText primary={t('nav.login')} />
                 </ListItemButton>
               </ListItem>
