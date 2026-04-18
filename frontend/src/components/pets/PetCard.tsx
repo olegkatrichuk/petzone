@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useParams, Link as RouterLink } from 'react-router-dom'
 import { useFavoritesStore } from '../../store/favoritesStore'
 import { useComparisonStore } from '../../store/comparisonStore'
+import { useGetSpeciesQuery } from '../../services/speciesApi'
 import { DEFAULT_LANG } from '../../lib/langUtils'
 import { toast } from '../../store/toastStore'
 import Card from '@mui/material/Card'
@@ -22,7 +23,6 @@ import VaccinesIcon from '@mui/icons-material/Vaccines'
 import ContentCutIcon from '@mui/icons-material/ContentCut'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import PersonIcon from '@mui/icons-material/Person'
-import PetsIcon from '@mui/icons-material/Pets'
 import type { Pet, PetStatus } from '../../types/pet'
 
 const CORAL = '#FF6B6B'
@@ -49,9 +49,18 @@ interface Props {
   pet: Pet
 }
 
+function getPlaceholder(speciesName: string): string {
+  const n = speciesName.toLowerCase()
+  if (n.includes('кіт') || n.includes('кішк') || n.includes('cat') || n.includes('кот')) return '/placeholder-cat.svg'
+  if (n.includes('собак') || n.includes('пес') || n.includes('dog') || n.includes('hund')) return '/placeholder-dog.svg'
+  return '/placeholder-cat.svg'
+}
+
 export default function PetCard({ pet }: Props) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { lang } = useParams<{ lang: string }>()
+  const locale = (i18n.language ?? lang ?? 'uk').slice(0, 2)
+  const { data: speciesList = [] } = useGetSpeciesQuery(locale)
   const { toggle, has } = useFavoritesStore()
   const { toggle: toggleCompare, has: inCompare, pets: comparePets } = useComparisonStore()
   const saved = has(pet.id)
@@ -83,6 +92,9 @@ export default function PetCard({ pet }: Props) {
     pet.photos[0]?.filePath ??
     null
 
+  const speciesName = speciesList.find((s) => s.id === pet.speciesId)?.name ?? ''
+  const placeholder = getPlaceholder(speciesName)
+
   const statusCfg = STATUS_COLORS[pet.status]
 
   return (
@@ -112,21 +124,8 @@ export default function PetCard({ pet }: Props) {
             sx={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
           />
         ) : (
-          <Box
-            sx={{
-              width: '100%',
-              height: '100%',
-              bgcolor: '#F3F4F6',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 0.5,
-            }}
-          >
-            <PetsIcon sx={{ fontSize: 44, color: '#D1D5DB' }} />
-            <Typography variant="caption" sx={{ color: '#9CA3AF' }}>{t('pets.noPhoto')}</Typography>
-          </Box>
+          <Box component="img" src={placeholder} alt={pet.nickname}
+            sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
         )}
       </Box>
 
