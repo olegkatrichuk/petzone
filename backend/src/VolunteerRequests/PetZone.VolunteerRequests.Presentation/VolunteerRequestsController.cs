@@ -183,7 +183,7 @@ public class VolunteerRequestsController : ControllerBase
     }
 
     [HttpGet("my")]
-    [Authorize(Roles = "Participant")]
+    [Authorize(Roles = "Participant,Volunteer")]
     public async Task<IActionResult> GetByUser(
         [FromQuery] VolunteerRequestStatus? status,
         [FromQuery] int page = 1,
