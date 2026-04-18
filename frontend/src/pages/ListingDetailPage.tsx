@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
@@ -38,11 +38,6 @@ import { getApiError } from '../lib/getApiError'
 import { api } from '../lib/axios'
 
 const CORAL = '#FF6B6B'
-const MINIO_BASE = '/files'
-
-function getPhotoUrl(fileName: string) {
-  return `${MINIO_BASE}/${encodeURIComponent(fileName)}/url`
-}
 
 function ListingPhoto({ fileName, canDelete, onDelete, alt }: {
   fileName: string
@@ -50,29 +45,14 @@ function ListingPhoto({ fileName, canDelete, onDelete, alt }: {
   onDelete: (name: string) => void
   alt?: string
 }) {
-  const [url, setUrl] = useState<string | null>(null)
-
-  useEffect(() => {
-    api.get(getPhotoUrl(fileName))
-      .then(res => {
-        const data = res.data
-        setUrl(typeof data === 'string' ? data : data?.result ?? null)
-      })
-      .catch(() => setUrl(null))
-  }, [fileName])
-
-  if (!url) return (
-    <Box sx={{
-      width: '100%', aspectRatio: '4/3', bgcolor: 'action.hover',
-      borderRadius: 2, display: 'flex', alignItems: 'center', justifyContent: 'center',
-    }}>
-      <CircularProgress size={24} sx={{ color: CORAL }} />
-    </Box>
-  )
-
   return (
     <Box sx={{ position: 'relative', borderRadius: 2, overflow: 'hidden', aspectRatio: '4/3' }}>
-      <img src={url} alt={alt ?? fileName} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+      <img
+        src={`/api/files/${encodeURIComponent(fileName)}/redirect`}
+        alt={alt ?? ''}
+        loading="lazy"
+        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+      />
       {canDelete && (
         <IconButton
           size="small"

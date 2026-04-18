@@ -1,8 +1,7 @@
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useParams, Link as RouterLink } from 'react-router-dom'
 import { useFavoritesStore } from '../../store/favoritesStore'
 import { useComparisonStore } from '../../store/comparisonStore'
-import { useLangNavigate } from '../../hooks/useLangNavigate'
 import { DEFAULT_LANG } from '../../lib/langUtils'
 import { toast } from '../../store/toastStore'
 import Card from '@mui/material/Card'
@@ -51,7 +50,6 @@ interface Props {
 }
 
 export default function PetCard({ pet }: Props) {
-  const navigate = useLangNavigate()
   const { t } = useTranslation()
   const { lang } = useParams<{ lang: string }>()
   const { toggle, has } = useFavoritesStore()
@@ -183,8 +181,9 @@ export default function PetCard({ pet }: Props) {
 
         {/* Volunteer link */}
         <Box
-          sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: 'pointer' }}
-          onClick={() => navigate(`/volunteers/${pet.volunteerId}`)}
+          component={RouterLink}
+          to={`/${lang ?? DEFAULT_LANG}/volunteers/${pet.volunteerId}`}
+          sx={{ display: 'flex', alignItems: 'center', gap: 0.5, textDecoration: 'none', color: 'inherit' }}
         >
           <PersonIcon sx={{ fontSize: 16, color: '#6B7280' }} />
           <Typography variant="caption" color="text.secondary" sx={{ '&:hover': { color: CORAL } }}>
@@ -195,9 +194,10 @@ export default function PetCard({ pet }: Props) {
 
       <CardActions sx={{ px: 2, pb: 2, justifyContent: 'space-between' }}>
         <Button
+          component={RouterLink}
+          to={`/${lang ?? DEFAULT_LANG}/pets/${pet.id}`}
           variant="contained"
           size="small"
-          onClick={() => navigate(`/pets/${pet.id}`)}
           sx={{
             bgcolor: CORAL,
             '&:hover': { bgcolor: '#e55555' },

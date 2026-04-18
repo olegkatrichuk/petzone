@@ -1,15 +1,15 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useState, useCallback, useEffect } from 'react'
+import { useSearchParams, useParams, Link as RouterLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import PageMeta from '../components/meta/PageMeta'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import CircularProgress from '@mui/material/CircularProgress'
 import Skeleton from '@mui/material/Skeleton'
 import Chip from '@mui/material/Chip'
 import TextField from '@mui/material/TextField'
+import { DEFAULT_LANG } from '../lib/langUtils'
 import InputAdornment from '@mui/material/InputAdornment'
 import Divider from '@mui/material/Divider'
 import AddIcon from '@mui/icons-material/Add'
@@ -20,7 +20,6 @@ import EmailIcon from '@mui/icons-material/Email'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { useGetListingsQuery } from '../services/listingsApi'
 import { useGetSpeciesQuery } from '../services/speciesApi'
-import { api } from '../lib/axios'
 import type { AdoptionListing } from '../types/listing'
 import { useAuthStore } from '../store/authStore'
 import { useLangNavigate } from '../hooks/useLangNavigate'
@@ -29,49 +28,23 @@ import Pagination from '../components/ui/Pagination'
 const CORAL = '#FF6B6B'
 const PAGE_SIZE = 12
 
-function PhotoThumb({ fileName }: { fileName: string }) {
-  const [url, setUrl] = useState<string | null>(null)
-  const [visible, setVisible] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const fetchedRef = useRef(false)
-
-  useEffect(() => {
-    const el = containerRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect() } },
-      { rootMargin: '200px' }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  useEffect(() => {
-    if (!visible || fetchedRef.current) return
-    fetchedRef.current = true
-    api.get(`/files/${encodeURIComponent(fileName)}/url`)
-      .then(res => {
-        const data = res.data
-        setUrl(typeof data === 'string' ? data : data?.result ?? null)
-      })
-      .catch(() => setUrl(null))
-  }, [visible, fileName])
-
+function PhotoThumb({ fileName, alt }: { fileName: string; alt?: string }) {
   return (
-    <Box ref={containerRef} sx={{ height: 180, borderRadius: 2, overflow: 'hidden', bgcolor: 'action.hover' }}>
-      {url
-        ? <Box component="img" src={url} alt={fileName} loading="lazy" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        : visible
-          ? <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CircularProgress size={24} sx={{ color: CORAL }} /></Box>
-          : null
-      }
+    <Box sx={{ height: 180, borderRadius: 2, overflow: 'hidden', bgcolor: 'action.hover' }}>
+      <Box
+        component="img"
+        src={`/api/files/${encodeURIComponent(fileName)}/redirect`}
+        alt={alt ?? ''}
+        loading="lazy"
+        sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+      />
     </Box>
   )
 }
 
 function ListingCard({ listing }: { listing: AdoptionListing }) {
   const { t } = useTranslation()
-  const navigate = useLangNavigate()
+  const { lang } = useParams<{ lang: string }>()
 
   const ageLabel =
     listing.ageMonths < 1
@@ -80,9 +53,12 @@ function ListingCard({ listing }: { listing: AdoptionListing }) {
         ? `${listing.ageMonths} ${t('pets.ageMonths')}`
         : `${Math.floor(listing.ageMonths / 12)} ${t('pets.ageYears')}`
 
+  const href = `/${lang ?? DEFAULT_LANG}/listings/${listing.id}`
+
   return (
     <Box
-      onClick={() => navigate(`/listings/${listing.id}`)}
+      component={RouterLink}
+      to={href}
       sx={{
         bgcolor: 'background.paper',
         border: '1px solid #E5E7EB',
@@ -92,6 +68,8 @@ function ListingCard({ listing }: { listing: AdoptionListing }) {
         flexDirection: 'column',
         gap: 1.5,
         cursor: 'pointer',
+        textDecoration: 'none',
+        color: 'inherit',
         transition: 'box-shadow 0.2s, transform 0.15s',
         '&:hover': { boxShadow: '0 4px 20px rgba(0,0,0,0.10)', transform: 'translateY(-2px)' },
       }}
@@ -99,7 +77,7 @@ function ListingCard({ listing }: { listing: AdoptionListing }) {
       {/* Photos preview */}
       {listing.photos.length > 0 && (
         <Box sx={{ position: 'relative' }}>
-          <PhotoThumb fileName={listing.photos[0]} />
+          <PhotoThumb fileName={listing.photos[0]} alt={listing.title} />
           {listing.photos.length > 1 && (
             <Chip
               icon={<PhotoCameraIcon sx={{ fontSize: '13px !important' }} />}
