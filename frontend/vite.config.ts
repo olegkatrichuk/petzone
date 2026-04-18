@@ -40,6 +40,7 @@ export default defineConfig({
         ],
       },
       workbox: {
+        cleanupOutdatedCaches: true,
         // Cache strategies
         runtimeCaching: [
           {
