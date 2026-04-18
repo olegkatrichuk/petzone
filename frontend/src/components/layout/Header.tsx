@@ -28,7 +28,6 @@ import LightModeIcon from '@mui/icons-material/LightMode'
 const NAV_ITEMS = [
   { labelKey: 'nav.home', path: '/' },
   { labelKey: 'nav.pets', path: '/pets' },
-  { labelKey: 'nav.listings', path: '/listings' },
   { labelKey: 'nav.volunteers', path: '/volunteers' },
   { labelKey: 'nav.shelters', path: '/shelters' },
   { labelKey: 'nav.digest', path: '/digest' },

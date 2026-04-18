@@ -1,5 +1,6 @@
-import { useLangNavigate } from '../../hooks/useLangNavigate'
+import { useParams, Link as RouterLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { DEFAULT_LANG } from '../../lib/langUtils'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -19,13 +20,15 @@ const CONTACTS = [
 
 export default function Footer() {
   const { t } = useTranslation()
-  const navigate = useLangNavigate()
+  const { lang } = useParams<{ lang: string }>()
+  const prefix = `/${lang ?? DEFAULT_LANG}`
 
   const NAV_LINKS = [
     { labelKey: 'nav.home', path: '/' },
     { labelKey: 'nav.pets', path: '/pets' },
     { labelKey: 'nav.volunteers', path: '/volunteers' },
     { labelKey: 'nav.shelters', path: '/shelters' },
+    { labelKey: 'nav.listings', path: '/listings' },
     { labelKey: 'nav.about', path: '/about' },
     { labelKey: 'nav.faq', path: '/faq' },
     { labelKey: 'nav.profile', path: '/profile' },
@@ -82,10 +85,10 @@ export default function Footer() {
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.path}
-                component="button"
-                onClick={() => navigate(link.path)}
+                component={RouterLink}
+                to={link.path === '/' ? prefix : `${prefix}${link.path}`}
                 underline="none"
-                sx={{ color: 'rgba(255,255,255,0.7)', textAlign: 'left', fontSize: '0.9rem', '&:hover': { color: '#FF6B6B' } }}
+                sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', '&:hover': { color: '#FF6B6B' } }}
               >
                 {t(link.labelKey)}
               </Link>
@@ -99,12 +102,12 @@ export default function Footer() {
             {t('footer.forVolunteers')}
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <Link component="button" onClick={() => navigate('/register/volunteer')} underline="none"
-              sx={{ color: 'rgba(255,255,255,0.7)', textAlign: 'left', fontSize: '0.9rem', '&:hover': { color: '#FF6B6B' } }}>
+            <Link component={RouterLink} to={`${prefix}/register/volunteer`} underline="none"
+              sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', '&:hover': { color: '#FF6B6B' } }}>
               {t('footer.becomeVolunteer')}
             </Link>
-            <Link component="button" onClick={() => navigate('/volunteer-applications')} underline="none"
-              sx={{ color: 'rgba(255,255,255,0.7)', textAlign: 'left', fontSize: '0.9rem', '&:hover': { color: '#FF6B6B' } }}>
+            <Link component={RouterLink} to={`${prefix}/volunteer-applications`} underline="none"
+              sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', '&:hover': { color: '#FF6B6B' } }}>
               {t('applications.title')}
             </Link>
           </Box>
