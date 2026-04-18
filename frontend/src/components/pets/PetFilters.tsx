@@ -64,7 +64,7 @@ function filtersToLocal(f: PetFilters): LocalState {
     maxAge: f.maxAge !== undefined ? String(f.maxAge) : '',
     minWeight: f.minWeight !== undefined ? String(f.minWeight) : '',
     maxWeight: f.maxWeight !== undefined ? String(f.maxWeight) : '',
-    sortBy: f.sortBy ?? '',
+    sortBy: f.sortBy === 'dateOfBirth' ? 'age' : (f.sortBy ?? ''),
     sortDescending: f.sortDescending ? 'true' : 'false',
   }
 }
@@ -243,7 +243,7 @@ export default function PetFiltersPanel({ initialFilters, onApply }: Props) {
           <Select label={t('pets.sortBy')} value={local.sortBy} onChange={(e) => set('sortBy', e.target.value)}>
             <MenuItem value="">{t('pets.any')}</MenuItem>
             <MenuItem value="nickname">{t('pets.sortByName')}</MenuItem>
-            <MenuItem value="dateOfBirth">{t('pets.sortByAge')}</MenuItem>
+            <MenuItem value="age">{t('pets.sortByAge')}</MenuItem>
             <MenuItem value="city">{t('pets.sortByCity')}</MenuItem>
             <MenuItem value="weight">{t('pets.sortByWeight')}</MenuItem>
           </Select>

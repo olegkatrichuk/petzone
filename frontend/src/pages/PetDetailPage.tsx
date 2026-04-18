@@ -113,7 +113,8 @@ export default function PetDetailPage() {
 
   const similarPets = (similarData?.items ?? []).filter((p) => p.id !== pet.id).slice(0, 4)
 
-  const photos = pet.photos.length > 0 ? pet.photos : []
+  const validFilePath = (f: string) => f && f !== 'None' && f !== 'none' ? f : null
+  const photos = pet.photos.filter((p) => validFilePath(p.filePath))
   const mainPhotoFirst = [...photos].sort((a, b) => (b.isMain ? 1 : 0) - (a.isMain ? 1 : 0))
   const displayPhoto = mainPhotoFirst[activePhoto]?.filePath ?? null
 

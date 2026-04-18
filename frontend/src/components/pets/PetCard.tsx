@@ -87,9 +87,10 @@ export default function PetCard({ pet }: Props) {
     toast.success(saved ? t('pets.removedFromFavorites') : t('pets.addedToFavorites'))
   }
 
+  const validPhoto = (f?: string) => f && f !== 'None' && f !== 'none' ? f : null
   const mainPhoto =
-    pet.photos.find((p) => p.isMain)?.filePath ??
-    pet.photos[0]?.filePath ??
+    validPhoto(pet.photos.find((p) => p.isMain)?.filePath) ??
+    validPhoto(pet.photos[0]?.filePath) ??
     null
 
   const speciesName = speciesList.find((s) => s.id === pet.speciesId)?.name ?? ''
