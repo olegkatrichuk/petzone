@@ -42,17 +42,17 @@ public class SitemapController(
 
         foreach (var l in listingIds)
         {
-            AppendUrl(xml, $"/listings/{l.Id}", 0.8, "weekly", l.CreatedAt);
+            AppendUrlAllLangs(xml, $"/listings/{l.Id}", 0.8, "weekly", l.CreatedAt);
         }
 
         foreach (var p in petIds)
         {
-            AppendUrl(xml, $"/pets/{p.Id}", 0.7, "weekly", p.CreatedAt);
+            AppendUrlAllLangs(xml, $"/pets/{p.Id}", 0.7, "weekly", p.CreatedAt);
         }
 
         foreach (var v in volunteerIds)
         {
-            AppendUrl(xml, $"/volunteers/{v}", 0.6, "monthly", null);
+            AppendUrlAllLangs(xml, $"/volunteers/{v}", 0.6, "monthly", null);
         }
 
         xml.AppendLine("</urlset>");
@@ -60,22 +60,27 @@ public class SitemapController(
         return Content(xml.ToString(), "application/xml");
     }
 
-    private static void AppendUrl(
+    // Emits one <url> block per language — Google recommends each language version
+    // has its own <loc> so canonicalization works without relying on JS rendering.
+    private static void AppendUrlAllLangs(
         System.Text.StringBuilder xml,
         string path,
         double priority,
         string changefreq,
         DateTime? lastmod)
     {
-        xml.AppendLine("  <url>");
-        xml.AppendLine($"    <loc>{SiteUrl}/uk{path}</loc>");
-        if (lastmod.HasValue)
-            xml.AppendLine($"    <lastmod>{lastmod.Value:yyyy-MM-dd}</lastmod>");
-        xml.AppendLine($"    <changefreq>{changefreq}</changefreq>");
-        xml.AppendLine($"    <priority>{priority:F1}</priority>");
         foreach (var lang in Langs)
-            xml.AppendLine($"""    <xhtml:link rel="alternate" hreflang="{lang}" href="{SiteUrl}/{lang}{path}"/>""");
-        xml.AppendLine($"""    <xhtml:link rel="alternate" hreflang="x-default" href="{SiteUrl}/uk{path}"/>""");
-        xml.AppendLine("  </url>");
+        {
+            xml.AppendLine("  <url>");
+            xml.AppendLine($"    <loc>{SiteUrl}/{lang}{path}</loc>");
+            if (lastmod.HasValue)
+                xml.AppendLine($"    <lastmod>{lastmod.Value:yyyy-MM-dd}</lastmod>");
+            xml.AppendLine($"    <changefreq>{changefreq}</changefreq>");
+            xml.AppendLine($"    <priority>{(lang == "uk" ? priority : priority - 0.1):F1}</priority>");
+            foreach (var l in Langs)
+                xml.AppendLine($"""    <xhtml:link rel="alternate" hreflang="{l}" href="{SiteUrl}/{l}{path}"/>""");
+            xml.AppendLine($"""    <xhtml:link rel="alternate" hreflang="x-default" href="{SiteUrl}/uk{path}"/>""");
+            xml.AppendLine("  </url>");
+        }
     }
 }
