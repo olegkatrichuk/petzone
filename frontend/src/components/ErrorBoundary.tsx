@@ -5,6 +5,7 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 interface Props {
   children: ReactNode
   fallback?: ReactNode
+  resetKey?: string
 }
 
 interface State {
@@ -17,6 +18,12 @@ export class ErrorBoundary extends Component<Props, State> {
 
   static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.resetKey !== this.props.resetKey && this.state.hasError) {
+      this.setState({ hasError: false, error: null })
+    }
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {

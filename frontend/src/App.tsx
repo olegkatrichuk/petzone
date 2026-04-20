@@ -1,4 +1,5 @@
-import { lazy, Suspense } from 'react'
+import { Suspense } from 'react'
+import { lazyWithRetry as lazy } from './lib/lazyWithRetry'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { ScrollToTop } from './components/ui/ScrollToTop'
 import ScrollToTopFab from './components/ui/ScrollToTopFab'

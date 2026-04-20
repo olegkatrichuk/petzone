@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, useLocation } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -18,6 +18,15 @@ const queryClient = new QueryClient({
   },
 })
 
+function AppWithBoundary() {
+  const location = useLocation()
+  return (
+    <ErrorBoundary resetKey={location.key}>
+      <App />
+    </ErrorBoundary>
+  )
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
@@ -25,9 +34,7 @@ createRoot(document.getElementById('root')!).render(
         <ThemeWrapper>
           <HelmetProvider>
             <BrowserRouter>
-              <ErrorBoundary>
-                <App />
-              </ErrorBoundary>
+              <AppWithBoundary />
             </BrowserRouter>
           </HelmetProvider>
         </ThemeWrapper>
