@@ -20,12 +20,6 @@ public static class VolunteersSeeder
         var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<VolunteersDbContext>>();
 
-        if (await db.Volunteers.AnyAsync())
-        {
-            logger.LogInformation("Volunteers already seeded, skipping.");
-            return;
-        }
-
         var allSpecies = await speciesDb.Species.Include(s => s.Breeds).ToListAsync();
         var dogSpecies = allSpecies.FirstOrDefault(s => s.Translations.GetValueOrDefault("en") == "Dog");
         var catSpecies = allSpecies.FirstOrDefault(s => s.Translations.GetValueOrDefault("en") == "Cat");
@@ -38,6 +32,18 @@ public static class VolunteersSeeder
 
         var volunteerDefs = TryLoadFromJson(logger) ?? GetVolunteerDefs();
 
+        // Collect ExternalId prefixes already present in DB to skip duplicates
+        var existingPrefixes = await db.Volunteers
+            .SelectMany(v => v.Pets)
+            .Where(p => p.ExternalId != null)
+            .Select(p => p.ExternalId!)
+            .Distinct()
+            .ToListAsync();
+
+        // If no ExternalId at all — legacy check: skip hardcoded UA data if volunteers already exist
+        var hasLegacyData = await db.Volunteers.AnyAsync()
+            && !existingPrefixes.Any();
+
         // Unsplash fallback photos (used only for hardcoded defs without photo_url)
         var unsplashKey = config["Unsplash:AccessKey"] ?? "";
         var dogPhotos = new Queue<string>(await FetchPhotos("dog puppy", 30, unsplashKey, logger));
@@ -47,6 +53,24 @@ public static class VolunteersSeeder
 
         foreach (var vd in volunteerDefs)
         {
+            // Skip volunteer if all its pets have ExternalId prefixes already in DB
+            var petPrefixes = vd.Pets
+                .Where(p => !string.IsNullOrEmpty(p.ExternalId))
+                .Select(p => p.ExternalId!.Split(':')[0] + ":")
+                .Distinct()
+                .ToList();
+
+            if (petPrefixes.Any() && petPrefixes.All(prefix =>
+                existingPrefixes.Any(e => e.StartsWith(prefix))))
+            {
+                logger.LogInformation("Skipping volunteer — country prefix {Prefix} already seeded", string.Join(",", petPrefixes));
+                continue;
+            }
+
+            // Skip hardcoded UA volunteers if legacy data already exists
+            if (hasLegacyData && !petPrefixes.Any())
+                continue;
+
             var name = FullName.Create(vd.FirstName, vd.LastName, vd.Patronymic);
             var email = Email.Create(vd.Email);
             var exp = Experience.Create(vd.Years);
@@ -97,6 +121,9 @@ public static class VolunteersSeeder
 
                 if (petResult.IsFailure) continue;
                 var pet = petResult.Value;
+
+                if (!string.IsNullOrEmpty(pd.ExternalId))
+                    pet.SetExternalId(pd.ExternalId);
 
                 var photoResult = PetPhoto.Create(photoUrl, true);
                 if (photoResult.IsSuccess)
@@ -159,7 +186,7 @@ public static class VolunteersSeeder
                             "NeedsHelp" => HelpStatus.NeedsHelp,
                             _ => HelpStatus.LookingForHome,
                         },
-                        p.PhotoUrl))
+                        p.PhotoUrl, p.ExternalId))
                     .ToList()))
                 .ToList();
 
@@ -185,7 +212,8 @@ public static class VolunteersSeeder
         double Weight, double Height, string City, string? Street,
         string? HealthDesc, string Description, string? AdoptionConditions,
         bool IsCastrated, bool IsVaccinated, string DateOfBirth,
-        string Status = "LookingForHome", string? PhotoUrl = null);
+        string Status = "LookingForHome", string? PhotoUrl = null,
+        string? ExternalId = null);
 
     // ── Unsplash ──────────────────────────────────────────────────────────────
 
@@ -406,5 +434,5 @@ public static class VolunteersSeeder
         double Weight, double Height, string City, string? Street,
         string HealthDesc, string Description, string? AdoptionConditions,
         bool IsCastrated, bool IsVaccinated, DateTime DateOfBirth, HelpStatus Status,
-        string? PhotoUrl = null);
+        string? PhotoUrl = null, string? ExternalId = null);
 }
