@@ -1,16 +1,23 @@
 import { useEffect, useState } from 'react'
 
-type PetSource = 'local' | 'imported'
+export type CountrySource = 'ua' | 'pl' | 'de' | 'fr' | 'other'
+
+const COUNTRY_MAP: Record<string, CountrySource> = {
+  UA: 'ua',
+  PL: 'pl',
+  DE: 'de',
+  FR: 'fr',
+}
 
 const CACHE_KEY = 'petzone_geo_source'
-const CACHE_TTL_MS = 24 * 60 * 60 * 1000 // 24 hours
+const CACHE_TTL_MS = 24 * 60 * 60 * 1000
 
 interface CacheEntry {
-  source: PetSource
+  source: CountrySource
   timestamp: number
 }
 
-function getCached(): PetSource | null {
+function getCached(): CountrySource | null {
   try {
     const raw = localStorage.getItem(CACHE_KEY)
     if (!raw) return null
@@ -22,17 +29,16 @@ function getCached(): PetSource | null {
   }
 }
 
-function setCache(source: PetSource) {
+function setCache(source: CountrySource) {
   try {
-    const entry: CacheEntry = { source, timestamp: Date.now() }
-    localStorage.setItem(CACHE_KEY, JSON.stringify(entry))
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ source, timestamp: Date.now() }))
   } catch {
     // ignore
   }
 }
 
-export function useGeoSource(): PetSource {
-  const [source, setSource] = useState<PetSource>(() => getCached() ?? 'local')
+export function useGeoSource(): CountrySource {
+  const [source, setSource] = useState<CountrySource>(() => getCached() ?? 'ua')
 
   useEffect(() => {
     if (getCached() !== null) return
@@ -40,13 +46,12 @@ export function useGeoSource(): PetSource {
     fetch('https://ipapi.co/json/')
       .then((res) => res.json())
       .then((data) => {
-        const detected: PetSource = data?.country_code === 'UA' ? 'local' : 'imported'
+        const detected: CountrySource = COUNTRY_MAP[data?.country_code as string] ?? 'other'
         setCache(detected)
         setSource(detected)
       })
       .catch(() => {
-        // fallback to local on error
-        setCache('local')
+        setCache('ua')
       })
   }, [])
 

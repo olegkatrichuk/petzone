@@ -53,7 +53,7 @@ export interface PetFilters {
   status?: number
   sortBy?: string
   sortDescending?: boolean
-  source?: 'local' | 'imported'
+  source?: 'ua' | 'local' | 'pl' | 'de' | 'fr' | 'imported' | 'other'
 }
 
 export type { PaginatedResponse } from './api'

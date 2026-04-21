@@ -69,20 +69,30 @@ public class GetPetsHandler(
         if (query.Status.HasValue)
             petsQuery = petsQuery.Where(x => (int)x.Pet.Status == query.Status.Value);
 
-        // "local"   = ручні + українські притулки (lkplev: / kharkiv:)
-        // "imported" = закордонні джерела (rg: = RescueGroups)
-        if (query.Source == "local")
-            petsQuery = petsQuery.Where(x =>
-                x.Pet.ExternalId == null ||
-                x.Pet.ExternalId.StartsWith("lkplev:") ||
-                x.Pet.ExternalId.StartsWith("kharkiv:") ||
-                x.Pet.ExternalId.StartsWith("olx:"));
-        else if (query.Source == "imported")
-            petsQuery = petsQuery.Where(x =>
-                x.Pet.ExternalId != null &&
-                !x.Pet.ExternalId.StartsWith("lkplev:") &&
-                !x.Pet.ExternalId.StartsWith("kharkiv:") &&
-                !x.Pet.ExternalId.StartsWith("olx:"));
+        // source фільтр: "ua"/"local" = Україна, "pl"/"de"/"fr" = конкретна країна, "imported" = всі закордонні
+        if (!string.IsNullOrWhiteSpace(query.Source))
+        {
+            petsQuery = query.Source switch
+            {
+                "ua" or "local" => petsQuery.Where(x =>
+                    x.Pet.ExternalId == null ||
+                    x.Pet.ExternalId.StartsWith("lkplev:") ||
+                    x.Pet.ExternalId.StartsWith("kharkiv:") ||
+                    x.Pet.ExternalId.StartsWith("olx:")),
+                "pl" => petsQuery.Where(x =>
+                    x.Pet.ExternalId != null && x.Pet.ExternalId.StartsWith("pl:")),
+                "de" => petsQuery.Where(x =>
+                    x.Pet.ExternalId != null && x.Pet.ExternalId.StartsWith("de:")),
+                "fr" => petsQuery.Where(x =>
+                    x.Pet.ExternalId != null && x.Pet.ExternalId.StartsWith("fr:")),
+                "imported" => petsQuery.Where(x =>
+                    x.Pet.ExternalId != null &&
+                    !x.Pet.ExternalId.StartsWith("lkplev:") &&
+                    !x.Pet.ExternalId.StartsWith("kharkiv:") &&
+                    !x.Pet.ExternalId.StartsWith("olx:")),
+                _ => petsQuery
+            };
+        }
 
         petsQuery = query.SortBy?.ToLower() switch
         {
