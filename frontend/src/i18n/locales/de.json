@@ -77,7 +77,7 @@
     "passwordMismatch": "Passwörter stimmen nicht überein"
   },
   "pets": {
-    "metaDesc": "Finde einen Hund, eine Katze oder ein anderes Tier zur Adoption in der Ukraine. Hunderte von Anzeigen von Freiwilligen.",
+    "metaDesc": "Adoptiere Hunde, Katzen, Kaninchen und Vögel in der Ukraine — kostenlos über ein Netzwerk geprüfter Freiwilliger. Finde dein Haustier unter Hunderten von Anzeigen aus Kiew, Charkiw, Lemberg und anderen Städten.",
     "pageTitle": "Tiere zur Adoption",
     "filters": "Filter",
     "apply": "Anwenden",
@@ -172,7 +172,8 @@
     },
     "recentlyViewed": "Zuletzt angesehen",
     "clearRecent": "Löschen",
-    "share": "Teilen"
+    "share": "Teilen",
+    "seoText": "Stöbere in Tieren, die ein Zuhause suchen — Hunde, Katzen, Kaninchen und andere Haustiere von Freiwilligen und Tierheimen in der ganzen Ukraine. Adoption ist kostenlos, jedes Tier ist geprüft und geimpft."
   },
   "volunteerAnimals": {
     "title": "Tiere des Freiwilligen",

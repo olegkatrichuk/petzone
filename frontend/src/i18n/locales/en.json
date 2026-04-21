@@ -77,7 +77,7 @@
     "passwordMismatch": "Passwords do not match"
   },
   "pets": {
-    "metaDesc": "Find a dog, cat or other animal for adoption in Ukraine. Hundreds of listings from volunteers and shelters.",
+    "metaDesc": "Adopt dogs, cats, rabbits and birds in Ukraine — free through a network of verified volunteers. Find your pet among hundreds of listings from Kyiv, Kharkiv, Lviv and other cities.",
     "pageTitle": "Pets for Adoption",
     "filters": "Filters",
     "apply": "Apply",
@@ -172,7 +172,8 @@
       "city": "City",
       "vaccinated": "Vaccinated",
       "castrated": "Neutered"
-    }
+    },
+    "seoText": "Browse animals looking for a home — dogs, cats, rabbits and other pets from volunteers and shelters across Ukraine. Adoption is free; every animal is checked and vaccinated."
   },
   "volunteerAnimals": {
     "title": "Volunteer's animals",

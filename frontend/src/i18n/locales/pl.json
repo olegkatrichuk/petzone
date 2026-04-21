@@ -77,7 +77,7 @@
     "passwordMismatch": "Hasła nie pasują do siebie"
   },
   "pets": {
-    "metaDesc": "Znajdź psa, kota lub inne zwierzę do adopcji na Ukrainie. Setki ogłoszeń od wolontariuszy i schronisk.",
+    "metaDesc": "Adoptuj psy, koty, króliki i ptaki na Ukrainie — za darmo przez sieć sprawdzonych wolontariuszy. Znajdź swojego pupila wśród setek ogłoszeń z Kijowa, Charkowa, Lwowa i innych miast.",
     "pageTitle": "Zwierzęta do adopcji",
     "filters": "Filtry",
     "apply": "Zastosuj",
@@ -172,7 +172,8 @@
     },
     "recentlyViewed": "Ostatnio przeglądane",
     "clearRecent": "Wyczyść",
-    "share": "Udostępnij"
+    "share": "Udostępnij",
+    "seoText": "Przeglądaj zwierzęta szukające domu — psy, koty, króliki i inne pupile od wolontariuszy i schronisk w całej Ukrainie. Adopcja jest bezpłatna, każde zwierzę jest sprawdzone i zaszczepione."
   },
   "volunteerAnimals": {
     "title": "Zwierzęta wolontariusza",

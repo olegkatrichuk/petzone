@@ -77,7 +77,7 @@
     "passwordMismatch": "Les mots de passe ne correspondent pas"
   },
   "pets": {
-    "metaDesc": "Trouvez un chien, un chat ou un autre animal à adopter en Ukraine. Des centaines d'annonces de bénévoles.",
+    "metaDesc": "Adoptez des chiens, chats, lapins et oiseaux en Ukraine — gratuitement via un réseau de bénévoles vérifiés. Trouvez votre compagnon parmi des centaines d'annonces de Kyiv, Kharkiv, Lviv et d'autres villes.",
     "pageTitle": "Animaux à adopter",
     "filters": "Filtres",
     "apply": "Appliquer",
@@ -172,7 +172,8 @@
     },
     "recentlyViewed": "Récemment consultés",
     "clearRecent": "Effacer",
-    "share": "Partager"
+    "share": "Partager",
+    "seoText": "Parcourez les animaux qui cherchent un foyer — chiens, chats, lapins et autres animaux de compagnie auprès de bénévoles et refuges à travers l'Ukraine. L'adoption est gratuite, chaque animal est contrôlé et vacciné."
   },
   "volunteerAnimals": {
     "title": "Animaux du bénévole",

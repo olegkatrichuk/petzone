@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect, useMemo } from 'react'
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams, useParams } from "react-router-dom"
 import { useTranslation } from 'react-i18next'
 import PageMeta from '../components/meta/PageMeta'
 import Box from '@mui/material/Box'
@@ -180,23 +180,46 @@ export default function PetsPage() {
     setDrawerOpen(false)
   }, [setSearchParams])
 
+  const { lang } = useParams<{ lang: string }>()
+  const currentLang = lang ?? 'uk'
+  const SITE_URL = 'https://getpetzone.com'
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t('nav.home'), item: `${SITE_URL}/${currentLang}` },
+      { '@type': 'ListItem', position: 2, name: t('pets.pageTitle'), item: `${SITE_URL}/${currentLang}/pets` },
+    ],
+  }
+
+  const itemListLd = allItems.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: t('pets.pageTitle'),
+    numberOfItems: data?.totalCount ?? allItems.length,
+    itemListElement: allItems.slice(0, 10).map((pet, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: pet.nickname,
+      url: `${SITE_URL}/${currentLang}/pets/${pet.id}`,
+    })),
+  } : null
+
   return (
     <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
       <PageMeta title={t('pets.pageTitle')} description={t('pets.metaDesc')} path="/pets" />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: t('nav.home'), item: 'https://getpetzone.com/uk' },
-          { '@type': 'ListItem', position: 2, name: t('pets.pageTitle'), item: 'https://getpetzone.com/uk/pets' },
-        ],
-      }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      {itemListLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }} />
+      )}
       <Container maxWidth="xl">
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 4 }}>
-          <Typography variant="h1" fontSize="2rem" fontWeight="bold" sx={{ color: '#1F2937' }}>
-            {t('pets.pageTitle')}
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 1.5 }}>
+        <Box sx={{ mb: 4 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+            <Typography variant="h1" fontSize="2rem" fontWeight="bold" sx={{ color: '#1F2937' }}>
+              {t('pets.pageTitle')}
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 1.5 }}>
             {accessToken && (
               <Button
                 variant="contained"
@@ -231,6 +254,10 @@ export default function PetsPage() {
               {t('pets.filters')}
             </Button>
           </Box>
+          </Box>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 1, maxWidth: 720 }}>
+            {t('pets.seoText')}
+          </Typography>
         </Box>
 
         {isError && (
