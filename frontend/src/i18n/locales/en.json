@@ -78,7 +78,7 @@
   },
   "pets": {
     "metaDesc": "Find a dog, cat or other animal for adoption in Ukraine. Hundreds of listings from volunteers and shelters.",
-    "pageTitle": "Find your pet 🐾",
+    "pageTitle": "Pets for Adoption",
     "filters": "Filters",
     "apply": "Apply",
     "reset": "Reset filters",
@@ -303,7 +303,7 @@
   },
   "volunteers": {
     "metaDesc": "Ukrainian animal volunteers and advocates — browse profiles, contact directly, help animals find a home.",
-    "pageTitle": "Volunteers 🐾",
+    "pageTitle": "Volunteers",
     "searchByName": "Search by name",
     "experience": "Experience: {{years}} yr.",
     "notFound": "No volunteers found",

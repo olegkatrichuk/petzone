@@ -78,7 +78,7 @@
   },
   "pets": {
     "metaDesc": "Znajdź psa, kota lub inne zwierzę do adopcji na Ukrainie. Setki ogłoszeń od wolontariuszy i schronisk.",
-    "pageTitle": "Znajdź swojego pupila 🐾",
+    "pageTitle": "Zwierzęta do adopcji",
     "filters": "Filtry",
     "apply": "Zastosuj",
     "reset": "Resetuj filtry",
@@ -303,7 +303,7 @@
   },
   "volunteers": {
     "metaDesc": "Wolontariusze i obrońcy zwierząt Ukrainy — przeglądaj profile, kontaktuj się bezpośrednio.",
-    "pageTitle": "Wolontariusze 🐾",
+    "pageTitle": "Wolontariusze",
     "searchByName": "Szukaj po imieniu",
     "experience": "Doświadczenie: {{years}} r.",
     "notFound": "Nie znaleziono wolontariuszy",
