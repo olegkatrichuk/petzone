@@ -13,6 +13,7 @@ using PetZone.Volunteers.Infrastructure.Queries;
 using PetZone.Volunteers.Application.Repositories;
 using PetZone.Volunteers.Infrastructure.Repositories;
 using Microsoft.Extensions.Options;
+using PetZone.Volunteers.Infrastructure.PolandShelters;
 using PetZone.Volunteers.Infrastructure.RescueGroups;
 using PetZone.Volunteers.Infrastructure.UkrainianShelters;
 
@@ -102,6 +103,14 @@ public static class DependencyInjection
         services.AddHostedService<LkplevSyncService>();
         services.AddHostedService<AnimalsCitySyncService>();
         services.AddHostedService<OlxSyncService>();
+
+        // Poland
+        services.AddHttpClient("olx-pl", client =>
+        {
+            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0");
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+        });
+        services.AddHostedService<OlxPlSyncService>();
 
         return services;
     }
