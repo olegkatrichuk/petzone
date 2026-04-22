@@ -20,20 +20,30 @@ public class GetVolunteersHandler(
         logger.LogInformation("Getting volunteers. Page: {Page}, PageSize: {PageSize}",
             query.Page, query.PageSize);
 
-        // One per last name: materialise IDs first (GroupBy subquery not translatable in EF Core)
-        var deduplicatedIds = await dbContext.Volunteers
+        // PostgreSQL has no MIN(uuid), so fetch lightweight rows and deduplicate in memory.
+        // Ordered by last_name + first_name so DistinctBy keeps the alphabetically first first name.
+        var lightweight = await dbContext.Volunteers
             .Where(v => !v.IsDeleted && !v.IsSystem)
-            .GroupBy(v => v.Name.LastName)
-            .Select(g => g.Min(v => v.Id))
+            .OrderBy(v => v.Name.LastName)
+            .ThenBy(v => v.Name.FirstName)
+            .Select(v => new { v.Id, LastName = v.Name.LastName })
             .ToListAsync(cancellationToken);
+
+        var deduplicatedIds = lightweight
+            .DistinctBy(v => v.LastName)
+            .Select(v => v.Id)
+            .ToList();
 
         var totalCount = deduplicatedIds.Count;
 
-        var volunteers = await dbContext.Volunteers
-            .Where(v => deduplicatedIds.Contains(v.Id))
-            .OrderBy(v => v.Name.LastName)
+        var pageIds = deduplicatedIds
             .Skip((query.Page - 1) * query.PageSize)
             .Take(query.PageSize)
+            .ToList();
+
+        var volunteers = await dbContext.Volunteers
+            .Where(v => pageIds.Contains(v.Id))
+            .OrderBy(v => v.Name.LastName)
             .Select(v => new VolunteerDto(
                 v.Id,
                 v.Name.FirstName,
