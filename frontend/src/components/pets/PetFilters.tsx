@@ -91,25 +91,39 @@ export default function PetFiltersPanel({ initialFilters, onApply }: Props) {
     local.speciesId ? { speciesId: local.speciesId, locale } : skipToken,
   )
 
-  const handleApply = () => {
-    onApply({
+  const buildFilters = (overrides: Partial<LocalState> = {}): PetFilters => {
+    const merged = { ...local, ...overrides }
+    return {
       ...initialFilters,
       page: 1,
-      nickname: local.nickname || undefined,
-      color: local.color || undefined,
-      city: local.city || undefined,
-      status: local.status !== '' ? Number(local.status) : undefined,
-      speciesId: local.speciesId || undefined,
-      breedId: local.breedId || undefined,
-      minAge: local.minAge !== '' ? Number(local.minAge) : undefined,
-      maxAge: local.maxAge !== '' ? Number(local.maxAge) : undefined,
-      minWeight: local.minWeight !== '' ? Number(local.minWeight) : undefined,
-      maxWeight: local.maxWeight !== '' ? Number(local.maxWeight) : undefined,
-      sortBy: local.sortBy || undefined,
-      sortDescending: local.sortDescending === 'true' ? true : undefined,
-      ...healthToFilters(local.health),
-    })
+      nickname: merged.nickname || undefined,
+      color: merged.color || undefined,
+      city: merged.city || undefined,
+      status: merged.status !== '' ? Number(merged.status) : undefined,
+      speciesId: merged.speciesId || undefined,
+      breedId: merged.breedId || undefined,
+      minAge: merged.minAge !== '' ? Number(merged.minAge) : undefined,
+      maxAge: merged.maxAge !== '' ? Number(merged.maxAge) : undefined,
+      minWeight: merged.minWeight !== '' ? Number(merged.minWeight) : undefined,
+      maxWeight: merged.maxWeight !== '' ? Number(merged.maxWeight) : undefined,
+      sortBy: merged.sortBy || undefined,
+      sortDescending: merged.sortDescending === 'true' ? true : undefined,
+      ...healthToFilters(merged.health as HealthOption),
+    }
   }
+
+  // Species and breed apply immediately on change (no Apply click needed)
+  const handleSpeciesChange = (value: string) => {
+    set('speciesId', value)
+    onApply(buildFilters({ speciesId: value, breedId: '' }))
+  }
+
+  const handleBreedChange = (value: string) => {
+    set('breedId', value)
+    onApply(buildFilters({ breedId: value }))
+  }
+
+  const handleApply = () => onApply(buildFilters())
 
   const handleReset = () => {
     setLocal(EMPTY)
@@ -140,7 +154,7 @@ export default function PetFiltersPanel({ initialFilters, onApply }: Props) {
         {/* Species */}
         <FormControl size="small" fullWidth>
           <InputLabel>{t('pets.species')}</InputLabel>
-          <Select label={t('pets.species')} value={local.speciesId} onChange={(e) => set('speciesId', e.target.value)}>
+          <Select label={t('pets.species')} value={local.speciesId} onChange={(e) => handleSpeciesChange(e.target.value)}>
             <MenuItem value="">{t('pets.any')}</MenuItem>
             {species.map((s) => (
               <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>
@@ -151,7 +165,7 @@ export default function PetFiltersPanel({ initialFilters, onApply }: Props) {
         {/* Breed — active only when species selected */}
         <FormControl size="small" fullWidth disabled={!local.speciesId}>
           <InputLabel>{t('pets.breed')}</InputLabel>
-          <Select label={t('pets.breed')} value={local.breedId} onChange={(e) => set('breedId', e.target.value)}>
+          <Select label={t('pets.breed')} value={local.breedId} onChange={(e) => handleBreedChange(e.target.value)}>
             <MenuItem value="">{t('pets.any')}</MenuItem>
             {breeds.map((b) => (
               <MenuItem key={b.id} value={b.id}>{b.name}</MenuItem>
