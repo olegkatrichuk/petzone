@@ -18,7 +18,7 @@ namespace PetZone.Volunteers.Infrastructure.Migrations
                 defaultValue: false);
 
             migrationBuilder.Sql(
-                "UPDATE \"Volunteers\" SET is_system = true WHERE last_name = 'System';");
+                "UPDATE volunteers SET is_system = true WHERE last_name = 'System';");
         }
 
         /// <inheritdoc />
