@@ -22,6 +22,8 @@ public class GetVolunteersHandler(
 
         var volunteersQuery = dbContext.Volunteers
             .Where(v => !v.IsDeleted && !v.IsSystem)
+            .GroupBy(v => v.Name.LastName)
+            .Select(g => g.OrderBy(v => v.Name.FirstName).First())
             .OrderBy(v => v.Name.LastName);
 
         var totalCount = await volunteersQuery.CountAsync(cancellationToken);
