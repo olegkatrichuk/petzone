@@ -113,7 +113,7 @@ export default function VolunteersPage() {
         <Alert
           severity="error"
           action={
-            <Button size="small" onClick={refetch} sx={{ color: CORAL, textTransform: 'none' }}>
+            <Button onClick={refetch} sx={{ color: CORAL, textTransform: 'none', minHeight: 44 }}>
               {t('errors.retry')}
             </Button>
           }

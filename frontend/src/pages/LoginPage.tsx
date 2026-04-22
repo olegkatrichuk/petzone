@@ -162,7 +162,7 @@ export default function LoginPage() {
                       <IconButton
                         onClick={() => setShowPassword((v) => !v)}
                         edge="end"
-                        size="small"
+                        sx={{ width: 44, height: 44 }}
                       >
                         {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                       </IconButton>
@@ -179,10 +179,13 @@ export default function LoginPage() {
             />
 
             {/* Forgot password */}
-            <Box sx={{ textAlign: 'right', mt: -1 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: -1 }}>
               <Link
                 to="/forgot-password"
-                style={{ color: CORAL, fontSize: '0.8125rem', textDecoration: 'none', fontWeight: 500 }}
+                style={{
+                  color: CORAL, fontSize: '0.8125rem', textDecoration: 'none', fontWeight: 500,
+                  display: 'inline-flex', alignItems: 'center', minHeight: 44, paddingLeft: 8, paddingRight: 4,
+                }}
               >
                 {t('auth.forgotPassword')}
               </Link>
@@ -216,15 +219,17 @@ export default function LoginPage() {
           <Divider sx={{ my: 3 }} />
 
           {/* Register link */}
-          <Typography variant="body2" color="text.secondary" textAlign="center">
-            {t('auth.noAccount')}{' '}
-            <Link
-              to="/register"
-              style={{ color: CORAL, fontWeight: 600, textDecoration: 'none' }}
-            >
-              {t('auth.register')}
-            </Link>
-          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'center', minHeight: 44, alignItems: 'center' }}>
+            <Typography variant="body2" color="text.secondary" textAlign="center">
+              {t('auth.noAccount')}{' '}
+              <Link
+                to="/register"
+                style={{ color: CORAL, fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', minHeight: 44, paddingLeft: 4 }}
+              >
+                {t('auth.register')}
+              </Link>
+            </Typography>
+          </Box>
         </Paper>
       </Container>
     </Box>

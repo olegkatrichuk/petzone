@@ -66,8 +66,7 @@ export default function Footer() {
                   href={href}
                   target={href.startsWith('mailto') ? undefined : '_blank'}
                   rel="noopener noreferrer"
-                  size="small"
-                  sx={{ opacity: 0.7, '&:hover': { opacity: 1, color: '#FF6B6B' } }}
+                  sx={{ opacity: 0.7, width: 44, height: 44, '&:hover': { opacity: 1, color: '#FF6B6B' } }}
                 >
                   {icon}
                 </IconButton>
@@ -88,7 +87,7 @@ export default function Footer() {
                 component={RouterLink}
                 to={link.path === '/' ? prefix : `${prefix}${link.path}`}
                 underline="none"
-                sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', '&:hover': { color: '#FF6B6B' } }}
+                sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', display: 'flex', alignItems: 'center', minHeight: 44, '&:hover': { color: '#FF6B6B' } }}
               >
                 {t(link.labelKey)}
               </Link>
@@ -103,11 +102,11 @@ export default function Footer() {
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <Link component={RouterLink} to={`${prefix}/register/volunteer`} underline="none"
-              sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', '&:hover': { color: '#FF6B6B' } }}>
+              sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', display: 'flex', alignItems: 'center', minHeight: 44, '&:hover': { color: '#FF6B6B' } }}>
               {t('footer.becomeVolunteer')}
             </Link>
             <Link component={RouterLink} to={`${prefix}/volunteer-applications`} underline="none"
-              sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', '&:hover': { color: '#FF6B6B' } }}>
+              sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', display: 'flex', alignItems: 'center', minHeight: 44, '&:hover': { color: '#FF6B6B' } }}>
               {t('applications.title')}
             </Link>
           </Box>

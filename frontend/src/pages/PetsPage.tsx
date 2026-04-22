@@ -265,7 +265,7 @@ export default function PetsPage() {
             severity="error"
             sx={{ mb: 3 }}
             action={
-              <Button color="inherit" size="small" startIcon={<RefreshIcon />} onClick={() => refetch()}>
+              <Button color="inherit" startIcon={<RefreshIcon />} onClick={() => refetch()} sx={{ minHeight: 44 }}>
                 {t('errors.retry')}
               </Button>
             }

@@ -74,7 +74,7 @@ function PasswordField({ label, error, registration, autoComplete }: PasswordFie
         input: {
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={() => setShow((v) => !v)} edge="end" size="small">
+              <IconButton onClick={() => setShow((v) => !v)} edge="end" sx={{ width: 44, height: 44 }}>
                 {show ? <VisibilityOffIcon /> : <VisibilityIcon />}
               </IconButton>
             </InputAdornment>
@@ -192,12 +192,14 @@ export default function RegisterPage() {
 
           <Divider sx={{ my: 3 }} />
 
-          <Typography variant="body2" color="text.secondary" textAlign="center">
-            {t('auth.hasAccount')}{' '}
-            <Link to="/login" style={{ color: CORAL, fontWeight: 600, textDecoration: 'none' }}>
-              {t('auth.login')}
-            </Link>
-          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'center', minHeight: 44, alignItems: 'center' }}>
+            <Typography variant="body2" color="text.secondary" textAlign="center">
+              {t('auth.hasAccount')}{' '}
+              <Link to="/login" style={{ color: CORAL, fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', minHeight: 44, paddingLeft: 4 }}>
+                {t('auth.login')}
+              </Link>
+            </Typography>
+          </Box>
         </Paper>
       </Container>
 
