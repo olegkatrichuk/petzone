@@ -20,15 +20,17 @@ public class GetVolunteersHandler(
         logger.LogInformation("Getting volunteers. Page: {Page}, PageSize: {PageSize}",
             query.Page, query.PageSize);
 
-        var volunteersQuery = dbContext.Volunteers
+        // One representative per last name (min ID within the group — deterministic)
+        var deduplicatedIds = dbContext.Volunteers
             .Where(v => !v.IsDeleted && !v.IsSystem)
             .GroupBy(v => v.Name.LastName)
-            .Select(g => g.OrderBy(v => v.Name.FirstName).First())
-            .OrderBy(v => v.Name.LastName);
+            .Select(g => g.Min(v => v.Id));
 
-        var totalCount = await volunteersQuery.CountAsync(cancellationToken);
+        var totalCount = await deduplicatedIds.CountAsync(cancellationToken);
 
-        var volunteers = await volunteersQuery
+        var volunteers = await dbContext.Volunteers
+            .Where(v => deduplicatedIds.Contains(v.Id))
+            .OrderBy(v => v.Name.LastName)
             .Skip((query.Page - 1) * query.PageSize)
             .Take(query.PageSize)
             .Select(v => new VolunteerDto(
