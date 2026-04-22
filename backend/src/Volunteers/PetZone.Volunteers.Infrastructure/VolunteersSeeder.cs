@@ -71,6 +71,9 @@ public static class VolunteersSeeder
             if (hasLegacyData && !petPrefixes.Any())
                 continue;
 
+            if (await db.Volunteers.AnyAsync(v => v.Email.Value == vd.Email))
+                continue;
+
             var name = FullName.Create(vd.FirstName, vd.LastName, vd.Patronymic);
             var email = Email.Create(vd.Email);
             var exp = Experience.Create(vd.Years);
