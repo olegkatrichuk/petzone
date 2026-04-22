@@ -158,15 +158,25 @@ builder.WebHost.ConfigureKestrel(options =>
 
 var app = builder.Build();
 
-// Apply migrations automatically on startup
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    await services.GetRequiredService<AccountsDbContext>().Database.MigrateAsync();
-    await services.GetRequiredService<VolunteersDbContext>().Database.MigrateAsync();
-    await services.GetRequiredService<SpeciesDbContext>().Database.MigrateAsync();
-    await services.GetRequiredService<VolunteerRequestsDbContext>().Database.MigrateAsync();
-    await services.GetRequiredService<ListingsDbContext>().Database.MigrateAsync();
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    try
+    {
+        logger.LogInformation("Applying database migrations...");
+        await services.GetRequiredService<AccountsDbContext>().Database.MigrateAsync();
+        await services.GetRequiredService<VolunteersDbContext>().Database.MigrateAsync();
+        await services.GetRequiredService<SpeciesDbContext>().Database.MigrateAsync();
+        await services.GetRequiredService<VolunteerRequestsDbContext>().Database.MigrateAsync();
+        await services.GetRequiredService<ListingsDbContext>().Database.MigrateAsync();
+        logger.LogInformation("All database migrations applied successfully.");
+    }
+    catch (Exception ex)
+    {
+        logger.LogCritical(ex, "Database migration failed. Application cannot start.");
+        throw;
+    }
 }
 
 await DataSeeder.SeedAsync(app.Services);
