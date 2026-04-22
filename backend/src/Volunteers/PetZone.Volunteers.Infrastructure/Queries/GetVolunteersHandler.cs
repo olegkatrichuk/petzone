@@ -20,13 +20,14 @@ public class GetVolunteersHandler(
         logger.LogInformation("Getting volunteers. Page: {Page}, PageSize: {PageSize}",
             query.Page, query.PageSize);
 
-        // One representative per last name (min ID within the group — deterministic)
-        var deduplicatedIds = dbContext.Volunteers
+        // One per last name: materialise IDs first (GroupBy subquery not translatable in EF Core)
+        var deduplicatedIds = await dbContext.Volunteers
             .Where(v => !v.IsDeleted && !v.IsSystem)
             .GroupBy(v => v.Name.LastName)
-            .Select(g => g.Min(v => v.Id));
+            .Select(g => g.Min(v => v.Id))
+            .ToListAsync(cancellationToken);
 
-        var totalCount = await deduplicatedIds.CountAsync(cancellationToken);
+        var totalCount = deduplicatedIds.Count;
 
         var volunteers = await dbContext.Volunteers
             .Where(v => deduplicatedIds.Contains(v.Id))
