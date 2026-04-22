@@ -87,6 +87,15 @@ namespace PetZone.Volunteers.Domain.Models
             if (_pets.Contains(pet))
                 return Error.Validation("volunteer.pet_already_exists", "Питомец уже добавлен.");
 
+            var duplicate = _pets.Any(p =>
+                !p.IsDeleted &&
+                p.Nickname.Equals(pet.Nickname, StringComparison.OrdinalIgnoreCase) &&
+                p.ExternalId is null);
+
+            if (duplicate)
+                return Error.Conflict("volunteer.pet_duplicate_nickname",
+                    $"У вас вже є активна тварина з кличкою «{pet.Nickname}».");
+
             pet.SetPosition(_pets.Count + 1);
             _pets.Add(pet);
 

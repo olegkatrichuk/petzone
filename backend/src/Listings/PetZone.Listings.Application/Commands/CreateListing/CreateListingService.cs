@@ -26,6 +26,11 @@ public class CreateListingService(
             return new ErrorList(errors);
         }
 
+        var alreadyExists = await repository.ActiveListingExistsAsync(command.UserId, command.Title, ct);
+        if (alreadyExists)
+            return (ErrorList)Error.Conflict("listing.duplicate",
+                "У вас вже є активне оголошення з такою назвою.");
+
         var result = AdoptionListing.Create(
             command.UserId, command.UserName, command.UserEmail, command.UserPhone, command.ContactEmail,
             command.Title, command.Description, command.SpeciesId, command.BreedId,

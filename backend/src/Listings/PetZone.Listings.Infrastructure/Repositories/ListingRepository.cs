@@ -22,4 +22,11 @@ public class ListingRepository(ListingsDbContext dbContext) : IListingRepository
     {
         dbContext.Listings.Remove(listing);
     }
+
+    public async Task<bool> ActiveListingExistsAsync(Guid userId, string title, CancellationToken ct = default)
+        => await dbContext.Listings.AnyAsync(
+            l => l.UserId == userId &&
+                 l.Status == ListingStatus.Active &&
+                 EF.Functions.ILike(l.Title, title),
+            ct);
 }
