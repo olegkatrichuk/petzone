@@ -13,6 +13,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.HasKey(v => v.Id);
         builder.Property(v => v.UserId).IsRequired();
         builder.Property(v => v.IsDeleted).IsRequired();
+        builder.Property(v => v.IsSystem).IsRequired().HasDefaultValue(false);
 
         // Performance indexes
         builder.HasIndex(v => v.UserId);

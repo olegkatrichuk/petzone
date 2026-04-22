@@ -16,6 +16,7 @@ namespace PetZone.Volunteers.Domain.Models
         public Experience Experience { get; private set; }
         public PhoneNumber Phone { get; private set; }
         public string? PhotoPath { get; private set; }
+        public bool IsSystem { get; private set; }
 
         private readonly List<SocialNetwork> _socialNetworks = new();
         public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks.AsReadOnly();
@@ -75,6 +76,8 @@ namespace PetZone.Volunteers.Domain.Models
 
             return new Volunteer(id, userId, name, email, generalDescription.Trim(), experience, phone);
         }
+
+        public void MarkAsSystem() => IsSystem = true;
 
         public void UpdatePhoto(string? photoPath) => PhotoPath = photoPath;
 

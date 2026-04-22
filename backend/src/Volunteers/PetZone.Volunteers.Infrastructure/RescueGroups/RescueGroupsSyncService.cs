@@ -308,6 +308,7 @@ public class RescueGroupsSyncService(
             exp, phone);
 
         var volunteer = volunteerResult.Value;
+        volunteer.MarkAsSystem();
         db.Volunteers.Add(volunteer);
         await db.SaveChangesAsync(ct);
 

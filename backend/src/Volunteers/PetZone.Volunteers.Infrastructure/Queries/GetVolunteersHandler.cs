@@ -21,7 +21,7 @@ public class GetVolunteersHandler(
             query.Page, query.PageSize);
 
         var volunteersQuery = dbContext.Volunteers
-            .Where(v => !v.IsDeleted)
+            .Where(v => !v.IsDeleted && !v.IsSystem)
             .OrderBy(v => v.Name.LastName);
 
         var totalCount = await volunteersQuery.CountAsync(cancellationToken);

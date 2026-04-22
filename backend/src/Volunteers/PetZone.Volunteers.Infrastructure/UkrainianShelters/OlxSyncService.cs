@@ -263,6 +263,7 @@ public class OlxSyncService(
             Experience.Create(0).Value,
             PhoneNumber.Create("0000000000").Value).Value;
 
+        volunteer.MarkAsSystem();
         db.Volunteers.Add(volunteer);
         await db.SaveChangesAsync(ct);
         logger.LogInformation("Created system volunteer for OLX imports");
