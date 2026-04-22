@@ -11,4 +11,6 @@ public interface IVolunteerRepository
     
     // Hard delete — физически удаляет из БД
     Task<Guid> HardDeleteAsync(Volunteer volunteer, CancellationToken cancellationToken = default);
+
+    Task<Guid?> GetOwnerUserIdAsync(Guid volunteerId, CancellationToken cancellationToken = default);
 }

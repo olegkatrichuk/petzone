@@ -42,14 +42,13 @@ public class PetsController(
         return Guid.TryParse(claim.Value, out var id) ? id : null;
     }
 
-    /// <summary>Returns true if the requesting user owns the volunteer profile or is Admin.</summary>
     private async Task<bool> IsOwnerOrAdminAsync(Guid volunteerId, CancellationToken ct)
     {
         if (User.IsInRole("Admin")) return true;
         var userId = GetUserId();
         if (userId is null) return false;
-        var volunteer = await volunteerRepository.GetByIdAsync(volunteerId, ct);
-        return volunteer is not null && volunteer.UserId == userId.Value;
+        var ownerId = await volunteerRepository.GetOwnerUserIdAsync(volunteerId, ct);
+        return ownerId == userId;
     }
 
     [Authorize(Policy = Permissions.Pets.Create)]

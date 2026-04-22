@@ -128,6 +128,7 @@ public class AnimalsCitySyncService(
                     if (pet is null) continue;
 
                     pet.SetExternalId(externalId);
+                    pet.SetCountry("ua");
                     if (!string.IsNullOrWhiteSpace(post.Link))
                         pet.SetExternalUrl(post.Link);
                     db.Pets.Add(pet);

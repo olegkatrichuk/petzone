@@ -211,6 +211,7 @@ public class OlxPlSyncService(
         if (pet.IsFailure) return null;
 
         pet.Value.SetExternalId(externalId);
+        pet.Value.SetCountry("pl");
 
         if (!string.IsNullOrWhiteSpace(listingUrl))
             pet.Value.SetExternalUrl(listingUrl);

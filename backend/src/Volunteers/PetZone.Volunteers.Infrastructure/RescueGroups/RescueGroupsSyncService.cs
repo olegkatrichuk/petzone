@@ -140,6 +140,7 @@ public class RescueGroupsSyncService(
                         continue;
 
                     pet.SetExternalId(externalId);
+                    pet.SetCountry("other");
                     db.Pets.Add(pet);
                     existingIds.Add(externalId);
                     imported++;

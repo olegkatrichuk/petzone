@@ -55,4 +55,12 @@ public class VolunteerRepository(VolunteersDbContext dbContext) : IVolunteerRepo
         await dbContext.SaveChangesAsync(cancellationToken);
         return volunteer.Id;
     }
+
+    public async Task<Guid?> GetOwnerUserIdAsync(Guid volunteerId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Volunteers
+            .Where(v => v.Id == volunteerId && !v.IsDeleted)
+            .Select(v => (Guid?)v.UserId)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
 }

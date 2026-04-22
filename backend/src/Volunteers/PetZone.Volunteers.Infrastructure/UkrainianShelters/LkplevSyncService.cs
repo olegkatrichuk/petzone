@@ -107,6 +107,7 @@ public class LkplevSyncService(
 
                 pet.SetExternalId(externalId);
                 pet.SetExternalUrl(externalUrl);
+                pet.SetCountry("ua");
                 db.Pets.Add(pet);
                 existingIds.Add(externalId);
                 imported++;

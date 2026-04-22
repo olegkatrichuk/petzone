@@ -1,13 +1,20 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
+using PetZone.Core;
 
 namespace PetZone.Accounts.Infrastructure.Authorization;
 
 public class PermissionAuthorizationHandler(IServiceScopeFactory scopeFactory)
     : AuthorizationHandler<PermissionRequirement>
 {
+    private static readonly DistributedCacheEntryOptions CacheOptions = new()
+    {
+        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+    };
+
     protected override async Task HandleRequirementAsync(
         AuthorizationHandlerContext context,
         PermissionRequirement requirement)
@@ -22,17 +29,23 @@ public class PermissionAuthorizationHandler(IServiceScopeFactory scopeFactory)
         }
 
         using var scope = scopeFactory.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<AccountsDbContext>();
+        var cache = scope.ServiceProvider.GetRequiredService<ICacheService>();
 
-        var hasPermission = await dbContext.RolePermissions
-            .Include(rp => rp.Role)
-            .Include(rp => rp.Permission)
-            .AnyAsync(rp =>
-                rp.Permission.Code == requirement.Permission &&
-                dbContext.UserRoles
-                    .Any(ur => ur.UserId == userId && ur.RoleId == rp.RoleId));
+        var cacheKey = $"user:{userId}:permissions";
 
-        if (hasPermission)
+        var permissions = await cache.GetOrSetAsync<string[]>(
+            cacheKey,
+            CacheOptions,
+            async () =>
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<AccountsDbContext>();
+                return await dbContext.RolePermissions
+                    .Where(rp => dbContext.UserRoles.Any(ur => ur.UserId == userId && ur.RoleId == rp.RoleId))
+                    .Select(rp => rp.Permission.Code)
+                    .ToArrayAsync();
+            });
+
+        if (permissions is not null && permissions.Contains(requirement.Permission))
             context.Succeed(requirement);
         else
             context.Fail();
