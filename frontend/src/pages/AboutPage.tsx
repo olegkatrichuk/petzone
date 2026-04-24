@@ -197,23 +197,49 @@ export default function AboutPage() {
         </Container>
       </Box>
 
-      {/* ── TEAM ──────────────────────────────────────────── */}
-      <Container maxWidth="sm" sx={{ py: { xs: 6, md: 10 }, textAlign: 'center' }}>
+      {/* ── VIDEO ─────────────────────────────────────────── */}
+      <Container maxWidth="md" sx={{ py: { xs: 6, md: 10 }, textAlign: 'center' }}>
         <Typography
           variant="h4"
           fontWeight="bold"
           sx={{ mb: 2, fontSize: { xs: '1.6rem', md: '2.2rem' } }}
         >
-          {t('about.team.title')}
+          {t('about.video.title')}
         </Typography>
         <Typography
           variant="body1"
           color="text.secondary"
-          sx={{ mb: 5, lineHeight: 1.8 }}
+          sx={{ mb: 4, lineHeight: 1.8, maxWidth: 560, mx: 'auto' }}
         >
-          {t('about.team.desc')}
+          {t('about.video.desc')}
         </Typography>
-
+        <Box
+          sx={{
+            position: 'relative',
+            width: '100%',
+            paddingTop: '56.25%',
+            borderRadius: 3,
+            overflow: 'hidden',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+          }}
+        >
+          <Box
+            component="iframe"
+            src="https://www.youtube.com/embed/2auK8l0wACk?rel=0&modestbranding=1"
+            title={t('about.video.title')}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              border: 'none',
+            }}
+          />
+        </Box>
       </Container>
 
       {/* ── CTA ───────────────────────────────────────────── */}
