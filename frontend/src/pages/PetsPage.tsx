@@ -162,10 +162,15 @@ export default function PetsPage() {
   const filters: PetFilters = { ...baseFilters, page, source: geoSource }
   const { data, isLoading, isFetching, isError, refetch } = useGetPetsQuery(filters, { refetchOnMountOrArgChange: true })
 
-  // Accumulate items across pages
+  // Accumulate items across pages; shuffle page 1 so each visit shows a different order
   useEffect(() => {
     if (!data?.items) return
-    setAllItems((prev) => page === 1 ? [...data.items] : [...prev, ...data.items])
+    if (page === 1) {
+      const shuffled = [...data.items].sort(() => Math.random() - 0.5)
+      setAllItems(shuffled)
+    } else {
+      setAllItems((prev) => [...prev, ...data.items])
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 

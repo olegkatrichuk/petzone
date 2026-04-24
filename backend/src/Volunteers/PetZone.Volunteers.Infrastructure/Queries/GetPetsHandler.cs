@@ -106,7 +106,7 @@ public class GetPetsHandler(
             "id" => query.SortDescending
                 ? petsQuery.OrderByDescending(x => x.Pet.Id)
                 : petsQuery.OrderBy(x => x.Pet.Id),
-            _ => petsQuery.OrderByDescending(x => x.Pet.CreatedAt)
+            _ => petsQuery.OrderBy(x => x.Pet.Position)
         };
 
         var totalCount = await petsQuery.CountAsync(cancellationToken);
