@@ -160,7 +160,7 @@ export default function PetsPage() {
   }, [searchInput])
 
   const filters: PetFilters = { ...baseFilters, page, source: geoSource }
-  const { data, isLoading, isFetching, isError, refetch } = useGetPetsQuery(filters)
+  const { data, isLoading, isFetching, isError, refetch } = useGetPetsQuery(filters, { refetchOnMountOrArgChange: true })
 
   // Accumulate items across pages
   useEffect(() => {
