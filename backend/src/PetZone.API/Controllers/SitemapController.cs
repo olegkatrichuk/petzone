@@ -36,6 +36,10 @@ public class SitemapController(
             .Select(p => new { p.Id, p.CreatedAt })
             .ToListAsync(ct);
 
+        var newsPostIds = await volunteersDb.NewsPosts
+            .Select(n => new { n.Id, n.VolunteerId, LastMod = n.UpdatedAt ?? n.CreatedAt })
+            .ToListAsync(ct);
+
         var xml = new System.Text.StringBuilder();
         xml.AppendLine("""<?xml version="1.0" encoding="UTF-8"?>""");
         xml.AppendLine("""<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">""");
@@ -53,6 +57,11 @@ public class SitemapController(
         foreach (var v in volunteerIds)
         {
             AppendUrlAllLangs(xml, $"/volunteers/{v}", 0.6, "monthly", null);
+        }
+
+        foreach (var n in newsPostIds)
+        {
+            AppendUrlAllLangs(xml, $"/news/{n.VolunteerId}/{n.Id}", 0.5, "monthly", n.LastMod);
         }
 
         xml.AppendLine("</urlset>");

@@ -26,6 +26,11 @@ export const newsApi = createApi({
   baseQuery: axiosBaseQuery(),
   tagTypes: ['News'],
   endpoints: (builder) => ({
+    getNewsPostById: builder.query<NewsPostDto, string>({
+      query: (id) => ({ url: `/news/${id}` }),
+      providesTags: (_, __, id) => [{ type: 'News', id }],
+    }),
+
     getNewsByVolunteer: builder.query<NewsPostDto[], string>({
       query: (volunteerId) => ({ url: `/news/volunteer/${volunteerId}` }),
       providesTags: (_, __, volunteerId) => [{ type: 'News', id: volunteerId }],
@@ -60,6 +65,7 @@ export const newsApi = createApi({
 })
 
 export const {
+  useGetNewsPostByIdQuery,
   useGetNewsByVolunteerQuery,
   useCreateNewsPostMutation,
   useUpdateNewsPostMutation,

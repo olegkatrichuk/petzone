@@ -60,6 +60,7 @@ public static class DependencyInjection
         services.AddScoped<GetPetsHandler>();
         services.AddScoped<GetPetByIdHandler>();
         services.AddScoped<GetNewsByVolunteerHandler>();
+        services.AddScoped<GetNewsPostByIdHandler>();
         services.AddScoped<GetSystemNewsHandler>();
 
         // Options

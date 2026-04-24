@@ -251,7 +251,9 @@
     "edited": "modifié",
     "deleteConfirmTitle": "Supprimer l'article ?",
     "deleteConfirmText": "Cette action est irréversible",
-    "delete": "Supprimer"
+    "delete": "Supprimer",
+    "backToList": "← Retour aux actualités",
+    "readMore": "Lire la suite →"
   },
   "favorites": {
     "title": "Favoris 🌟",

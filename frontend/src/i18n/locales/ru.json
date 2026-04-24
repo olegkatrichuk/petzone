@@ -251,7 +251,9 @@
     "edited": "отредактировано",
     "deleteConfirmTitle": "Удалить пост?",
     "deleteConfirmText": "Это действие нельзя отменить",
-    "delete": "Удалить"
+    "delete": "Удалить",
+    "backToList": "← Назад к новостям",
+    "readMore": "Читать далее →"
   },
   "favorites": {
     "title": "Избранное 🌟",

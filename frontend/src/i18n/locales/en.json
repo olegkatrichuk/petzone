@@ -251,7 +251,9 @@
     "edited": "edited",
     "deleteConfirmTitle": "Delete post?",
     "deleteConfirmText": "This action cannot be undone",
-    "delete": "Delete"
+    "delete": "Delete",
+    "backToList": "← Back to news",
+    "readMore": "Read more →"
   },
   "favorites": {
     "title": "Favorites 🌟",

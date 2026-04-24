@@ -3,6 +3,7 @@ Allow: /
 
 # Private pages — do not index
 Disallow: /*/admin
+Disallow: /*/map
 Disallow: /*/profile
 Disallow: /*/my-listings
 Disallow: /*/my-adoptions

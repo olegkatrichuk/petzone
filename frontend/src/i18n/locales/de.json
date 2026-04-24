@@ -251,7 +251,9 @@
     "edited": "bearbeitet",
     "deleteConfirmTitle": "Beitrag löschen?",
     "deleteConfirmText": "Diese Aktion kann nicht rückgängig gemacht werden",
-    "delete": "Löschen"
+    "delete": "Löschen",
+    "backToList": "← Zurück zu den Neuigkeiten",
+    "readMore": "Weiterlesen →"
   },
   "favorites": {
     "title": "Favoriten 🌟",

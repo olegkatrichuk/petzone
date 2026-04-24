@@ -251,7 +251,9 @@
     "edited": "відредаговано",
     "deleteConfirmTitle": "Видалити пост?",
     "deleteConfirmText": "Цю дію не можна скасувати",
-    "delete": "Видалити"
+    "delete": "Видалити",
+    "backToList": "← Назад до новин",
+    "readMore": "Читати далі →"
   },
   "favorites": {
     "title": "Обране 🌟",

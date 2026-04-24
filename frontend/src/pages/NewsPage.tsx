@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { useLangNavigate } from '../hooks/useLangNavigate'
+import { DEFAULT_LANG } from '../lib/langUtils'
 import PageMeta from '../components/meta/PageMeta'
 import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
@@ -32,8 +33,9 @@ import { useAuthStore } from '../store/authStore'
 
 export default function NewsPage() {
   const { t } = useTranslation()
-  const { volunteerId } = useParams<{ volunteerId: string }>()
+  const { volunteerId, lang } = useParams<{ volunteerId: string; lang: string }>()
   const navigate = useLangNavigate()
+  const langPrefix = `/${lang ?? DEFAULT_LANG}`
   const user = useAuthStore((s) => s.user)
   const isOwner = user?.id === volunteerId
 
@@ -96,7 +98,11 @@ export default function NewsPage() {
 
   return (
     <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
-      <PageMeta title={t('news.title')} description={t('news.title')} path={`/news/${volunteerId}`} />
+      <PageMeta
+        title={t('news.title')}
+        description={posts[0] ? `${posts[0].title} — ${posts[0].content.slice(0, 120)}` : t('news.emptyHint')}
+        path={`/news/${volunteerId}`}
+      />
       <Container maxWidth="md">
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <Button
@@ -149,7 +155,14 @@ export default function NewsPage() {
               >
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <Box sx={{ flex: 1, mr: 2 }}>
-                    <Typography variant="h6" fontWeight="600" sx={{ mb: 0.5 }}>
+                    <Typography
+                      variant="h6"
+                      fontWeight="600"
+                      sx={{ mb: 0.5 }}
+                      component={Link}
+                      to={`${langPrefix}/news/${volunteerId}/${post.id}`}
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
                       {post.title}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
@@ -170,8 +183,18 @@ export default function NewsPage() {
                 </Box>
                 <Divider sx={{ my: 2 }} />
                 <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
-                  {post.content}
+                  {post.content.length > 300 ? `${post.content.slice(0, 300)}…` : post.content}
                 </Typography>
+                {post.content.length > 300 && (
+                  <Button
+                    component={Link}
+                    to={`${langPrefix}/news/${volunteerId}/${post.id}`}
+                    size="small"
+                    sx={{ mt: 1, textTransform: 'none', p: 0 }}
+                  >
+                    {t('news.readMore')}
+                  </Button>
+                )}
               </Paper>
             ))}
           </Box>

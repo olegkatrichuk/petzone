@@ -124,7 +124,7 @@ export default function MapPage() {
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-      <PageMeta title={t('map.pageTitle')} description={t('map.pageTitle')} path="/map" />
+      <PageMeta title={t('map.pageTitle')} description={t('map.pageTitle')} path="/map" noIndex />
 
       <Container maxWidth="xl" sx={{ pt: 3, pb: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2, mb: 2 }}>

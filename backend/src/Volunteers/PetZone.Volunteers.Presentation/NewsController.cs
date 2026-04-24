@@ -17,8 +17,20 @@ public class NewsController(
     UpdateNewsPostService updateNewsPostService,
     DeleteNewsPostService deleteNewsPostService,
     GetNewsByVolunteerHandler getNewsByVolunteerHandler,
+    GetNewsPostByIdHandler getNewsPostByIdHandler,
     ILogger<NewsController> logger) : ControllerBase
 {
+    [AllowAnonymous]
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<NewsPostDto>> GetById(
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken)
+    {
+        var post = await getNewsPostByIdHandler.Handle(id, cancellationToken);
+        if (post is null) return NotFound();
+        return Ok(post);
+    }
+
     [AllowAnonymous]
     [HttpGet("volunteer/{volunteerId:guid}")]
     public async Task<ActionResult<List<NewsPostDto>>> GetByVolunteer(

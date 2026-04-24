@@ -170,7 +170,8 @@ export default function PetDetailPage() {
                   component="img"
                   src={displayPhoto}
                   alt={pet.nickname}
-                  loading="lazy"
+                  loading="eager"
+                  fetchPriority="high"
                   sx={{ width: '100%', height: { xs: 240, sm: 340, md: 420 }, objectFit: 'cover', display: 'block' }}
                 />
               ) : (

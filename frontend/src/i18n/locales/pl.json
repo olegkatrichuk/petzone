@@ -251,7 +251,9 @@
     "edited": "edytowano",
     "deleteConfirmTitle": "Usunąć post?",
     "deleteConfirmText": "Tej czynności nie można cofnąć",
-    "delete": "Usuń"
+    "delete": "Usuń",
+    "backToList": "← Powrót do aktualności",
+    "readMore": "Czytaj więcej →"
   },
   "favorites": {
     "title": "Ulubione 🌟",
