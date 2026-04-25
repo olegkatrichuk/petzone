@@ -1,9 +1,9 @@
 import { useState, useMemo } from 'react'
+import { useParams, Navigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
 import ShelterCard from '../components/shelters/ShelterCard'
-import type { ShelterItem } from '../components/shelters/ShelterCard'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -15,107 +15,113 @@ import IconButton from '@mui/material/IconButton'
 import InputAdornment from '@mui/material/InputAdornment'
 import Divider from '@mui/material/Divider'
 import SearchIcon from '@mui/icons-material/Search'
-import PetsIcon from '@mui/icons-material/Pets'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ClearIcon from '@mui/icons-material/Clear'
+import PetsIcon from '@mui/icons-material/Pets'
 import Pagination from '../components/ui/Pagination'
 import sheltersData from '../data/shelters.json'
 import { SHELTER_COUNTRIES } from '../data/shelterCountries'
+import type { ShelterItem } from '../components/shelters/ShelterCard'
+import { DEFAULT_LANG } from '../lib/langUtils'
 
 const CORAL = '#FF6B6B'
 const DARK = '#1e1b4b'
 const PAGE_SIZE = 24
+const SITE_URL = 'https://getpetzone.com'
 
 const allShelters = sheltersData as ShelterItem[]
 
-export default function SheltersPage() {
+export default function SheltersCountryPage() {
+  const { lang, countryCode } = useParams<{ lang: string; countryCode: string }>()
   const { t } = useTranslation()
   const navigate = useLangNavigate()
   const [search, setSearch] = useState('')
-  const [cityFilter, setCityFilter] = useState<string>('')
-  const [countryFilter, setCountryFilter] = useState<string>('')
+  const [cityFilter, setCityFilter] = useState('')
   const [page, setPage] = useState(1)
 
-  const countries = useMemo(() => {
-    const present = new Set(allShelters.map((s) => s.country ?? '').filter(Boolean))
-    return Object.entries(SHELTER_COUNTRIES)
-      .filter(([code]) => present.has(code))
-      .map(([code, meta]) => ({ code, meta }))
-      .sort((a, b) => {
-        if (a.code === 'UA') return -1
-        if (b.code === 'UA') return 1
-        return (a.meta.name['uk'] ?? '').localeCompare(b.meta.name['uk'] ?? '', 'uk')
-      })
-  }, [])
+  const code = (countryCode ?? '').toUpperCase()
+  const meta = SHELTER_COUNTRIES[code]
+  const currentLang = lang ?? DEFAULT_LANG
 
-  const uniqueCities = useMemo(() => {
-    const base = countryFilter
-      ? allShelters.filter((s) => (s.country ?? '') === countryFilter)
-      : allShelters
-    return [...new Set(base.map((s) => s.city).filter(Boolean))].sort()
-  }, [countryFilter])
+  if (!meta) return <Navigate to={`/${currentLang}/shelters`} replace />
 
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase()
-    return allShelters.filter((s) => {
-      const matchSearch = !q || s.name.toLowerCase().includes(q) || s.city.toLowerCase().includes(q)
-      const matchCity = !cityFilter || s.city === cityFilter
-      const matchCountry = !countryFilter || (s.country ?? '') === countryFilter
-      return matchSearch && matchCity && matchCountry
-    })
-  }, [search, cityFilter, countryFilter])
+  const countryShelters = useMemo(
+    () => allShelters.filter((s) => (s.country ?? '') === code),
+    [code],
+  )
 
-  const totalCount = filtered.length
-  const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const uniqueCities = useMemo(
+    () => [...new Set(countryShelters.map((s) => s.city).filter(Boolean))].sort(),
+    [countryShelters],
+  )
 
   const topCities = useMemo(
     () =>
       uniqueCities
-        .map((city) => ({
-          city,
-          count: (countryFilter
-            ? allShelters.filter((s) => (s.country ?? '') === countryFilter)
-            : allShelters
-          ).filter((s) => s.city === city).length,
-        }))
+        .map((city) => ({ city, count: countryShelters.filter((s) => s.city === city).length }))
         .sort((a, b) => b.count - a.count)
         .slice(0, 8)
         .map((c) => c.city),
-    [uniqueCities, countryFilter],
+    [uniqueCities, countryShelters],
   )
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    return countryShelters.filter((s) => {
+      const matchSearch = !q || s.name.toLowerCase().includes(q) || s.city.toLowerCase().includes(q)
+      const matchCity = !cityFilter || s.city === cityFilter
+      return matchSearch && matchCity
+    })
+  }, [countryShelters, search, cityFilter])
+
+  const totalCount = filtered.length
+  const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   const handleSearch = (v: string) => { setSearch(v); setPage(1) }
   const handleCity = (city: string) => { setCityFilter(city === cityFilter ? '' : city); setPage(1) }
-  const handleCountryClick = (code: string) => {
-    if (countryFilter === code) {
-      setCountryFilter(''); setCityFilter(''); setPage(1)
-    } else {
-      navigate(`/shelters/${code.toLowerCase()}`)
-    }
+
+  const pageTitle = meta.pageTitle[currentLang] ?? meta.pageTitle['en']
+  const pageDesc = meta.pageDesc[currentLang] ?? meta.pageDesc['en']
+  const countryPath = `/shelters/${code.toLowerCase()}`
+
+  // Schema.org: BreadcrumbList
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t('nav.home'), item: `${SITE_URL}/${currentLang}` },
+      { '@type': 'ListItem', position: 2, name: t('shelters.pageTitle'), item: `${SITE_URL}/${currentLang}/shelters` },
+      { '@type': 'ListItem', position: 3, name: meta.name[currentLang] ?? meta.name['en'], item: `${SITE_URL}/${currentLang}${countryPath}` },
+    ],
+  }
+
+  // Schema.org: ItemList with LocalBusiness entries (top 50)
+  const itemListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: pageTitle,
+    description: pageDesc,
+    numberOfItems: countryShelters.length,
+    url: `${SITE_URL}/${currentLang}${countryPath}`,
+    itemListElement: countryShelters.slice(0, 50).map((s, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'LocalBusiness',
+        name: s.name,
+        ...(s.city ? { address: { '@type': 'PostalAddress', addressLocality: s.city, addressCountry: code } } : {}),
+        ...(s.url ? { url: s.url } : {}),
+        ...(s.phone ? { telephone: s.phone } : {}),
+        ...(s.email ? { email: s.email } : {}),
+      },
+    })),
   }
 
   return (
     <Box sx={{ bgcolor: 'background.default' }}>
-      <PageMeta
-        title={t('shelters.pageTitle')}
-        description={t('shelters.metaDesc')}
-        path="/shelters"
-      />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: t('nav.home'), item: 'https://getpetzone.com/uk' },
-          { '@type': 'ListItem', position: 2, name: t('shelters.pageTitle'), item: 'https://getpetzone.com/uk/shelters' },
-        ],
-      }) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'ItemList',
-        name: t('shelters.pageTitle'),
-        description: t('shelters.metaDesc'),
-        numberOfItems: allShelters.length,
-        url: 'https://getpetzone.com/uk/shelters',
-      }) }} />
+      <PageMeta title={pageTitle} description={pageDesc} path={countryPath} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────── */}
       <Box
@@ -145,7 +151,7 @@ export default function SheltersPage() {
               variant="caption"
               sx={{ color: CORAL, fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase' }}
             >
-              {t('shelters.badge')}
+              {meta.flag} {meta.name[currentLang] ?? meta.name['en']}
             </Typography>
           </Box>
 
@@ -154,16 +160,17 @@ export default function SheltersPage() {
             fontWeight="bold"
             sx={{ mb: 2, fontSize: { xs: '1.8rem', md: '2.8rem' }, lineHeight: 1.2 }}
           >
-            {t('shelters.hero.title')}
+            {pageTitle}
           </Typography>
 
           <Typography
             variant="h6"
             sx={{ opacity: 0.8, fontWeight: 400, mb: 5, fontSize: { xs: '1rem', md: '1.1rem' }, maxWidth: 640, mx: 'auto' }}
           >
-            {t('shelters.hero.subtitle')}
+            {pageDesc}
           </Typography>
 
+          {/* Stats bar */}
           <Box
             sx={{
               display: 'inline-flex',
@@ -179,62 +186,30 @@ export default function SheltersPage() {
           >
             <Box sx={{ textAlign: 'center' }}>
               <Typography variant="h5" fontWeight="bold" sx={{ color: CORAL, lineHeight: 1 }}>
-                {allShelters.length}
+                {countryShelters.length}
               </Typography>
               <Typography variant="caption" sx={{ opacity: 0.7 }}>{t('shelters.stats.orgs')}</Typography>
             </Box>
             <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.2)' }} />
             <Box sx={{ textAlign: 'center' }}>
               <Typography variant="h5" fontWeight="bold" sx={{ color: '#60A5FA', lineHeight: 1 }}>
-                {countries.length}
+                {uniqueCities.length}
               </Typography>
-              <Typography variant="caption" sx={{ opacity: 0.7 }}>країн</Typography>
-            </Box>
-            <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.2)' }} />
-            <Box sx={{ textAlign: 'center' }}>
-              <Typography variant="h5" fontWeight="bold" sx={{ color: '#34D399', lineHeight: 1 }}>
-                {t('shelters.stats.source')}
-              </Typography>
-              <Typography variant="caption" sx={{ opacity: 0.7 }}>{t('shelters.attribution')}</Typography>
+              <Typography variant="caption" sx={{ opacity: 0.7 }}>{t('shelters.stats.cities')}</Typography>
             </Box>
           </Box>
         </Container>
       </Box>
 
       <Container maxWidth="xl" sx={{ py: { xs: 4, md: 6 } }}>
-        {/* ── COUNTRY CHIPS ──────────────────────────────────── */}
-        <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap', mb: 2 }}>
-          <Chip
-            label={t('shelters.allCountries')}
-            size="small"
-            onClick={() => { setCountryFilter(''); setCityFilter(''); setPage(1) }}
-            variant={!countryFilter ? 'filled' : 'outlined'}
-            sx={{
-              cursor: 'pointer',
-              bgcolor: !countryFilter ? CORAL : 'transparent',
-              color: !countryFilter ? 'white' : 'text.secondary',
-              borderColor: !countryFilter ? CORAL : '#E5E7EB',
-              fontWeight: !countryFilter ? 600 : 400,
-              '&:hover': { bgcolor: !countryFilter ? '#e55555' : '#FFF0F0', borderColor: CORAL, color: !countryFilter ? 'white' : CORAL },
-            }}
-          />
-          {countries.map(({ code, meta }) => (
-            <Chip
-              key={code}
-              label={`${meta.flag} ${meta.name['uk']}`}
-              size="small"
-              onClick={() => handleCountryClick(code)}
-              variant="outlined"
-              sx={{
-                cursor: 'pointer',
-                bgcolor: 'transparent',
-                color: 'text.secondary',
-                borderColor: '#E5E7EB',
-                '&:hover': { bgcolor: '#FFF0F0', borderColor: CORAL, color: CORAL },
-              }}
-            />
-          ))}
-        </Box>
+        {/* ── BACK LINK ──────────────────────────────────────── */}
+        <Button
+          startIcon={<ArrowBackIcon />}
+          onClick={() => navigate('/shelters')}
+          sx={{ mb: 3, textTransform: 'none', color: '#6B7280', '&:hover': { color: CORAL } }}
+        >
+          {t('shelters.allCountries')}
+        </Button>
 
         {/* ── SEARCH & CITY FILTERS ───────────────────────────── */}
         <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap', alignItems: 'center' }}>
@@ -308,7 +283,7 @@ export default function SheltersPage() {
           <Grid container spacing={2.5}>
             {paged.map((shelter) => (
               <Grid key={shelter.url} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                <ShelterCard shelter={shelter} />
+                <ShelterCard shelter={shelter} showFlag={false} />
               </Grid>
             ))}
           </Grid>
@@ -323,39 +298,6 @@ export default function SheltersPage() {
             ofLabel={t('shelters.of')}
           />
         )}
-
-        {/* ── CTA ────────────────────────────────────────────── */}
-        <Box
-          sx={{
-            mt: 8,
-            textAlign: 'center',
-            border: '1px solid #E5E7EB',
-            borderRadius: 4,
-            p: { xs: 3, md: 5 },
-            bgcolor: 'background.paper',
-          }}
-        >
-          <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
-            {t('shelters.cta.title')}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 3, maxWidth: 480, mx: 'auto' }}>
-            {t('shelters.cta.subtitle')}
-          </Typography>
-          <Button
-            variant="contained"
-            onClick={() => navigate('/register/volunteer')}
-            sx={{
-              bgcolor: CORAL,
-              '&:hover': { bgcolor: '#e55555' },
-              textTransform: 'none',
-              fontWeight: 600,
-              borderRadius: 2,
-              px: 3,
-            }}
-          >
-            {t('shelters.cta.btn')}
-          </Button>
-        </Box>
       </Container>
     </Box>
   )
