@@ -45,10 +45,20 @@ interface Shelter {
   instagram: string | null
   website: string | null
   description: string | null
+  country?: string
+  country_name?: string
+}
+
+const COUNTRY_FLAGS: Record<string, string> = {
+  UA: '🇺🇦', DE: '🇩🇪', PL: '🇵🇱', GB: '🇬🇧', FR: '🇫🇷',
+  ES: '🇪🇸', IT: '🇮🇹', CH: '🇨🇭', AT: '🇦🇹', BE: '🇧🇪',
+  NL: '🇳🇱', CZ: '🇨🇿', SK: '🇸🇰', HU: '🇭🇺', RO: '🇷🇴',
+  BG: '🇧🇬', HR: '🇭🇷', SI: '🇸🇮', RS: '🇷🇸', PT: '🇵🇹',
+  SE: '🇸🇪', NO: '🇳🇴', DK: '🇩🇰', FI: '🇫🇮', LT: '🇱🇹',
+  LV: '🇱🇻', EE: '🇪🇪', IE: '🇮🇪', GR: '🇬🇷', MD: '🇲🇩',
 }
 
 const allShelters = sheltersData as Shelter[]
-const uniqueCities = [...new Set(allShelters.map((s) => s.city).filter(Boolean))].sort()
 
 function ShelterCard({ shelter }: { shelter: Shelter }) {
   const { t } = useTranslation()
@@ -59,6 +69,10 @@ function ShelterCard({ shelter }: { shelter: Shelter }) {
     .map((w) => w[0])
     .join('')
     .toUpperCase()
+
+  const flag = COUNTRY_FLAGS[shelter.country ?? ''] ?? ''
+  const isUkrainian = shelter.country === 'UA'
+  const viewLabel = isUkrainian ? t('shelters.viewOnHappyPaw') : t('shelters.viewOnOsm')
 
   return (
     <Card
@@ -86,14 +100,21 @@ function ShelterCard({ shelter }: { shelter: Shelter }) {
           >
             {!shelter.photo && initials}
           </Avatar>
-          <Box sx={{ minWidth: 0 }}>
-            <Typography
-              variant="subtitle1"
-              fontWeight="bold"
-              sx={{ lineHeight: 1.3, wordBreak: 'break-word', fontSize: '0.9rem' }}
-            >
-              {shelter.name}
-            </Typography>
+          <Box sx={{ minWidth: 0, flex: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 0.5, justifyContent: 'space-between' }}>
+              <Typography
+                variant="subtitle1"
+                fontWeight="bold"
+                sx={{ lineHeight: 1.3, wordBreak: 'break-word', fontSize: '0.9rem' }}
+              >
+                {shelter.name}
+              </Typography>
+              {flag && (
+                <Typography component="span" sx={{ fontSize: 16, flexShrink: 0, mt: '1px' }}>
+                  {flag}
+                </Typography>
+              )}
+            </Box>
             {shelter.city && (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4, mt: 0.25, color: '#6B7280' }}>
                 <LocationOnIcon sx={{ fontSize: 13 }} />
@@ -230,7 +251,7 @@ function ShelterCard({ shelter }: { shelter: Shelter }) {
             '&:hover': { borderColor: CORAL, color: CORAL, bgcolor: '#FFF0F0' },
           }}
         >
-          {t('shelters.viewOnHappyPaw')}
+          {viewLabel}
         </Button>
       </CardActions>
     </Card>
@@ -242,41 +263,70 @@ export default function SheltersPage() {
   const navigate = useLangNavigate()
   const [search, setSearch] = useState('')
   const [cityFilter, setCityFilter] = useState<string>('')
+  const [countryFilter, setCountryFilter] = useState<string>('')
   const [page, setPage] = useState(1)
+
+  // Build unique countries list
+  const countries = useMemo(() => {
+    const map = new Map<string, string>()
+    for (const s of allShelters) {
+      const code = s.country ?? 'EU'
+      if (!map.has(code)) map.set(code, s.country_name ?? 'Європа')
+    }
+    return [...map.entries()]
+      .map(([code, name]) => ({ code, name, flag: COUNTRY_FLAGS[code] ?? '' }))
+      .sort((a, b) => {
+        // UA first
+        if (a.code === 'UA') return -1
+        if (b.code === 'UA') return 1
+        return a.name.localeCompare(b.name, 'uk')
+      })
+  }, [])
+
+  // Cities filtered by selected country
+  const uniqueCities = useMemo(() => {
+    const base = countryFilter
+      ? allShelters.filter((s) => (s.country ?? 'EU') === countryFilter)
+      : allShelters
+    return [...new Set(base.map((s) => s.city).filter(Boolean))].sort()
+  }, [countryFilter])
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
     return allShelters.filter((s) => {
       const matchSearch = !q || s.name.toLowerCase().includes(q) || s.city.toLowerCase().includes(q)
       const matchCity = !cityFilter || s.city === cityFilter
-      return matchSearch && matchCity
+      const matchCountry = !countryFilter || (s.country ?? 'EU') === countryFilter
+      return matchSearch && matchCity && matchCountry
     })
-  }, [search, cityFilter])
+  }, [search, cityFilter, countryFilter])
 
   const totalCount = filtered.length
   const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
-  const handleSearch = (v: string) => {
-    setSearch(v)
-    setPage(1)
-  }
-
-  const handleCity = (city: string) => {
-    setCityFilter(city === cityFilter ? '' : city)
-    setPage(1)
-  }
-
   const topCities = useMemo(
     () =>
       uniqueCities
-        .map((city) => ({ city, count: allShelters.filter((s) => s.city === city).length }))
+        .map((city) => ({
+          city,
+          count: (countryFilter
+            ? allShelters.filter((s) => (s.country ?? 'EU') === countryFilter)
+            : allShelters
+          ).filter((s) => s.city === city).length,
+        }))
         .sort((a, b) => b.count - a.count)
-        .slice(0, 10)
+        .slice(0, 8)
         .map((c) => c.city),
-    [],
+    [uniqueCities, countryFilter],
   )
 
-  const uniqueCitiesCount = uniqueCities.length
+  const handleSearch = (v: string) => { setSearch(v); setPage(1) }
+  const handleCity = (city: string) => { setCityFilter(city === cityFilter ? '' : city); setPage(1) }
+  const handleCountry = (code: string) => {
+    setCountryFilter(code)
+    setCityFilter('')
+    setPage(1)
+  }
 
   return (
     <Box sx={{ bgcolor: 'background.default' }}>
@@ -372,9 +422,9 @@ export default function SheltersPage() {
             <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.2)' }} />
             <Box sx={{ textAlign: 'center' }}>
               <Typography variant="h5" fontWeight="bold" sx={{ color: '#60A5FA', lineHeight: 1 }}>
-                {uniqueCitiesCount}
+                {countries.length}
               </Typography>
-              <Typography variant="caption" sx={{ opacity: 0.7 }}>{t('shelters.stats.cities')}</Typography>
+              <Typography variant="caption" sx={{ opacity: 0.7 }}>країн</Typography>
             </Box>
             <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.2)' }} />
             <Box sx={{ textAlign: 'center' }}>
@@ -388,7 +438,42 @@ export default function SheltersPage() {
       </Box>
 
       <Container maxWidth="xl" sx={{ py: { xs: 4, md: 6 } }}>
-        {/* ── SEARCH & FILTERS ───────────────────────────────── */}
+        {/* ── COUNTRY FILTER ─────────────────────────────────── */}
+        <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap', mb: 2 }}>
+          <Chip
+            label={t('shelters.allCountries')}
+            size="small"
+            onClick={() => handleCountry('')}
+            variant={!countryFilter ? 'filled' : 'outlined'}
+            sx={{
+              cursor: 'pointer',
+              bgcolor: !countryFilter ? CORAL : 'transparent',
+              color: !countryFilter ? 'white' : 'text.secondary',
+              borderColor: !countryFilter ? CORAL : '#E5E7EB',
+              fontWeight: !countryFilter ? 600 : 400,
+              '&:hover': { bgcolor: !countryFilter ? '#e55555' : '#FFF0F0', borderColor: CORAL, color: !countryFilter ? 'white' : CORAL },
+            }}
+          />
+          {countries.map(({ code, name, flag }) => (
+            <Chip
+              key={code}
+              label={`${flag} ${name}`}
+              size="small"
+              onClick={() => handleCountry(countryFilter === code ? '' : code)}
+              variant={countryFilter === code ? 'filled' : 'outlined'}
+              sx={{
+                cursor: 'pointer',
+                bgcolor: countryFilter === code ? CORAL : 'transparent',
+                color: countryFilter === code ? 'white' : 'text.secondary',
+                borderColor: countryFilter === code ? CORAL : '#E5E7EB',
+                fontWeight: countryFilter === code ? 600 : 400,
+                '&:hover': { bgcolor: countryFilter === code ? '#e55555' : '#FFF0F0', borderColor: CORAL, color: countryFilter === code ? 'white' : CORAL },
+              }}
+            />
+          ))}
+        </Box>
+
+        {/* ── SEARCH & CITY FILTERS ───────────────────────────── */}
         <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap', alignItems: 'center' }}>
           <TextField
             value={search}
@@ -414,7 +499,7 @@ export default function SheltersPage() {
             }}
           />
 
-          {/* Top cities */}
+          {/* Top cities for selected country */}
           <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap' }}>
             {topCities.map((city) => (
               <Chip
@@ -429,11 +514,7 @@ export default function SheltersPage() {
                   color: cityFilter === city ? 'white' : 'text.secondary',
                   borderColor: cityFilter === city ? CORAL : '#E5E7EB',
                   fontWeight: cityFilter === city ? 600 : 400,
-                  '&:hover': {
-                    bgcolor: cityFilter === city ? '#e55555' : '#FFF0F0',
-                    borderColor: CORAL,
-                    color: cityFilter === city ? 'white' : CORAL,
-                  },
+                  '&:hover': { bgcolor: cityFilter === city ? '#e55555' : '#FFF0F0', borderColor: CORAL, color: cityFilter === city ? 'white' : CORAL },
                 }}
               />
             ))}
