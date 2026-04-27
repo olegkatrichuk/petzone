@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using PetZone.Core;
 using PetZone.SharedKernel;
+using PetZone.Species.Infrastructure;
 using PetZone.Volunteers.Application.Queries;
 using PetZone.Volunteers.Contracts;
 
@@ -11,6 +12,7 @@ namespace PetZone.Volunteers.Infrastructure.Queries;
 
 public class GetPetByIdHandler(
     VolunteersDbContext dbContext,
+    SpeciesDbContext speciesDbContext,
     ICacheService cacheService,
     ILogger<GetPetByIdHandler> logger)
 {
@@ -64,6 +66,14 @@ public class GetPetByIdHandler(
         if (rawPet is null)
             return (ErrorList)Error.NotFound("pet.not_found", "Питомец не найден.");
 
+        var species = await speciesDbContext.Species
+            .Where(s => s.Id == rawPet.SpeciesId)
+            .Include(s => s.Breeds)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        var speciesName = species?.GetName("uk");
+        var breedName = species?.Breeds.FirstOrDefault(b => b.Id == rawPet.BreedId)?.GetName("uk");
+
         var pet = new PetDto(
             rawPet.Id,
             rawPet.VolunteerId,
@@ -89,7 +99,9 @@ public class GetPetByIdHandler(
                 .Select(p => new PetPhotoDto(p.FilePath, p.IsMain))
                 .ToList(),
             rawPet.OwnerPhone,
-            rawPet.ExternalUrl);
+            rawPet.ExternalUrl,
+            speciesName,
+            breedName);
 
         await cacheService.SetAsync($"pet:{query.PetId}", pet, CacheOptions, cancellationToken);
 

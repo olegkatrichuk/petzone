@@ -33,6 +33,8 @@ export interface Pet {
   photos: PetPhoto[]
   ownerPhone?: string
   externalUrl?: string
+  speciesName?: string
+  breedName?: string
 }
 
 export interface PetFilters {

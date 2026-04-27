@@ -2,6 +2,7 @@ using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetZone.SharedKernel;
+using PetZone.Species.Infrastructure;
 using PetZone.Volunteers.Application.Queries;
 using PetZone.Volunteers.Contracts;
 
@@ -9,6 +10,7 @@ namespace PetZone.Volunteers.Infrastructure.Queries;
 
 public class GetPetsHandler(
     VolunteersDbContext dbContext,
+    SpeciesDbContext speciesDbContext,
     ILogger<GetPetsHandler> logger)
 {
     public async Task<Result<PagedList<PetDto>, ErrorList>> Handle(
@@ -141,6 +143,20 @@ public class GetPetsHandler(
             })
             .ToListAsync(cancellationToken);
 
+        var speciesIds = rawPets.Select(x => x.SpeciesId).Distinct().ToList();
+        var breedIds = rawPets.Select(x => x.BreedId).Distinct().ToList();
+
+        var speciesList = await speciesDbContext.Species
+            .Where(s => speciesIds.Contains(s.Id))
+            .Include(s => s.Breeds)
+            .ToListAsync(cancellationToken);
+
+        var speciesNames = speciesList.ToDictionary(s => s.Id, s => s.GetName("uk"));
+        var breedNames = speciesList
+            .SelectMany(s => s.Breeds)
+            .Where(b => breedIds.Contains(b.Id))
+            .ToDictionary(b => b.Id, b => b.GetName("uk"));
+
         var petDtos = rawPets.Select(x => new PetDto(
             x.Id,
             x.VolunteerId,
@@ -166,7 +182,9 @@ public class GetPetsHandler(
                 .Select(p => new PetPhotoDto(p.FilePath, p.IsMain))
                 .ToList(),
             x.OwnerPhone,
-            x.ExternalUrl))
+            x.ExternalUrl,
+            speciesNames.GetValueOrDefault(x.SpeciesId),
+            breedNames.GetValueOrDefault(x.BreedId)))
             .ToList();
 
         return new PagedList<PetDto>(petDtos, totalCount, query.Page, query.PageSize);

@@ -22,6 +22,8 @@ public record PetDto(
     bool IsDeleted,
     IReadOnlyList<PetPhotoDto> Photos,
     string? OwnerPhone,
-    string? ExternalUrl);
+    string? ExternalUrl,
+    string? SpeciesName,
+    string? BreedName);
 
 public record PetPhotoDto(string FilePath, bool IsMain);

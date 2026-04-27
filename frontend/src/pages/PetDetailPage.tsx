@@ -120,11 +120,22 @@ export default function PetDetailPage() {
 
   const statusCfg = STATUS_COLORS[pet.status]
 
+  const ageMonths = Math.floor((Date.now() - new Date(pet.dateOfBirth).getTime()) / (1000 * 60 * 60 * 24 * 30.44))
+  const ageStr = ageMonths >= 12 ? `${Math.floor(ageMonths / 12)} ${t('pets.ageYears')}` : `${ageMonths} ${t('pets.ageMonths')}`
+
+  const speciesLabel = pet.speciesName ?? ''
+  const breedLabel = pet.breedName ?? ''
+  const titleParts = [pet.nickname, breedLabel || speciesLabel, ageStr, pet.city].filter(Boolean)
+  const seoTitle = titleParts.join(' — ')
+
+  const attrs = [pet.isCastrated ? t('pets.castrated') : '', pet.isVaccinated ? t('pets.vaccinated') : ''].filter(Boolean).join(', ')
+  const seoDescription = `${pet.nickname}${speciesLabel ? ' — ' + (breedLabel || speciesLabel) : ''}, ${ageStr}, ${pet.city}. ${attrs ? attrs + '. ' : ''}Усиновлення безкоштовно на PetZone.`
+
   return (
     <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
       <PageMeta
-        title={pet.nickname}
-        description={pet.generalDescription ?? t('pets.pageTitle')}
+        title={seoTitle}
+        description={seoDescription}
         path={`/pets/${petId}`}
         image={mainPhotoFirst[0]?.filePath}
         type="article"
@@ -138,6 +149,8 @@ export default function PetDetailPage() {
         url: `https://getpetzone.com/uk/pets/${petId}`,
         identifier: pet.id,
         locationCreated: { '@type': 'Place', name: pet.city },
+        ...(speciesLabel && { additionalType: speciesLabel }),
+        ...(breedLabel && { breed: breedLabel }),
       }) }} />
       <Helmet>
         <script type="application/ld+json">{JSON.stringify({
