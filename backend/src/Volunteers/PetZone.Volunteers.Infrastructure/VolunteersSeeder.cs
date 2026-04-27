@@ -20,6 +20,15 @@ public static class VolunteersSeeder
         var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<VolunteersDbContext>>();
 
+        // Allow disabling the seeder via config — set "Seeding:Enabled": false in production
+        // to prevent accidental re-seeding on every deploy.
+        var seedingEnabled = config.GetValue<bool?>("Seeding:Enabled") ?? true;
+        if (!seedingEnabled)
+        {
+            logger.LogInformation("Seeding is disabled (Seeding:Enabled=false). Skipping.");
+            return;
+        }
+
         var allSpecies = await speciesDb.Species.Include(s => s.Breeds).ToListAsync();
         var dogSpecies = allSpecies.FirstOrDefault(s => s.Translations.GetValueOrDefault("en") == "Dog");
         var catSpecies = allSpecies.FirstOrDefault(s => s.Translations.GetValueOrDefault("en") == "Cat");
@@ -32,17 +41,21 @@ public static class VolunteersSeeder
 
         var volunteerDefs = TryLoadFromJson(logger) ?? GetVolunteerDefs();
 
-        // Collect ExternalId prefixes already present in DB to skip duplicates
+        // One bulk query for all existing emails — avoids N individual round-trips
+        // and eliminates the EF Core complex-property translation risk on per-row AnyAsync.
+        var allDefinedEmails = volunteerDefs.Select(v => v.Email).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var existingEmails = (await db.Volunteers
+            .Select(v => v.Email.Value)
+            .ToListAsync())
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        // Collect ExternalId prefixes already present in DB to skip imported country data.
         var existingPrefixes = await db.Volunteers
             .SelectMany(v => v.Pets)
             .Where(p => p.ExternalId != null)
             .Select(p => p.ExternalId!)
             .Distinct()
             .ToListAsync();
-
-        // If no ExternalId at all — legacy check: skip hardcoded UA data if volunteers already exist
-        var hasLegacyData = await db.Volunteers.AnyAsync()
-            && !existingPrefixes.Any();
 
         // Unsplash fallback photos (used only for hardcoded defs without photo_url)
         var unsplashKey = config["Unsplash:AccessKey"] ?? "";
@@ -63,15 +76,12 @@ public static class VolunteersSeeder
             if (petPrefixes.Any() && petPrefixes.All(prefix =>
                 existingPrefixes.Any(e => e.StartsWith(prefix))))
             {
-                logger.LogInformation("Skipping volunteer — country prefix {Prefix} already seeded", string.Join(",", petPrefixes));
+                logger.LogDebug("Skipping volunteer — country prefix {Prefix} already seeded", string.Join(",", petPrefixes));
                 continue;
             }
 
-            // Skip hardcoded UA volunteers if legacy data already exists
-            if (hasLegacyData && !petPrefixes.Any())
-                continue;
-
-            if (await db.Volunteers.AnyAsync(v => v.Email.Value == vd.Email))
+            // Fast in-memory email check against the pre-loaded set
+            if (existingEmails.Contains(vd.Email))
                 continue;
 
             var name = FullName.Create(vd.FirstName, vd.LastName, vd.Patronymic);
