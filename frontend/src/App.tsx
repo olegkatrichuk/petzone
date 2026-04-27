@@ -43,6 +43,7 @@ const AddAnimalPage = lazy(() => import('./pages/AddAnimalPage'))
 const MyAdoptionApplicationsPage = lazy(() => import('./pages/MyAdoptionApplicationsPage'))
 const VolunteerAdoptionApplicationsPage = lazy(() => import('./pages/VolunteerAdoptionApplicationsPage'))
 const SheltersPage = lazy(() => import('./pages/SheltersPage'))
+const PetsSpeciesPage = lazy(() => import('./pages/PetsSpeciesPage'))
 const SheltersCountryPage = lazy(() => import('./pages/SheltersCountryPage'))
 
 function PageLoader() {
@@ -73,6 +74,15 @@ function App() {
         <Route path="register" element={<Suspense fallback={<PageLoader />}><RegisterPage /></Suspense>} />
         <Route path="register/volunteer" element={<Suspense fallback={<PageLoader />}><RegisterVolunteerPage /></Suspense>} />
         <Route path="pets" element={<Suspense fallback={<PageLoader />}><PetsPage /></Suspense>} />
+        {/* Species landing pages — must be before pets/:petId */}
+        <Route path="pets/dogs" element={<Suspense fallback={<PageLoader />}><PetsSpeciesPage /></Suspense>} />
+        <Route path="pets/dogs/:citySlug" element={<Suspense fallback={<PageLoader />}><PetsSpeciesPage /></Suspense>} />
+        <Route path="pets/cats" element={<Suspense fallback={<PageLoader />}><PetsSpeciesPage /></Suspense>} />
+        <Route path="pets/cats/:citySlug" element={<Suspense fallback={<PageLoader />}><PetsSpeciesPage /></Suspense>} />
+        <Route path="pets/rabbits" element={<Suspense fallback={<PageLoader />}><PetsSpeciesPage /></Suspense>} />
+        <Route path="pets/rabbits/:citySlug" element={<Suspense fallback={<PageLoader />}><PetsSpeciesPage /></Suspense>} />
+        <Route path="pets/parrots" element={<Suspense fallback={<PageLoader />}><PetsSpeciesPage /></Suspense>} />
+        <Route path="pets/parrots/:citySlug" element={<Suspense fallback={<PageLoader />}><PetsSpeciesPage /></Suspense>} />
         <Route path="pets/:petId" element={<Suspense fallback={<PageLoader />}><PetDetailPage /></Suspense>} />
         <Route path="volunteers" element={<Suspense fallback={<PageLoader />}><VolunteersPage /></Suspense>} />
         <Route path="volunteers/:volunteerId" element={<Suspense fallback={<PageLoader />}><VolunteerProfilePage /></Suspense>} />

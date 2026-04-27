@@ -44,6 +44,16 @@ public class SitemapController(
         xml.AppendLine("""<?xml version="1.0" encoding="UTF-8"?>""");
         xml.AppendLine("""<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">""");
 
+        // Species landing pages — high priority, change frequently
+        string[] speciesSlugs = ["dogs", "cats", "rabbits", "parrots"];
+        string[] citySlugs = ["kyiv", "kharkiv", "lviv", "odesa", "dnipro", "zaporizhzhia"];
+        foreach (var species in speciesSlugs)
+        {
+            AppendUrlAllLangs(xml, $"/pets/{species}", 0.9, "daily", null);
+            foreach (var city in citySlugs)
+                AppendUrlAllLangs(xml, $"/pets/{species}/{city}", 0.8, "daily", null);
+        }
+
         foreach (var l in listingIds)
         {
             AppendUrlAllLangs(xml, $"/listings/{l.Id}", 0.8, "weekly", l.CreatedAt);
