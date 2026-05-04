@@ -74,7 +74,7 @@ public static class DependencyInjection
         services.AddScoped<IAccountsUnitOfWork, AccountsUnitOfWork>();
         services.AddScoped<IUserInfoProvider, UserInfoProvider>();
         services.AddScoped<IParticipantAccountRepository, ParticipantAccountRepository>();
-        services.AddScoped<IRefreshSessionRepository, RedisRefreshSessionRepository>();
+        services.AddScoped<IRefreshSessionRepository, InMemoryRefreshSessionRepository>();
 
         // MediatR (cache invalidation handlers)
         services.AddMediatR(cfg =>

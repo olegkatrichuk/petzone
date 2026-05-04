@@ -1,14 +1,14 @@
-using System.Text.Json;
+using System.Collections.Concurrent;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 using PetZone.Core;
-using StackExchange.Redis;
 
 namespace PetZone.Framework.Cache;
 
-public class CacheService(
-    IDistributedCache cache,
-    IConnectionMultiplexer multiplexer) : ICacheService
+public class CacheService(IMemoryCache cache) : ICacheService
 {
+    private static readonly ConcurrentDictionary<string, byte> Keys = new();
+
     public async Task<T?> GetOrSetAsync<T>(
         string key,
         DistributedCacheEntryOptions options,
@@ -16,8 +16,7 @@ public class CacheService(
         CancellationToken cancellationToken = default)
         where T : class
     {
-        var cached = await GetAsync<T>(key, cancellationToken);
-        if (cached is not null)
+        if (cache.TryGetValue(key, out T? cached) && cached is not null)
             return cached;
 
         var value = await factory();
@@ -27,35 +26,57 @@ public class CacheService(
         return value;
     }
 
-    public async Task<T?> GetAsync<T>(
+    public Task<T?> GetAsync<T>(
         string key,
         CancellationToken cancellationToken = default)
         where T : class
     {
-        var data = await cache.GetStringAsync(key, cancellationToken);
-        return data is null ? null : JsonSerializer.Deserialize<T>(data);
+        cache.TryGetValue(key, out T? value);
+        return Task.FromResult(value);
     }
 
-    public async Task SetAsync<T>(
+    public Task SetAsync<T>(
         string key,
         T value,
         DistributedCacheEntryOptions options,
         CancellationToken cancellationToken = default)
         where T : class
     {
-        var data = JsonSerializer.Serialize(value);
-        await cache.SetStringAsync(key, data, options, cancellationToken);
+        var entryOptions = new MemoryCacheEntryOptions
+        {
+            AbsoluteExpiration = options.AbsoluteExpiration,
+            AbsoluteExpirationRelativeToNow = options.AbsoluteExpirationRelativeToNow,
+            SlidingExpiration = options.SlidingExpiration
+        };
+
+        entryOptions.RegisterPostEvictionCallback((evictedKey, _, _, _) =>
+        {
+            if (evictedKey is string s)
+                Keys.TryRemove(s, out _);
+        });
+
+        cache.Set(key, value, entryOptions);
+        Keys[key] = 0;
+        return Task.CompletedTask;
     }
 
     public Task RemoveAsync(string key, CancellationToken cancellationToken = default)
-        => cache.RemoveAsync(key, cancellationToken);
-
-    public async Task RemoveByPrefixAsync(string prefixKey, CancellationToken cancellationToken = default)
     {
-        var db = multiplexer.GetDatabase();
-        var server = multiplexer.GetServer(multiplexer.GetEndPoints().First());
-        var keys = server.Keys(pattern: $"{prefixKey}*").ToArray();
-        if (keys.Length > 0)
-            await db.KeyDeleteAsync(keys);
+        cache.Remove(key);
+        Keys.TryRemove(key, out _);
+        return Task.CompletedTask;
+    }
+
+    public Task RemoveByPrefixAsync(string prefixKey, CancellationToken cancellationToken = default)
+    {
+        foreach (var key in Keys.Keys)
+        {
+            if (key.StartsWith(prefixKey, StringComparison.Ordinal))
+            {
+                cache.Remove(key);
+                Keys.TryRemove(key, out _);
+            }
+        }
+        return Task.CompletedTask;
     }
 }

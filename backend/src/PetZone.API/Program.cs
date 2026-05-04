@@ -8,7 +8,6 @@ using Microsoft.OpenApi;
 using OpenTelemetry.Metrics;
 using PetZone.Accounts.Infrastructure;
 using PetZone.Framework.Cache;
-using StackExchange.Redis;
 using PetZone.API.Middleware;
 using PetZone.Species.Application;
 using PetZone.Species.Infrastructure;
@@ -42,11 +41,7 @@ builder.Host.UseSerilog((context, config) =>
             });
 });
 
-var redisConnectionString = builder.Configuration["Redis:ConnectionString"] ?? "localhost:6379";
-builder.Services.AddSingleton<IConnectionMultiplexer>(
-    ConnectionMultiplexer.Connect(redisConnectionString));
-builder.Services.AddStackExchangeRedisCache(options =>
-    options.Configuration = redisConnectionString);
+builder.Services.AddMemoryCache();
 builder.Services.AddScoped<PetZone.Core.ICacheService, CacheService>();
 
 builder.Services.AddOpenTelemetry()
@@ -148,8 +143,7 @@ builder.Services.AddRateLimiter(options =>
 
 var dbConnectionString = builder.Configuration.GetConnectionString("Database")!;
 builder.Services.AddHealthChecks()
-    .AddNpgSql(dbConnectionString, name: "postgres", tags: ["db"])
-    .AddRedis(redisConnectionString, name: "redis", tags: ["cache"]);
+    .AddNpgSql(dbConnectionString, name: "postgres", tags: ["db"]);
 
 builder.WebHost.ConfigureKestrel(options =>
 {

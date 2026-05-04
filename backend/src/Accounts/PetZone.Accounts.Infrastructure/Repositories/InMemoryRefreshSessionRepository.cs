@@ -1,45 +1,43 @@
-using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Memory;
 using PetZone.Accounts.Application.Repositories;
 using PetZone.Accounts.Domain;
-using StackExchange.Redis;
 
 namespace PetZone.Accounts.Infrastructure.Repositories;
 
-public class RedisRefreshSessionRepository(
-    IConnectionMultiplexer multiplexer,
+public class InMemoryRefreshSessionRepository(
+    IMemoryCache cache,
     UserManager<User> userManager) : IRefreshSessionRepository
 {
     private static string GetKey(Guid refreshToken) => $"refresh_session:{refreshToken}";
 
-    public async Task AddAsync(RefreshSession session, CancellationToken cancellationToken = default)
+    public Task AddAsync(RefreshSession session, CancellationToken cancellationToken = default)
     {
-        var db = multiplexer.GetDatabase();
-        var data = JsonSerializer.Serialize(new RefreshSessionData(
+        var ttl = session.ExpiresAt - DateTime.UtcNow;
+        if (ttl <= TimeSpan.Zero)
+            return Task.CompletedTask;
+
+        var data = new RefreshSessionData(
             session.Id,
             session.UserId,
             session.RefreshToken,
             session.Jti,
             session.CreatedAt,
-            session.ExpiresAt));
+            session.ExpiresAt);
 
-        var ttl = session.ExpiresAt - DateTime.UtcNow;
-        if (ttl > TimeSpan.Zero)
-            await db.StringSetAsync(GetKey(session.RefreshToken), data, ttl);
+        cache.Set(GetKey(session.RefreshToken), data, new MemoryCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = ttl
+        });
+
+        return Task.CompletedTask;
     }
 
     public async Task<RefreshSession?> GetByRefreshTokenAsync(
         Guid refreshToken,
         CancellationToken cancellationToken = default)
     {
-        var db = multiplexer.GetDatabase();
-        var raw = await db.StringGetAsync(GetKey(refreshToken));
-
-        if (raw.IsNullOrEmpty)
-            return null;
-
-        var stored = JsonSerializer.Deserialize<RefreshSessionData>((string)raw!);
-        if (stored is null)
+        if (!cache.TryGetValue(GetKey(refreshToken), out RefreshSessionData? stored) || stored is null)
             return null;
 
         var user = await userManager.FindByIdAsync(stored.UserId.ToString());
@@ -58,10 +56,10 @@ public class RedisRefreshSessionRepository(
         };
     }
 
-    public async Task DeleteAsync(RefreshSession session, CancellationToken cancellationToken = default)
+    public Task DeleteAsync(RefreshSession session, CancellationToken cancellationToken = default)
     {
-        var db = multiplexer.GetDatabase();
-        await db.KeyDeleteAsync(GetKey(session.RefreshToken));
+        cache.Remove(GetKey(session.RefreshToken));
+        return Task.CompletedTask;
     }
 
     private record RefreshSessionData(
