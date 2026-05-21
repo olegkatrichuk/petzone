@@ -5,7 +5,7 @@ COPY package*.json ./
 RUN npm ci --legacy-peer-deps
 
 COPY . .
-RUN npx vite build
+RUN npx vite build && node scripts/prerender.mjs
 
 FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
