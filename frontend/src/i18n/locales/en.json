@@ -420,6 +420,12 @@
     "openChat": "Open chat"
   },
   "seo": {
+    "alt": {
+      "petCard": "{{nickname}} — pet for adoption in {{city}}",
+      "petPhoto": "{{nickname}} — photo {{n}}, {{city}}",
+      "listingCard": "{{title}} — listing from {{city}}",
+      "listingPhoto": "{{title}} — photo {{n}}"
+    },
     "home": {
       "title": "PetZone — Ukraine's largest pet adoption platform",
       "paragraphs": [

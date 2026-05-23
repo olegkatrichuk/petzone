@@ -183,7 +183,7 @@ export default function PetDetailPage() {
                 <Box
                   component="img"
                   src={displayPhoto}
-                  alt={pet.nickname}
+                  alt={t('seo.alt.petCard', { nickname: pet.nickname, city: pet.city ?? '' })}
                   loading="eager"
                   fetchPriority="high"
                   sx={{ width: '100%', height: { xs: 240, sm: 340, md: 420 }, objectFit: 'cover', display: 'block' }}
@@ -223,7 +223,7 @@ export default function PetDetailPage() {
                       key={photo.filePath}
                       component="img"
                       src={photo.filePath}
-                      alt={`${pet.nickname} — ${t('petDetail.photos')} ${i + 1}`}
+                      alt={t('seo.alt.petPhoto', { nickname: pet.nickname, n: i + 1, city: pet.city ?? '' })}
                       loading="lazy"
                       onClick={() => setActivePhoto(i)}
                       sx={{

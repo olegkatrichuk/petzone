@@ -120,12 +120,12 @@ export default function PetCard({ pet }: Props) {
           <Box
             component="img"
             src={mainPhoto}
-            alt={pet.nickname}
+            alt={t('seo.alt.petCard', { nickname: pet.nickname, city: pet.city ?? '' })}
             loading="lazy"
             sx={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
           />
         ) : (
-          <Box component="img" src={placeholder} alt={pet.nickname}
+          <Box component="img" src={placeholder} alt={t('seo.alt.petCard', { nickname: pet.nickname, city: pet.city ?? '' })}
             sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
         )}
       </Box>

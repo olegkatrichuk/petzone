@@ -420,6 +420,12 @@
     "openChat": "Открыть чат"
   },
   "seo": {
+    "alt": {
+      "petCard": "{{nickname}} — питомец для усыновления в {{city}}",
+      "petPhoto": "{{nickname}} — фото {{n}}, {{city}}",
+      "listingCard": "{{title}} — объявление из {{city}}",
+      "listingPhoto": "{{title}} — фото {{n}}"
+    },
     "home": {
       "title": "PetZone — украинская платформа усыновления животных",
       "paragraphs": [

@@ -78,7 +78,7 @@ function ListingCard({ listing }: { listing: AdoptionListing }) {
       {/* Photos preview */}
       {listing.photos.length > 0 && (
         <Box sx={{ position: 'relative' }}>
-          <PhotoThumb fileName={listing.photos[0]} alt={listing.title} />
+          <PhotoThumb fileName={listing.photos[0]} alt={t('seo.alt.listingCard', { title: listing.title, city: listing.city })} />
           {listing.photos.length > 1 && (
             <Chip
               icon={<PhotoCameraIcon sx={{ fontSize: '13px !important' }} />}

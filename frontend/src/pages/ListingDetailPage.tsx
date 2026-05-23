@@ -234,7 +234,7 @@ export default function ListingDetailPage() {
                     <ListingPhoto
                       key={photo}
                       fileName={photo}
-                      alt={`${listing.title} — фото ${i + 1}`}
+                      alt={t('seo.alt.listingPhoto', { title: listing.title, n: i + 1 })}
                       canDelete={isOwner && listing.status === 'Active'}
                       onDelete={handleRemovePhoto}
                     />

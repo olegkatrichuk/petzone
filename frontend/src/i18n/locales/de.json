@@ -464,6 +464,12 @@
     }
   },
   "seo": {
+    "alt": {
+      "petCard": "{{nickname}} — Tier zur Adoption in {{city}}",
+      "petPhoto": "{{nickname}} — Foto {{n}}, {{city}}",
+      "listingCard": "{{title}} — Anzeige aus {{city}}",
+      "listingPhoto": "{{title}} — Foto {{n}}"
+    },
     "home": {
       "title": "PetZone — die größte Tieradoptionsplattform der Ukraine",
       "paragraphs": [
