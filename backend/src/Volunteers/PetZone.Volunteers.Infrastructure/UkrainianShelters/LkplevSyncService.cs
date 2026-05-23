@@ -29,22 +29,29 @@ public class LkplevSyncService(
     private static readonly Regex BirthdateRx   = new(@"data-birthdate=""([^""]+)""",  RegexOptions.Compiled);
     private static readonly Regex SizeRx        = new(@"Розмір:.*?>\s*([А-Яа-яЄєІіЇїҐґ']+)\s*<", RegexOptions.Singleline | RegexOptions.Compiled);
 
+    private const string ServiceName = "lkplev";
+    private static readonly TimeSpan InitialDelay = TimeSpan.FromSeconds(45);
+    private static readonly TimeSpan Interval = TimeSpan.FromHours(24);
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await Task.Delay(TimeSpan.FromSeconds(45), stoppingToken);
+        var firstDelay = await BackgroundServices.SyncScheduler.ComputeDelayAsync(
+            serviceProvider, ServiceName, Interval, InitialDelay, logger, stoppingToken);
+        await Task.Delay(firstDelay, stoppingToken);
 
         while (!stoppingToken.IsCancellationRequested)
         {
             try
             {
                 await SyncAsync(stoppingToken);
+                await BackgroundServices.SyncScheduler.RecordRunAsync(serviceProvider, ServiceName, stoppingToken);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "lkplev.com sync failed");
             }
 
-            await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
+            await Task.Delay(Interval, stoppingToken);
         }
     }
 

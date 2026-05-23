@@ -29,22 +29,29 @@ public class AnimalsCitySyncService(
         PropertyNameCaseInsensitive = true
     };
 
+    private const string ServiceName = "animals-city";
+    private static readonly TimeSpan InitialDelay = TimeSpan.FromSeconds(60);
+    private static readonly TimeSpan Interval = TimeSpan.FromHours(24);
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await Task.Delay(TimeSpan.FromSeconds(60), stoppingToken);
+        var firstDelay = await BackgroundServices.SyncScheduler.ComputeDelayAsync(
+            serviceProvider, ServiceName, Interval, InitialDelay, logger, stoppingToken);
+        await Task.Delay(firstDelay, stoppingToken);
 
         while (!stoppingToken.IsCancellationRequested)
         {
             try
             {
                 await SyncAsync(stoppingToken);
+                await BackgroundServices.SyncScheduler.RecordRunAsync(serviceProvider, ServiceName, stoppingToken);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "animals-city.org sync failed");
             }
 
-            await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
+            await Task.Delay(Interval, stoppingToken);
         }
     }
 

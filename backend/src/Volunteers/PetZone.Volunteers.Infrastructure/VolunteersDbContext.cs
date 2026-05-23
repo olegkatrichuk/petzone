@@ -12,6 +12,7 @@ public class VolunteersDbContext(DbContextOptions<VolunteersDbContext> options) 
     public DbSet<SystemNewsPost> SystemNewsPosts { get; set; }
     public DbSet<AdoptionApplication> AdoptionApplications { get; set; }
     public DbSet<BlogPost> BlogPosts { get; set; }
+    public DbSet<SyncState> SyncStates { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -45,23 +45,32 @@ public class RescueGroupsSyncService(
         return [Math.Round(kg, 1), height];
     }
 
+    private const string ServiceName = "rescue-groups";
+    private static readonly TimeSpan InitialDelay = TimeSpan.FromSeconds(30);
+    private static readonly TimeSpan Interval = TimeSpan.FromHours(24);
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        // Initial delay to let the app fully start
-        await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
+        // First wait honors persisted LastRunAt so a redeploy mid-cycle does
+        // NOT re-trigger sync; subsequent iterations always wait full interval.
+        var firstDelay = await BackgroundServices.SyncScheduler.ComputeDelayAsync(
+            serviceProvider, ServiceName, Interval, InitialDelay, logger, stoppingToken);
+        await Task.Delay(firstDelay, stoppingToken);
 
         while (!stoppingToken.IsCancellationRequested)
         {
             try
             {
                 await SyncAsync(stoppingToken);
+                await BackgroundServices.SyncScheduler.RecordRunAsync(
+                    serviceProvider, ServiceName, stoppingToken);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "RescueGroups sync failed");
             }
 
-            await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
+            await Task.Delay(Interval, stoppingToken);
         }
     }
 

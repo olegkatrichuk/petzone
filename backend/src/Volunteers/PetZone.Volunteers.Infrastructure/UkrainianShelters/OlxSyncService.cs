@@ -27,16 +27,26 @@ public class OlxSyncService(
     private static readonly Regex HtmlRx  = new(@"<[^>]+>",  RegexOptions.Compiled);
     private static readonly Regex SpaceRx = new(@"\s{2,}",   RegexOptions.Compiled);
 
+    private const string ServiceName = "olx-ua";
+    private static readonly TimeSpan InitialDelay = TimeSpan.FromSeconds(90);
+    private static readonly TimeSpan Interval = TimeSpan.FromHours(24);
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await Task.Delay(TimeSpan.FromSeconds(90), stoppingToken);
+        var firstDelay = await BackgroundServices.SyncScheduler.ComputeDelayAsync(
+            serviceProvider, ServiceName, Interval, InitialDelay, logger, stoppingToken);
+        await Task.Delay(firstDelay, stoppingToken);
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            try { await SyncAsync(stoppingToken); }
+            try
+            {
+                await SyncAsync(stoppingToken);
+                await BackgroundServices.SyncScheduler.RecordRunAsync(serviceProvider, ServiceName, stoppingToken);
+            }
             catch (Exception ex) { logger.LogError(ex, "OLX sync failed"); }
 
-            await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
+            await Task.Delay(Interval, stoppingToken);
         }
     }
 
