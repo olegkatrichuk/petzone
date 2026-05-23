@@ -138,21 +138,24 @@ export default function CreateListingPage() {
         contactEmail: values.contactEmail || undefined,
       }).unwrap()
 
-      for (const photo of selectedPhotos) {
-        try {
-          const formData = new FormData()
-          formData.append('file', photo.file)
-          const uploadRes = await api.post('/files/upload', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-          })
-          const fileName: string = uploadRes.data?.result ?? uploadRes.data
-          await addPhoto({ id: result.id, fileName }).unwrap()
-        } catch {
-          // continue uploading remaining photos even if one fails
-        }
+      // Upload photos in parallel — backend converts to WebP & resizes.
+      // Surface partial failures instead of swallowing them.
+      const uploads = await Promise.allSettled(selectedPhotos.map(async (photo) => {
+        const formData = new FormData()
+        formData.append('file', photo.file)
+        const uploadRes = await api.post('/files/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        })
+        const fileName: string = uploadRes.data?.result ?? uploadRes.data
+        await addPhoto({ id: result.id, fileName }).unwrap()
+      }))
+
+      const failed = uploads.filter(u => u.status === 'rejected').length
+      if (failed > 0) {
+        setToast(t('listings.photosPartialFail', { count: failed, defaultValue: `${failed} фото не завантажились` }))
       }
 
-      navigate('/pets')
+      navigate(`/listings/${result.id}`)
     } catch (err) {
       setToast(getApiError(err, t))
     }
