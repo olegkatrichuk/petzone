@@ -463,6 +463,35 @@
       "btn": "Zostań wolontariuszem"
     }
   },
+  "seo": {
+    "home": {
+      "title": "PetZone — największa platforma adopcji zwierząt w Ukrainie",
+      "paragraphs": [
+        "PetZone to największy katalog zwierząt do adopcji w Ukrainie. Setki psów, kotów, królików i papug czeka na nową rodzinę poprzez sieć zweryfikowanych wolontariuszy i schronisk z ponad 30 miast. Platforma jest całkowicie bezpłatna — zarówno dla osób szukających zwierzaka, jak i dla wolontariuszy pomagających zwierzętom znaleźć dom.",
+        "Pracujemy zarówno z wolontariuszami prywatnymi, jak i z oficjalnymi schroniskami. Każdy wolontariusz przechodzi weryfikację, więc widzisz tylko wiarygodne ogłoszenia ze zdjęciami, opisem stanu zdrowia oraz informacją o szczepieniach i sterylizacji. Większość zwierząt jest w Kijowie, Charkowie, Lwowie, Odessie, Dnieprze i Zaporożu.",
+        "Dlaczego warto adoptować zamiast kupować: za każdym razem, gdy zwierzę ze schroniska dostaje dom, zwalnia się miejsce dla kolejnego. To systemowy wkład w zmniejszanie bezdomności. Wszystkie zwierzęta na PetZone mają już historię weterynaryjną.",
+        "Platforma jest dostępna w sześciu językach — ukraińskim, rosyjskim, angielskim, polskim, niemieckim i francuskim — aby pomóc diasporze i adoptującym z zagranicy. Nie pobieramy opłat za adopcję, nie pokazujemy reklam, nie sprzedajemy danych."
+      ]
+    },
+    "pets": {
+      "title": "Znajdź swojego pupila wśród zweryfikowanych ogłoszeń wolontariuszy",
+      "paragraphs": [
+        "Na tej stronie zebrane są wszystkie aktywne ogłoszenia o zwierzętach, dla których wolontariusze PetZone szukają domu. Filtry pomagają zawęzić wyszukiwanie: gatunek, rasa, wiek, płeć, miasto, status sterylizacji i szczepień.",
+        "Labradory, husky, owczarki, szpice, mopsy, mieszańce — w katalogu są wszystkie typy psów. Koty od brytyjskich krótkowłosych i maine coonów po domowe mieszańce. Króliki ozdobne, papugi faliste, nimfy, jako.",
+        "Adopcja jest bezpłatna. Wolontariusz może poprosić o niewielką kwotę na pokrycie kosztów weterynaryjnych lub transportu — to normalna praktyka.",
+        "Większość ogłoszeń pochodzi z Kijowa, Charkowa, Lwowa, Odessy, Dniepra i Zaporoża, ale dostępne są zwierzęta z całej Ukrainy."
+      ]
+    },
+    "listings": {
+      "title": "Ogłoszenia: oddam zwierzę za darmo",
+      "paragraphs": [
+        "Sekcja ogłoszeń jest dla osób prywatnych, które z różnych powodów nie mogą dłużej trzymać zwierzęcia i szukają mu nowego domu. W odróżnieniu od głównego katalogu, tu ogłoszenia publikują zarejestrowani użytkownicy.",
+        "Jak dodać ogłoszenie: kliknij «Utwórz ogłoszenie», wypełnij formularz, dodaj do 5 zdjęć. Każde zdjęcie jest automatycznie optymalizowane (WebP, do 1920 px).",
+        "Wskazówki bezpieczeństwa: nigdy nie wysyłaj zaliczki obcym, umawiaj się w miejscu publicznym, poproś o zdjęcie zwierzęcia w czasie rzeczywistym. Uczciwi właściciele chętnie odpowiadają na pytania i nie nalegają na pośpiech.",
+        "Jeśli twoje ogłoszenie nie ma odzewu, dodaj więcej zdjęć i opisz charakter zwierzęcia dokładniej. Ogłoszenia z lepszymi zdjęciami otrzymują wielokrotnie więcej wyświetleń."
+      ]
+    }
+  },
   "blog": {
     "pageTitle": "Blog PetZone",
     "metaDesc": "Porady dotyczące adopcji, opieki i wychowania zwierząt od zespołu PetZone.",

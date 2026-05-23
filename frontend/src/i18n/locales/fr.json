@@ -463,6 +463,35 @@
       "btn": "Devenir bénévole"
     }
   },
+  "seo": {
+    "home": {
+      "title": "PetZone — la plus grande plateforme d'adoption d'animaux en Ukraine",
+      "paragraphs": [
+        "PetZone est le plus grand catalogue d'animaux à adopter en Ukraine. Des centaines de chiens, chats, lapins et perroquets attendent une nouvelle famille via un réseau de bénévoles et refuges vérifiés dans plus de 30 villes. La plateforme est entièrement gratuite — pour ceux qui cherchent un animal et pour les bénévoles.",
+        "Nous travaillons avec des bénévoles privés et des refuges officiels. Chaque bénévole est vérifié, donc vous ne voyez que des annonces authentiques avec photos, description de santé et statut vaccination/stérilisation. La plupart des animaux sont à Kiev, Kharkiv, Lviv, Odessa, Dnipro et Zaporijia.",
+        "Pourquoi adopter plutôt qu'acheter : chaque fois qu'un animal de refuge trouve un foyer, une place se libère pour le suivant. C'est une contribution systémique. Tous les animaux sur PetZone ont déjà un suivi vétérinaire.",
+        "La plateforme est disponible en six langues — ukrainien, russe, anglais, polonais, allemand et français — pour aider la diaspora et les adoptants internationaux. Pas de frais d'adoption, pas de publicité, pas de vente de données."
+      ]
+    },
+    "pets": {
+      "title": "Trouvez votre animal parmi des annonces de bénévoles vérifiés",
+      "paragraphs": [
+        "Cette page rassemble toutes les annonces actives pour des animaux que les bénévoles PetZone placent à l'adoption. Les filtres aident à affiner la recherche : espèce, race, âge, sexe, ville, statut de stérilisation et de vaccination.",
+        "Labradors, huskies, bergers, spitz, carlins, croisés — toutes les races sont au catalogue. Chats du british shorthair et maine coon aux chats domestiques. Lapins décoratifs, perruches ondulées, calopsittes, gris du Gabon.",
+        "L'adoption est gratuite. Un bénévole peut demander une petite contribution pour les frais vétérinaires ou de transport — c'est une pratique normale.",
+        "La plupart des annonces viennent de Kiev, Kharkiv, Lviv, Odessa, Dnipro et Zaporijia, mais des animaux sont disponibles dans toute l'Ukraine."
+      ]
+    },
+    "listings": {
+      "title": "Annonces : donne animal gratuitement",
+      "paragraphs": [
+        "La section annonces est pour les particuliers qui, pour diverses raisons, ne peuvent plus garder leur animal et cherchent un nouveau foyer. Contrairement au catalogue principal (uniquement les bénévoles vérifiés), ici les annonces sont publiées par des utilisateurs enregistrés.",
+        "Comment publier : cliquez sur «Créer une annonce», remplissez le formulaire, ajoutez jusqu'à 5 photos. Chaque photo est optimisée automatiquement (WebP, max 1920 px).",
+        "Conseils de sécurité : ne versez jamais d'acompte à des inconnus, rencontrez-vous dans un lieu public, demandez une photo en temps réel de l'animal. Les propriétaires de bonne foi répondent volontiers aux questions.",
+        "Si votre annonce ne reçoit pas de réponses, ajoutez plus de photos et décrivez le caractère de l'animal en détail."
+      ]
+    }
+  },
   "blog": {
     "pageTitle": "Blog PetZone",
     "metaDesc": "Conseils sur l'adoption, les soins et l'éducation des animaux par l'équipe PetZone.",

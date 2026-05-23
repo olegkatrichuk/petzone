@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { useSearchParams, useParams, Link as RouterLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import PageMeta from '../components/meta/PageMeta'
+import SeoBlock from '../components/seo/SeoBlock'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -385,6 +386,8 @@ export default function ListingsPage() {
         )}
 
       </Container>
+
+      <SeoBlock i18nKey="seo.listings" />
     </Box>
   )
 }

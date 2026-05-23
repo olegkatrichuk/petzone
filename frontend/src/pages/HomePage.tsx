@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
+import SeoBlock from '../components/seo/SeoBlock'
 import { motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { useCountUp } from 'react-countup'
@@ -569,6 +570,8 @@ export default function HomePage() {
           </motion.div>
         </Container>
       </Box>
+
+      <SeoBlock i18nKey="seo.home" />
     </Box>
   )
 }

@@ -463,6 +463,35 @@
       "btn": "Freiwilliger werden"
     }
   },
+  "seo": {
+    "home": {
+      "title": "PetZone — die größte Tieradoptionsplattform der Ukraine",
+      "paragraphs": [
+        "PetZone ist der größte Katalog adoptierbarer Tiere in der Ukraine. Hunderte von Hunden, Katzen, Kaninchen und Papageien warten über ein Netzwerk geprüfter Freiwilliger und Tierheime aus 30+ Städten auf eine neue Familie. Die Plattform ist komplett kostenlos — für Adoptierende und für Freiwillige.",
+        "Wir arbeiten mit privaten Freiwilligen und offiziellen Tierheimen. Jeder Freiwillige wird geprüft, daher sehen Sie nur authentische Inserate mit Fotos, Gesundheitsbeschreibung und Impf-/Kastrationsstatus. Die meisten Tiere befinden sich in Kiew, Charkiw, Lwiw, Odessa, Dnipro und Saporischschja.",
+        "Warum adoptieren statt kaufen: Jedes Mal, wenn ein Tierheimtier ein Zuhause bekommt, wird Platz für das nächste frei. Ein systemischer Beitrag zur Reduzierung von Tierheimaufenthalten. Alle Tiere auf PetZone haben bereits eine veterinärmedizinische Akte.",
+        "Die Plattform ist in sechs Sprachen verfügbar — Ukrainisch, Russisch, Englisch, Polnisch, Deutsch und Französisch — um Diaspora und internationale Adoptierende zu erreichen. Keine Adoptionsgebühren, keine Werbung, kein Datenverkauf."
+      ]
+    },
+    "pets": {
+      "title": "Finden Sie Ihr Haustier unter geprüften Freiwilligen-Inseraten",
+      "paragraphs": [
+        "Diese Seite sammelt alle aktiven Inserate für Tiere, für die PetZone-Freiwillige ein Zuhause suchen. Filter helfen, die Suche einzugrenzen: Tierart, Rasse, Alter, Geschlecht, Stadt, Kastrations- und Impfstatus.",
+        "Labradore, Huskies, Schäferhunde, Spitze, Möpse, Mischlinge — alle Typen sind im Katalog. Katzen von Britisch-Kurzhaar und Maine Coon bis zu Hauskatzen. Zierkaninchen, Wellensittiche, Nymphensittiche, Graupapageien.",
+        "Adoption ist kostenlos. Ein Freiwilliger kann um einen kleinen Beitrag für Tierarzt- oder Transportkosten bitten — das ist üblich.",
+        "Die meisten Inserate stammen aus Kiew, Charkiw, Lwiw, Odessa, Dnipro und Saporischschja, aber Tiere sind aus der gesamten Ukraine verfügbar."
+      ]
+    },
+    "listings": {
+      "title": "Anzeigen: Tier kostenlos abzugeben",
+      "paragraphs": [
+        "Der Anzeigenbereich ist für Privatpersonen, die ihr Tier aus verschiedenen Gründen nicht behalten können und ein neues Zuhause suchen. Anders als im Hauptkatalog (nur geprüfte Freiwillige) posten hier registrierte Nutzer der Plattform.",
+        "Anzeige aufgeben: Klicken Sie auf «Anzeige erstellen», füllen Sie das Formular aus, fügen Sie bis zu 5 Fotos hinzu. Jedes Foto wird automatisch optimiert (WebP, max. 1920 px).",
+        "Sicherheitstipps: Überweisen Sie nie Anzahlungen an Fremde, treffen Sie sich an einem öffentlichen Ort, bitten Sie um ein Echtzeit-Foto des Tieres. Seriöse Besitzer beantworten gerne Fragen und drängen nicht auf Eile.",
+        "Wenn Ihre Anzeige keine Antworten erhält, fügen Sie mehr Fotos hinzu und beschreiben Sie den Charakter des Tieres ausführlicher."
+      ]
+    }
+  },
   "blog": {
     "pageTitle": "PetZone Blog",
     "metaDesc": "Tipps zur Adoption, Pflege und Erziehung von Tieren vom PetZone-Team.",

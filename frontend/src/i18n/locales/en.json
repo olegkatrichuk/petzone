@@ -419,6 +419,35 @@
     "notFound": "Conversation not found or you don't have access.",
     "openChat": "Open chat"
   },
+  "seo": {
+    "home": {
+      "title": "PetZone — Ukraine's largest pet adoption platform",
+      "paragraphs": [
+        "PetZone is the largest catalog of adoptable pets in Ukraine. Hundreds of dogs, cats, rabbits and parrots are waiting for a new family through a network of verified volunteers and shelters across 30+ cities. The platform is completely free — both for people looking for a pet and for volunteers who help animals find a home.",
+        "We work with both private volunteers and official shelters. Every volunteer goes through verification, so you only see legitimate listings with photos, health descriptions, and vaccination/neutering status. Most animals are in Kyiv, Kharkiv, Lviv, Odesa, Dnipro and Zaporizhzhia, but listings come from across the country.",
+        "Why adopt rather than buy: every time a shelter animal gets a home, a spot opens up for the next one. It's a systemic contribution to reducing homelessness. On top of that, every animal on PetZone already has a veterinary history — you know what you're getting into.",
+        "The platform is available in six languages — Ukrainian, Russian, English, Polish, German and French — to help the diaspora and international adopters. We don't take adoption fees, don't show ads, don't sell data. PetZone runs on volunteers and donations."
+      ]
+    },
+    "pets": {
+      "title": "Find your pet among verified volunteer listings",
+      "paragraphs": [
+        "This page collects all active listings for animals that PetZone volunteers are placing for adoption. Filters help narrow the search: by species (dogs, cats, rabbits, parrots), breed, age, sex, city, neutering and vaccination status. Each card opens a detail page with the full story, photos and volunteer contact.",
+        "Labradors, huskies, German shepherds, Spitz, pugs, mixed breeds — the catalog has all types. Cats range from British shorthair and Maine Coon to domestic short-hair. Decorative rabbits, budgies, cockatiels, African grey parrots. If you're looking for a specific breed, use the filter.",
+        "Adoption is free. A volunteer may ask for a small contribution toward veterinary bills or transport — that's normal practice. Before taking the animal home, the volunteer typically asks about the conditions it will live in: not distrust, but care for the animal's future.",
+        "Most listings are in Kyiv, Kharkiv, Lviv, Odesa, Dnipro and Zaporizhzhia, but animals are available across Ukraine — including front-line cities where volunteers are evacuating animals. If your city has no good fit, many volunteers help arrange transport between cities."
+      ]
+    },
+    "listings": {
+      "title": "Free pet rehoming listings",
+      "paragraphs": [
+        "The listings section is for private owners who, for various reasons, can no longer keep their pet and are looking for a new home for it. Unlike the main catalog (where only verified volunteers post), here listings are published by registered users of the platform.",
+        "How to post: click 'Create listing', fill in the form with a description, add up to 5 photos. Every photo is automatically optimized (WebP, max 1920 px) for fast loading. Once published, the listing appears in the list and joins the sitemap for Google indexing.",
+        "Safety tips: never wire money to strangers as a deposit, arrange to meet in a public place, ask for a real-time photo of the animal (with a specific object, for example). Bona fide owners are happy to answer questions about character and habits, and won't pressure you with false urgency.",
+        "If your listing isn't getting responses, add more photos, describe the animal's character in more detail, indicate vaccination and neutering status, and whether it's litter-trained. Listings with better photos and full descriptions get many times more views."
+      ]
+    }
+  },
   "blog": {
     "pageTitle": "PetZone Blog",
     "metaDesc": "Tips on pet adoption, care and training from the PetZone team.",

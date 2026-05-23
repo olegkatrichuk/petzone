@@ -23,6 +23,7 @@ import { useGetPetsQuery, useGetPetByIdQuery } from '../services/petsApi'
 import type { PetFilters, Pet } from '../types/pet'
 import PetFiltersPanel from '../components/pets/PetFilters'
 import PetsList from '../components/pets/PetsList'
+import SeoBlock from '../components/seo/SeoBlock'
 import PetCard from '../components/pets/PetCard'
 import { useRecentlyViewedStore } from '../store/recentlyViewedStore'
 import { useLangNavigate } from '../hooks/useLangNavigate'
@@ -338,6 +339,8 @@ export default function PetsPage() {
         <RecentlyViewedSection />
 
       </Container>
+
+      <SeoBlock i18nKey="seo.pets" />
 
       {/* Mobile filters drawer */}
       <Drawer
