@@ -33,7 +33,12 @@ import {
   useDeleteListingMutation,
   useAddListingPhotoMutation,
   useRemoveListingPhotoMutation,
+  useGetListingsQuery,
 } from '../services/listingsApi'
+import { LangLink as Link } from '../components/ui/LangLink'
+import Card from '@mui/material/Card'
+import CardActionArea from '@mui/material/CardActionArea'
+import CardContent from '@mui/material/CardContent'
 import { useAuthStore } from '../store/authStore'
 import { getApiError } from '../lib/getApiError'
 import { api } from '../lib/axios'
@@ -86,6 +91,14 @@ export default function ListingDetailPage() {
   const [deleteListing] = useDeleteListingMutation()
   const [addPhoto] = useAddListingPhotoMutation()
   const [removePhoto] = useRemoveListingPhotoMutation()
+
+  // Same-city listings — local-SEO win + helps adopters explore alternatives
+  // without going back to the full catalog.
+  const { data: relatedData } = useGetListingsQuery(
+    { city: listing?.city, pageSize: 5 },
+    { skip: !listing?.city },
+  )
+  const relatedListings = (relatedData?.items ?? []).filter(l => l.id !== listing?.id).slice(0, 4)
 
   const isOwner = !!(user && listing && user.id === listing.userId)
 
@@ -351,6 +364,40 @@ export default function ListingDetailPage() {
           )}
         </Paper>
       </Container>
+
+      {/* ── RELATED LISTINGS ───────────────────────────────── */}
+      {relatedListings.length > 0 && (
+        <Box sx={{ bgcolor: 'background.paper', borderTop: '1px solid #E5E7EB', py: 5, mt: 4 }}>
+          <Container maxWidth="lg">
+            <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
+              {t('listings.relatedInCity', { city: listing.city, defaultValue: t('listings.related', { defaultValue: 'Інші оголошення' }) })}
+            </Typography>
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' }, gap: 2 }}>
+              {relatedListings.map(l => (
+                <Card key={l.id} elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 3, overflow: 'hidden' }}>
+                  <CardActionArea component={Link} to={`/listings/${l.id}`}>
+                    {l.photos[0] && (
+                      <Box
+                        component="img"
+                        src={`/api/files/${encodeURIComponent(l.photos[0])}/redirect`}
+                        alt={t('seo.alt.listingCard', { title: l.title, city: l.city })}
+                        loading="lazy"
+                        sx={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', display: 'block' }}
+                      />
+                    )}
+                    <CardContent sx={{ p: 1.5 }}>
+                      <Typography variant="subtitle2" fontWeight={700} sx={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', lineHeight: 1.3 }}>
+                        {l.title}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">{l.city}</Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              ))}
+            </Box>
+          </Container>
+        </Box>
+      )}
 
       <Dialog open={confirmDelete} onClose={() => setConfirmDelete(false)}>
         <DialogTitle>{t('listings.deleteConfirm')}</DialogTitle>

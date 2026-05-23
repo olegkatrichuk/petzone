@@ -86,8 +86,10 @@ export default function PetDetailPage() {
   // All hooks must be called unconditionally — before any early returns
   const addViewed = useRecentlyViewedStore((s) => s.add)
 
+  // Same species + same city first — much higher conversion ("dogs in my
+  // city" beats "any dog anywhere") and better local-SEO internal linking.
   const { data: similarData, isLoading: similarLoading } = useGetPetsQuery(
-    { page: 1, pageSize: 5, speciesId: pet?.speciesId ?? '', status: PetStatus.LookingForHome },
+    { page: 1, pageSize: 5, speciesId: pet?.speciesId ?? '', city: pet?.city ?? undefined, status: PetStatus.LookingForHome },
     { skip: !pet?.speciesId },
   )
 
@@ -511,7 +513,9 @@ export default function PetDetailPage() {
         <Box sx={{ bgcolor: 'background.paper', borderTop: '1px solid #E5E7EB', py: 5, mt: 2 }}>
           <Container maxWidth="lg">
             <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
-              {t('petDetail.similarPets')}
+              {pet.city
+                ? t('petDetail.similarPetsInCity', { city: pet.city, defaultValue: t('petDetail.similarPets') })
+                : t('petDetail.similarPets')}
             </Typography>
 
             {similarLoading ? (

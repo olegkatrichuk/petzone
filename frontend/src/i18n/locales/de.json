@@ -301,6 +301,7 @@
     "removeFromFavorites": "Aus Favoriten entfernen",
     "photos": "Fotos",
     "similarPets": "Ähnliche Tiere 🐾",
+    "similarPetsInCity": "Weitere Tiere in {{city}}",
     "viewOnOlx": "Inserat auf OLX ansehen",
     "viewOnSource": "Auf {{source}} ansehen",
     "unknownSource": "Quelle"
@@ -712,6 +713,8 @@
     "hint": "Es werden nur Städte mit bekannten Koordinaten angezeigt. Klicken Sie auf einen Marker, um die Karte zu öffnen."
   },
   "listings": {
+    "related": "Weitere Anzeigen",
+    "relatedInCity": "Weitere Anzeigen aus {{city}}",
     "sectionTitle": "Vermittlungsanzeigen",
     "sectionSubtitle": "Tierbesitzer suchen eine neue liebevolle Familie für ihr Tier",
     "ownerBadge": "Besitzer",

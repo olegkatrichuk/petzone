@@ -301,6 +301,7 @@
     "removeFromFavorites": "Remove from favorites",
     "photos": "Photos",
     "similarPets": "Similar Pets 🐾",
+    "similarPetsInCity": "More pets in {{city}}",
     "viewOnOlx": "View listing on OLX",
     "viewOnSource": "View on {{source}}",
     "unknownSource": "source"
@@ -782,6 +783,8 @@
     "hint": "Only cities with known coordinates are shown. Click a marker to open the card."
   },
   "listings": {
+    "related": "Other listings",
+    "relatedInCity": "More listings in {{city}}",
     "sectionTitle": "Adoption Listings",
     "sectionSubtitle": "Pet owners looking for a new loving family for their companion",
     "ownerBadge": "Owner",

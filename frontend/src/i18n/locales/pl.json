@@ -301,6 +301,7 @@
     "removeFromFavorites": "Usuń z ulubionych",
     "photos": "Zdjęcia",
     "similarPets": "Podobne zwierzęta 🐾",
+    "similarPetsInCity": "Inne zwierzęta w {{city}}",
     "viewOnOlx": "Zobacz ogłoszenie na OLX",
     "viewOnSource": "Zobacz na {{source}}",
     "unknownSource": "źródło"
@@ -712,6 +713,8 @@
     "hint": "Pokazane są tylko miasta o znanych współrzędnych. Kliknij znacznik, aby przejść do karty."
   },
   "listings": {
+    "related": "Inne ogłoszenia",
+    "relatedInCity": "Inne ogłoszenia z {{city}}",
     "sectionTitle": "Ogłoszenia o adopcji",
     "sectionSubtitle": "Właściciele zwierząt szukający nowej rodziny dla swojego pupila",
     "ownerBadge": "Właściciel",
