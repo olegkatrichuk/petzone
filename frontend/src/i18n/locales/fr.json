@@ -17,7 +17,8 @@
     "register": "S'inscrire",
     "listings": "Annonces",
     "digest": "Digest",
-    "shelters": "Refuges"
+    "shelters": "Refuges",
+    "blog": "Blog"
   },
   "auth": {
     "email": "Email",
@@ -398,7 +399,14 @@
     "rights": "Tous droits réservés.",
     "nav": "Navigation",
     "forVolunteers": "Pour les bénévoles",
-    "becomeVolunteer": "Devenir bénévole"
+    "becomeVolunteer": "Devenir bénévole",
+    "adoption": "Adopter",
+    "dogs": "Chiens",
+    "cats": "Chats",
+    "dogsKyiv": "Chiens à Kiev",
+    "catsKyiv": "Chats à Kiev",
+    "dogsLviv": "Chiens à Lviv",
+    "dogsKharkiv": "Chiens à Kharkiv"
   },
   "notFound": {
     "title": "Page introuvable",

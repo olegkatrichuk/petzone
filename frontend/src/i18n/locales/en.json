@@ -17,7 +17,8 @@
     "register": "Register",
     "listings": "Listings",
     "digest": "Digest",
-    "shelters": "Shelters"
+    "shelters": "Shelters",
+    "blog": "Blog"
   },
   "auth": {
     "email": "Email",
@@ -398,7 +399,14 @@
     "rights": "All rights reserved.",
     "nav": "Navigation",
     "forVolunteers": "For Volunteers",
-    "becomeVolunteer": "Become a Volunteer"
+    "becomeVolunteer": "Become a Volunteer",
+    "adoption": "Adopt",
+    "dogs": "Dogs",
+    "cats": "Cats",
+    "dogsKyiv": "Dogs in Kyiv",
+    "catsKyiv": "Cats in Kyiv",
+    "dogsLviv": "Dogs in Lviv",
+    "dogsKharkiv": "Dogs in Kharkiv"
   },
   "notFound": {
     "title": "Page not found",

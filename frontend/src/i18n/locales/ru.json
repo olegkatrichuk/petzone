@@ -17,7 +17,8 @@
     "register": "Регистрация",
     "listings": "Объявления",
     "digest": "Дайджест",
-    "shelters": "Приюты"
+    "shelters": "Приюты",
+    "blog": "Блог"
   },
   "auth": {
     "email": "Email",
@@ -398,7 +399,14 @@
     "rights": "Все права защищены.",
     "nav": "Навигация",
     "forVolunteers": "Волонтёрам",
-    "becomeVolunteer": "Стать волонтёром"
+    "becomeVolunteer": "Стать волонтёром",
+    "adoption": "Усыновить",
+    "dogs": "Собаки",
+    "cats": "Кошки",
+    "dogsKyiv": "Собаки в Киеве",
+    "catsKyiv": "Кошки в Киеве",
+    "dogsLviv": "Собаки во Львове",
+    "dogsKharkiv": "Собаки в Харькове"
   },
   "notFound": {
     "title": "Страница не найдена",

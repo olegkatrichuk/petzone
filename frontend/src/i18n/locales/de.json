@@ -17,7 +17,8 @@
     "register": "Registrieren",
     "listings": "Anzeigen",
     "digest": "Digest",
-    "shelters": "Tierheime"
+    "shelters": "Tierheime",
+    "blog": "Blog"
   },
   "auth": {
     "email": "E-Mail",
@@ -398,7 +399,14 @@
     "rights": "Alle Rechte vorbehalten.",
     "nav": "Navigation",
     "forVolunteers": "Für Freiwillige",
-    "becomeVolunteer": "Freiwilliger werden"
+    "becomeVolunteer": "Freiwilliger werden",
+    "adoption": "Adoption",
+    "dogs": "Hunde",
+    "cats": "Katzen",
+    "dogsKyiv": "Hunde in Kiew",
+    "catsKyiv": "Katzen in Kiew",
+    "dogsLviv": "Hunde in Lwiw",
+    "dogsKharkiv": "Hunde in Charkiw"
   },
   "notFound": {
     "title": "Seite nicht gefunden",

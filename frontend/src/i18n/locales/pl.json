@@ -17,7 +17,8 @@
     "register": "Rejestracja",
     "listings": "Ogłoszenia",
     "digest": "Digest",
-    "shelters": "Schroniska"
+    "shelters": "Schroniska",
+    "blog": "Blog"
   },
   "auth": {
     "email": "Email",
@@ -398,7 +399,14 @@
     "rights": "Wszelkie prawa zastrzeżone.",
     "nav": "Nawigacja",
     "forVolunteers": "Dla wolontariuszy",
-    "becomeVolunteer": "Zostań wolontariuszem"
+    "becomeVolunteer": "Zostań wolontariuszem",
+    "adoption": "Adopcja",
+    "dogs": "Psy",
+    "cats": "Koty",
+    "dogsKyiv": "Psy w Kijowie",
+    "catsKyiv": "Koty w Kijowie",
+    "dogsLviv": "Psy we Lwowie",
+    "dogsKharkiv": "Psy w Charkowie"
   },
   "notFound": {
     "title": "Strona nie znaleziona",

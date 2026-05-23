@@ -17,7 +17,8 @@
     "register": "Реєстрація",
     "listings": "Оголошення",
     "digest": "Дайджест",
-    "shelters": "Притулки"
+    "shelters": "Притулки",
+    "blog": "Блог"
   },
   "auth": {
     "email": "Email",
@@ -398,7 +399,14 @@
     "rights": "Всі права захищені.",
     "nav": "Навігація",
     "forVolunteers": "Волонтерам",
-    "becomeVolunteer": "Стати волонтером"
+    "becomeVolunteer": "Стати волонтером",
+    "adoption": "Усиновити",
+    "dogs": "Собаки",
+    "cats": "Коти",
+    "dogsKyiv": "Собаки у Києві",
+    "catsKyiv": "Коти у Києві",
+    "dogsLviv": "Собаки у Львові",
+    "dogsKharkiv": "Собаки у Харкові"
   },
   "notFound": {
     "title": "Сторінку не знайдено",

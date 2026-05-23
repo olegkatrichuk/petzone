@@ -29,9 +29,21 @@ export default function Footer() {
     { labelKey: 'nav.volunteers', path: '/volunteers' },
     { labelKey: 'nav.shelters', path: '/shelters' },
     { labelKey: 'nav.listings', path: '/listings' },
+    { labelKey: 'nav.blog', path: '/blog' },
     { labelKey: 'nav.about', path: '/about' },
     { labelKey: 'nav.faq', path: '/faq' },
-    { labelKey: 'nav.profile', path: '/profile' },
+  ]
+
+  // Curated species×city landing pages — every footer view sends Google a
+  // bundle of internal links to these prerendered, SEO-targeted pages.
+  // Site-wide internal linking is the cheapest way to lift long-tail rankings.
+  const ADOPTION_LINKS = [
+    { labelKey: 'footer.dogs',         path: '/pets/dogs' },
+    { labelKey: 'footer.cats',         path: '/pets/cats' },
+    { labelKey: 'footer.dogsKyiv',     path: '/pets/dogs/kyiv' },
+    { labelKey: 'footer.catsKyiv',     path: '/pets/cats/kyiv' },
+    { labelKey: 'footer.dogsLviv',     path: '/pets/dogs/lviv' },
+    { labelKey: 'footer.dogsKharkiv',  path: '/pets/dogs/kharkiv' },
   ]
 
   return (
@@ -42,7 +54,7 @@ export default function Footer() {
           mx: 'auto',
           px: { xs: 3, md: 6 },
           display: 'grid',
-          gridTemplateColumns: { xs: '1fr', sm: '2fr 1fr 1fr' },
+          gridTemplateColumns: { xs: '1fr', sm: '2fr 1fr 1fr 1fr' },
           gap: 4,
           mb: 4,
         }}
@@ -109,6 +121,26 @@ export default function Footer() {
               sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', display: 'flex', alignItems: 'center', minHeight: 44, '&:hover': { color: '#FF6B6B' } }}>
               {t('applications.title')}
             </Link>
+          </Box>
+        </Box>
+
+        {/* Column 4: Popular adoption landing pages — internal-linking SEO */}
+        <Box>
+          <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 2, textTransform: 'uppercase', letterSpacing: 1, opacity: 0.5, fontSize: 11 }}>
+            {t('footer.adoption')}
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            {ADOPTION_LINKS.map((link) => (
+              <Link
+                key={link.path}
+                component={RouterLink}
+                to={`${prefix}${link.path}`}
+                underline="none"
+                sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', display: 'flex', alignItems: 'center', minHeight: 36, '&:hover': { color: '#FF6B6B' } }}
+              >
+                {t(link.labelKey)}
+              </Link>
+            ))}
           </Box>
         </Box>
       </Box>
