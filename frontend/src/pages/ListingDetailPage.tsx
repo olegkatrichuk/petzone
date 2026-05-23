@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
+import { safeJsonLd } from '../lib/safeJsonLd'
 import ShareButton from '../components/ui/ShareButton'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
@@ -173,18 +174,37 @@ export default function ListingDetailPage() {
         type="article"
         noIndex={listing.status !== 'Active'}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         '@context': 'https://schema.org',
-        '@type': 'ItemPage',
+        '@type': 'Product',
         name: listing.title,
         description: listing.description,
-        url: `https://getpetzone.com/uk/listings/${listing.id}`,
-        author: { '@type': 'Person', name: listing.userName, email: listing.userEmail },
-        locationCreated: { '@type': 'Place', name: listing.city },
-        datePublished: listing.createdAt,
+        ...(listing.photos.length > 0 && {
+          image: listing.photos.map(p => `https://getpetzone.com/api/files/${encodeURIComponent(p)}/redirect`),
+        }),
+        category: 'Pets',
+        brand: { '@type': 'Organization', name: 'PetZone' },
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'UAH',
+          availability: listing.status === 'Active'
+            ? 'https://schema.org/InStock'
+            : 'https://schema.org/OutOfStock',
+          url: `https://getpetzone.com/uk/listings/${listing.id}`,
+          validFrom: listing.createdAt,
+          areaServed: { '@type': 'City', name: listing.city },
+          seller: { '@type': 'Person', name: listing.userName },
+        },
+        additionalProperty: [
+          { '@type': 'PropertyValue', name: 'ageMonths', value: listing.ageMonths },
+          { '@type': 'PropertyValue', name: 'color', value: listing.color },
+          { '@type': 'PropertyValue', name: 'vaccinated', value: listing.vaccinated },
+          { '@type': 'PropertyValue', name: 'castrated', value: listing.castrated },
+        ],
       }) }} />
       <Helmet>
-        <script type="application/ld+json">{JSON.stringify({
+        <script type="application/ld+json">{safeJsonLd({
           '@context': 'https://schema.org',
           '@type': 'BreadcrumbList',
           itemListElement: [
