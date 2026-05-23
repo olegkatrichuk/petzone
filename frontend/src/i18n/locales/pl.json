@@ -463,6 +463,12 @@
       "btn": "Zostań wolontariuszem"
     }
   },
+  "blog": {
+    "pageTitle": "Blog PetZone",
+    "metaDesc": "Porady dotyczące adopcji, opieki i wychowania zwierząt od zespołu PetZone.",
+    "intro": "Porady dotyczące adopcji, opieki i wychowania zwierząt. Historie wolontariuszy i zespołu PetZone.",
+    "empty": "Brak publikacji."
+  },
   "faq": {
     "pageTitle": "Najczęściej zadawane pytania",
     "metaDesc": "Odpowiedzi na najczęstsze pytania dotyczące PetZone — adopcja zwierząt, rejestracja wolontariuszy i działanie platformy",

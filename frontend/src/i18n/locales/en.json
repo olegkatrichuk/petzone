@@ -419,6 +419,12 @@
     "notFound": "Conversation not found or you don't have access.",
     "openChat": "Open chat"
   },
+  "blog": {
+    "pageTitle": "PetZone Blog",
+    "metaDesc": "Tips on pet adoption, care and training from the PetZone team.",
+    "intro": "Tips on pet adoption, care and training. Stories from volunteers and the PetZone team.",
+    "empty": "No posts yet."
+  },
   "faq": {
     "pageTitle": "Frequently Asked Questions",
     "metaDesc": "Answers to common questions about PetZone — adopting animals, registering as a volunteer, and how the platform works",

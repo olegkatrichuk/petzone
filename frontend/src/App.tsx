@@ -45,6 +45,8 @@ const VolunteerAdoptionApplicationsPage = lazy(() => import('./pages/VolunteerAd
 const SheltersPage = lazy(() => import('./pages/SheltersPage'))
 const PetsSpeciesPage = lazy(() => import('./pages/PetsSpeciesPage'))
 const SheltersCountryPage = lazy(() => import('./pages/SheltersCountryPage'))
+const BlogListPage = lazy(() => import('./pages/BlogListPage'))
+const BlogPostPage = lazy(() => import('./pages/BlogPostPage'))
 
 function PageLoader() {
   return (
@@ -110,6 +112,8 @@ function App() {
         <Route path="shelters" element={<Suspense fallback={<PageLoader />}><SheltersPage /></Suspense>} />
         <Route path="shelters/:countryCode" element={<Suspense fallback={<PageLoader />}><SheltersCountryPage /></Suspense>} />
         <Route path="map" element={<Suspense fallback={<PageLoader />}><MapPage /></Suspense>} />
+        <Route path="blog" element={<Suspense fallback={<PageLoader />}><BlogListPage /></Suspense>} />
+        <Route path="blog/:slug" element={<Suspense fallback={<PageLoader />}><BlogPostPage /></Suspense>} />
         <Route path="forgot-password" element={<Suspense fallback={<PageLoader />}><ForgotPasswordPage /></Suspense>} />
         <Route path="reset-password" element={<Suspense fallback={<PageLoader />}><ResetPasswordPage /></Suspense>} />
         <Route path="confirm-email" element={<Suspense fallback={<PageLoader />}><ConfirmEmailPage /></Suspense>} />

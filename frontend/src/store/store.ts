@@ -9,6 +9,7 @@ import { discussionApi } from '../services/discussionApi'
 import { listingsApi } from '../services/listingsApi'
 import { newsApi } from '../services/newsApi'
 import { adoptionApi } from '../services/adoptionApi'
+import { blogApi } from '../services/blogApi'
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     [listingsApi.reducerPath]: listingsApi.reducer,
     [newsApi.reducerPath]: newsApi.reducer,
     [adoptionApi.reducerPath]: adoptionApi.reducer,
+    [blogApi.reducerPath]: blogApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -35,6 +37,7 @@ export const store = configureStore({
       listingsApi.middleware,
       newsApi.middleware,
       adoptionApi.middleware,
+      blogApi.middleware,
     ),
 })
 

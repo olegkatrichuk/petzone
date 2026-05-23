@@ -463,6 +463,12 @@
       "btn": "Devenir bénévole"
     }
   },
+  "blog": {
+    "pageTitle": "Blog PetZone",
+    "metaDesc": "Conseils sur l'adoption, les soins et l'éducation des animaux par l'équipe PetZone.",
+    "intro": "Conseils sur l'adoption, les soins et l'éducation des animaux. Témoignages de bénévoles et de l'équipe PetZone.",
+    "empty": "Aucun article pour le moment."
+  },
   "faq": {
     "pageTitle": "Questions fréquentes",
     "metaDesc": "Réponses aux questions fréquentes sur PetZone — adoption d'animaux, inscription des bénévoles et fonctionnement de la plateforme",

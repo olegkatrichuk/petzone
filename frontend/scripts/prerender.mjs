@@ -154,6 +154,11 @@ function buildRoutes(locale, lang) {
       title: locale.faq?.pageTitle ?? 'FAQ',
       description: locale.faq?.metaDesc ?? '',
     },
+    {
+      path: '/blog',
+      title: locale.blog?.pageTitle ?? 'Blog',
+      description: locale.blog?.metaDesc ?? '',
+    },
   ]
 
   const cl = CITY_LABELS[lang]

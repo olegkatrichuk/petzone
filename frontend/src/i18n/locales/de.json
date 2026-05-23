@@ -463,6 +463,12 @@
       "btn": "Freiwilliger werden"
     }
   },
+  "blog": {
+    "pageTitle": "PetZone Blog",
+    "metaDesc": "Tipps zur Adoption, Pflege und Erziehung von Tieren vom PetZone-Team.",
+    "intro": "Tipps zur Adoption, Pflege und Erziehung von Tieren. Geschichten von Freiwilligen und dem PetZone-Team.",
+    "empty": "Noch keine Beiträge."
+  },
   "faq": {
     "pageTitle": "Häufig gestellte Fragen",
     "metaDesc": "Antworten auf häufige Fragen zu PetZone — Tieradoption, Freiwilligenregistrierung und Funktionsweise der Plattform",
