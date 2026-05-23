@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
+import { safeJsonLd } from '../lib/safeJsonLd'
 import { useTranslation } from 'react-i18next'
 import { useFavoritesStore } from '../store/favoritesStore'
 import { toast } from '../store/toastStore'
@@ -140,7 +141,7 @@ export default function PetDetailPage() {
         image={mainPhotoFirst[0]?.filePath}
         type="article"
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         '@context': 'https://schema.org',
         '@type': 'Animal',
         name: pet.nickname,
@@ -153,7 +154,7 @@ export default function PetDetailPage() {
         ...(breedLabel && { breed: breedLabel }),
       }) }} />
       <Helmet>
-        <script type="application/ld+json">{JSON.stringify({
+        <script type="application/ld+json">{safeJsonLd({
           '@context': 'https://schema.org',
           '@type': 'BreadcrumbList',
           itemListElement: [

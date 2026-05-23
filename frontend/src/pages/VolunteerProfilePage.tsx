@@ -3,6 +3,7 @@ import { useParams, Link, useLocation } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
+import { safeJsonLd } from '../lib/safeJsonLd'
 import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
@@ -475,9 +476,9 @@ export default function VolunteerProfilePage() {
   return (
     <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
       <PageMeta title={fullName} description={volunteer.generalDescription ?? t('volunteers.pageTitle')} path={`/volunteers/${volunteerId}`} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(personJsonLd) }} />
       <Helmet>
-        <script type="application/ld+json">{JSON.stringify({
+        <script type="application/ld+json">{safeJsonLd({
           '@context': 'https://schema.org',
           '@type': 'BreadcrumbList',
           itemListElement: [

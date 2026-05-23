@@ -135,6 +135,7 @@ public class AccountsController(
         return Ok();
     }
 
+    [EnableRateLimiting("forgot-password")]
     [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword(
         [FromBody] ResetPasswordRequest request,

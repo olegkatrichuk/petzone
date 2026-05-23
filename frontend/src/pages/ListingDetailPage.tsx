@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
+import { safeJsonLd } from '../lib/safeJsonLd'
 import ShareButton from '../components/ui/ShareButton'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
@@ -173,7 +174,7 @@ export default function ListingDetailPage() {
         type="article"
         noIndex={listing.status !== 'Active'}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         '@context': 'https://schema.org',
         '@type': 'ItemPage',
         name: listing.title,
@@ -184,7 +185,7 @@ export default function ListingDetailPage() {
         datePublished: listing.createdAt,
       }) }} />
       <Helmet>
-        <script type="application/ld+json">{JSON.stringify({
+        <script type="application/ld+json">{safeJsonLd({
           '@context': 'https://schema.org',
           '@type': 'BreadcrumbList',
           itemListElement: [
