@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PetZone.Volunteers.Application.Commands;
 using PetZone.Volunteers.Application.Queries;
+using PetZone.Volunteers.Application.Repositories;
 using PetZone.Volunteers.Application.Volunteers;
 using PetZone.Volunteers.Contracts;
 using PetZone.Volunteers.Infrastructure.Queries;
@@ -28,16 +29,26 @@ public class VolunteersController(
     UploadVolunteerPhotoService uploadVolunteerPhotoService,
     GetVolunteersHandler getVolunteersHandler,
     GetVolunteerByIdHandler getVolunteerByIdHandler,
+    IVolunteerRepository volunteerRepository,
     ILogger<VolunteersController> logger) : ControllerBase
 {
     private static readonly string[] AllowedExtensions = [".jpg", ".jpeg", ".png", ".webp"];
     private const long MaxFileSize = 5 * 1024 * 1024;
-    
+
     private Guid? GetUserId()
     {
         var claim = User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("sub");
         if (claim is null) return null;
         return Guid.TryParse(claim.Value, out var id) ? id : null;
+    }
+
+    private async Task<bool> IsOwnerOrAdminAsync(Guid volunteerId, CancellationToken ct)
+    {
+        if (User.IsInRole("Admin")) return true;
+        var userId = GetUserId();
+        if (userId is null) return false;
+        var ownerId = await volunteerRepository.GetOwnerUserIdAsync(volunteerId, ct);
+        return ownerId == userId;
     }
 
     [Authorize(Policy = Permissions.Volunteers.Create)]
@@ -67,6 +78,7 @@ public class VolunteersController(
         [FromBody] UpdateVolunteerMainInfoRequest request,
         CancellationToken cancellationToken)
     {
+        if (!await IsOwnerOrAdminAsync(id, cancellationToken)) return Forbid();
         logger.LogInformation("Updating main info for volunteer {VolunteerId}", id);
         var result = await updateMainInfoService.Handle(request.ToCommand(id), cancellationToken);
         if (result.IsFailure)
@@ -81,6 +93,7 @@ public class VolunteersController(
         [FromBody] UpdateVolunteerSocialNetworksRequest request,
         CancellationToken cancellationToken)
     {
+        if (!await IsOwnerOrAdminAsync(id, cancellationToken)) return Forbid();
         logger.LogInformation("Updating social networks for volunteer {VolunteerId}", id);
         var result = await updateSocialNetworksService.Handle(request.ToCommand(id), cancellationToken);
         if (result.IsFailure)
@@ -95,6 +108,7 @@ public class VolunteersController(
         [FromBody] UpdateVolunteerRequisitesRequest request,
         CancellationToken cancellationToken)
     {
+        if (!await IsOwnerOrAdminAsync(id, cancellationToken)) return Forbid();
         logger.LogInformation("Updating requisites for volunteer {VolunteerId}", id);
         var result = await updateRequisitesService.Handle(request.ToCommand(id), cancellationToken);
         if (result.IsFailure)
@@ -108,6 +122,7 @@ public class VolunteersController(
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
+        if (!await IsOwnerOrAdminAsync(id, cancellationToken)) return Forbid();
         logger.LogInformation("Soft deleting volunteer {VolunteerId}", id);
         var result = await deleteVolunteerService.Handle(id.ToCommand(), cancellationToken);
         if (result.IsFailure)
@@ -121,6 +136,7 @@ public class VolunteersController(
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
+        if (!await IsOwnerOrAdminAsync(id, cancellationToken)) return Forbid();
         logger.LogInformation("Hard deleting volunteer {VolunteerId}", id);
         var result = await hardDeleteVolunteerService.Handle(id.ToHardDeleteCommand(), cancellationToken);
         if (result.IsFailure)
@@ -156,9 +172,7 @@ public class VolunteersController(
         [FromForm] IFormFile file,
         CancellationToken cancellationToken)
     {
-        var claim = User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("sub");
-        if (claim is null || !Guid.TryParse(claim.Value, out var requesterId) || requesterId != id)
-            return Forbid();
+        if (!await IsOwnerOrAdminAsync(id, cancellationToken)) return Forbid();
 
         var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
         if (!AllowedExtensions.Contains(extension))
