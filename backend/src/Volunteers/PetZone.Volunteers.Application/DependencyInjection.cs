@@ -1,6 +1,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using PetZone.Volunteers.Application.Blog;
 using PetZone.Volunteers.Application.News;
 using PetZone.Volunteers.Application.Volunteers;
 
@@ -34,6 +35,8 @@ public static class DependencyInjection
         services.AddScoped<CreateNewsPostService>();
         services.AddScoped<UpdateNewsPostService>();
         services.AddScoped<DeleteNewsPostService>();
+
+        services.AddScoped<BlogPostsService>();
 
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
         services.AddMediatR(cfg =>

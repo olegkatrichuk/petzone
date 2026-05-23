@@ -11,6 +11,7 @@ public class VolunteersDbContext(DbContextOptions<VolunteersDbContext> options) 
     public DbSet<NewsPost> NewsPosts { get; set; }
     public DbSet<SystemNewsPost> SystemNewsPosts { get; set; }
     public DbSet<AdoptionApplication> AdoptionApplications { get; set; }
+    public DbSet<BlogPost> BlogPosts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

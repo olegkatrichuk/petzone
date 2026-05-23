@@ -45,6 +45,10 @@ public class SitemapController(
             .Select(n => new { n.Id, n.VolunteerId, LastMod = n.UpdatedAt ?? n.CreatedAt })
             .ToListAsync(ct);
 
+        var blogPosts = await volunteersDb.BlogPosts
+            .Select(b => new { b.Slug, b.Language, LastMod = b.UpdatedAt ?? b.CreatedAt, b.CoverImageUrl })
+            .ToListAsync(ct);
+
         var xml = new System.Text.StringBuilder();
         xml.AppendLine("""<?xml version="1.0" encoding="UTF-8"?>""");
         // image namespace lets Google Images index the listing/pet photos
@@ -79,6 +83,26 @@ public class SitemapController(
         foreach (var n in newsPostIds)
         {
             AppendUrlAllLangs(xml, $"/news/{n.VolunteerId}/{n.Id}", 0.5, "monthly", n.LastMod);
+        }
+
+        // Blog posts: each post has its own canonical language, so we don't
+        // emit alternates here — write a plain <url> per post in its language
+        // only. (Bypassing AppendUrlAllLangs to avoid hreflang to translations
+        // that don't exist.)
+        foreach (var b in blogPosts)
+        {
+            xml.AppendLine("  <url>");
+            xml.AppendLine($"    <loc>{SiteUrl}/{b.Language}/blog/{b.Slug}</loc>");
+            xml.AppendLine($"    <lastmod>{b.LastMod:yyyy-MM-dd}</lastmod>");
+            xml.AppendLine("    <changefreq>monthly</changefreq>");
+            xml.AppendLine("    <priority>0.7</priority>");
+            if (!string.IsNullOrEmpty(b.CoverImageUrl))
+            {
+                xml.AppendLine("    <image:image>");
+                xml.AppendLine($"      <image:loc>{System.Net.WebUtility.HtmlEncode(b.CoverImageUrl)}</image:loc>");
+                xml.AppendLine("    </image:image>");
+            }
+            xml.AppendLine("  </url>");
         }
 
         xml.AppendLine("</urlset>");

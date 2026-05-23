@@ -37,6 +37,7 @@ public static class DependencyInjection
         services.AddScoped<ISpeciesRepository, SpeciesRepository>();
         services.AddScoped<INewsPostRepository, NewsPostRepository>();
         services.AddScoped<IAdoptionApplicationRepository, AdoptionApplicationRepository>();
+        services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 
         // Cross-domain checker
         services.AddScoped<IPetSpeciesChecker, PetSpeciesChecker>();
