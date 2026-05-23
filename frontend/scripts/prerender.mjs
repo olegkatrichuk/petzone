@@ -47,6 +47,64 @@ const SPECIES_LABELS = {
   ru: { dogs: 'Собаки',    cats: 'Кошки',   rabbits: 'Кролики',  parrots: 'Попугаи'  },
 }
 
+// Must match backend SitemapController citySlugs and frontend PetsSpeciesPage CITIES
+const CITY_SLUGS = ['kyiv', 'kharkiv', 'lviv', 'odesa', 'dnipro', 'zaporizhzhia']
+
+// Per-locale city phrasing. Slavic languages use locative case ("у Києві"),
+// the rest just use the city name with a preposition.
+// Format: { slug: { name, in } } — `in` is the phrase used after species
+// (e.g. "in Kyiv", "у Києві", "in Krakau"). Both go into <title>/H1.
+const CITY_LABELS = {
+  uk: {
+    kyiv:         { name: 'Київ',       in: 'у Києві' },
+    kharkiv:      { name: 'Харків',     in: 'у Харкові' },
+    lviv:         { name: 'Львів',      in: 'у Львові' },
+    odesa:        { name: 'Одеса',      in: 'в Одесі' },
+    dnipro:       { name: 'Дніпро',     in: 'у Дніпрі' },
+    zaporizhzhia: { name: 'Запоріжжя',  in: 'у Запоріжжі' },
+  },
+  ru: {
+    kyiv:         { name: 'Киев',       in: 'в Киеве' },
+    kharkiv:      { name: 'Харьков',    in: 'в Харькове' },
+    lviv:         { name: 'Львов',      in: 'во Львове' },
+    odesa:        { name: 'Одесса',     in: 'в Одессе' },
+    dnipro:       { name: 'Днепр',      in: 'в Днепре' },
+    zaporizhzhia: { name: 'Запорожье',  in: 'в Запорожье' },
+  },
+  en: {
+    kyiv:         { name: 'Kyiv',       in: 'in Kyiv' },
+    kharkiv:      { name: 'Kharkiv',    in: 'in Kharkiv' },
+    lviv:         { name: 'Lviv',       in: 'in Lviv' },
+    odesa:        { name: 'Odesa',      in: 'in Odesa' },
+    dnipro:       { name: 'Dnipro',     in: 'in Dnipro' },
+    zaporizhzhia: { name: 'Zaporizhzhia', in: 'in Zaporizhzhia' },
+  },
+  pl: {
+    kyiv:         { name: 'Kijów',      in: 'w Kijowie' },
+    kharkiv:      { name: 'Charków',    in: 'w Charkowie' },
+    lviv:         { name: 'Lwów',       in: 'we Lwowie' },
+    odesa:        { name: 'Odessa',     in: 'w Odessie' },
+    dnipro:       { name: 'Dniepr',     in: 'w Dnieprze' },
+    zaporizhzhia: { name: 'Zaporoże',   in: 'w Zaporożu' },
+  },
+  de: {
+    kyiv:         { name: 'Kiew',       in: 'in Kiew' },
+    kharkiv:      { name: 'Charkiw',    in: 'in Charkiw' },
+    lviv:         { name: 'Lwiw',       in: 'in Lwiw' },
+    odesa:        { name: 'Odessa',     in: 'in Odessa' },
+    dnipro:       { name: 'Dnipro',     in: 'in Dnipro' },
+    zaporizhzhia: { name: 'Saporischschja', in: 'in Saporischschja' },
+  },
+  fr: {
+    kyiv:         { name: 'Kiev',       in: 'à Kiev' },
+    kharkiv:      { name: 'Kharkiv',    in: 'à Kharkiv' },
+    lviv:         { name: 'Lviv',       in: 'à Lviv' },
+    odesa:        { name: 'Odessa',     in: 'à Odessa' },
+    dnipro:       { name: 'Dnipro',     in: 'à Dnipro' },
+    zaporizhzhia: { name: 'Zaporijia',  in: 'à Zaporijia' },
+  },
+}
+
 async function loadLocale(lang) {
   const raw = await readFile(join(ROOT, 'src/i18n/locales', `${lang}.json`), 'utf-8')
   return JSON.parse(raw)
@@ -98,6 +156,8 @@ function buildRoutes(locale, lang) {
     },
   ]
 
+  const cl = CITY_LABELS[lang]
+
   for (const sp of SPECIES) {
     const speciesLabel = sl[sp]
     routes.push({
@@ -105,6 +165,17 @@ function buildRoutes(locale, lang) {
       title: speciesLabel,
       description: `${speciesLabel} — ${locale.pets?.metaDesc ?? ''}`,
     })
+
+    // City-scoped species pages — high local-SEO value
+    // (e.g. "Собаки у Києві", "Dogs in Kyiv", "Psy w Kijowie").
+    for (const cs of CITY_SLUGS) {
+      const city = cl[cs]
+      routes.push({
+        path: `/pets/${sp}/${cs}`,
+        title: `${speciesLabel} ${city.in}`,
+        description: `${speciesLabel} ${city.in} — ${locale.pets?.metaDesc ?? ''}`,
+      })
+    }
   }
 
   for (const cc of SHELTER_COUNTRIES) {
