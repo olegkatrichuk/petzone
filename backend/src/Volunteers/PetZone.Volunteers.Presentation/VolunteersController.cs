@@ -60,7 +60,7 @@ public class VolunteersController(
         var userId = GetUserId();
         if (userId is null) return Unauthorized();
 
-        logger.LogInformation("Creating volunteer. Email: {Email}", request.Email);
+        logger.LogInformation("Creating volunteer for user {UserId}", userId.Value);
         var result = await createVolunteerService.Handle(request.ToCommand(userId.Value), cancellationToken);
         if (result.IsFailure)
         {

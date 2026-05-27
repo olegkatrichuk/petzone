@@ -22,7 +22,7 @@ public class ForgotPasswordService(
         // Always return success to avoid user enumeration
         if (user is null)
         {
-            logger.LogInformation("ForgotPassword requested for unknown email {Email}", email);
+            logger.LogInformation("ForgotPassword requested for unknown user");
             return true;
         }
 

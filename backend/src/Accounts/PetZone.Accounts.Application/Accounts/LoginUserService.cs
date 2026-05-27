@@ -22,7 +22,7 @@ public class LoginUserService(
         LoginUserCommand command,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Login attempt for {Email}", command.Request.Email);
+        logger.LogInformation("Login attempt received");
 
         var user = await userManager.FindByEmailAsync(command.Request.Email);
         if (user is null)
@@ -49,7 +49,7 @@ public class LoginUserService(
         await refreshSessionRepository.AddAsync(refreshSession, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        logger.LogInformation("User {Email} logged in successfully", command.Request.Email);
+        logger.LogInformation("User {UserId} logged in successfully", user.Id);
 
         return new LoginResult(accessToken, refreshToken);
     }

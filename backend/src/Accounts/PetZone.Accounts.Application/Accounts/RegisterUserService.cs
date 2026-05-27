@@ -22,7 +22,7 @@ public class RegisterUserService(
         RegisterUserCommand command,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Registering user with email {Email}", command.Request.Email);
+        logger.LogInformation("Registration attempt received");
 
         var existingUser = await userManager.FindByEmailAsync(command.Request.Email);
         if (existingUser is not null)
@@ -69,12 +69,12 @@ public class RegisterUserService(
                 user.LastName,
                 confirmationToken), cancellationToken);
 
-            logger.LogInformation("User {Email} registered successfully", command.Request.Email);
+            logger.LogInformation("User {UserId} registered successfully", user.Id);
             return user.Id;
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to register user {Email}", command.Request.Email);
+            logger.LogError(ex, "Failed to register user");
             return (ErrorList)Error.Failure("user.register_failed", "Ошибка при регистрации пользователя.");
         }
     }
