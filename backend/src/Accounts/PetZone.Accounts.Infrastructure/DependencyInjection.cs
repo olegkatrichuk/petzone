@@ -51,7 +51,13 @@ public static class DependencyInjection
             .AddDefaultTokenProviders();
 
         // Options
-        services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
+        services.AddOptions<JwtOptions>()
+            .Bind(configuration.GetSection(JwtOptions.SectionName))
+            .Validate(o => !string.IsNullOrWhiteSpace(o.SecretKey) && o.SecretKey.Length >= 32,
+                "Jwt:SecretKey must be set and at least 32 characters long.")
+            .Validate(o => !string.IsNullOrWhiteSpace(o.Issuer), "Jwt:Issuer must be set.")
+            .Validate(o => !string.IsNullOrWhiteSpace(o.Audience), "Jwt:Audience must be set.")
+            .ValidateOnStart();
         services.Configure<RefreshSessionOptions>(configuration.GetSection(RefreshSessionOptions.SectionName));
 
         // Providers
@@ -99,7 +105,8 @@ public static class DependencyInjection
                     ValidIssuer = jwtOptions.Issuer,
                     ValidAudience = jwtOptions.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
+                        Encoding.UTF8.GetBytes(jwtOptions.SecretKey)),
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 
