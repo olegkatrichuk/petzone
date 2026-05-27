@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
 import ShelterCard from '../components/shelters/ShelterCard'
+import { safeJsonLd } from '../lib/safeJsonLd'
 import type { ShelterItem } from '../components/shelters/ShelterCard'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
@@ -100,7 +101,7 @@ export default function SheltersPage() {
         description={t('shelters.metaDesc')}
         path="/shelters"
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -108,7 +109,7 @@ export default function SheltersPage() {
           { '@type': 'ListItem', position: 2, name: t('shelters.pageTitle'), item: 'https://getpetzone.com/uk/shelters' },
         ],
       }) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         '@context': 'https://schema.org',
         '@type': 'ItemList',
         name: t('shelters.pageTitle'),

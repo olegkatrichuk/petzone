@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet-async'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
+import { safeJsonLd } from '../lib/safeJsonLd'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -62,7 +63,7 @@ export default function FaqPage() {
     <Box sx={{ bgcolor: 'background.default' }}>
       <PageMeta title={t('faq.pageTitle')} description={t('faq.metaDesc')} path="/faq" />
       <Helmet>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{safeJsonLd(faqSchema)}</script>
       </Helmet>
 
       {/* Hero */}

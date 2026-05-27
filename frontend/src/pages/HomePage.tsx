@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
 import SeoBlock from '../components/seo/SeoBlock'
+import { safeJsonLd } from '../lib/safeJsonLd'
 import { motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { useCountUp } from 'react-countup'
@@ -177,9 +178,9 @@ export default function HomePage() {
   return (
     <Box>
       <PageMeta title={t('home.hero.title')} description={t('home.hero.subtitle')} path="/" />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(organizationJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }} />
 
       {/* ── Hero ─────────────────────────────────────────── */}
       <Box

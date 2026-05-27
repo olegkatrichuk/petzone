@@ -50,6 +50,7 @@ import { useGetPetsQuery } from '../services/petsApi'
 import { PetStatus } from '../types/pet'
 import type { Pet } from '../types/pet'
 import PetCard from '../components/pets/PetCard'
+import { safeHref } from '../lib/safeHref'
 
 const CORAL = '#FF6B6B'
 
@@ -662,13 +663,16 @@ export default function VolunteerProfilePage() {
                         {t('volunteerProfile.socialNetworks')}
                       </Typography>
                       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.8 }}>
-                        {volunteer.socialNetworks.map((sn, i) => (
+                        {volunteer.socialNetworks.map((sn, i) => {
+                          const href = safeHref(sn.link)
+                          if (!href) return null
+                          return (
                           <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                             <LinkIcon sx={{ fontSize: 17, color: '#6B7280' }} />
                             <Typography
                               variant="body2"
                               component="a"
-                              href={sn.link}
+                              href={href}
                               target="_blank"
                               rel="noopener noreferrer"
                               sx={{
@@ -679,7 +683,8 @@ export default function VolunteerProfilePage() {
                               {sn.name}
                             </Typography>
                           </Box>
-                        ))}
+                          )
+                        })}
                       </Box>
                     </Box>
                   )}

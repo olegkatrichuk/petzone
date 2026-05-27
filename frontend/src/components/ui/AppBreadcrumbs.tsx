@@ -5,6 +5,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import { useParams } from 'react-router-dom'
 import { useLangNavigate } from '../../hooks/useLangNavigate'
 import { DEFAULT_LANG } from '../../lib/langUtils'
+import { safeJsonLd } from '../../lib/safeJsonLd'
 
 const SITE_URL = 'https://getpetzone.com'
 
@@ -35,7 +36,7 @@ export default function AppBreadcrumbs({ items }: Props) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <MuiBreadcrumbs
         separator={<NavigateNextIcon fontSize="small" sx={{ color: '#9CA3AF' }} />}
         sx={{ mb: 2.5 }}

@@ -3,6 +3,7 @@ import { useParams, Navigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
+import { safeJsonLd } from '../lib/safeJsonLd'
 import ShelterCard from '../components/shelters/ShelterCard'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
@@ -120,8 +121,8 @@ export default function SheltersCountryPage() {
   return (
     <Box sx={{ bgcolor: 'background.default' }}>
       <PageMeta title={pageTitle} description={pageDesc} path={countryPath} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListSchema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────── */}
       <Box

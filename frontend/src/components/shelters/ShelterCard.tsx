@@ -16,6 +16,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import InstagramIcon from '@mui/icons-material/Instagram'
+import { safeHref } from '../../lib/safeHref'
 
 const CORAL = '#FF6B6B'
 
@@ -169,12 +170,12 @@ export default function ShelterCard({ shelter, showFlag = true }: Props) {
 
         {(shelter.facebook || shelter.instagram || shelter.website) && (
           <Box sx={{ display: 'flex', gap: 0.5, mt: 1.5 }}>
-            {shelter.facebook && (
+            {safeHref(shelter.facebook) && (
               <Tooltip title={t('shelters.facebook')}>
                 <IconButton
                   size="small"
                   component="a"
-                  href={shelter.facebook}
+                  href={safeHref(shelter.facebook)}
                   target="_blank"
                   rel="noopener noreferrer"
                   sx={{ color: '#1877F2', p: 0.5 }}
@@ -183,12 +184,12 @@ export default function ShelterCard({ shelter, showFlag = true }: Props) {
                 </IconButton>
               </Tooltip>
             )}
-            {shelter.instagram && (
+            {safeHref(shelter.instagram) && (
               <Tooltip title={t('shelters.instagram')}>
                 <IconButton
                   size="small"
                   component="a"
-                  href={shelter.instagram}
+                  href={safeHref(shelter.instagram)}
                   target="_blank"
                   rel="noopener noreferrer"
                   sx={{ color: '#E1306C', p: 0.5 }}
@@ -197,12 +198,12 @@ export default function ShelterCard({ shelter, showFlag = true }: Props) {
                 </IconButton>
               </Tooltip>
             )}
-            {shelter.website && (
+            {safeHref(shelter.website) && (
               <Tooltip title={t('shelters.website')}>
                 <IconButton
                   size="small"
                   component="a"
-                  href={shelter.website}
+                  href={safeHref(shelter.website)}
                   target="_blank"
                   rel="noopener noreferrer"
                   sx={{ color: '#6B7280', p: 0.5 }}
@@ -222,7 +223,7 @@ export default function ShelterCard({ shelter, showFlag = true }: Props) {
           fullWidth
           endIcon={<OpenInNewIcon sx={{ fontSize: '14px !important' }} />}
           component="a"
-          href={shelter.url}
+          href={safeHref(shelter.url)}
           target="_blank"
           rel="noopener noreferrer"
           sx={{

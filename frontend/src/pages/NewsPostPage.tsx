@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet-async'
 import PageMeta from '../components/meta/PageMeta'
 import { useLangNavigate } from '../hooks/useLangNavigate'
+import { safeJsonLd } from '../lib/safeJsonLd'
 import { useGetNewsPostByIdQuery } from '../services/newsApi'
 import AppBreadcrumbs from '../components/ui/AppBreadcrumbs'
 import Box from '@mui/material/Box'
@@ -57,7 +58,7 @@ export default function NewsPostPage() {
         type="article"
       />
       <Helmet>
-        <script type="application/ld+json">{JSON.stringify({
+        <script type="application/ld+json">{safeJsonLd({
           '@context': 'https://schema.org',
           '@type': 'BlogPosting',
           headline: post.title,
@@ -70,7 +71,7 @@ export default function NewsPostPage() {
             url: `https://getpetzone.com/uk/volunteers/${volunteerId}`,
           },
         })}</script>
-        <script type="application/ld+json">{JSON.stringify({
+        <script type="application/ld+json">{safeJsonLd({
           '@context': 'https://schema.org',
           '@type': 'BreadcrumbList',
           itemListElement: [

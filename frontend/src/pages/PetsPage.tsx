@@ -28,6 +28,7 @@ import PetCard from '../components/pets/PetCard'
 import { useRecentlyViewedStore } from '../store/recentlyViewedStore'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import { useAuthStore } from '../store/authStore'
+import { safeJsonLd } from '../lib/safeJsonLd'
 import { useGeoSource } from '../hooks/useGeoSource'
 
 const CORAL = '#FF6B6B'
@@ -215,9 +216,9 @@ export default function PetsPage() {
   return (
     <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: 4 }}>
       <PageMeta title={t('pets.pageTitle')} description={t('pets.metaDesc')} path="/pets" />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbLd) }} />
       {itemListLd && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListLd) }} />
       )}
       <Container maxWidth="xl">
         <Box sx={{ mb: 4 }}>

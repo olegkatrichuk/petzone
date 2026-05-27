@@ -13,6 +13,7 @@ import { useGetSpeciesQuery } from '../services/speciesApi'
 import { useGetPetsQuery } from '../services/petsApi'
 import { PetStatus, type Pet } from '../types/pet'
 import { useLangNavigate } from '../hooks/useLangNavigate'
+import { safeJsonLd } from '../lib/safeJsonLd'
 
 const CORAL = '#FF6B6B'
 const SITE_URL = 'https://getpetzone.com'
@@ -149,7 +150,7 @@ export default function PetsSpeciesPage() {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            __html: safeJsonLd({
               '@context': 'https://schema.org',
               '@type': 'ItemList',
               name: pageTitle,
@@ -167,7 +168,7 @@ export default function PetsSpeciesPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: safeJsonLd({
             '@context': 'https://schema.org',
             '@type': 'BreadcrumbList',
             itemListElement: [

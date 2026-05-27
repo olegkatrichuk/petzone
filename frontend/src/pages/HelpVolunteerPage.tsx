@@ -20,6 +20,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import LinkIcon from '@mui/icons-material/Link'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { useGetVolunteerByIdQuery } from '../services/volunteersApi'
+import { safeHref } from '../lib/safeHref'
 
 const CORAL = '#FF6B6B'
 
@@ -159,13 +160,16 @@ export default function HelpVolunteerPage() {
               {t('help.socialTitle')}
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              {volunteer.socialNetworks.map((sn, i) => (
+              {volunteer.socialNetworks.map((sn, i) => {
+                const href = safeHref(sn.link)
+                if (!href) return null
+                return (
                 <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <LinkIcon sx={{ fontSize: 17, color: '#6B7280' }} />
                   <Typography
                     variant="body2"
                     component="a"
-                    href={sn.link}
+                    href={href}
                     target="_blank"
                     rel="noopener noreferrer"
                     sx={{ color: CORAL, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
@@ -173,7 +177,8 @@ export default function HelpVolunteerPage() {
                     {sn.name}
                   </Typography>
                 </Box>
-              ))}
+                )
+              })}
             </Box>
           </Paper>
         )}

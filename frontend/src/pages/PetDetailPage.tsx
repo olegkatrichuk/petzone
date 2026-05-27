@@ -46,6 +46,7 @@ import TextField from '@mui/material/TextField'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { useAuthStore } from '../store/authStore'
 import { useSubmitApplicationMutation } from '../services/adoptionApi'
+import { safeHref } from '../lib/safeHref'
 
 const CORAL = '#FF6B6B'
 
@@ -410,12 +411,12 @@ export default function PetDetailPage() {
                 )}
 
                 {/* External source link (OLX, lkplev.com, animals-city.org, etc.) */}
-                {pet.externalUrl && (
+                {pet.externalUrl && safeHref(pet.externalUrl) && (
                   <Button
                     startIcon={<OpenInNewIcon />}
                     variant="outlined"
                     component="a"
-                    href={pet.externalUrl}
+                    href={safeHref(pet.externalUrl)}
                     target="_blank"
                     rel="noopener noreferrer"
                     sx={{

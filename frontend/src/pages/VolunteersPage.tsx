@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLangNavigate } from '../hooks/useLangNavigate'
 import PageMeta from '../components/meta/PageMeta'
+import { safeJsonLd } from '../lib/safeJsonLd'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
@@ -52,7 +53,7 @@ export default function VolunteersPage() {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <PageMeta title={t('volunteers.pageTitle')} description={t('volunteers.metaDesc')} path="/volunteers" />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -60,7 +61,7 @@ export default function VolunteersPage() {
           { '@type': 'ListItem', position: 2, name: t('volunteers.pageTitle'), item: 'https://getpetzone.com/uk/volunteers' },
         ],
       }) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         '@context': 'https://schema.org',
         '@type': 'Organization',
         name: 'PetZone',

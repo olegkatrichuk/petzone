@@ -3,6 +3,7 @@ import { useSearchParams, useParams, Link as RouterLink } from 'react-router-dom
 import { useTranslation } from 'react-i18next'
 import PageMeta from '../components/meta/PageMeta'
 import SeoBlock from '../components/seo/SeoBlock'
+import { safeJsonLd } from '../lib/safeJsonLd'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -216,7 +217,7 @@ export default function ListingsPage() {
         description={t('listings.pageDescription')}
         path="/listings"
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
         itemListElement: [
