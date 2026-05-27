@@ -483,6 +483,7 @@ $RECYCLE.BIN/
 .DS_Store
 .idea/
 .env
+cookies.txt
 appsettings.Development.json
 **/launchSettings.json
 
