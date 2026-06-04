@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { isValidLang, DEFAULT_LANG } from '../../lib/langUtils'
+import { ensureLanguage } from '../../i18n'
 import Layout from './Layout'
 
 export default function LangLayout() {
@@ -18,7 +19,8 @@ export default function LangLayout() {
       return
     }
     if (i18n.language !== lang) {
-      i18n.changeLanguage(lang)
+      // Load the locale's chunk first so changeLanguage has its resources.
+      void ensureLanguage(lang as string).then(() => i18n.changeLanguage(lang))
     }
   }, [lang])
 
