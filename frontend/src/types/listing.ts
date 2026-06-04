@@ -35,7 +35,7 @@ export interface CreateListingPayload {
   contactEmail?: string
 }
 
-export interface UpdateListingPayload extends CreateListingPayload {}
+export type UpdateListingPayload = CreateListingPayload
 
 export interface PagedListingsResult {
   items: AdoptionListing[]

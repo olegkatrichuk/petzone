@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -544,13 +544,13 @@ function UsersTab() {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
+  const searchTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
 
-  // simple debounce via state
   const handleSearch = (value: string) => {
     setSearch(value)
     setPage(1)
-    clearTimeout((handleSearch as any)._t)
-    ;(handleSearch as any)._t = setTimeout(() => setDebouncedSearch(value), 400)
+    clearTimeout(searchTimer.current)
+    searchTimer.current = setTimeout(() => setDebouncedSearch(value), 400)
   }
 
   const { data, isLoading, isError } = useGetUsersQuery({ page, pageSize: PAGE_SIZE_USERS, search: debouncedSearch || undefined })

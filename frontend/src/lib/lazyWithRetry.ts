@@ -8,6 +8,7 @@ import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
  */
 let _retrySeq = 0
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic constraint must accept components with any prop shape (matches React.lazy)
 export function lazyWithRetry<T extends ComponentType<any>>(
   factory: () => Promise<{ default: T }>,
 ): LazyExoticComponent<T> {
