@@ -12,6 +12,7 @@
  */
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises'
+import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -22,6 +23,41 @@ const SITE_URL = 'https://getpetzone.com'
 
 const LANGS = ['uk', 'en', 'pl', 'de', 'fr', 'ru']
 const DEFAULT_LANG = 'uk'
+
+// Single source of truth shared with the SPA (src/data/shelterCountries.ts).
+// Per-country titles like "Tierheime in der Slowakei" / "Приюты для животных в
+// Швейцарии" — far stronger for geo queries than the generic "Shelters — X".
+const COUNTRY_META = JSON.parse(
+  readFileSync(join(ROOT, 'src/data/shelterCountries.json'), 'utf-8'),
+)
+const SHELTERS = JSON.parse(
+  readFileSync(join(ROOT, 'src/data/shelters.json'), 'utf-8'),
+)
+
+// ASCII slug for a city name, e.g. "Liptovský Mikuláš" -> "liptovsky-mikulas".
+// MUST stay identical to citySlug() in src/lib/citySlug.ts so prerendered URLs
+// match what the SPA resolves at runtime.
+function slugifyCity(city) {
+  return city
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+// Cities with shelters in a country, most-populated first.
+function citiesForCountry(code) {
+  const counts = {}
+  for (const s of SHELTERS) {
+    if ((s.country ?? '') !== code || !s.city) continue
+    counts[s.city] = (counts[s.city] ?? 0) + 1
+  }
+  return Object.entries(counts)
+    .map(([city, count]) => ({ city, count, slug: slugifyCity(city) }))
+    .sort((a, b) => b.count - a.count)
+}
 
 const SHELTER_COUNTRIES = [
   'be', 'bg', 'ch', 'cz', 'de', 'ee', 'es', 'gb',
@@ -184,15 +220,83 @@ function buildRoutes(locale, lang) {
   }
 
   for (const cc of SHELTER_COUNTRIES) {
-    const countryName = cn[cc]
+    const code = cc.toUpperCase()
+    const meta = COUNTRY_META[code]
+    if (!meta) continue
+
+    const countryName = meta.name?.[lang] ?? cn[cc]
+    // Cap to the 15 best-covered cities per country: enough to capture local
+    // queries (e.g. "tierheim bratislava") without spawning hundreds of thin
+    // single-shelter pages across 16 countries × 6 languages.
+    const cities = citiesForCountry(code).slice(0, 15)
+    // Top shelter names for crawlable body text on the country page.
+    const topShelters = SHELTERS
+      .filter((s) => (s.country ?? '') === code)
+      .slice(0, 12)
+      .map((s) => s.name)
+
     routes.push({
       path: `/shelters/${cc}`,
-      title: `${locale.shelters?.pageTitle ?? 'Shelters'} — ${countryName}`,
-      description: `${countryName}: ${locale.shelters?.metaDesc ?? ''}`,
+      title: meta.pageTitle?.[lang] ?? meta.pageTitle?.en ?? `Shelters — ${countryName}`,
+      description: meta.pageDesc?.[lang] ?? meta.pageDesc?.en ?? `${countryName}: ${locale.shelters?.metaDesc ?? ''}`,
+      cityLinks: cities.map((c) => ({ label: c.city, href: `/${lang}/shelters/${cc}/${c.slug}` })),
+      bodyItems: topShelters,
     })
+
+    // City-level shelter pages — these match queries like "tierheim bratislava".
+    for (const c of cities) {
+      routes.push({
+        path: `/shelters/${cc}/${c.slug}`,
+        title: cityShelterTitle(lang, c.city, countryName),
+        description: cityShelterDesc(lang, c.city, countryName, c.count),
+        bodyItems: SHELTERS
+          .filter((s) => (s.country ?? '') === code && s.city === c.city)
+          .map((s) => s.name),
+      })
+    }
   }
 
   return routes
+}
+
+// "Tierheim Bratislava", "Приюты для животных в Bratislava (Швейцария)" etc.
+// Front-loads the city + the locale word for "shelter" to match local queries.
+const SHELTER_WORD = {
+  uk: 'Притулки для тварин',
+  en: 'Animal Shelters',
+  pl: 'Schroniska dla zwierząt',
+  de: 'Tierheime',
+  fr: 'Refuges pour animaux',
+  ru: 'Приюты для животных',
+}
+const IN_CITY = {
+  uk: (c) => `у місті ${c}`,
+  en: (c) => `in ${c}`,
+  pl: (c) => `w ${c}`,
+  de: (c) => `in ${c}`,
+  fr: (c) => `à ${c}`,
+  ru: (c) => `в городе ${c}`,
+}
+
+function cityShelterTitle(lang, city, countryName) {
+  if (lang === 'de') return `Tierheim ${city} — Tierheime in ${city} (${countryName})`
+  const word = SHELTER_WORD[lang] ?? SHELTER_WORD.en
+  const inCity = (IN_CITY[lang] ?? IN_CITY.en)(city)
+  return `${word} ${inCity} (${countryName})`
+}
+
+function cityShelterDesc(lang, city, countryName, count) {
+  // Lead with the count only when plural — avoids "1 Tierheime" / "1 shelters".
+  const n = count > 1 ? `${count} ` : ''
+  const inCity = (IN_CITY[lang] ?? IN_CITY.en)(city)
+  switch (lang) {
+    case 'de': return `${n}Tierheime und Tierschutzorganisationen in ${city} (${countryName}) — Adressen, Telefon, Website und Social Media.`
+    case 'ru': return `${n}приюты и зоозащитные организации ${inCity} (${countryName}) — адреса, телефоны, сайты и соцсети.`
+    case 'uk': return `${n}притулки та зоозахисні організації ${inCity} (${countryName}) — адреси, телефони, сайти.`
+    case 'pl': return `${n}schroniska i organizacje ochrony zwierząt ${inCity} (${countryName}) — adresy, telefony, strony.`
+    case 'fr': return `${n}refuges et organisations de protection animale ${inCity} (${countryName}) — adresses, téléphones, sites.`
+    default: return `${n}animal shelters and rescue organizations ${inCity} (${countryName}) — addresses, phone, websites.`
+  }
 }
 
 function buildHead({ lang, path, title, description }) {
@@ -227,14 +331,27 @@ ${hreflangs}
     <meta name="twitter:image" content="${ogImage}" />`
 }
 
-function buildNoscript({ title, description }) {
+function buildNoscript({ title, description, cityLinks, bodyItems }) {
+  const parts = [`<h1>${escapeHtml(title)}</h1>`, `<p>${escapeHtml(description)}</p>`]
+
+  if (cityLinks?.length) {
+    const links = cityLinks
+      .map((c) => `<li><a href="${escapeHtml(c.href)}">${escapeHtml(c.label)}</a></li>`)
+      .join('')
+    parts.push(`<ul>${links}</ul>`)
+  }
+
+  if (bodyItems?.length) {
+    const items = bodyItems.map((name) => `<li>${escapeHtml(name)}</li>`).join('')
+    parts.push(`<ul>${items}</ul>`)
+  }
+
   return `<noscript>
-      <h1>${escapeHtml(title)}</h1>
-      <p>${escapeHtml(description)}</p>
+      ${parts.join('\n      ')}
     </noscript>`
 }
 
-function applyTemplate(template, { lang, path, title, description }) {
+function applyTemplate(template, { lang, path, title, description, cityLinks, bodyItems }) {
   let html = template
 
   // Set <html lang="...">
@@ -253,7 +370,7 @@ function applyTemplate(template, { lang, path, title, description }) {
   html = html.replace('__PETZONE_HEAD__', head)
 
   // Inject <noscript> fallback right after <div id="root">
-  const noscript = buildNoscript({ title, description })
+  const noscript = buildNoscript({ title, description, cityLinks, bodyItems })
   html = html.replace(
     /<div id="root"><\/div>/,
     `<div id="root"></div>\n    ${noscript}`,
@@ -270,8 +387,47 @@ async function writeRoute(template, lang, route) {
     path: route.path,
     title: route.title,
     description: route.description,
+    cityLinks: route.cityLinks,
+    bodyItems: route.bodyItems,
   })
   await writeFile(join(outDir, 'index.html'), html, 'utf-8')
+}
+
+// XML sitemap for the city-level shelter pages (one <url> per city, with
+// hreflang alternates for every language). Countries are already covered by
+// public/sitemap-static.xml; this file carries the new city delta.
+async function writeShelterCitySitemap() {
+  const entries = []
+  for (const cc of SHELTER_COUNTRIES) {
+    const code = cc.toUpperCase()
+    if (!COUNTRY_META[code]) continue
+    for (const c of citiesForCountry(code).slice(0, 15)) {
+      entries.push(`/shelters/${cc}/${c.slug}`)
+    }
+  }
+
+  const urls = entries
+    .map((path) => {
+      const alts = LANGS
+        .map((l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${SITE_URL}/${l}${path}"/>`)
+        .join('\n')
+      return `  <url>
+    <loc>${SITE_URL}/${DEFAULT_LANG}${path}</loc>
+${alts}
+    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE_URL}/${DEFAULT_LANG}${path}"/>
+    <changefreq>weekly</changefreq><priority>0.6</priority>
+  </url>`
+    })
+    .join('\n')
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${urls}
+</urlset>
+`
+  await writeFile(join(DIST, 'sitemap-shelters-cities.xml'), xml, 'utf-8')
+  return entries.length
 }
 
 async function main() {
@@ -287,7 +443,10 @@ async function main() {
     }
   }
 
+  const cityUrls = await writeShelterCitySitemap()
+
   console.log(`Prerendered ${count} routes (${LANGS.length} langs × ${count / LANGS.length} per lang)`)
+  console.log(`Wrote sitemap-shelters-cities.xml with ${cityUrls} city URLs`)
 }
 
 main().catch((err) => {

@@ -113,6 +113,7 @@ function App() {
         <Route path="my-listings" element={<Suspense fallback={<PageLoader />}><MyListingsPage /></Suspense>} />
         <Route path="shelters" element={<Suspense fallback={<PageLoader />}><SheltersPage /></Suspense>} />
         <Route path="shelters/:countryCode" element={<Suspense fallback={<PageLoader />}><SheltersCountryPage /></Suspense>} />
+        <Route path="shelters/:countryCode/:citySlug" element={<Suspense fallback={<PageLoader />}><SheltersCountryPage /></Suspense>} />
         <Route path="map" element={<Suspense fallback={<PageLoader />}><MapPage /></Suspense>} />
         <Route path="blog" element={<Suspense fallback={<PageLoader />}><BlogListPage /></Suspense>} />
         <Route path="blog/:slug" element={<Suspense fallback={<PageLoader />}><BlogPostPage /></Suspense>} />

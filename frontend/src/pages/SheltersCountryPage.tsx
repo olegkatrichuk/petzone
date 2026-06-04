@@ -24,6 +24,8 @@ import sheltersData from '../data/shelters.json'
 import { SHELTER_COUNTRIES } from '../data/shelterCountries'
 import type { ShelterItem } from '../components/shelters/ShelterCard'
 import { DEFAULT_LANG } from '../lib/langUtils'
+import { citySlug } from '../lib/citySlug'
+import { cityShelterTitle, cityShelterDesc } from '../lib/shelterCityMeta'
 
 const CORAL = '#FF6B6B'
 const DARK = '#1e1b4b'
@@ -33,18 +35,15 @@ const SITE_URL = 'https://getpetzone.com'
 const allShelters = sheltersData as ShelterItem[]
 
 export default function SheltersCountryPage() {
-  const { lang, countryCode } = useParams<{ lang: string; countryCode: string }>()
+  const { lang, countryCode, citySlug: citySlugParam } = useParams<{ lang: string; countryCode: string; citySlug?: string }>()
   const { t } = useTranslation()
   const navigate = useLangNavigate()
   const [search, setSearch] = useState('')
-  const [cityFilter, setCityFilter] = useState('')
   const [page, setPage] = useState(1)
 
   const code = (countryCode ?? '').toUpperCase()
   const meta = SHELTER_COUNTRIES[code]
   const currentLang = lang ?? DEFAULT_LANG
-
-  if (!meta) return <Navigate to={`/${currentLang}/shelters`} replace />
 
   const countryShelters = useMemo(
     () => allShelters.filter((s) => (s.country ?? '') === code),
@@ -54,6 +53,12 @@ export default function SheltersCountryPage() {
   const uniqueCities = useMemo(
     () => [...new Set(countryShelters.map((s) => s.city).filter(Boolean))].sort(),
     [countryShelters],
+  )
+
+  // City-level page: /shelters/{cc}/{citySlug} narrows the directory to one city.
+  const activeCity = useMemo(
+    () => (citySlugParam ? uniqueCities.find((c) => citySlug(c) === citySlugParam) : undefined),
+    [citySlugParam, uniqueCities],
   )
 
   const topCities = useMemo(
@@ -66,24 +71,42 @@ export default function SheltersCountryPage() {
     [uniqueCities, countryShelters],
   )
 
+  // On a city page the directory is locked to that city; otherwise it spans the country.
+  const baseShelters = useMemo(
+    () => (activeCity ? countryShelters.filter((s) => s.city === activeCity) : countryShelters),
+    [countryShelters, activeCity],
+  )
+
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
-    return countryShelters.filter((s) => {
-      const matchSearch = !q || s.name.toLowerCase().includes(q) || s.city.toLowerCase().includes(q)
-      const matchCity = !cityFilter || s.city === cityFilter
-      return matchSearch && matchCity
-    })
-  }, [countryShelters, search, cityFilter])
+    if (!q) return baseShelters
+    return baseShelters.filter(
+      (s) => s.name.toLowerCase().includes(q) || s.city.toLowerCase().includes(q),
+    )
+  }, [baseShelters, search])
+
+  // Guards run after all hooks so hook order stays stable across renders.
+  if (!meta) return <Navigate to={`/${currentLang}/shelters`} replace />
+  // Slug present but no matching city → fall back to the country page.
+  if (citySlugParam && !activeCity) return <Navigate to={`/${currentLang}/shelters/${code.toLowerCase()}`} replace />
 
   const totalCount = filtered.length
   const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   const handleSearch = (v: string) => { setSearch(v); setPage(1) }
-  const handleCity = (city: string) => { setCityFilter(city === cityFilter ? '' : city); setPage(1) }
+  // City chips link to dedicated city pages (crawlable + indexable).
+  const goToCity = (city: string) => navigate(`/shelters/${code.toLowerCase()}/${citySlug(city)}`)
 
-  const pageTitle = meta.pageTitle[currentLang] ?? meta.pageTitle['en']
-  const pageDesc = meta.pageDesc[currentLang] ?? meta.pageDesc['en']
+  const countryName = meta.name[currentLang] ?? meta.name['en']
   const countryPath = `/shelters/${code.toLowerCase()}`
+
+  const pageTitle = activeCity
+    ? cityShelterTitle(currentLang, activeCity, countryName)
+    : meta.pageTitle[currentLang] ?? meta.pageTitle['en']
+  const pageDesc = activeCity
+    ? cityShelterDesc(currentLang, activeCity, countryName, baseShelters.length)
+    : meta.pageDesc[currentLang] ?? meta.pageDesc['en']
+  const path = activeCity ? `${countryPath}/${citySlug(activeCity)}` : countryPath
 
   // Schema.org: BreadcrumbList
   const breadcrumbSchema = {
@@ -92,7 +115,10 @@ export default function SheltersCountryPage() {
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: t('nav.home'), item: `${SITE_URL}/${currentLang}` },
       { '@type': 'ListItem', position: 2, name: t('shelters.pageTitle'), item: `${SITE_URL}/${currentLang}/shelters` },
-      { '@type': 'ListItem', position: 3, name: meta.name[currentLang] ?? meta.name['en'], item: `${SITE_URL}/${currentLang}${countryPath}` },
+      { '@type': 'ListItem', position: 3, name: countryName, item: `${SITE_URL}/${currentLang}${countryPath}` },
+      ...(activeCity
+        ? [{ '@type': 'ListItem', position: 4, name: activeCity, item: `${SITE_URL}/${currentLang}${path}` }]
+        : []),
     ],
   }
 
@@ -102,9 +128,9 @@ export default function SheltersCountryPage() {
     '@type': 'ItemList',
     name: pageTitle,
     description: pageDesc,
-    numberOfItems: countryShelters.length,
-    url: `${SITE_URL}/${currentLang}${countryPath}`,
-    itemListElement: countryShelters.slice(0, 50).map((s, i) => ({
+    numberOfItems: baseShelters.length,
+    url: `${SITE_URL}/${currentLang}${path}`,
+    itemListElement: baseShelters.slice(0, 50).map((s, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       item: {
@@ -120,7 +146,7 @@ export default function SheltersCountryPage() {
 
   return (
     <Box sx={{ bgcolor: 'background.default' }}>
-      <PageMeta title={pageTitle} description={pageDesc} path={countryPath} />
+      <PageMeta title={pageTitle} description={pageDesc} path={path} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListSchema) }} />
 
@@ -187,17 +213,21 @@ export default function SheltersCountryPage() {
           >
             <Box sx={{ textAlign: 'center' }}>
               <Typography variant="h5" fontWeight="bold" sx={{ color: CORAL, lineHeight: 1 }}>
-                {countryShelters.length}
+                {baseShelters.length}
               </Typography>
               <Typography variant="caption" sx={{ opacity: 0.7 }}>{t('shelters.stats.orgs')}</Typography>
             </Box>
-            <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.2)' }} />
-            <Box sx={{ textAlign: 'center' }}>
-              <Typography variant="h5" fontWeight="bold" sx={{ color: '#60A5FA', lineHeight: 1 }}>
-                {uniqueCities.length}
-              </Typography>
-              <Typography variant="caption" sx={{ opacity: 0.7 }}>{t('shelters.stats.cities')}</Typography>
-            </Box>
+            {!activeCity && (
+              <>
+                <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.2)' }} />
+                <Box sx={{ textAlign: 'center' }}>
+                  <Typography variant="h5" fontWeight="bold" sx={{ color: '#60A5FA', lineHeight: 1 }}>
+                    {uniqueCities.length}
+                  </Typography>
+                  <Typography variant="caption" sx={{ opacity: 0.7 }}>{t('shelters.stats.cities')}</Typography>
+                </Box>
+              </>
+            )}
           </Box>
         </Container>
       </Box>
@@ -206,10 +236,10 @@ export default function SheltersCountryPage() {
         {/* ── BACK LINK ──────────────────────────────────────── */}
         <Button
           startIcon={<ArrowBackIcon />}
-          onClick={() => navigate('/shelters')}
+          onClick={() => navigate(activeCity ? countryPath : '/shelters')}
           sx={{ mb: 3, textTransform: 'none', color: '#6B7280', '&:hover': { color: CORAL } }}
         >
-          {t('shelters.allCountries')}
+          {activeCity ? (meta.name[currentLang] ?? meta.name['en']) : t('shelters.allCountries')}
         </Button>
 
         {/* ── SEARCH & CITY FILTERS ───────────────────────────── */}
@@ -239,32 +269,28 @@ export default function SheltersCountryPage() {
           />
 
           <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap' }}>
-            {topCities.map((city) => (
-              <Chip
-                key={city}
-                label={city}
-                size="small"
-                onClick={() => handleCity(city)}
-                variant={cityFilter === city ? 'filled' : 'outlined'}
-                sx={{
-                  cursor: 'pointer',
-                  bgcolor: cityFilter === city ? CORAL : 'transparent',
-                  color: cityFilter === city ? 'white' : 'text.secondary',
-                  borderColor: cityFilter === city ? CORAL : '#E5E7EB',
-                  fontWeight: cityFilter === city ? 600 : 400,
-                  '&:hover': { bgcolor: cityFilter === city ? '#e55555' : '#FFF0F0', borderColor: CORAL, color: cityFilter === city ? 'white' : CORAL },
-                }}
-              />
-            ))}
-            {cityFilter && (
-              <Button
-                size="small"
-                onClick={() => { setCityFilter(''); setPage(1) }}
-                sx={{ textTransform: 'none', color: '#9CA3AF', minWidth: 0, fontSize: 13 }}
-              >
-                {t('shelters.clearSearch')}
-              </Button>
-            )}
+            {topCities.map((city) => {
+              const isActive = activeCity === city
+              return (
+                <Chip
+                  key={city}
+                  label={city}
+                  size="small"
+                  component="a"
+                  href={`/${currentLang}/shelters/${code.toLowerCase()}/${citySlug(city)}`}
+                  onClick={(e) => { e.preventDefault(); goToCity(city) }}
+                  variant={isActive ? 'filled' : 'outlined'}
+                  sx={{
+                    cursor: 'pointer',
+                    bgcolor: isActive ? CORAL : 'transparent',
+                    color: isActive ? 'white' : 'text.secondary',
+                    borderColor: isActive ? CORAL : '#E5E7EB',
+                    fontWeight: isActive ? 600 : 400,
+                    '&:hover': { bgcolor: isActive ? '#e55555' : '#FFF0F0', borderColor: CORAL, color: isActive ? 'white' : CORAL },
+                  }}
+                />
+              )
+            })}
           </Box>
 
           <Typography variant="body2" color="text.secondary" sx={{ ml: 'auto' }}>

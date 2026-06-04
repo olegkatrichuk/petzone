@@ -4,6 +4,9 @@
     <loc>https://getpetzone.com/sitemap-static.xml</loc>
   </sitemap>
   <sitemap>
+    <loc>https://getpetzone.com/sitemap-shelters-cities.xml</loc>
+  </sitemap>
+  <sitemap>
     <loc>https://getpetzone.com/api/v1/sitemap</loc>
   </sitemap>
 </sitemapindex>
