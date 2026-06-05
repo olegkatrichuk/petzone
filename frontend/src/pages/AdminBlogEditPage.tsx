@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -64,15 +64,19 @@ export default function AdminBlogEditPage() {
   const [updatePost, { isLoading: isUpdating }] = useUpdateBlogPostMutation()
   const isSaving = isCreating || isUpdating
 
-  useEffect(() => {
-    if (!full) return
+  // Prefill the form once the full post loads — adjust during render (React's
+  // recommended alternative to a setState-in-effect), keyed by slug so it
+  // initializes exactly once per loaded post.
+  const [initializedSlug, setInitializedSlug] = useState<string | null>(null)
+  if (full && full.slug !== initializedSlug) {
+    setInitializedSlug(full.slug)
     setSlug(full.slug)
     setLanguage(full.language)
     setTitle(full.title)
     setSummary(full.summary)
     setContentMarkdown(full.contentMarkdown)
     setCoverImageUrl(full.coverImageUrl ?? '')
-  }, [full])
+  }
 
   if (!user) return <Navigate to="/login" replace />
   if (user.role !== 'Admin') return <Navigate to="/" replace />

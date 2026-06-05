@@ -18,16 +18,15 @@ const CORAL = '#FF6B6B'
 export default function ConfirmEmailPage() {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
-
   const userId = searchParams.get('userId') ?? ''
   const token = searchParams.get('token') ?? ''
 
+  const [status, setStatus] = useState<'loading' | 'success' | 'error'>(
+    userId && token ? 'loading' : 'error',
+  )
+
   useEffect(() => {
-    if (!userId || !token) {
-      setStatus('error')
-      return
-    }
+    if (!userId || !token) return
 
     confirmEmail(userId, token)
       .then(() => setStatus('success'))

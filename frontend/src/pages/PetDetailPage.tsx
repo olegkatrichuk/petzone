@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useLangNavigate } from '../hooks/useLangNavigate'
@@ -82,7 +82,9 @@ export default function PetDetailPage() {
   const [adoptPhone, setAdoptPhone] = useState('')
   const [adoptMessage, setAdoptMessage] = useState('')
   const [submitApplication, { isLoading: isSubmitting }] = useSubmitApplicationMutation()
-  const adoptSubmittedRef = useRef(false)
+  const [adoptSubmitted, setAdoptSubmitted] = useState(false)
+  // Captured once at mount — keeps render pure (no Date.now() during render).
+  const [now] = useState(() => Date.now())
 
   // All hooks must be called unconditionally — before any early returns
   const addViewed = useRecentlyViewedStore((s) => s.add)
@@ -124,7 +126,7 @@ export default function PetDetailPage() {
 
   const statusCfg = STATUS_COLORS[pet.status]
 
-  const ageMonths = Math.floor((Date.now() - new Date(pet.dateOfBirth).getTime()) / (1000 * 60 * 60 * 24 * 30.44))
+  const ageMonths = Math.floor((now - new Date(pet.dateOfBirth).getTime()) / (1000 * 60 * 60 * 24 * 30.44))
   const ageStr = ageMonths >= 12 ? `${Math.floor(ageMonths / 12)} ${t('pets.ageYears')}` : `${ageMonths} ${t('pets.ageMonths')}`
 
   const speciesLabel = pet.speciesName ?? ''
@@ -482,7 +484,7 @@ export default function PetDetailPage() {
           </Button>
           <Button
             variant="contained"
-            disabled={isSubmitting || !adoptName.trim() || !adoptPhone.trim() || adoptSubmittedRef.current}
+            disabled={isSubmitting || !adoptName.trim() || !adoptPhone.trim() || adoptSubmitted}
             onClick={async () => {
               if (!pet?.volunteerId) return
               try {
@@ -491,7 +493,7 @@ export default function PetDetailPage() {
                   volunteerId: pet.volunteerId,
                   data: { applicantName: adoptName.trim(), applicantPhone: adoptPhone.trim(), message: adoptMessage || undefined },
                 }).unwrap()
-                adoptSubmittedRef.current = true
+                setAdoptSubmitted(true)
                 setAdoptOpen(false)
                 toast.success(t('adoption.adoptModal.success'))
               } catch (err: unknown) {

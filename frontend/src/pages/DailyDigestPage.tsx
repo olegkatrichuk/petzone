@@ -66,16 +66,25 @@ function StatRow({ icon, label, value, color }: {
 function DigestCard({ post, lang }: { post: SystemNewsPost; lang: string }) {
   const { t } = useTranslation()
   const navigate = useLangNavigate()
-  const [translatedFact, setTranslatedFact] = useState<string>(post.factEn)
+  // Keyed by input so a stale translation never shows after the language or
+  // fact changes; until the new translation arrives we fall back to English.
+  const [translated, setTranslated] = useState<{ key: string; text: string } | null>(null)
+  const factKey = `${post.factEn}|${lang}`
+  const translatedFact = lang === 'en'
+    ? post.factEn
+    : (translated?.key === factKey ? translated.text : post.factEn)
 
   const topBreeds: TopBreed[] = (() => {
     try { return JSON.parse(post.topBreedsJson) } catch { return [] }
   })()
 
   useEffect(() => {
-    setTranslatedFact(post.factEn) // show immediately in English
     if (lang === 'en') return
-    translateText(post.factEn, lang).then((r) => setTranslatedFact(r))
+    let cancelled = false
+    translateText(post.factEn, lang).then((r) => {
+      if (!cancelled) setTranslated({ key: `${post.factEn}|${lang}`, text: r })
+    })
+    return () => { cancelled = true }
   }, [post.factEn, lang])
 
   return (

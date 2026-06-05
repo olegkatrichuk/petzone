@@ -137,15 +137,22 @@ export default function PetsPage() {
   // Stringify of filters for detecting changes (reset page when filters change)
   const filterKey = useMemo(() => new URLSearchParams(filtersToParams(baseFilters)).toString(), [baseFilters])
 
-  useEffect(() => {
+  // Reset pagination when filters change — adjust during render (React's
+  // recommended alternative to a setState-in-effect).
+  const [prevFilterKey, setPrevFilterKey] = useState(filterKey)
+  if (prevFilterKey !== filterKey) {
+    setPrevFilterKey(filterKey)
     setPage(1)
     setAllItems([])
-  }, [filterKey])
+  }
 
-  // Sync search input when URL changes externally (e.g. filter reset)
-  useEffect(() => {
-    setSearchInput(baseFilters.nickname ?? '')
-  }, [baseFilters.nickname])
+  // Sync search input when the URL nickname changes externally (e.g. filter reset).
+  const urlNickname = baseFilters.nickname ?? ''
+  const [prevNickname, setPrevNickname] = useState(urlNickname)
+  if (prevNickname !== urlNickname) {
+    setPrevNickname(urlNickname)
+    setSearchInput(urlNickname)
+  }
 
   // Debounce: update URL nickname param 400ms after user stops typing
   useEffect(() => {
@@ -164,7 +171,10 @@ export default function PetsPage() {
   const filters: PetFilters = { ...baseFilters, page, source: geoSource }
   const { data, isLoading, isFetching, isError, refetch } = useGetPetsQuery(filters, { refetchOnMountOrArgChange: true })
 
-  // Accumulate items across pages; shuffle page 1 so each visit shows a different order
+  // Accumulate items across pages; shuffle page 1 so each visit shows a different
+  // order. This is genuine cross-render accumulation of fetched pages, so the
+  // setState-in-effect is intentional (no pure-render equivalent).
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (!data?.items) return
     if (page === 1) {
@@ -175,6 +185,7 @@ export default function PetsPage() {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const hasMore = allItems.length < (data?.totalCount ?? 0)
 

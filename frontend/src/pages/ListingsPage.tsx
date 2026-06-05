@@ -191,10 +191,14 @@ export default function ListingsPage() {
   const locale = i18n.language?.slice(0, 2) || 'uk'
   const { data: speciesList = [] } = useGetSpeciesQuery(locale)
 
-  // Reset to page 1 on filter change
-  useEffect(() => {
+  // Reset to page 1 on filter change — adjust during render (React's
+  // recommended alternative to a setState-in-effect).
+  const filterKey = `${speciesId ?? ''}|${city ?? ''}|${search ?? ''}`
+  const [prevFilterKey, setPrevFilterKey] = useState(filterKey)
+  if (prevFilterKey !== filterKey) {
+    setPrevFilterKey(filterKey)
     setPage(1)
-  }, [speciesId, city, search])
+  }
 
   const applyCity = useCallback(() => {
     const p = new URLSearchParams(searchParams)

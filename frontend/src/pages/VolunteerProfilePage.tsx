@@ -191,13 +191,17 @@ function AvatarEditModal({ open, volunteerId, onClose, currentUrl }: AvatarEditM
   const [error, setError] = useState('')
   const [uploadPhoto, { isLoading }] = useUploadPhotoMutation()
 
-  useEffect(() => {
+  // Reset the dialog fields when it opens — adjust during render (React's
+  // recommended alternative to a setState-in-effect).
+  const [wasOpen, setWasOpen] = useState(open)
+  if (open !== wasOpen) {
+    setWasOpen(open)
     if (open) {
       setPreview(currentUrl)
       setFile(null)
       setError('')
     }
-  }, [open, currentUrl])
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0]

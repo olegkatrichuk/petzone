@@ -123,18 +123,25 @@ export default function PetsSpeciesPage() {
     { skip: !speciesId },
   )
 
+  // Genuine cross-render accumulation of fetched pages — setState-in-effect is intentional.
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (!data?.items) return
     if (page === 1) setAccumulated(data.items)
     else setAccumulated((prev) => [...prev, ...data.items])
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
+  /* eslint-enable react-hooks/set-state-in-effect */
 
-  // Reset on slug change
-  useEffect(() => {
+  // Reset on slug change — adjust during render (React's recommended
+  // alternative to a setState-in-effect).
+  const slugKey = `${speciesSlug ?? ''}|${citySlug ?? ''}`
+  const [prevSlugKey, setPrevSlugKey] = useState(slugKey)
+  if (prevSlugKey !== slugKey) {
+    setPrevSlugKey(slugKey)
     setPage(1)
     setAccumulated([])
-  }, [speciesSlug, citySlug])
+  }
 
   if (!config) return <Navigate to="/pets" replace />
   if (citySlug && !cityConfig) return <Navigate to={`/pets/${speciesSlug}`} replace />
