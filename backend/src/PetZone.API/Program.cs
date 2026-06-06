@@ -1,7 +1,4 @@
 using System.Threading.RateLimiting;
-using Elastic.Ingest.Elasticsearch;
-using Elastic.Ingest.Elasticsearch.DataStreams;
-using Elastic.Serilog.Sinks;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.OpenApi;
@@ -24,21 +21,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, config) =>
 {
-    var elasticsearchUrl = context.Configuration["Elasticsearch:Url"] ?? "http://localhost:9200";
-
     config
         .ReadFrom.Configuration(context.Configuration)
         .WriteTo.Console()
         .WriteTo.Seq(
             context.Configuration["Seq:ServerUrl"] ?? "http://localhost:5341",
-            apiKey: context.Configuration["Seq:ApiKey"])
-        .WriteTo.Elasticsearch(
-            [new Uri(elasticsearchUrl)],
-            opts =>
-            {
-                opts.DataStream = new DataStreamName("logs", "petzone", "default");
-                opts.BootstrapMethod = BootstrapMethod.Silent;
-            });
+            apiKey: context.Configuration["Seq:ApiKey"]);
 });
 
 builder.Services.AddMemoryCache();

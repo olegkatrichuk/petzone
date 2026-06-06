@@ -27,7 +27,7 @@ Platform for pet adoption and volunteer coordination in Ukraine. Shelters and vo
 | Queue | RabbitMQ 3 + MassTransit |
 | Storage | MinIO (S3-compatible) |
 | Notifications | Separate ASP.NET 10 consumer service |
-| Logs | Serilog → Seq + Elasticsearch/Kibana |
+| Logs | Serilog → Console + Seq |
 | Monitoring | Prometheus + Grafana |
 | Proxy | Nginx |
 
