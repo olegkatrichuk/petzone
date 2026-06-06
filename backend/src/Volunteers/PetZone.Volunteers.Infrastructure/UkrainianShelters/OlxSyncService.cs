@@ -86,7 +86,15 @@ public class OlxSyncService(
             var url = $"{ApiUrl}?offset={page * PageLimit}&limit={PageLimit}" +
                       $"&category_id={CategoryId}&sort_by=created_at:desc";
 
-            var json = await client.GetStringAsync(url, ct);
+            using var resp = await client.GetAsync(url, ct);
+            if (!resp.IsSuccessStatusCode)
+            {
+                logger.LogWarning("OLX returned {Status} for page {Page} — skipping rest of sync",
+                    (int)resp.StatusCode, page);
+                break;
+            }
+
+            var json = await resp.Content.ReadAsStringAsync(ct);
             using var doc  = JsonDocument.Parse(json);
             var data       = doc.RootElement.GetProperty("data");
             var pageOffers = data.EnumerateArray().ToList();

@@ -10,8 +10,8 @@ using PetZone.Volunteers.Domain.Models;
 namespace PetZone.Volunteers.Infrastructure.PolandShelters;
 
 /// <summary>
-/// Syncs free animal adoption ads from OLX.pl (categories 90/91 — dogs/cats).
-/// API: https://www.olx.pl/api/v1/offers/?category_id=90&sort_by=created_at:desc
+/// Syncs free animal adoption ads from OLX.pl (categories 1888/1884 — dogs/cats).
+/// API: https://www.olx.pl/api/v1/offers/?category_id=1888&sort_by=created_at:desc
 /// </summary>
 public class OlxPlSyncService(
     IServiceProvider serviceProvider,
@@ -20,8 +20,8 @@ public class OlxPlSyncService(
 {
     private static readonly Guid SystemVolunteerId = new("ee000000-0000-0000-0000-000000000001");
     private const string ApiUrl   = "https://www.olx.pl/api/v1/offers/";
-    private const int DogCategory = 90;  // psy / dogs on OLX.pl
-    private const int CatCategory = 91;  // koty / cats on OLX.pl
+    private const int DogCategory = 1888;  // psy / dogs on OLX.pl
+    private const int CatCategory = 1884;  // koty / cats on OLX.pl
     private const int PageLimit   = 20;
     private const int MaxPages    = 5;   // 100 offers per category per sync
 
@@ -91,7 +91,15 @@ public class OlxPlSyncService(
                 var url = $"{ApiUrl}?offset={page * PageLimit}&limit={PageLimit}" +
                           $"&category_id={categoryId}&sort_by=created_at:desc";
 
-                var json = await client.GetStringAsync(url, ct);
+                using var resp = await client.GetAsync(url, ct);
+                if (!resp.IsSuccessStatusCode)
+                {
+                    logger.LogWarning("OLX PL returned {Status} for category {Category} page {Page} — skipping rest of category",
+                        (int)resp.StatusCode, categoryId, page);
+                    break;
+                }
+
+                var json = await resp.Content.ReadAsStringAsync(ct);
                 using var doc  = JsonDocument.Parse(json);
                 var data       = doc.RootElement.GetProperty("data");
                 var pageOffers = data.EnumerateArray().ToList();
