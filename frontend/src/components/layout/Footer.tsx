@@ -147,9 +147,21 @@ export default function Footer() {
 
       <Divider sx={{ bgcolor: 'rgba(255,255,255,0.1)', mx: { xs: 3, md: 6 } }} />
 
-      <Box sx={{ px: { xs: 3, md: 6 }, pt: 2 }}>
+      <Box sx={{ px: { xs: 3, md: 6 }, pt: 2, display: 'flex', flexWrap: 'wrap', columnGap: 2 }}>
         <Typography variant="caption" sx={{ opacity: 0.4 }}>
           © {new Date().getFullYear()} PetZone — {t('footer.rights')}
+        </Typography>
+        <Typography variant="caption" sx={{ opacity: 0.4 }}>
+          {t('footer.developedBy')}{' '}
+          <Link
+            href="https://olegkatrichuk.com"
+            target="_blank"
+            rel="noopener"
+            underline="always"
+            sx={{ color: 'inherit', '&:hover': { color: '#FF6B6B' } }}
+          >
+            Oleg Katrichuk
+          </Link>
         </Typography>
       </Box>
     </Box>
