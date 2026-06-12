@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetZone.Listings.Domain;
@@ -7,6 +8,7 @@ using PetZone.Volunteers.Infrastructure;
 
 namespace PetZone.API.Controllers;
 
+[AllowAnonymous]
 [ApiController]
 [Route("v1/sitemap")]
 public class SitemapController(

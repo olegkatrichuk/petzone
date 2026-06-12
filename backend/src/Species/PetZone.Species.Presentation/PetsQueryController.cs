@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
+
 namespace PetZone.Species.Presentation;
 
+[AllowAnonymous]
 [ApiController]
 [Route("pets")]
 public class PetsQueryController(

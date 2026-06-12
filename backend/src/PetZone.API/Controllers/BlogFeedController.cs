@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetZone.Volunteers.Infrastructure;
@@ -7,6 +8,7 @@ namespace PetZone.API.Controllers;
 // RSS 2.0 feed for the blog. Lives in PetZone.API rather than the Volunteers
 // presentation layer because RSS is a delivery format, not domain logic — it
 // just renders a DB projection as XML. Cached 1h.
+[AllowAnonymous]
 [ApiController]
 [Route("v1/blog/rss")]
 public class BlogFeedController(VolunteersDbContext volunteersDb) : ControllerBase

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PetZone.Volunteers.Application.Queries;
@@ -6,6 +7,7 @@ using PetZone.Volunteers.Presentation.Extensions;
 
 namespace PetZone.Volunteers.Presentation;
 
+[AllowAnonymous]
 [ApiController]
 [Route("pets")]
 public class PetsQueryController(
