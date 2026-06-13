@@ -1,6 +1,7 @@
 import { useParams, Link as RouterLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { DEFAULT_LANG } from '../../lib/langUtils'
+import { DonateButton } from '../DonateButton'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -84,6 +85,9 @@ export default function Footer() {
                 </IconButton>
               </Tooltip>
             ))}
+          </Box>
+          <Box sx={{ mt: 2.5 }}>
+            <DonateButton />
           </Box>
         </Box>
 
