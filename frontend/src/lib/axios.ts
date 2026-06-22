@@ -3,7 +3,7 @@ import { useAuthStore } from '../store/authStore'
 import { getLangFromPath } from './langUtils'
 
 export const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL ?? '/api',
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true, // needed to send/receive HttpOnly refresh token cookie
 })
