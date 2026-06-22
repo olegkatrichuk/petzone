@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { lazyWithRetry as lazy } from './lib/lazyWithRetry'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { ScrollToTop } from './components/ui/ScrollToTop'
 import ScrollToTopFab from './components/ui/ScrollToTopFab'
 import Box from '@mui/material/Box'
@@ -60,6 +60,13 @@ function PageLoader() {
 
 function RootRedirect() {
   return <Navigate to={`/${detectBrowserLang()}`} replace />
+}
+
+// Email links (reset-password, confirm-email) point at langless paths.
+// Reattach the language prefix while preserving the query string (token etc.).
+function LangPrefixRedirect() {
+  const { pathname, search } = useLocation()
+  return <Navigate to={`/${detectBrowserLang()}${pathname}${search}`} replace />
 }
 
 function App() {
@@ -125,6 +132,11 @@ function App() {
         <Route path="confirm-email" element={<Suspense fallback={<PageLoader />}><ConfirmEmailPage /></Suspense>} />
         <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFoundPage /></Suspense>} />
       </Route>
+
+      {/* Langless email-callback links → reattach lang prefix, keep query */}
+      <Route path="/reset-password" element={<LangPrefixRedirect />} />
+      <Route path="/confirm-email" element={<LangPrefixRedirect />} />
+      <Route path="/forgot-password" element={<LangPrefixRedirect />} />
 
       {/* Fallback — redirect unknown paths to default lang root */}
       <Route path="*" element={<RootRedirect />} />
